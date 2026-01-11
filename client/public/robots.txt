@@ -1,0 +1,9 @@
+# Allow all robots to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow signup success page (no SEO value)
+Disallow: /signup/success
+
+# Sitemap location
+Sitemap: https://linkservicepro.com/sitemap.xml

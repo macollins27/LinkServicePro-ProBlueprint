@@ -1,0 +1,345 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+## Global Goal
+
+Apply the **high-converting feature landing** template and **AI-generated, field-authentic imagery** to **every Features page**. Keep the same layout and behavior you built for Scheduling. Mobile-first, sharp corners, AA contrast, no horizontal scroll at 375px. Each section starts with **Title + Subtitle** top-left. Rectangular bold buttons. Sticky bottom CTA + inline lead form on every page.
+
+You will:
+
+1. Use one **Feature Landing Template** for all pages.
+2. Populate content from the **Per-Feature Content Map** below.
+3. **AI-generate images** per page using the **Image Macro** and **Per-Feature Image Sets**.
+4. Wire images per the **Placement Map**.
+5. Ship pages for all slugs listed.
+
+---
+
+## Feature Landing Template (same for all pages)
+
+Section order:
+
+1. Hero band (KPIs + CTAs + hero carousel)
+2. What it does (3 bullets)
+3. Why teams switch (Pain → Solve)
+4. How it works (3 steps)
+5. In the field (testimonial)
+6. Works with (integrations)
+7. Mini demo + lead capture
+8. Related features
+9. FAQ (accordion)
+10. Bottom CTA band
+11. Sticky bottom CTA
+
+SEO/schema for each page:
+
+* `<title>`: “{Feature Name} • Field Service Software”
+* Meta description ≤160 chars using each feature’s subtitle.
+* Canonical, OG tags, JSON-LD `SoftwareApplication`.
+* JSON-LD `FAQPage` with the feature’s FAQ list.
+
+Analytics:
+
+* `lp_view` on load `{feature: slug}`
+* `cta_click` `{placement:"hero"|"sticky"|"bottom"}`
+* `lead_capture` `{feature: slug, source:"demo-form"}`
+
+---
+
+## Image Generation
+
+### Image Macro (use for every render)
+
+**Style goals**: authentic jobsite documentary; OSHA-safe PPE; natural/available light; 24–70mm look; slightly warm color; moderate contrast; diverse crews; no visible third-party logos.
+
+**Macro prompt structure**
+“{TRADE or SCENE}, {ACTION}, {SETTING DETAILS}, [documentary, authentic jobsite, shallow depth, natural light, high-detail hands/tools], {DEVICE if shown (tablet/phone/laptop)}, cinematic composition.”
+
+**Outputs per image**
+
+* Formats: **AVIF** + **WebP** + JPEG fallback
+* Sizes: **1600 / 1200 / 768 / 480** widths with proper `srcset`
+* LQIP: 20px base64 blur
+* Alt text: role + task + context
+* Optional caption (≤80 chars)
+
+**Placement Map (all pages)**
+
+* **Hero**: vertical carousel 3 images (mobile 4:5, desktop 16:10).
+* **What it does**: 1 image right of bullets (above on mobile).
+* **Pain** card: 1 image above text. **Solve** card: 1 image above text.
+* **How it works**: 3 images (one per step) above each step card.
+* **Testimonial**: 1 portrait next to quote (above on mobile).
+* **Mini demo**: 1 poster image on left; lead form on right (stack on mobile).
+* **Related**: use 1 thumbnail per related card.
+
+**Minimum set per feature page**: **10 images**
+
+* Hero ×3, What ×1, Pain ×1, Solve ×1, Steps ×3, Testimonial ×1, Demo ×1, Related thumbs ×3 (these can reuse a shared cluster pool if needed).
+
+Save to: `/public/images/{slug}/…` and return a manifest (filename, alt, caption, srcsets).
+
+---
+
+## Per-Feature Content Map
+
+> Use the template. Substitute values below. If a KPI is missing, still render the 3 tiles using “—” as value and label text.
+
+### Cluster: Plan & Dispatch
+
+#### 1) Drag-and-drop Scheduling  *(slug: drag-and-drop-scheduling)*
+
+* Subtitle: Schedule faster and keep crews in sync.
+* KPIs: −18% Drive time · +1.3 Jobs/tech/day · 96% On-time arrival
+* Bullets: Drag live calendar → auto notifications; Assign crews/vehicles → no double-booking; See day/week/route capacity → prevent overtime.
+* Pain → Solve: spreadsheets break; can’t see who’s free; double-books; Friday overtime → real-time calendar; color capacity; drag once notifies; caps + alerts.
+* Steps: Create job; Place on calendar; Notify.
+* Testimonial: “We reshuffle routes in minutes and cut callbacks.” — Mike R., Owner, HVAC
+* Integrations: QuickBooks, Xero, LinkInspectPro, PropertyLinkWare, SMS/Email
+* FAQ (6): setup time; mobile reschedule; crew alerts; double-book; recurring; offline.
+* **Image Set (prompts)**
+
+  * **Hero 1**: HVAC van tablet route map at dawn.
+  * **Hero 2**: Rooftop condenser multimeter.
+  * **Hero 3**: Electrician at service panel torqueing lug.
+  * **What**: Hand dragging job on phone calendar.
+  * **Pain**: Messy whiteboard schedules, ringing desk phone.
+  * **Solve**: Color-coded crew capacity on wall tablet.
+  * **Steps**: desk creating work order; dragging job on desktop calendar; SMS confirmation on customer phone.
+  * **Testimonial**: Owner portrait by van.
+  * **Demo**: Laptop showing schedule with conflict flags + route.
+  * **Related thumbs**: live map in cab; windshield route line; calendar heatmap.
+
+#### 2) Dispatch Board + Live Map *(slug: dispatch-board-live-map)*
+
+* Subtitle: See every crew on screen and act fast.
+* KPIs: −12% Idle time · −22% Callbacks · 100% Crew visibility
+* Bullets: Live GPS pins by crew; One-click status changes; Geo-filter by zone.
+* Pain → Solve: blind to locations; radio tag confusion; late arrivals → live pin trail with ETA; status badges; zone dispatch.
+* Steps: Open board; Filter by zone; Assign nearest crew.
+* Testimonial: “We stopped calling around and started routing smart.” — Tanya L., Dispatch
+* Integrations: SMS/Email, GPS provider, PropertyLinkWare
+* FAQ: GPS granularity; privacy; battery; stale data; zones; web + mobile.
+* **Images**
+
+  * **Hero**: wall-mounted board with map and pins; dispatcher pointing.
+  * **Hero**: in-cab tablet map view with avatar.
+  * **Hero**: shop monitor with multi-crew lanes.
+  * **What**: close-up of board status chips.
+  * **Pain**: paper notes + walkie chaos.
+  * **Solve**: zone filter menu with pins dimmed.
+  * **Steps**: board open; zone filter tap; nearest crew assignment with distance badge.
+  * **Testimonial** portrait at radios desk.
+  * **Demo**: map with live ETAs list.
+  * **Related** thumb: route line phone mount.
+
+#### 3) Route Optimization *(slug: route-optimization)*
+
+* Subtitle: Shortest routes. More jobs per tech.
+* KPIs: −18% Drive time · +2 Stops/day · −10% Fuel
+* Bullets: Optimize by time windows; Avoid tolls/areas; Auto re-sequence after reschedule.
+* Pain → Solve: zig-zag day; late to tight windows; manual re-routes → one-tap optimize; window-respect; instant resequence.
+* Steps: Set day; Optimize; Dispatch.
+* Testimonial: “Added a stop per tech without overtime.” — Greg S., Ops
+* Integrations: Maps provider, SMS
+* FAQ: traffic; tolls; breaks; fleets; rural coverage; export.
+* **Images**
+
+  * **Hero**: route polylines across city on tablet;
+  * **Hero**: windshield view with route overlay;
+  * **Hero**: dispatcher with “optimize” button;
+  * **What**: time-window bars;
+  * **Pain**: crumpled printed routes;
+  * **Solve**: resequenced stop list;
+  * **Steps**: day setup; optimize running; dispatch send;
+  * **Testimonial** portrait in yard;
+  * **Demo**: before/after route split;
+  * **Related** thumb: capacity heatmap.
+
+#### 4) Real-time GPS *(slug: real-time-gps)*
+
+* Subtitle: Verify location, protect time.
+* KPIs: 30s Ping · Breadcrumb trail · Geo-fence alerts
+* Bullets: Live breadcrumb timeline; Arrival detection; Last-known fallback.
+* Pain → Solve: “where are they?” calls; disputes on time; lost crews → map trail; auto arrive/leave; last ping with timestamp.
+* Steps: Enable GPS; View drive; Review day.
+* Testimonial: “Proof of arrival ended disputes.” — Alina K., Admin
+* Integrations: GPS provider
+* FAQ: battery; privacy; off-grid; accuracy; storage; roles.
+* **Images**: in-cab phone breadcrumb; breadcrumb history panel; geo-fence alert; enable switch; trail view; daily report; admin portrait; dispute resolved UI; related: dispatch map.
+
+#### 5) Capacity Planning *(slug: capacity-planning)*
+
+* Subtitle: Balance workload and prevent overtime.
+* KPIs: −22% OT · +12% Utilization · 0 double-books
+* Bullets: Hour caps by crew/truck; Heatmap view; Overtime warnings.
+* Pain → Solve: surprise OT; idle gaps; overloading favorites → caps; heatmap; auto balancing prompts.
+* Steps: Set caps; Review heatmap; Shift jobs.
+* Testimonial: “Fridays stopped exploding.” — Roni P., Scheduler
+* **Images**: heatmap wall screen; warning banner; drag job to lighter day; portrait at wall calendar; demo: caps dialog; related: scheduling thumb.
+
+#### 6) Automated Reminders *(slug: automated-reminders)*
+
+* Subtitle: Fewer no-shows. Happier customers.
+* KPIs: −35% No-shows · +9% Reviews · −20% Support calls
+* Bullets: SMS/email cadence; Smart windows; Bad-weather auto shift.
+* Pain → Solve: customers forget; wrong windows; manual texts → time-based reminders; synced windows; rule-based triggers.
+* Steps: Choose cadence; Preview; Go live.
+* **Images**: SMS sequence UI; wrong window confusion; smart window card; cadence setup; preview send; confirmation; testimonial portrait; demo phone inbox; related: review requests.
+
+#### 7) Recurring Jobs *(slug: recurring-jobs)*
+
+* Subtitle: Set it once. It runs itself.
+* KPIs: −70% Admin time · 100% Pattern accuracy · +15% Lifetime value
+* Bullets: Daily/weekly/monthly rules; Seasonality; Bulk shifts.
+* Pain → Solve: missed recurrences; holidays; manual rebuild → rule engine; holiday skip/shift; bulk roll.
+* Steps: Create rule; Apply season; Generate.
+* **Images**: rule builder; holiday conflict; season selector; preview grid; tech portrait; demo: generation diff; related: capacity.
+
+---
+
+### Cluster: Win & Deliver
+
+#### 8) CRM & Leads *(slug: crm-leads)*
+
+* Subtitle: Capture, qualify, follow up—automatically.
+* KPIs: +24% Win rate · −30% Response time · +18% Repeat
+* Bullets: Web form → pipeline; Lead scoring; Auto follow-ups.
+* Pain → Solve: lost sticky notes; stale inbox; no history → central inbox; scores; sequences.
+* Steps: Capture; Qualify; Follow up.
+* Images: tech at phone webform; messy notebook; clean pipeline; capture UI; score heat; email sequence; owner portrait; demo: pipeline board; related: quotes.
+
+#### 9) Quote Builder + E-Sign *(slug: quote-esign)*
+
+* Subtitle: Professional estimates, signed faster.
+* KPIs: +22% Win rate · Same-day approvals · <2 min build
+* Bullets: Line items/photos; Templates; E-sign + deposits.
+* Pain → Solve: handwritten; back-and-forth; lost approvals → branded quotes; quick templates; one-tap sign + pay.
+* Steps: Build; Send; Sign & deposit.
+* Images: line items desk; homeowner viewing quote; finger e-sign; template picker; send dialog; deposit screen; portrait; demo: before/after; related: payments.
+
+#### 10) Work Orders *(slug: work-orders)*
+
+* Subtitle: Clear instructions. Zero confusion.
+* KPIs: −25% Callbacks · +11% First-time fix · 100% Photo proof
+* Bullets: Checklists; Photo before/after; Parts notes.
+* Pain → Solve: vague orders; missed steps → checklists; photo proof; parts tracking.
+* Steps: Create; Assign; Complete.
+* Images: checklist on phone; messy scrap paper; clean WO on tablet; create screen; assign crew; complete with photos; tech portrait; demo: timeline; related: project tracking.
+
+#### 11) Project Tracking (multi-WO) *(slug: project-tracking)*
+
+* Subtitle: Multi-visit jobs under control.
+* KPIs: 100% Docs in one place · +9% Margin · Fewer surprises
+* Bullets: Parent project; Linked WOs, estimates, invoices; Timeline.
+* Pain → Solve: lost files; version chaos → one folder; linked docs; timeline view.
+* Steps: Create project; Attach docs; Track visits.
+* Images: project folder; paper stack pain; linked doc chips; timeline; PM portrait; demo Gantt; related: invoicing.
+
+#### 12) Customer Portal *(slug: customer-portal)*
+
+* Subtitle: Quotes, invoices, job history—self-serve.
+* KPIs: −40% Calls · +12% On-time pay · +9% Reviews
+* Bullets: Secure login; Pay online; Share photos.
+* Pain → Solve: phone tag; payment delays → portal; card on file.
+* Steps: Invite; View; Pay.
+* Images: homeowner portal; ringing phone; pay screen; invite email; history tab; paid receipt; testimonial; demo: portal laptop; related: reviews.
+
+#### 13) 2-Way SMS/Email *(slug: two-way-messaging)*
+
+* Subtitle: Real conversations. No personal numbers.
+* KPIs: −50% Phone time · +17% Response rate
+* Bullets: Shared inbox; Message to job; Templates.
+* Pain → Solve: lost texts on personal phones → team inbox; job-linked; templates.
+* Steps: Connect number; Reply; Close.
+* Images: inbox screen; tangled phones; job-linked thread; connect flow; quick reply; resolved badge; dispatcher portrait; demo: inbox filters; related: reminders.
+
+#### 14) Review Requests *(slug: review-requests)*
+
+* Subtitle: Build reputation on autopilot.
+* KPIs: +1.2★ Avg rating · +3× Volume
+* Bullets: post-job triggers; site mix; track by tech.
+* Pain → Solve: few reviews; only angry voices → request at right time; Google/Yelp mix; coach techs.
+* Steps: Trigger; Send; Track.
+* Images: phone review prompt; silent profiles; dashboard rating; trigger setup; send; leaderboard; owner portrait; demo: review trend; related: CRM.
+
+---
+
+### Cluster: Get Paid & Operate
+
+#### 15) Invoicing & Batch *(slug: invoicing-batch)*
+
+* Subtitle: Send invoices faster. Get paid sooner.
+* KPIs: −5 days DSO · +100% Batch throughput · 0 lost invoices
+* Bullets: One-tap from WO; Batch send; PDFs + links.
+* Pain → Solve: piles of paper; missed invoices → auto from WO; batch run; status tracking.
+* Steps: Select jobs; Review; Send.
+* Images: stack of paper pain; invoice list; send dialog; batch selector; review pane; sent toast; bookkeeper portrait; demo: AR aging; related: payments.
+
+#### 16) Online & Field Payments *(slug: payments)*
+
+* Subtitle: Card, ACH, tap-to-pay—office or field.
+* KPIs: +37% Same-day pay · 0% card stored on device
+* Bullets: Save card on file; Tap-to-pay; PCI safe.
+* Pain → Solve: checks only; card numbers on paper → link pay + tap; tokenized; receipts auto-emailed.
+* Steps: Collect; Authorize; Receipt.
+* Images: phone tap-to-pay; check pile; link pay screen; collect card; approve; receipt screen; tech portrait; demo: batch settle; related: deposits.
+
+#### 17) Deposits/Partials *(slug: deposits-partials)*
+
+* Subtitle: Secure the job and cash flow.
+* KPIs: 30% deposit norm · Faster start · Less risk
+* Bullets: Collect on quote; Split milestones; Auto reconcile.
+* Pain → Solve: unpaid starts; chasing balances → deposit on e-sign; milestone plan; balance due on completion.
+* Steps: Set deposit; Collect; Reconcile.
+* Images: deposit slider; unpaid start pain; milestone schedule; set deposit; pay now; reconcile; PM portrait; demo: project payments; related: invoicing.
+
+#### 18) Job Costing & Profit *(slug: job-costing)*
+
+* Subtitle: Know your numbers on every job.
+* KPIs: +6 pts Margin · Live variance · Real costs
+* Bullets: Labor/materials/overhead; Variance alerts; Profit snapshots.
+* Pain → Solve: late spreadsheets; guesswork → live costs; alerts; drill down.
+* Steps: Log; Compare; Improve.
+* Images: cost dashboard; late spreadsheet pain; variance alert; time log; compare chart; improvement action; controller portrait; demo: margin by tech; related: payroll.
+
+#### 19) Payroll & Wage Scales *(slug: payroll-wage-scales)*
+
+* Subtitle: Accurate pay from the schedule.
+* KPIs: 100% Scale rules · 0 disputes
+* Bullets: Wage scales by role; OT rules; Export.
+* Pain → Solve: disputes; manual calc → rule engine; audit trail; export to payroll.
+* Steps: Define rules; Review hours; Export.
+* Images: rule table; dispute chat; OT calc; define screen; review report; export file; admin portrait; demo: hours by job; related: job costing.
+
+#### 20) POs & Vendor Mgmt *(slug: po-vendor)*
+
+* Subtitle: Buy smart. Track vendors.
+* KPIs: −8% Material cost · 100% PO coverage
+* Bullets: Create POs from WO; Receive items; Vendor insurance status.
+* Pain → Solve: lost receipts; wrong prices → PO flow; receive against PO; insurance alerts.
+* Steps: Create PO; Receive; Reconcile.
+* Images: PO screen; shoebox receipts; receive scan; create form; receive list; reconcile screen; purchasing portrait; demo: vendor score; related: job costing.
+
+#### 21) QuickBooks/Xero Sync *(slug: accounting-sync)*
+
+* Subtitle: Books that stay in sync.
+* KPIs: 0 double entry · Real-time sync
+* Bullets: Customers/items/taxes; 2-way payments; Error handling.
+* Pain → Solve: duplicate typing; mismatches → mapped fields; auto sync; error queue.
+* Steps: Connect; Map; Sync.
+* Images: connect dialog; duplicate typing pain; mapping table; connection success; sync list; error queue; accountant portrait; demo: audit log; related: invoicing.
+
+---
+
+## Implementation Steps
+
+1. **Data**: Create/extend `src/data/features.json` with each feature’s: `slug, name, cluster, subtitle, kpis, bullets, pains, solves, steps, testimonial, integrations, related, faqs`.
+2. **Images**: For each `slug`, generate the **10-image minimum** using the prompts above (apply the **Image Macro**). Save under `/public/images/{slug}/…`. Produce a JSON manifest with alt, caption, and srcsets.
+3. **Template**: Ensure every page uses the common Feature Landing Template and pulls copy + image manifest by `slug`.
+4. **Placement**: Wire images according to the **Placement Map**. Use AVIF/WebP/JPEG with `srcset` and LQIP; hero images not lazy; others lazy.
+5. **QA**: Mobile at 375px; keyboard and screen-reader checks on FAQ and buttons; Lighthouse ≥90/≥95; CLS <0.05.
+6. **Output**: Return a table listing each slug with the generated filenames for: `hero[3], what, pain, solve, step1, step2, step3, testimonial, demo, related[3]`.
+
+Ship all pages now.

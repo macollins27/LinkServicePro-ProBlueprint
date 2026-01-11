@@ -1,0 +1,173 @@
+You are refactoring and auditing the LinkServicePro feature page:
+
+Route: /features/drag-and-drop-scheduling
+Repo stack: React 18 + TS, Vite, Tailwind, shadcn/ui (Radix), Wouter, TanStack Query
+Theme: Pro-Blueprint
+Buttons: use src/components/Buttons.tsx (StartFreeButton, ViewPricingButton, ButtonsRow) with the saved specs. No inline ad-hoc buttons.
+
+GOALS
+1) Make the page conversion-optimal, obvious at a glance, fast, and accessible.
+2) Remove duplicative/confusing demos. Keep one clear hands-on demo.
+3) Fill missing sections from the Feature Page Template (hero → value → pain/solve → how it works → proof → mini-demo+lead → integrations → related → FAQ → bottom CTA + sticky CTA).
+4) Enforce WCAG AA+, Lighthouse ≥90/Perf and ≥95/A11y on this route.
+5) Tighten analytics, SEO, and schema.
+
+AUDIT + ACTION PLAN
+A) Inventory current sections and order (read from DynamicFeatureLanding.tsx or scheduling route):
+   - FeatureHeroScheduling
+   - SchedulingInstantDemo
+   - SchedulingPainSolve
+   - SchedulingOneMove
+   - SchedulingBeforeAfter
+   - “template” blocks (steps, testimonial, integrations, FAQs, related)
+
+B) Decide final canonical order for this page (apply exactly):
+   1. FeatureHeroScheduling  (keep)
+   2. SchedulingInstantDemo  (keep as the only interactive demo)
+   3. SchedulingPainSolve    (keep)
+   4. HowItWorks3Steps       (ADD if missing)
+   5. SchedulingProofFAQ     (ADD; testimonial + objection FAQ)
+   6. MiniDemoLead           (ADD; simple 16:9 image/clip + short form)
+   7. IntegrationsStrip      (keep or ADD)
+   8. RelatedFeatures3       (keep or ADD: Dispatch Board, Route Optimization, 2-Way SMS)
+   9. BottomCTABand          (ADD)
+   10. StickyBottomCTA       (ADD; visible after 50% scroll)
+
+   Remove/retire as “labs”:
+   - SchedulingOneMove
+   - SchedulingBeforeAfter
+   (Create /features/scheduling-labs route and link quietly in dev only.)
+
+C) Content rules to enforce:
+   - Outcomes, not vague KPIs: “Stops double-booking”, “Reschedule in seconds”, “Instant auto-texts”, “Save 2 hrs/tech/week”.
+   - Documentary imagery only; no paper, no dashboards floating over photos.
+   - Standardized buttons everywhere via ButtonsRow with context="light" on light sections and "dark" on dark.
+
+D) Implement/modify files
+
+1) Route composition
+   File: client/src/pages/DynamicFeatureLanding.tsx OR client/src/routes/features/scheduling.tsx
+   - Import only:
+     FeatureHeroScheduling
+     SchedulingInstantDemo
+     SchedulingPainSolve
+     HowItWorks3Steps              // NEW
+     SchedulingProofFAQ            // NEW (from prior instructions)
+     MiniDemoLead                  // NEW
+     IntegrationsStrip             // ensure present
+     RelatedFeatures3              // ensure present
+     BottomCTABand                 // NEW
+     StickyBottomCTA               // NEW
+   - Remove SchedulingOneMove and SchedulingBeforeAfter from render tree.
+   - Keep section IDs and logical heading order (one H1 on hero, then H2s).
+
+2) Add How-it-Works section
+   File: client/src/sections/HowItWorks3Steps.tsx (NEW)
+   Copy (verbatim):
+     H2: “How it works”
+     Steps:
+       1) “Add job” → “Enter customer and window”
+       2) “Drag to assign” → “We check conflicts and crew load”
+       3) “Customer gets ETA” → “Auto-text and calendar update”
+   Include a ButtonsRow under steps using standardized buttons.
+
+3) Add Proof + FAQ section (if not already created)
+   File: client/src/sections/SchedulingProofFAQ.tsx (CREATE if missing; else verify against spec)
+   - Use the exact copy provided earlier.
+   - Radix Accordion with proper aria.
+   - Inject FAQPage JSON-LD.
+
+4) Add Mini-demo + Lead form
+   File: client/src/sections/MiniDemoLead.tsx (NEW)
+   - Left: 16:9 <img> or <video> placeholder (decorative, aria-hidden)
+   - Right: form with Work email* and Company*
+   - One-line success: “We’ll email your login in seconds.”
+   - ButtonsRow with StartFreeButton + ViewPricingButton.
+   - Validation: required, type=email, aria-invalid on error.
+   - Analytics: fire cta_click {placement:"mini-demo"}, form_submit {source:"scheduling"}.
+
+5) Add Bottom CTA band
+   File: client/src/sections/BottomCTABand.tsx (NEW)
+   - Copy:
+     H2: “Schedule days that run on time.”
+     Sub: “Start Free. No credit card. Full product for 14 days.”
+   - ButtonsRow with context="light".
+   - On dark variant when used elsewhere: context="dark".
+
+6) Add Sticky bottom CTA
+   File: client/src/components/StickyBottomCTA.tsx (NEW)
+   Behavior:
+     - Appears after 50% scroll; hidden near page bottom CTA using an IntersectionObserver.
+     - Content: “Drag-and-drop Scheduling” + ButtonsRow.
+     - a11y: role="region" aria-label="Quick actions".
+     - Keyboard and screen-reader reachable; no trap.
+   Mount this component in the scheduling route only.
+
+7) Integrations strip and Related features
+   Verify components exist; if not:
+     - IntegrationsStrip: chips for QuickBooks, Xero, iOS/Android, SMS/Email.
+     - RelatedFeatures3: three cards linking to /features/dispatch-board, /features/route-optimization, /features/two-way-messaging.
+
+3) Fixes and hardening
+
+A11y:
+ - Ensure every interactive element has visible #0B5FFF focus ring with 2px offset (white on light, #0F2033 on dark).
+ - Check aria-live usage once per event; remove duplicate announcements.
+ - Give lists aria-labels where they represent schedules or FAQs.
+
+Reset bug in SchedulingInstantDemo:
+ - Ensure reset clears all derived flags. Implementation:
+   * Derive success UI strictly from slots state. No separate “hasDropped” flag.
+   * On reset, setSlots(initial), setDraggedJobSlotId(null), setDropTarget(null).
+   * Status text comes from a memo based on slots; clear when slots === initial.
+ - Add unit test: clicking Reset returns DOM to initial (data-testid checks).
+
+Performance:
+ - Lazy-load sections below the fold with React.lazy/Suspense.
+ - Convert hero image to WebP + width/srcSet; add fetchpriority="high".
+ - Use IntersectionObserver to only start demo scripts when section >25% visible.
+
+Analytics:
+ - Standardize events:
+   window.gtag?.('event','cta_click',{placement})
+   window.gtag?.('event','form_submit',{source:'scheduling'})
+   window.gtag?.('event','demo_interaction',{type:'drag_start'|'successful_drop'})
+ - Add scroll depth (25/50/75/100) once per session on this route.
+
+SEO/Schema:
+ - Title: “Drag-and-Drop Scheduling • Field Service Software”
+ - Meta description (≤160): “Drag jobs, clear conflicts, and auto-text customers. See schedules settle in seconds.”
+ - Canonical + OG/Twitter tags.
+ - JSON-LD SoftwareApplication (include featureList and offers price=0).
+ - FAQPage JSON-LD from SchedulingProofFAQ.
+
+Design system enforcement:
+ - Remove any non-standard buttons; replace with StartFreeButton/ViewPricingButton.
+ - Confirm sharp corners globally; remove stray rounded classes.
+ - Use ring-1 slate-200 for cards, elev-2 shadow, blueprint optional on demos.
+
+Testing:
+ - Add data-testid attributes per spec for each section root:
+   feature-hero, instant-demo, pain-solve, how-steps, proof-faq, mini-demo-lead, integrations-strip, related-features, bottom-cta, sticky-cta.
+ - Add Cypress/Playwright smoke tests for:
+   * 375px: no horizontal scroll; all CTAs visible and clickable.
+   * Keyboard nav through tabs, FAQ, and forms.
+   * Sticky CTA shows after scroll and hides near bottom CTA.
+
+Deliverables:
+ 1) Updated scheduling route composing the final section order.
+ 2) New files: HowItWorks3Steps.tsx, MiniDemoLead.tsx, BottomCTABand.tsx, StickyBottomCTA.tsx (and SchedulingProofFAQ.tsx if missing).
+ 3) Removal of SchedulingOneMove and SchedulingBeforeAfter from render; move them to src/sections/labs/ and create a dev-only route if needed.
+ 4) Fixed SchedulingInstantDemo reset logic and tests.
+ 5) Lazy-loading and IO-based activation for below-fold sections.
+ 6) SEO head tags for this route and JSON-LD blocks injected.
+ 7) Lighthouse report for this route ≥90/Perf and ≥95/A11y; print scores to console after run.
+
+Acceptance criteria:
+ - Page renders in the canonical order above.
+ - Exactly one interactive demo remains (SchedulingInstantDemo).
+ - All CTAs use standardized buttons with correct focus ring/offset.
+ - 375px: zero horizontal overflow; sticky CTA works; keyboard nav is clean.
+ - FAQ JSON-LD validates; SoftwareApplication JSON-LD present.
+ - Known reset bug resolved with passing test.
+ - Lighthouse thresholds met in local run.

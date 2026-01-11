@@ -1,0 +1,44 @@
+Nice—easy win. Here’s a tight prompt for Replit that **only increases the hero’s top padding** so the navbar and hero feel more separated. It does **not** touch the carousel.
+
+---
+
+## Increase HERO top padding (leave carousel as-is)
+
+**Scope:** Update the hero section wrapper padding on the **top only**. Do not modify the right column carousel markup, classes, or behavior.
+
+**Change:** Bump top padding to create clear separation from the transparent navbar.
+
+### Replace the hero `<section>` classes (top padding only)
+
+```diff
+- className="relative overflow-hidden px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 text-white bg-[linear-gradient(180deg,#0A1326,#060B18),radial-gradient(900px_600px_at_0%_0%,rgba(21,59,122,0.25),transparent)] [background-blend-mode:screen,normal]"
++ className="relative overflow-hidden px-4 sm:px-6 lg:px-8
++             pt-28 sm:pt-32 lg:pt-40  /* increased top padding */
++             pb-16 sm:pb-20 lg:pb-24  /* keep bottom rhythm */
++             text-white
++             bg-[linear-gradient(180deg,#0A1326,#060B18),radial-gradient(900px_600px_at_0%_0%,rgba(21,59,122,0.25),transparent)]
++             [background-blend-mode:screen,normal]"
+```
+
+### Optional (safer on iOS with notches)
+
+If your navbar is fixed and you want to respect the safe area, add this inline style to the same `<section>`:
+
+```tsx
+style={{ paddingTop: 'calc(var(--hero-pt, 10rem) + env(safe-area-inset-top))' }}
+```
+
+…then set `--hero-pt` via a class on the section:
+
+```html
+className="... [--hero-pt:8rem] sm:[--hero-pt:9rem] lg:[--hero-pt:10rem] ..."
+```
+
+### QA checklist
+
+* [ ] Right column carousel has **no changes**.
+* [ ] Navbar remains transparent at the very top and becomes solid on scroll.
+* [ ] Extra space appears above the hero headline (desktop and mobile).
+* [ ] No layout shift when the page loads.
+
+If you want the headline to drop a hair more without increasing the entire section height, we can add a tiny spacer above the keyword chip; otherwise the padding values above should do the trick.

@@ -1,0 +1,104 @@
+Replace HomeResults30 with a compact, balanced 3-card row.
+
+Section: HomeResults30
+File: src/sections/HomeResults30.tsx
+Mount: directly under home hero
+
+OBJECTIVE
+- Kill blank space. Each card same visual height.
+- Remove “Minutes saved per job” input. Assume 10 minutes saved per job behind the scenes.
+- Make estimator a slim strip (2 inputs + results), not a tall form.
+- Densify left/right cards with 2×2 grids of concise items.
+- Keep standardized CTAs below row.
+
+LAYOUT
+- Wrapper: <section className="mx-auto max-w-7xl px-4 sm:px-6">
+- Image stays above row (full width). Cards row below: class="grid gap-4 sm:grid-cols-3 items-stretch"
+- Card shell: class="rounded-none ring-1 ring-slate-200 shadow elev-2 p-4 sm:p-5 grid grid-rows-[auto_1fr_auto] h-full"
+- Reduce vertical padding and internal gaps: use space-y-3.
+
+COPY (verbatim)
+
+H2: “Results you can feel in 30 days.”
+Sub: “Save time, win more jobs, and get paid sooner — without changing how your team works in the field.”
+
+LEFT CARD — title: “Quick wins”
+2×2 grid (no bullets; perfect alignment):
+- “Save 6–10 hours per week” — “Drag-and-drop scheduling with automated reminders.”
+- “Increase quote win rate by 22%” — “E-sign quotes that convert into work orders.”
+- “Cut time to payment by 3 days” — “Deposits, partials, and batch invoicing with accounting sync.”
+- “Same-day invoices” — “Finish the job and send the bill before you leave.”
+
+MIDDLE CARD — title: “Savings estimator”
+Inputs (two only, inline):
+- Label: “Technicians”   <input type="number" min=1 max=200 defaultValue=3>
+- Label: “Jobs per tech per week”   <input type="number" min=1 max=100 defaultValue=20>
+Assumption: fixed behind the scenes at 10 minutes per job. Do NOT render a control.
+Helper (single line, small): “We assume 10 minutes saved per job on average. Adjust technicians or jobs.”
+Results (inline, bold, no tall blocks):
+- “Hours saved per month: {X}”
+- “Estimated monthly savings: ${Y}”
+Fine print (tiny): “Uses a blended labor rate of $35 per hour.” Add a small number input to change rate ONLY if space allows; else omit and keep $35 hardcoded.
+
+RIGHT CARD — title: “Proven in the field”
+Top quote (2 lines max):
+“Scheduling takes under five minutes and invoices go out the same day. Customers love the portal.”
+Byline: “— Maya Lopez, Owner, BrightPath Cleaning”
+Dense 2×2 proof grid (fills space cleanly):
+- “★★★★★ 5.0/5 App Store”
+- “★★★★★ 5.0/5 Google”
+- “SOC 2 Security”
+- “QuickBooks / Xero”
+Trust row (small chips under grid):
+- “No long-term contract”
+- “iOS & Android”
+
+CTA ROW (below cards; center)
+import { StartFreeButton, ViewPricingButton, ButtonsRow } from "@/components/Buttons";
+<ButtonsRow className="mt-4">
+  <StartFreeButton context="light" />
+  <ViewPricingButton context="light" />
+</ButtonsRow>
+
+ESTIMATOR LOGIC (fixed assumption = 10 min/job)
+State:
+  technicians: number
+  jobsPerTechPerWeek: number
+  laborRate: number = 35 // can be hidden or small input
+Derive:
+  const minutesPerJob = 10; // fixed
+  const weeklyMinutes = technicians * jobsPerTechPerWeek * minutesPerJob
+  const monthlyHours = Math.round((weeklyMinutes * 4.33) / 60)
+  const monthlySavings = Math.round(monthlyHours * laborRate)
+Render compact inline:
+  <p><strong>Hours saved per month:</strong> {monthlyHours} hours</p>
+  <p><strong>Estimated monthly savings:</strong> ${monthlySavings.toLocaleString()} per month</p>
+a11y: status <div id="estimator-status" aria-live="polite"> updates on input change.
+
+DENSITY / WHITESPACE CONTROLS
+- Left/right internal grids: class="grid grid-cols-1 gap-3"
+  Each item: title (font-semibold text-slate-900) + desc (text-slate-700). No extra margins.
+- Right proof grid: class="grid grid-cols-2 gap-2"
+- Remove tall sliders or stacked form groups.
+- Card footers empty; row 3 of grid stays minimal to keep heights equal without dead space.
+
+ACCESSIBILITY
+- Section role="region" aria-labelledby="home-results-h2"
+- Labels bound to inputs; aria-invalid on bounds errors.
+- Focus rings: add class "focus:outline-none focus:ring-2 focus:ring-[#0B5FFF] focus:ring-offset-2 focus:ring-offset-white" to inputs.
+- Quote marked up with <blockquote> and <cite>.
+
+TEST IDS
+- data-testid="quick-wins-grid"
+- data-testid="estimator-inline"
+- data-testid="estimator-hours"
+- data-testid="estimator-savings"
+- data-testid="proof-grid"
+- data-testid="cta-start-free"
+
+QA ACCEPTANCE
+- No visible blank bands in left/right cards at 1440, 1024, 768.
+- Three cards equal visual height; middle card no taller than others.
+- No abbreviations in UI.
+- Estimator understandable in 3 seconds; only two inputs.
+- Ratings show 5.0/5; chips wrap neatly without overflow at 375px.

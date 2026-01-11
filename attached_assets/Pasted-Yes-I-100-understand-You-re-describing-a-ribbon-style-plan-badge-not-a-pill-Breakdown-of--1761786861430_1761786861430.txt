@@ -1,0 +1,317 @@
+Yes. I 100% understand.
+
+You’re describing a ribbon-style plan badge, not a pill.
+
+Breakdown of what you want, in precise terms:
+
+1. The “Free” / “Starter” / “Essential+” badge should NOT be a little rounded pill sitting inside the card.
+2. Instead it should be a ribbon / tag:
+
+   * It sits on the top-right corner of the feature card.
+   * It visually overlaps the card: half of it is inside the card, half of it sticks out past the border.
+   * It has no wasted horizontal padding. The text should sit snug.
+3. The ribbon should have a diagonal / slanted right edge so it looks like a sale tag or price ribbon, not just a rectangle.
+4. Each plan level should have its own color theme (Free = pale green, Starter = pale blue, Essential = pale green, Premium = pale purple, etc.) and feel “popped,” not washed out.
+5. You also want consistent sizing/padding (no extra space on the right like you’re seeing now).
+6. You want this implemented in the feature cards grid everywhere these cards show up, not just one section.
+
+That’s clear.
+
+Below is a Replit prompt that tells it exactly how to build that ribbon component and apply it. You can paste this into Replit and it should stop arguing.
+
+---
+
+## PROMPT FOR REPLIT
+
+Goal: Update the plan badges in the feature cards (like “Free”, “Starter”, “Essential+”, etc.) to be ribbon-style corner tags.
+
+Do NOT rebuild the entire grid. Do NOT change the layout, copy, or card order. Only change how the plan badge renders and is positioned.
+
+We want:
+
+* A reusable `<PlanRibbon />` component.
+* The ribbon sits at the card’s top-right corner.
+* The ribbon overlaps the card border so that about half of it is “outside” the card.
+* The ribbon has a diagonal slanted right edge.
+* No extra horizontal whitespace in the ribbon content.
+* Color theme per plan.
+* This must replace the current flat pill/strip we’re using at the top of each card.
+
+### 1. Create a shared PlanRibbon component
+
+Create `client/src/components/PlanRibbon.tsx` (or similar path we already use for small shared components). TypeScript, React.
+
+Requirements:
+
+```tsx
+import clsx from "clsx";
+
+type PlanName =
+  | "Free"
+  | "Starter"
+  | "Essential"
+  | "Essential+"
+  | "Premium"
+  | "Free → Premium"
+  | string;
+
+export function PlanRibbon({ plan }: { plan: PlanName }) {
+  // Map plan -> bg/text colors
+  // These must visually pop. Use solid-ish backgrounds, not super washed out.
+  // Keep text dark enough to read WCAG AA.
+  const colorMap: Record<string, { bg: string; text: string }> = {
+    "Free":               { bg: "bg-emerald-100", text: "text-emerald-900" },
+    "Starter":            { bg: "bg-blue-100",    text: "text-blue-900"    },
+    "Essential":          { bg: "bg-emerald-100", text: "text-emerald-900" },
+    "Essential+":         { bg: "bg-emerald-100", text: "text-emerald-900" },
+    "Free → Premium":     { bg: "bg-violet-100",  text: "text-violet-900"  },
+    "Premium":            { bg: "bg-violet-100",  text: "text-violet-900"  },
+  };
+
+  const colors = colorMap[plan] ?? { bg: "bg-slate-200", text: "text-slate-900" };
+
+  /*
+    Visual / positioning rules:
+
+    - Position: absolute at the card's top-right corner.
+    - We want it to overlap the card border by ~50%.
+      Implementation detail:
+        - parent card MUST be `relative`.
+        - ribbon container will be `absolute -top-2 -right-2`.
+    - Shape:
+        - The body is a rounded-left rectangle.
+        - The right edge is a slanted "notch".
+
+      We'll do this with two nested elements:
+        - Outer <div> = rectangle with rounded-l, padding-x-2, padding-y-0.5.
+        - Inside we also render a tiny pseudo-element block to simulate the angled cut.
+
+      Since we can't use CSS ::after easily in Tailwind-only inline JSX,
+      just render a second absolutely-positioned small triangle div that forms the slant.
+
+      The little triangle should match the same bg color.
+  */
+
+  return (
+    <div
+      className={clsx(
+        "absolute",
+        "-top-2",
+        "-right-2",
+        "z-20",
+        "select-none"
+      )}
+      aria-label={plan}
+    >
+      <div
+        className={clsx(
+          "relative",
+          colors.bg,
+          colors.text,
+          "text-[11px]",
+          "font-semibold",
+          "leading-none",
+          "px-2",
+          "py-[4px]",
+          "rounded-l-md",
+          "shadow-md",
+          "border border-black/5"
+        )}
+        // the block with text
+      >
+        <span className="whitespace-nowrap">{plan}</span>
+
+        {/* angled cut piece on the right */}
+        <div
+          className={clsx(
+            "absolute",
+            "top-0",
+            "right-[-8px]", // push this little wedge to the right so it creates a diagonal edge
+            "h-full",
+            "w-2",
+            colors.bg,
+            "border-t border-t-black/5",
+            "border-r border-r-black/5",
+            "border-b border-b-black/5",
+            // create the diagonal by skewing
+            "origin-left",
+            "skew-y-[-20deg]",
+            "rounded-tr-[2px]"
+          )}
+          aria-hidden="true"
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+Notes:
+
+* The parent card will need `relative` so this can absolutely position.
+* `-top-2 -right-2` makes the ribbon “sit” half inside, half outside.
+* The skew wedge (`skew-y-[-20deg]`) fakes the diagonal slant “sale badge” look.
+* `px-2 py-[4px]` keeps text snug. No giant empty space.
+* We intentionally *do not* use min-w / min-h that would create big extra dead space.
+
+If Tailwind complains about `skew-y-[-20deg]` etc. we can adjust to a standard like `skew-y-12` / `-skew-y-12`. But first try exact. If restricted, emulate diagonal by using `rotate-[...deg]` and manually tune. The goal is a visible angle on the right edge.
+
+### 2. Update every feature card component to use this new ribbon
+
+Wherever we render those feature cards with the plan badge strip (like “Free”, “Starter”, etc.), do all of the following changes:
+
+* Add `relative` to the outer card container so the absolute ribbon knows where to anchor.
+  Example:
+
+  ```tsx
+  <div
+    className={clsx(
+      "relative",
+      "rounded-xl",
+      "border",
+      "border-slate-200",
+      "bg-white",
+      "shadow-sm",
+      "hover:shadow-md",
+      "hover:-translate-y-0.5",
+      "transition",
+      "duration-150",
+      "ease-out",
+      "motion-reduce:transition-none",
+      "motion-reduce:hover:transform-none",
+      "motion-reduce:hover:shadow-sm"
+    )}
+  >
+    {/* Ribbon goes here */}
+  </div>
+  ```
+
+* Remove the old inline badge row (`<div className="bg-... text-... px ...">Free</div>` etc).
+
+* At the start of each card’s JSX, right after opening the parent card `<div>`, insert:
+
+  ```tsx
+  <PlanRibbon plan={planNameForThisCard} />
+  ```
+
+  where `planNameForThisCard` is whatever string we were currently printing (like "Free", "Starter", "Essential+", "Free → Premium").
+  We want to pass exactly that plan string into `<PlanRibbon />`.
+
+* Make sure the component imports PlanRibbon:
+
+  ```tsx
+  import { PlanRibbon } from "@/components/PlanRibbon";
+  ```
+
+* Make sure each card’s parent is `relative` so the ribbon positions correctly.
+
+### 3. Remove leftover header strip spacing
+
+We do NOT want a big pale strip along the full width of the card anymore.
+The ribbon replaces that.
+
+So:
+
+* Delete / comment out the old top strip markup.
+* Delete its padding/margin that was only there to hold that strip.
+* The card body should now start with the icon and the title.
+
+Example refactor inside a card:
+
+OLD (simplified):
+
+```tsx
+<div className="rounded-xl border ...">
+  <div className="bg-emerald-50 text-emerald-700 text-xs ...">Free</div>
+  <Icon ... />
+  <h3>Drag-and-drop scheduling</h3>
+  <p>Eliminate double-booking ...</p>
+  <a>Learn more →</a>
+</div>
+```
+
+NEW:
+
+```tsx
+<div className="relative rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-4">
+  <PlanRibbon plan="Free" />
+
+  <Icon className="text-[#0B5FFF] w-7 h-7 mb-3" aria-hidden="true" />
+  <h3 className="text-base font-semibold text-slate-900 leading-snug">
+    Drag-and-drop scheduling
+  </h3>
+  <p className="text-sm text-slate-600 mt-1">
+    Eliminate double-booking, balance crews
+  </p>
+
+  <a
+    href="/features/scheduling"
+    className="mt-4 inline-flex text-sm font-medium text-[#0B5FFF] hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded"
+    aria-label="Learn more about Drag-and-drop scheduling"
+  >
+    Learn more →
+  </a>
+</div>
+```
+
+Important:
+
+* Add `p-4` or `p-5` to the card since we removed the top strip that used to create spacing.
+* The ribbon is now visually anchored in the top-right corner of that same card because of `relative` on the parent and `absolute` on PlanRibbon.
+
+### 4. No wasted horizontal padding in Ribbon
+
+The text in Ribbon must stay tight:
+
+* `px-2 py-[4px]` inside the PlanRibbon main block already handles this.
+* Do NOT wrap the plan name in any other container that adds more padding or `min-w-*`.
+* There should be no huge empty space to the right of “Free”, “Starter”, etc. The badge width should hug the text plus ~8px padding left/right.
+
+### 5. “Half inside / half outside” overlap
+
+Because we are using `-top-2 -right-2` on the ribbon container and we are absolutely positioning it relative to the card, the ribbon will sit partly outside the top border and right border line of the card. That satisfies the requirement that it’s “halfway in the card and halfway outside the card on the top right border”.
+
+If visual tune is needed:
+
+* You can adjust those offsets to `-top-2 -right-3` or `-top-3 -right-3` etc. Keep it obviously overlapping.
+
+### 6. Keep all hover/transition behavior the same for the cards
+
+Do not remove:
+
+* `hover:shadow-md`
+* `hover:-translate-y-0.5`
+* `transition duration-150 ease-out`
+* The `motion-reduce:*` tailwind safety classes.
+
+We’re only changing the badge, not the lift animation.
+
+### 7. Apply the ribbon to ALL feature cards in the section “Features Across Every Plan”
+
+* The screenshot provided shows 8+ cards in a grid under the heading “Features Across Every Plan | Start free, scale as you grow”.
+* Every card in that grid should now use `<PlanRibbon />` instead of its old plan strip.
+* “Email: Starter • SMS: Essential” becomes the plan string for that card. If that exact plan string disagrees with the colorMap, default colorMap fallback (slate-200 / slate-900) is acceptable for now.
+
+### 8. Acceptance test
+
+After implementation:
+
+* Reload the page with “Features Across Every Plan”.
+* Every card should have:
+
+  * A ribbon in the top-right corner with a diagonal angled tail.
+  * That ribbon sticking past the border visually.
+  * No bloated padding inside the ribbon.
+  * No old pale full-width strip at the top.
+* The body content (icon, title, text, Learn more link) should still read clean, left-aligned, and professional.
+* The card hover shadow/lift still works.
+
+### 9. Do NOT
+
+* Do not change copy.
+* Do not reorder cards.
+* Do not introduce gradients.
+* Do not change icon style or card layout other than the badge.
+* Do not touch any other sections, hero, nav, pricing, etc.
+
+Implement exactly this.

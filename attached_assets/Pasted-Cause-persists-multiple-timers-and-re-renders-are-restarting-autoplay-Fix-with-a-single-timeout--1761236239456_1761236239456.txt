@@ -1,0 +1,190 @@
+Cause persists: multiple timers and re-renders are restarting autoplay. Fix with a **single timeout loop**, a **transition lock**, and **stable slides**. Replace your component with this and memoize the slides in the parent.
+
+```jsx
+// src/components/VerticalCarousel.jsx
+import { useEffect, useMemo, useRef, useState } from "react";
+
+export default function VerticalCarousel({
+  items = [],            // [{src, alt, caption}]
+  height = 460,
+  autoplayMs = 4000,
+  transitionMs = 450,
+}) {
+  const total = items.length;
+  if (total < 2) return total ? Slide(items[0], height) : null;
+
+  // Build slides once per items change + clone first at end
+  const slides = useMemo(() => [...items, items[0]], [items]);
+
+  // index: 0..total (last is clone)
+  const [index, setIndex] = useState(0);
+  const [animMs, setAnimMs] = useState(transitionMs);
+  const pausedRef = useRef(false);
+  const timerRef = useRef(null);
+  const lockRef = useRef(false); // block double-advances
+  const trackRef = useRef(null);
+  const reduced = typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---- Core advance (single step) ----
+  const go = (dir = 1, to = null) => {
+    if (lockRef.current) return;
+    lockRef.current = true;
+    setAnimMs(transitionMs);
+    setIndex((i) => {
+      if (to !== null) return to;
+      if (dir > 0) return Math.min(i + 1, total); // allow clone
+      if (i === 0) {
+        // jump to clone instantly, then step back next tick
+        setAnimMs(0);
+        requestAnimationFrame(() => {
+          setAnimMs(transitionMs);
+          setIndex(total - 1);
+        });
+        return total; // immediate jump
+      }
+      return i - 1;
+    });
+  };
+
+  // ---- Transition end: handle wrap & unlock ----
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const onEnd = () => {
+      if (index === total) {
+        // snap from clone to real first without anim
+        setAnimMs(0);
+        setIndex(0);
+        requestAnimationFrame(() => setAnimMs(transitionMs));
+      }
+      lockRef.current = false;
+      schedule(); // resume timer after each transition
+    };
+    el.addEventListener("transitionend", onEnd);
+    return () => el.removeEventListener("transitionend", onEnd);
+  }, [index, total, transitionMs]);
+
+  // ---- Autoplay: single timeout loop ----
+  const clear = () => { if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; } };
+  const schedule = () => {
+    clear();
+    if (reduced || pausedRef.current) return;
+    timerRef.current = setTimeout(() => go(1), autoplayMs);
+  };
+
+  useEffect(() => { schedule(); return clear; }, [index, reduced, autoplayMs]);
+
+  // Pause on hover/focus
+  const setPaused = (val) => { pausedRef.current = val; schedule(); };
+
+  return (
+    <div
+      className="relative overflow-hidden select-none"
+      style={{ height }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      <div
+        ref={trackRef}
+        className="w-full"
+        style={{
+          transform: `translateY(-${index * 100}%)`,
+          transition: `transform ${animMs}ms ease`,
+        }}
+        aria-live="polite"
+      >
+        {slides.map((s, i) => (
+          <figure key={i} className="w-full" style={{ height }}>
+            <img
+              src={s.src}
+              alt={s.alt || ""}
+              loading="lazy"
+              width="640"
+              height={height}
+              className="w-full h-full object-cover block"
+            />
+            {s.caption ? (
+              <figcaption className="px-3 py-2 text-sm bg-black/50 text-white">
+                {s.caption}
+              </figcaption>
+            ) : null}
+          </figure>
+        ))}
+      </div>
+
+      {/* Controls */}
+      <div className="absolute right-2 top-2 flex flex-col gap-2">
+        <button
+          type="button"
+          aria-label="Previous"
+          className="px-2 py-1 bg-white/90 text-slate-900 border border-slate-300 rounded-none"
+          onClick={() => go(-1)}
+        >↑</button>
+        <button
+          type="button"
+          aria-label="Next"
+          className="px-2 py-1 bg-white/90 text-slate-900 border border-slate-300 rounded-none"
+          onClick={() => go(1)}
+        >↓</button>
+      </div>
+
+      {/* Dots */}
+      <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-2">
+        {items.map((_, i) => {
+          const active = (index % total) === i;
+          return (
+            <button
+              key={i}
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={active ? "true" : undefined}
+              className={`w-2 h-2 border border-white ${active ? "bg-white" : "bg-transparent"}`}
+              onClick={() => go(1, i)}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function Slide(s, height){
+  return (
+    <figure style={{height}} className="w-full">
+      <img src={s.src} alt={s.alt||""} width="640" height={height} className="w-full h-full object-cover block"/>
+      {s.caption ? <figcaption className="px-3 py-2 text-sm bg-black/50 text-white">{s.caption}</figcaption> : null}
+    </figure>
+  );
+}
+```
+
+Parent usage: **do not create the slides array inline on every render**. Memoize it so the carousel doesn’t reset.
+
+```jsx
+// Hero.jsx
+import { useMemo } from "react";
+import VerticalCarousel from "./VerticalCarousel";
+
+const heroSlides = [
+  { src: "/img/plumbing.jpg", alt: "Plumber onsite", caption: "Plumbing • Same-day approval" },
+  { src: "/img/hvac.jpg", alt: "HVAC tune-up", caption: "HVAC • Maintenance plan" },
+  { src: "/img/roof.jpg", alt: "Roof repair", caption: "Roofing • Emergency dispatch" },
+  { src: "/img/landscaping.jpg", alt: "Landscaping crew", caption: "Landscaping • Route optimized" },
+  { src: "/img/pressure.jpg", alt: "Pressure washing", caption: "Pressure Washing • Recurring job" },
+  { src: "/img/electrical.jpg", alt: "Electrical upgrade", caption: "Electrical • Invoice paid" },
+];
+
+export default function Hero(){
+  const slides = useMemo(() => heroSlides, []);
+  return <VerticalCarousel items={slides} height={460} autoplayMs={4000} transitionMs={450} />;
+}
+```
+
+Checklist:
+
+* Remove any other intervals or CSS keyframe animations on the carousel track.
+* Ensure container has fixed height and `overflow-hidden`.
+* Keep only this component’s timeout loop.
+* Confirm images load; broken sources cause “blank” slides that look like skips.

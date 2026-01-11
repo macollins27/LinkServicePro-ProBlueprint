@@ -1,0 +1,91 @@
+Project context
+
+You’ve merged Phase-1 (router refactor, link tests, industry pages, analytics, bundlewatch). Marketing now needs scalable content architecture, localized lead funnels, and automated SEO hygiene ahead of paid/organic campaigns.
+
+Phase-2 goal
+
+Launch a content engine that lets non-devs add industry, geo, and educational pages with zero code changes while keeping page-speed, schema, and design consistency.
+
+Scope of work
+
+Headless content layer (MDX + Contentlayer)
+
+Install Contentlayer; configure to ingest content/{blog,guide,case-study,geo,industry}/*.mdx.
+
+Define types (BlogPost, Guide, CaseStudy, GeoPage, IndustryPage) with front-matter (title, slug, description, keywords, heroImage, publishDate, readTime, industry, city, state, metrics).
+
+Add MDX components mapping (<Callout>, <KPIChip>, <Image>, <Video>).
+
+Dynamic routing & static generation
+
+Replace the hardcoded /industry/:slug route with file-system routing: auto-generate pages for each MDX file.
+
+Create a geo-page template (/us/[state]/[city]/field-service-software) pulling from GeoPage content and injecting local schema LocalBusiness.
+
+Ensure incremental static regeneration (ISR) with a 24-hour revalidate.
+
+Automated sitemap & RSS
+
+On build, generate /sitemap.xml and /rss.xml from Contentlayer documents; include lastMod and changefreq.
+
+Schema & meta automation
+
+Add SeoHead component that:
+
+Injects OpenGraph, Twitter cards.
+
+Generates JSON-LD (Article, SoftwareApplication, HowTo, VideoObject, LocalBusiness) based on document type.
+
+Validate with Jest snapshot tests (seo-schema.test.tsx).
+
+Pillar-cluster navigation
+
+Component <RelatedPosts> that selects 3 pieces sharing the same industry or topicCluster front-matter.
+
+Add at end of every Blog/Guide page.
+
+Image optimization
+
+Install vite-imagetools; convert imported images to AVIF/WebP, lazy-load, and set fetchpriority="high" for hero.
+
+Live chat & AI phone widget embed
+
+Add script tags from process.env.CHAT_WIDGET_URL & PHONE_WIDGET_URL in Layout.tsx.
+
+Feature-flag via PUBLIC_ENABLE_CHAT env var.
+
+Performance guardrails
+
+Extend bundlewatch to track CLS, LCP, FID budgets from Lighthouse CI (mobile, slow-4G). Fail build if:
+
+LCP > 3.0 s
+
+CLS > 0.1
+
+FID > 100 ms
+
+CMS hand-off docs
+
+Create docs/content-authoring.md explaining folder structure, front-matter fields, image guidelines, and markdown shortcodes.
+
+Deliverables
+
+Passing CI (unit, e2e, lighthouse, bundlewatch, SEO snapshots).
+
+At least 3 blog posts, 1 pillar guide, 1 new case study, and 2 geo pages committed as examples.
+
+Updated README.md with yarn add:post, yarn add:geo, and .env.example keys.
+
+Commands & tooling
+# add new content
+yarn add:post "5 Hacks to Cut Dispatch Time"
+yarn add:geo "Tampa" "FL"
+
+# dev
+yarn dev
+
+# build & test
+yarn build && yarn test && yarn cy:run && yarn lhci autorun
+
+
+Start by scaffolding the Contentlayer config and migrating existing Industry MDX. Ping me in the PR if any assumptions need clarification.

@@ -1,0 +1,124 @@
+Understood. Replace the current industry section with a **tight, fluid carousel** that shows **8 cards per view on desktop**, never dumps 40 cards down the page, and fixes text clipping.
+
+Paste this into Replit:
+
+---
+
+## PROMPT: “Industry carousel v2 — 8-per-view desktop, fluid slider, no overflow”
+
+**Scope**
+
+* Only modify the industry section. Do not touch hero or other sections.
+* Replace `IndustryCarouselPro.tsx` with `IndustryCarouselV2.tsx` and update `home.tsx` to import the new component.
+* Keep the same `industries.ts` data array, but **render inside a paged carousel**, not as a wall of cards.
+
+**Layout & behavior**
+
+* Section padding: `py-12 sm:py-16`, container `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`.
+* Heading centered: “Built for Your Trade” + “Workflows tailored to your industry”.
+* **Carousel track** uses **CSS scroll-snap** + inertial scrolling. No new libraries.
+* **Cards-per-view** by breakpoint (exact):
+
+  * `base`: **2.2** per view (min-w ~ 46%)
+  * `sm`: **3.2** per view (min-w ~ 31%)
+  * `md`: **4.2** per view (min-w ~ 24%)
+  * `lg`: **6** per view (min-w ~ 16.5%)
+  * `xl+`: **8** per view (min-w ~ 12.5%)
+* The track loops seamlessly by **cloning first N items** to the end and last N to the start (N = cards-per-view at current breakpoint). When scroll reaches clones, jump scrollLeft to the real set (no flicker).
+* **Prev/Next** buttons (`md+` only) scroll by **exact viewport group** width (cards-per-view × card width).
+* **Pagination dots** below track on mobile. Active dot based on current group index.
+
+**Card spec (fix formatting)**
+
+* Wrapper: `relative group` with gradient ring on hover/focus only.
+* **Fixed, equal height**: `h-40 sm:h-44` with inner flex column.
+* **Icon**: centered, `text-3xl sm:text-4xl`, do not overflow.
+* **Title**: use `text-[clamp(0.9rem,2vw,1rem)] font-medium leading-tight line-clamp-1` (no wrapping beyond one line).
+* **Subline**: `text-slate-500 text-xs line-clamp-1` (no overflow).
+* Use `truncate/line-clamp` utilities to prevent cut off. Never wrap to 2+ lines.
+* Inner padding: `p-3 sm:p-4`.
+* Visual:
+
+  * Card base: `bg-white rounded-2xl shadow-sm`
+  * Gradient ring on hover/focus only: pseudo `before:` with `p-[2px] bg-gradient-to-r from-[#0B5FFF] via-[#0FB36F] to-[#0B5FFF] opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity rounded-2xl`
+  * Elevation on hover: `shadow-md` + micro `scale-[1.015]` via `transition-transform`.
+* Entire card is a link: `<Link to={`/industries/${slug}`}>` with `aria-label="View [name] workflows"` and visible focus ring: `ring-2 ring-[#0B5FFF] ring-offset-2`.
+
+**Track implementation**
+
+* Track element:
+
+  ```tsx
+  <div
+    id="industry-track"
+    className="relative -mx-4 px-4 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth"
+    aria-roledescription="carousel"
+    aria-label="Industries"
+  >
+    <ul className="flex gap-3 sm:gap-4 items-stretch">
+      {/* cloned tail N */}
+      {/* real items */}
+      {/* cloned head N */}
+    </ul>
+  </div>
+  ```
+* Each `<li>` has `className="snap-start min-w-[calc(100%/2.2)] sm:min-w-[calc(100%/3.2)] md:min-w-[calc(100%/4.2)] lg:min-w-[calc(100%/6)] xl:min-w-[calc(100%/8)]"` so exactly the counts above appear.
+* Keep track state: `cardsPerView` from a resize listener that maps current breakpoint to 2.2/3.2/4.2/6/8.
+* Clone N items before & after. On scroll end, if scrolled into clone region, immediately reset `scrollLeft` to the matching real index.
+
+**Controls**
+
+* Prev/Next buttons (`md:block`, `hidden` below md):
+
+  * Absolutely centered vertically, outside edges of container.
+  * Styles: `rounded-full bg-white/80 backdrop-blur ring-1 ring-slate-200 shadow hover:bg-white` with icon chevrons.
+  * On click: `track.scrollBy({left: groupWidth * (prev ? -1 : 1), behavior: 'smooth'})`, where `groupWidth = track.clientWidth`.
+* Keyboard:
+
+  * Left/Right arrows on the track do the same `scrollBy`.
+* Pagination dots (`base` only):
+
+  * Dot count = `ceil(totalRealCards / cardsPerView)`.
+  * Click moves to that group (compute left by index * groupWidth).
+
+**A11y**
+
+* Buttons: `aria-label="Previous industries"` and `aria-label="Next industries"`, `aria-controls="industry-track"`.
+* Each dot: `aria-label="Go to group N"`, `aria-current` on active.
+* Ensure focus is not trapped; tabbing moves through cards.
+
+**Data**
+
+* Reuse `industries.ts` but you may shorten subline to a single generic text for all (e.g., “Estimate → Schedule → Invoice”).
+* Icons: map unknown icons to `Wrench`.
+
+**Section height discipline**
+
+* Limit vertical footprint:
+
+  * Heading block + 1 line subtext.
+  * Carousel track height governed by card `h-40 sm:h-44`.
+  * Buttons and dots compact; **do not** exceed ~520px total section height on desktop.
+
+**CSS fixes to stop text cut-off**
+
+* Add `line-clamp-1` and `truncate` on title and subline.
+* Use `leading-tight` and clamp font sizing.
+* Prevent overflow on icon and container: `overflow-hidden` only inside the card body; **not** on the track wrapper.
+
+**Acceptance**
+
+* Desktop shows exactly 8 cards per view at `xl+`, 6 at `lg`, 4.2 at `md`, 3.2 at `sm`, 2.2 at base.
+* Smooth, continuous loop with Prev/Next and dots working.
+* No card text clipping at any width.
+* Section height compact. No giant wall of cards.
+* Mobile-first performance and a11y preserved.
+
+**Don’ts**
+
+* No new libraries.
+* Don’t change other sections.
+* Don’t increase card text to 2+ lines.
+* Don’t set fixed pixel widths; use the min-w calculations above.
+
+---

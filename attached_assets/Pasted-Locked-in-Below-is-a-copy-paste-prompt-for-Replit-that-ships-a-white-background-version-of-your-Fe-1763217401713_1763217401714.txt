@@ -1,0 +1,341 @@
+Locked in. Below is a copy-paste prompt for Replit that ships a white-background version of your “Feature Matchups” section with the same pop (contrast, highlights, chip pills, card depth) you loved on navy. It’s self-contained: it won’t touch the hero or any other bands.
+
+⸻
+
+Paste this into Replit Agent 3
+
+Task
+
+Replace the existing “Feature Matchups / Why Teams Switch” section with a white-background version that preserves the original “pop” (strong contrast, green ✓, amber – , red ✕, elevated cards, blue word-highlights). Keep the structure and copy you already used. Do not alter hero or any other sections.
+
+Scope guardrails
+	•	Only modify the “Why Teams Switch” section files you create below.
+	•	No global resets, no layout changes, no library changes.
+	•	Use our existing React + Tailwind (or PostCSS) stack. If Tailwind is absent, the CSS still works as plain classes.
+
+⸻
+
+1) Add design tokens + utilities (once)
+
+Create or append to src/styles/why-switch-white.css and import it once (e.g., in _app.tsx or the page that renders this section).
+
+/* --- Why Switch (white theme) tokens --- */
+:root {
+  --wsw-surface: #ffffff;                 /* section bg */
+  --wsw-text: #0B1220;                    /* dark body */
+  --wsw-muted: #475569;                   /* slate-600 */
+  --wsw-border: #e5e7eb;                  /* slate-200 */
+  --wsw-card: #ffffff;                    /* card surface */
+  --wsw-card-elev: 0 1px 0 rgba(2,6,23,0.04), 0 10px 28px rgba(2,6,23,0.08);
+
+  --wsw-accent: #2F7CFF;                  /* brand blue */
+  --wsw-accent-weak: #E8F1FF;             /* blue-50 */
+
+  --wsw-yes: #22C55E;                     /* green-500 */
+  --wsw-partial: #F59E0B;                 /* amber-500 */
+  --wsw-no: #EF4444;                      /* red-500 */
+}
+
+/* Section wrapper (white background only for this band) */
+.wsw-section {
+  background: var(--wsw-surface);
+  color: var(--wsw-text);
+}
+
+/* Blue underline/highlight effect for emphasized words */
+.wsw-mark {
+  background: linear-gradient(transparent 64%, rgba(47,124,255,.18) 0);
+  border-radius: 2px;
+}
+
+/* Tabs (Other FSM / Spreadsheets) */
+.wsw-tabs {
+  display: inline-flex; gap: 8px;
+  border: 1px solid var(--wsw-border);
+  border-radius: 10px; padding: 4px;
+  background: #fafafa;
+}
+.wsw-tab {
+  appearance: none; border: 0; cursor: pointer;
+  padding: 8px 12px; border-radius: 8px;
+  color: var(--wsw-muted); font-weight: 600;
+  background: transparent;
+}
+.wsw-tab[aria-selected="true"] {
+  background: var(--wsw-accent-weak);
+  color: var(--wsw-text);
+  outline: 1px solid rgba(47,124,255,.25);
+}
+
+/* Score strip */
+.wsw-score { font-weight: 700; }
+.wsw-score .lsp { color: var(--wsw-yes); }
+.wsw-score .ctx { color: var(--wsw-muted); }
+
+/* Cards */
+.wsw-grid { display: grid; gap: 20px; }
+@media (min-width: 1024px) { .wsw-grid { grid-template-columns: 1fr 1fr; } }
+
+.wsw-card {
+  background: var(--wsw-card);
+  border: 1px solid var(--wsw-border);
+  border-radius: 14px;
+  box-shadow: var(--wsw-card-elev);
+  padding: 18px 18px 14px;
+}
+
+.wsw-card h3 {
+  font-size: 1.05rem; line-height: 1.4; font-weight: 800;
+}
+
+/* Rows within a card */
+.wsw-row { display: grid; grid-template-columns: 20px 1fr; gap: 10px; margin: 10px 0; }
+.wsw-yes { color: var(--wsw-yes); font-weight: 700; }
+.wsw-partial { color: var(--wsw-partial); font-weight: 700; }
+.wsw-no { color: var(--wsw-no); font-weight: 700; }
+.wsw-role { color: var(--wsw-muted); font-weight: 700; }
+
+.wsw-oneline { color: var(--wsw-muted); }
+
+/* Disclosure */
+.wsw-disclose {
+  margin-top: 10px;
+  background: #f8fafc; border: 1px solid var(--wsw-border);
+  border-radius: 10px; padding: 10px 12px;
+}
+.wsw-toggle {
+  appearance: none; border: 0; background: transparent; cursor: pointer;
+  color: var(--wsw-accent); font-weight: 700;
+}
+.wsw-list { margin: 8px 0 0 0; padding: 0 0 0 18px; color: var(--wsw-muted); }
+
+/* CTA band under cards (kept white but elevated) */
+.wsw-cta {
+  margin-top: 18px;
+  background: #f8fafc; border: 1px solid var(--wsw-border);
+  border-radius: 12px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.wsw-chip {
+  background: var(--wsw-accent-weak);
+  border: 1px solid rgba(47,124,255,.25);
+  color: var(--wsw-text); font-weight: 700;
+  border-radius: 999px; padding: 6px 10px; font-size: .85rem;
+}
+
+
+⸻
+
+2) Drop-in React component
+
+Create src/sections/WhySwitchWhite.tsx:
+
+import * as React from "react";
+import "./../styles/why-switch-white.css";
+
+/** Data model — keep the same differentiators you already shipped */
+type State = "yes" | "partial" | "no";
+type Side = { state: State; oneLine: string; details?: string[] };
+
+type Feature = {
+  key: string;
+  title: string;
+  lsp: Side;
+  other_fsm: Side;
+  sheets: Side;
+  icon?: React.ReactNode;
+};
+
+const FEATURES: Feature[] = [
+  {
+    key: "project",
+    title: "Project Management (multi–work orders)",
+    lsp:   { state: "yes",     oneLine: "One project → many work orders, estimates, invoices—all linked.",
+             details: ["Schedule multiple tickets under one project.", "Roll-up billing or per-ticket invoicing."] },
+    other_fsm: { state: "partial", oneLine: "Tickets exist; true project roll-ups vary by product/plan.",
+             details: ["Projects spread across modules; linkage is inconsistent.", "Roll-ups often manual."] },
+    sheets: { state: "partial", oneLine: "Tabs approximate projects; no automatic linkage.",
+             details: ["Copy/paste between tabs.", "No project timeline."] }
+  },
+  {
+    key: "labor",
+    title: "Employee Labor & Payroll",
+    lsp:   { state: "yes",     oneLine: "Wages & rules tied to time; project totals and payroll export.",
+             details: ["Track hours per project with overtime rules.", "Export or sync to payroll."] },
+    other_fsm: { state: "partial", oneLine: "Time capture common; wage rules/payroll export vary by tier.",
+             details: ["Often requires add-ons.", "Totals rarely roll up cleanly at project."] },
+    sheets: { state: "partial", oneLine: "Formulas possible; error-prone and manual.",
+             details: ["No pay rules engine.", "No audit trail."] }
+  },
+  {
+    key: "gps",
+    title: "GPS-Verified Timesheets",
+    lsp:   { state: "yes",     oneLine: "Geo-verified in/out; hours summed at the project.",
+             details: ["Location checks at clock events.", "Reduces time fraud; improves job costing."] },
+    other_fsm: { state: "partial", oneLine: "GPS exists, but project-level roll-ups vary.",
+             details: ["Geo attached to the person, not the project.", "Summaries require exports."] },
+    sheets: { state: "no", oneLine: "No GPS verification.",
+             details: ["Manual entry only.", "No location context."] }
+  },
+  {
+    key: "assets",
+    title: "Asset Tracking & Inspection Integrations",
+    lsp:   { state: "yes",     oneLine: "Property Organizer + Link Inspect Pro tied to jobs/projects.",
+             details: ["Asset files, photos, and inspections live on the timeline.", "Reports attached to work orders."] },
+    other_fsm: { state: "partial", oneLine: "Integrations limited or gated; linkage inconsistent.",
+             details: ["Assets exist, inspection flows vary.", "Cross-module context gets lost."] },
+    sheets: { state: "no", oneLine: "No structured assets or inspections.",
+             details: ["Files live in drives/email.", "No audit trail."] }
+  }
+];
+
+const CONTEXTS = [
+  { key: "other_fsm", label: "Other FSM" },
+  { key: "sheets", label: "Spreadsheets" }
+] as const;
+
+function StateIcon({ s }: { s: State }) {
+  if (s === "yes")   return <span className="wsw-yes" aria-hidden>✓</span>;
+  if (s === "no")    return <span className="wsw-no" aria-hidden>✕</span>;
+  return <span className="wsw-partial" aria-hidden>–</span>;
+}
+
+export default function WhySwitchWhite() {
+  const [ctx, setCtx] = React.useState<(typeof CONTEXTS)[number]>(CONTEXTS[0]);
+
+  const winsLsp   = FEATURES.filter(f => f.lsp.state === "yes").length;
+  const winsOther = FEATURES.filter(f => (f as any)[ctx.key].state === "yes").length;
+
+  return (
+    <section className="wsw-section">
+      <div className="container mx-auto px-4 py-12">
+        {/* Header */}
+        <p className="uppercase tracking-wide text-[12px] text-[color:var(--wsw-muted)] font-semibold mb-2">
+          SEE IT IN ONE TABLE
+        </p>
+        <h2 className="text-[28px] md:text-[34px] font-black leading-tight mb-2">
+          Why Teams <span className="wsw-mark">Switch</span>
+        </h2>
+        <p className="text-[15px] text-[color:var(--wsw-muted)] mb-6 max-w-3xl">
+          Projects with real dollars, hours, assets, and conversations—kept in one place so work flows and cash lands sooner.
+        </p>
+
+        {/* Context pills */}
+        <div className="wsw-tabs mb-3" role="tablist" aria-label="Compare context">
+          {CONTEXTS.map(c => (
+            <button key={c.key}
+              role="tab"
+              aria-selected={ctx.key === c.key}
+              className="wsw-tab"
+              onClick={() => setCtx(c)}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Score strip */}
+        <div className="wsw-score mb-4">
+          <span className="lsp">LinkServicePro: {winsLsp}/4</span> wins vs. {ctx.label}: <span className="ctx">{winsOther}/4</span>
+        </div>
+
+        {/* Cards */}
+        <div className="wsw-grid">
+          {FEATURES.map(f => {
+            const side = (f as any)[ctx.key] as Side;
+            return (
+              <article key={f.key} className="wsw-card">
+                <h3>
+                  <span className="wsw-mark">{f.title}</span>
+                </h3>
+
+                {/* LSP row */}
+                <div className="wsw-row mt-3">
+                  <StateIcon s={f.lsp.state} />
+                  <div>
+                    <div className="wsw-role">LinkServicePro</div>
+                    <div className="wsw-oneline">{f.lsp.oneLine}</div>
+                  </div>
+                </div>
+
+                {/* Context row */}
+                <div className="wsw-row">
+                  <StateIcon s={side.state} />
+                  <div>
+                    <div className="wsw-role">{ctx.label}</div>
+                    <div className="wsw-oneline">{side.oneLine}</div>
+                  </div>
+                </div>
+
+                {/* Disclosure */}
+                <details className="wsw-disclose">
+                  <summary className="wsw-toggle">Show details</summary>
+                  <ul className="wsw-list">
+                    {f.lsp.details?.map((d, i) => <li key={`l-${i}`}>{d}</li>)}
+                  </ul>
+                  <ul className="wsw-list">
+                    {side.details?.map((d, i) => <li key={`c-${i}`}>{d}</li>)}
+                  </ul>
+                </details>
+              </article>
+            );
+          })}
+        </div>
+
+        {/* Pricing callout + CTAs */}
+        <div className="wsw-cta">
+          <span className="wsw-chip">Unlimited users on paid plans</span>
+          <span className="wsw-chip">Job-based pricing</span>
+          <span className="text-[color:var(--wsw-muted)]">
+            Grow crews without per-seat math; pricing aligns to work, not headcount.
+          </span>
+        </div>
+
+        <div className="mt-5 flex gap-12 flex-wrap items-center">
+          <a className="inline-flex items-center justify-center px-5 py-3 font-bold rounded-lg text-white"
+             style={{ background: "var(--wsw-accent)" }} href="/signup">Get Started Free</a>
+          <a className="inline-flex items-center justify-center px-5 py-3 font-bold rounded-lg border"
+             style={{ borderColor: "var(--wsw-border)", color: "var(--wsw-text)" }} href="/contact">Talk to an expert</a>
+        </div>
+
+        <p className="mt-3 text-[12px] text-[color:var(--wsw-muted)]">
+          Generic comparisons reflect common patterns; availability varies by vendor/version.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+⸻
+
+3) Mount it (no other changes)
+
+In your homepage composition (where the old “Why Teams Switch” lives), remove the old navy version and render:
+
+import WhySwitchWhite from "@/sections/WhySwitchWhite";
+
+{/* …after Industries… */}
+<WhySwitchWhite />
+
+Do not alter the hero or any other band.
+
+⸻
+
+4) Acceptance checklist
+	•	Section background is white, text is dark, and the UI still pops thanks to:
+	•	Elevated cards (shadow + border), bold headers with blue mark highlight,
+	•	Strong state colors (✓ green, – amber, ✕ red),
+	•	Accessible tabs (role=“tablist”/“tab”, aria-selected) and details disclosure,
+	•	Brand blue CTAs that stand out on white.
+	•	No global background or typography changed.
+	•	Collage dividers and other sections remain untouched.
+
+⸻
+
+Notes on “feel” parity
+	•	The blue mark (.wsw-mark) restores the “highlighted words” drama you had on navy.
+	•	Card depth (--wsw-card-elev) and crisp borders re-introduce visual hierarchy on white.
+	•	Using muted body copy with high-contrast titles recreates that “navy-section intensity” without a dark canvas.
+
+Ship this and your white version will look just as assertive as the navy one—with excellent readability and zero collateral damage.

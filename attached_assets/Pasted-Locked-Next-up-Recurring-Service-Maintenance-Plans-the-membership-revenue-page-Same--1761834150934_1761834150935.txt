@@ -1,0 +1,316 @@
+Locked. Next up: **Recurring Service & Maintenance Plans** — the “membership revenue” page.
+
+Same two-part delivery:
+
+* Part A: Page spec (copy + sections)
+* Part B: Replit implementation block (paste as-is)
+
+We keep the exact visual system you’ve been shipping: dark hero, spotlight cards with PlanRibbon, light/dark alternation, CTA in every section, tight internal links.
+
+---
+
+## A. PAGE SPEC: Recurring Service & Maintenance Plans
+
+ROUTE / SLUG
+`/features/maintenance-plans`
+
+META
+
+* `<title>`: “Recurring Service & Maintenance Plans | Auto-Schedule Visits, Auto-Bill Customers”
+* `<meta name="description">`: “Never miss a contract visit. Auto-generate recurring jobs, send reminders, and bill like a subscription. Tie checklists, assets, and warranty history so work is done right. Unlimited users on paid plans.”
+
+PRIMARY SEO INTENT
+
+* “maintenance agreement software”
+* “recurring service plans HVAC”
+* “service contract billing”
+* “membership plans for field service”
+
+H1 (hero)
+“Keep recurring maintenance on schedule. Bill it automatically.”
+
+Subhead
+“Service agreements, seasonal checkups, memberships — we auto-generate visits, remind customers, and charge on schedule. You get predictable revenue without spreadsheets.”
+
+CORE MESSAGE TO HAMMER
+
+* Jobs create themselves on time.
+* Techs see the exact checklist every visit.
+* Customers get billed without hand-holding.
+* You can prove history (asset/warranty) and stop free callbacks.
+
+PAGE STRUCTURE (4 sections + final CTA)
+
+1. HERO (dark navy)
+2. RECURRING JOBS ON RAILS (spotlight)
+3. SUBSCRIPTION / RECURRING BILLING (spotlight)
+4. ASSET + WARRANTY HISTORY (spotlight + trust)
+5. FINAL CTA BAND
+
+---
+
+SECTION 1. HERO
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left (text):
+
+* Eyebrow chip pill:
+
+  * “Maintenance Plans”
+  * `inline-block text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-4`
+* H1: “Keep recurring maintenance on schedule. Bill it automatically.”
+* Subhead: “Service agreements, seasonal checkups, memberships — we auto-generate visits, remind customers, and charge on schedule. You get predictable revenue without spreadsheets.”
+* Value row (3 items, with blue icons):
+
+  * “Visits generate automatically”
+  * “Techs see required checklists”
+  * “Subscription billing runs on time”
+* Badge row (pills):
+
+  * “Recurring jobs”
+  * “Maintenance agreements”
+  * “Auto-billing”
+  * “Unlimited users on paid plans”
+* CTA row:
+
+  * Primary: “Start Free”
+  * Secondary (outline): “See Maintenance Flow”
+* Tiny reassurance: “No credit card to start.”
+
+Right (mock):
+
+* “Plan Schedule” placeholder card (white/5, border-white/10, min-h-[260px])
+  Caption: “Next visits • Assigned techs • Billing status”
+
+---
+
+SECTION 2. RECURRING JOBS ON RAILS
+Background: `bg-white text-slate-900`
+
+Grid: `grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left = Spotlight Card
+
+* Wrapper: `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition`
+* `<PlanRibbon plan="Essential+" />` (top-right)
+* Eyebrow chip: “Recurring Jobs”
+* Headline: “Your calendar fills itself.”
+* Body: “Set the cadence and rules once. We generate the jobs, assign crews based on capacity, and attach the checklist every time.”
+* Bullets (icon + text):
+
+  * “Auto-generate recurring visits” — “No more ‘Who’s due this month?’ boards.”
+  * “Capacity planning” — “Don’t overload one tech while others are idle.”
+  * “Checklists per visit” — “Techs see exactly what to do and what to document.”
+* CTA:
+
+  * Primary: “See Recurring Workflow”
+  * Link: “Start Free →”
+
+Right = Outcome rows (not cards)
+
+* “Nothing slips.” — “Visits appear on schedule with reminders.”
+* “Consistent service.” — “Same checklist, same quality, every time.”
+* “Less admin.” — “Stop hand-creating tickets.”
+* Link: “See Scheduling & Dispatch →” → `/features/scheduling-dispatch`
+
+---
+
+SECTION 3. SUBSCRIPTION / RECURRING BILLING
+Background: `bg-slate-50 text-slate-900`
+
+Grid: `grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left (text):
+
+* h2: “Bill like a membership, not like a collection agency.”
+* Subtext: “Monthly, quarterly, or per-visit — charge on time and show a clean customer ledger without chasing money.”
+* Bullets (with tiny tier chips inline):
+
+  * “Subscription & recurring billing” (chip: Essential+)
+  * “Deposits & partial payments” (chip: Free → Premium)
+  * “Customer portal & payment history” (chip: Starter+)
+* CTA:
+
+  * Primary: “See Billing Options”
+  * Link: “See Invoicing & Payments →” → `/features/invoicing-payments`
+
+Right = Spotlight Card
+
+* Wrapper: white spotlight card
+* `<PlanRibbon plan="Essential+" />`
+* Eyebrow chip: “Recurring Billing”
+* Headline: “Charge on schedule, every time.”
+* Body: “We bill and remind automatically. Your customer can update card info and view history from the portal.”
+* Gray mock: `“Membership / Next charge / Card on file / Balance”`
+* CTA (small):
+
+  * Button: “See Billing Options”
+  * Link: “Compare Plans →”
+
+---
+
+SECTION 4. ASSET + WARRANTY HISTORY
+Background: `bg-white text-slate-900`
+
+Grid: `grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left = Spotlight Card
+
+* Wrapper: white spotlight card
+* `<PlanRibbon plan="Premium" />`
+* Eyebrow chip: “Asset & Warranty History”
+* Headline: “Prove what was serviced and when.”
+* Body: “Track each unit, warranty status, and ownership changes tied to the property. You’ll know exactly what you touched — and what you didn’t.”
+* Bullets:
+
+  * “Asset inspection & tracking”
+  * “Warranty tracking”
+  * “Ownership transfer history (property-tied)”
+* CTA:
+
+  * Primary: “See Asset Tracking”
+  * Link: “Compare Plans →”
+
+Right = Dark trust block
+
+* Wrapper: `bg-slate-900 text-white rounded-xl p-5 ring-1 ring-slate-800`
+* Headline: “Stop doing free ‘warranty’ work that isn’t yours.”
+* Body: “With clean history and proof, callbacks get handled fairly. You show facts, not guesses.”
+* CTA:
+
+  * Outline button: “See Profit Tracking” → `/features/job-costing-reporting`
+  * Blue link: “Start Free →”
+
+---
+
+SECTION 5. FINAL CTA BAND
+Background: `bg-[#0E2A47] text-white`
+
+Centered
+
+* Heading: “Lock in recurring revenue without babysitting.”
+* Subtext: “Auto-scheduled visits. Auto-billing. Checklists every time. Unlimited users on paid plans. No per-tech seat fees.”
+* Buttons:
+
+  * Primary: “Start Free”
+  * Secondary outline: “View Pricing”
+* TCPA line: “By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+---
+
+## B. REPLIT IMPLEMENTATION BLOCK (paste this)
+
+Create `/features/maintenance-plans` with our established Next.js + Tailwind + shadcn/ui patterns. Do NOT change nav/footer or global styles.
+
+1. `<Head>`:
+
+```html
+<title>Recurring Service & Maintenance Plans | Auto-Schedule Visits, Auto-Bill Customers</title>
+<meta name="description" content="Never miss a contract visit. Auto-generate recurring jobs, send reminders, and bill like a subscription. Tie checklists, assets, and warranty history so work is done right. Unlimited users on paid plans." />
+```
+
+Inject JSON-LD `SoftwareApplication`:
+
+* name: "LinkServicePro Maintenance Plans"
+* applicationCategory: "Field service management software"
+* offers.description: "Start free. Unlimited users on paid plans. No per-tech seat fees."
+
+2. Sections IN ORDER with EXACT copy:
+
+SECTION 1 — HERO (bg-[#0E2A47] text-white)
+
+* Two-column grid. Left: chips, H1, subhead, 3-value row, badge row, CTAs (“Start Free”, “See Maintenance Flow”), reassurance.
+* Right: “Plan Schedule” mock card (white/5 background, border-white/10, min-h-[260px]) with caption “Next visits • Assigned techs • Billing status”.
+
+SECTION 2 — RECURRING JOBS ON RAILS (bg-white)
+
+* Two-column grid.
+* LEFT = Spotlight Card:
+
+  * Wrapper: `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition`
+  * `<PlanRibbon plan="Essential+" />` absolute `-top-2 -right-2 z-20`
+  * Eyebrow chip: “Recurring Jobs”
+  * Headline: “Your calendar fills itself.”
+  * Body + bullets (Auto-generate recurring visits; Capacity planning; Checklists per visit)
+  * CTA: “See Recurring Workflow” (primary blue), “Start Free →” (blue link)
+* RIGHT = Outcome rows (NOT cards):
+
+  * “Nothing slips.” / “Consistent service.” / “Less admin.”
+  * Blue link: “See Scheduling & Dispatch →” → `/features/scheduling-dispatch`
+
+SECTION 3 — SUBSCRIPTION / RECURRING BILLING (bg-slate-50)
+
+* Two-column grid.
+* LEFT text:
+
+  * h2: “Bill like a membership, not like a collection agency.”
+  * Subtext about monthly/quarterly/per-visit.
+  * Bullets with tiny plan chips:
+
+    * Subscription & recurring billing (Essential+)
+    * Deposits & partial payments (Free → Premium)
+    * Customer portal & payment history (Starter+)
+  * CTA: “See Billing Options” (primary), “See Invoicing & Payments →” (link to `/features/invoicing-payments`)
+* RIGHT = Spotlight Card:
+
+  * Wrapper: white spotlight card
+  * `<PlanRibbon plan="Essential+" />`
+  * Eyebrow chip: “Recurring Billing”
+  * Headline: “Charge on schedule, every time.”
+  * Body + gray mock (“Membership / Next charge / Card on file / Balance”)
+  * CTA small: “See Billing Options” (button), “Compare Plans →” (link)
+
+SECTION 4 — ASSET + WARRANTY HISTORY (bg-white)
+
+* Two-column grid.
+* LEFT = Spotlight Card:
+
+  * Wrapper: white spotlight card
+  * `<PlanRibbon plan="Premium" />`
+  * Eyebrow chip: “Asset & Warranty History”
+  * Headline: “Prove what was serviced and when.”
+  * Body + bullets (Asset tracking; Warranty tracking; Ownership transfer history)
+  * CTA: “See Asset Tracking” (button), “Compare Plans →” (link)
+* RIGHT = Dark trust block:
+
+  * Wrapper: `bg-slate-900 text-white rounded-xl p-5 ring-1 ring-slate-800`
+  * Headline: “Stop doing free ‘warranty’ work that isn’t yours.”
+  * Body: brief paragraph
+  * CTA:
+
+    * Outline button: “See Profit Tracking” → `/features/job-costing-reporting`
+    * Blue link: “Start Free →”
+
+SECTION 5 — FINAL CTA BAND (bg-[#0E2A47] text-white)
+
+* Centered block:
+
+  * Heading: “Lock in recurring revenue without babysitting.”
+  * Subtext: “Auto-scheduled visits. Auto-billing. Checklists every time. Unlimited users on paid plans. No per-tech seat fees.”
+  * Buttons: “Start Free” (primary blue #0B5FFF) and “View Pricing” (outline border-white/30)
+  * TCPA line beneath in `text-[11px] text-white/60`.
+
+3. Components / styling / a11y:
+
+* Spotlight card base class (light):
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition`
+* PlanRibbon absolute `-top-2 -right-2 z-20`.
+* Eyebrow chip pills above headlines.
+* Bullets are icon `text-[#0B5FFF] w-5 h-5 aria-hidden="true"` + text (title `text-sm font-medium`, support `text-[13px]`).
+* Outcome rows are NOT cards.
+* All CTAs have visible focus rings:
+  `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+* Semantic headings: only one `<h1>` (hero). Others are `<h2>`.
+* Maintain WCAG AA contrast.
+
+4. Internal links (required):
+
+* “See Scheduling & Dispatch →” → `/features/scheduling-dispatch`
+* “See Invoicing & Payments →” → `/features/invoicing-payments`
+* “See Profit Tracking” → `/features/job-costing-reporting`
+
+When this page ships, your “recurring revenue” story is clear and conversion-focused.
+Say “next” when you’re ready for **Job Costing & Reporting**, then we’ll finish with **Team Management**.

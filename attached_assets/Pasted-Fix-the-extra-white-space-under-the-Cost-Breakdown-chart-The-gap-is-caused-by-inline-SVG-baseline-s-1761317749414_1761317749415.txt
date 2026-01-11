@@ -1,0 +1,83 @@
+Fix the extra white space under the Cost Breakdown chart. The gap is caused by inline-SVG baseline space and an oversized SVG height. Make the SVG `display:block` and shrink the canvas so labels sit tight to the baseline. Do not change copy or colors.
+
+Replace BOTH functions below in src/components/ProjectsCostingShowcase.jsx.
+
+--- REPLACE CostBreakdown ---
+function CostBreakdown({ costs }) {
+  const net = costs.revenue - costs.labor - costs.materials - costs.overhead;
+  const bars = [
+    { k: "Revenue",   v: costs.revenue,   color: "#0B5FFF" },
+    { k: "Labor",     v: -costs.labor,    color: "#111827" },
+    { k: "Materials", v: -costs.materials,color: "#64748B" },
+    { k: "Overhead",  v: -costs.overhead, color: "#94A3B8" },
+    { k: "Net",       v: net,             color: "#16A34A" },
+  ];
+  return (
+    <article className="bg-white ring-1 ring-slate-200 elev-2 p-6 md:p-8">
+      <h3 className="text-xl font-extrabold text-slate-900">Cost Breakdown</h3>
+      <p className="text-slate-700 text-sm">
+        See where the dollars go—fix under-priced work before it repeats.
+      </p>
+
+      <div className="mt-4">
+        <Waterfall bars={bars} />
+      </div>
+
+      <div className="mt-4 grid grid-cols-3 gap-3 text-xs">
+        <Chip k="Labor" v={`$${format(costs.labor)}`} />
+        <Chip k="Materials" v={`$${format(costs.materials)}`} />
+        <Chip k="Overhead" v={`$${format(costs.overhead)}`} />
+      </div>
+    </article>
+  );
+}
+
+--- REPLACE Waterfall ---
+function Waterfall({ bars }) {
+  // draw all bars UP from the baseline; labels tucked right under the line
+  const W = 520;
+  const H = 120;      // smaller canvas = tighter bottom
+  const baseY = 80;   // baseline
+  const gap = 14;
+  const padX = 16;
+
+  const maxAbs = Math.max(1, ...bars.map(b => Math.abs(b.v)));
+  const maxBarH = 68;
+  const scale = maxBarH / maxAbs;
+  const barW = Math.floor((W - padX * 2 - gap * (bars.length - 1)) / bars.length);
+
+  return (
+    <div className="w-full">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        width="100%"
+        height="120"
+        role="img"
+        aria-label="Cost breakdown"
+        className="block"               // remove inline-SVG baseline gap
+      >
+        <line x1={padX} y1={baseY} x2={W - padX} y2={baseY} stroke="#E5E7EB" strokeWidth="2" />
+
+        {bars.map((b, i) => {
+          const h = Math.max(4, Math.round(Math.abs(b.v) * scale));
+          const x = padX + i * (barW + gap);
+          const y = baseY - h;          // always above baseline
+          return (
+            <g key={i}>
+              <rect x={x} y={y} width={barW} height={h} rx="2" fill={b.color} />
+              <text
+                x={x + barW / 2}
+                y={baseY + 10}         // tight to baseline
+                textAnchor="middle"
+                className="fill-slate-700"
+                style={{ fontSize: 12 }}
+              >
+                {b.k}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}

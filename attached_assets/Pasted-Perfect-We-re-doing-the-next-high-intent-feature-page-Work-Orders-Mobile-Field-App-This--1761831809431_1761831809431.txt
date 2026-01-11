@@ -1,0 +1,447 @@
+Perfect. We’re doing the next high-intent feature page: **Work Orders & Mobile Field App**.
+
+This is the page for the tech in the field, the foreman, and the owner who’s tired of paper / “text me the address.” It must scream: “Your crew will actually use this.”
+
+Same format as last time:
+
+* Part A: Page spec (copy, sections, layout)
+* Part B: Replit instructions (what to actually build)
+
+You’ll paste Part B into Replit. Don’t rewrite it for them. Let’s go.
+
+---
+
+## A. PAGE SPEC: Work Orders & Mobile Field App
+
+ROUTE / SLUG
+`/features/work-orders-mobile`
+
+META
+
+* `<title>`: “Mobile Work Orders App | Photos, Checklists, Signatures, Recurring Visits”
+* `<meta name="description">`: “Your crew opens the job, sees where to go, what to do, what to document, and gets the signature. No clipboards. No ‘text me the address.’ Unlimited users on paid plans. No per-tech seat fees.”
+
+PRIMARY SEO INTENT
+
+* “mobile work order app”
+* “field service work orders”
+* “HVAC work order app”
+* “technician job app”
+* “field service technician app checklist photos signature”
+
+H1 (hero heading on page)
+“Everything techs need for the job — on their phone.”
+
+Hero Subhead
+“Your crew opens the job, sees where to go, what to do, what to take pictures of, and gets the signature. No clipboards. No ‘text me the address.’”
+
+CORE MESSAGE THIS PAGE MUST HAMMER:
+
+* Techs will actually use this.
+* You’ll stop getting constant “what’s next?” calls.
+* You’ll capture proof (photos, signatures, notes) for liability and upsell.
+* You can run recurring/maintenance work and prove history.
+
+PAGE STRUCTURE (4 sections + final CTA band)
+
+1. HERO: “Everything techs need for the job”
+2. FIELD EXECUTION CARD: Work orders, photos, signatures
+3. MAINTENANCE & RECURRING VISITS
+4. ASSET / WARRANTY HISTORY
+5. FINAL CTA BAND
+
+We keep the same alternating dark/light pattern, the same CTA-in-every-section rule, and PlanRibbon usage for spotlight cards.
+
+–––
+
+SECTION 1. HERO (dark navy)
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text):
+
+* Eyebrow chip (pill):
+  text: “Work Orders & Mobile App”
+  class: `inline-block text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-4`
+* H1 (white, bold, large):
+  “Everything techs need for the job — on their phone.”
+* Subhead (white/80, text-sm leading-relaxed sm:text-base):
+  “Your crew opens the job, sees where to go, what to do, what to document, and gets the signature. No clipboards. No ‘text me the address.’”
+* 3-value row (flex flex-col gap-2 mt-4 text-[13px] text-white/80 sm:flex-row sm:flex-wrap sm:gap-4):
+
+  * “Address, notes, and photos in one place.”
+  * “Customer signs right on the device.”
+  * “Recurring visits auto-generate.”
+    Each prefixed with a small check icon in `text-[#0B5FFF]`.
+* Badge row (flex flex-wrap gap-2 text-[11px] mt-4):
+  Chips `bg-white/10 border border-white/20 text-white font-medium rounded-full px-3 py-[3px]`:
+
+  * “Offline-friendly job details”
+  * “Photo + signature capture”
+  * “Unlimited users on paid plans”
+  * “No per-tech seat fees”
+* CTA row:
+
+  * Primary CTA button:
+
+    * style: `bg-[#0B5FFF] text-white font-semibold rounded-md px-4 py-2 text-sm shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+    * text: “Start Free”
+  * Secondary CTA button (outline white/30 border, hover bg-white/10):
+
+    * style: `border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+    * text: “See Field Workflow”
+* Tiny reassurance under CTAs (`text-[11px] text-white/60 mt-2`):
+  “No credit card to start. Works with Google Calendar and Apple Calendar.”
+
+Right column (mock):
+
+* Card placeholder that looks like a phone screen / job ticket.
+* Container:
+  `relative bg-white/5 border border-white/10 rounded-xl shadow-inner p-4 min-h-[260px] flex flex-col justify-between`
+* Top label text-white text-sm font-semibold:
+  “Work Order #4821 — ‘Leak in kitchen sink’”
+* Stacked gray bars inside (simulate job details, checklist items, photo slots):
+  `div class="bg-white/10 rounded-md h-4 w-3/4 mb-2"`,
+  more bars `h-3 w-full`, etc.
+* Bottom caption in `text-[11px] text-white/60`:
+  “Address • Photos • Required steps • Signature collected”
+
+SECTION 1 GOAL:
+Hammer “your techs will actually use this” and “you stop getting interruptions.”
+
+–––
+
+SECTION 2. FIELD EXECUTION CARD
+Background: white (`bg-white text-slate-900`)
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card (“How the job is done”)
+
+* Card container:
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+* PlanRibbon in the top-right corner of this card:
+  `<PlanRibbon plan="Free → Essential+" />`
+  (Meaning: core work orders are available Free, deeper structured capture in higher tiers.)
+* Eyebrow chip pill:
+  text: “Work Orders in the Field”
+  `inline-block text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-[3px] mb-3`
+* Headline (text-xl font-semibold text-slate-900):
+  “Open job. Do work. Capture proof.”
+* Body text (text-slate-600 text-sm leading-relaxed mb-6):
+  “Everything they need is already in the job ticket: address, notes, parts, required steps, and what to photograph. They finish, grab a signature, and you’re covered.”
+* Bullets (vertical stack gap-3):
+  For each bullet: flex gap-2 items-start
+
+  * Icon: ClipboardCheck or CheckSquare in `text-[#0B5FFF] w-5 h-5` `aria-hidden="true"`
+
+    * Title line bold-ish `text-slate-700 text-sm font-medium`
+    * Supporting line `text-[13px] text-slate-500 leading-snug`
+      Bullet 1:
+      Title: “Work order management”
+      Support: “Every job has location, scope, notes, and parts to bring.”
+      Bullet 2:
+      Title: “Photo + signature capture”
+      Support: “Before/after photos and on-site signoff protect you when clients argue.”
+      Bullet 3:
+      Title: “Document storage per project”
+      Support: “Attach PDFs, instructions, manuals, compliance docs — all in one place.”
+* CTA block at bottom of card:
+
+  * Primary button (blue): “See Field Workflow”
+  * Under-button link (blue text-sm font-medium hover:underline): “Start Free →”
+
+Right column = Objection Killer / Outcome Rows
+Stack 3 outcomes (not cards, just text rows with icons):
+
+1. Icon: MapPin / Navigation in `text-[#0B5FFF] w-5 h-5`
+   Title (bold text-slate-900 text-base): “No more ‘text me the address.’”
+   Copy (text-slate-600 text-sm): “The address and notes are already in the job ticket on their phone.”
+2. Icon: MessageSquare in blue
+   Title: “Stop getting called for next steps.”
+   Copy: “Checklist steps tell them exactly what to do and what proof to collect.”
+3. Icon: ShieldCheck / Shield
+   Title: “Less liability on you.”
+   Copy: “You have timestamped photos and signatures to prove what was done.”
+
+After these three rows, include a blue text link:
+
+* “See Scheduling & Dispatch →”
+* Link to `/features/scheduling-dispatch`
+* Styles: `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+
+SECTION 2 GOAL:
+Owner says: “Yeah. My guys can actually follow this without calling me.”
+
+–––
+
+SECTION 3. MAINTENANCE & RECURRING VISITS
+Background: `bg-slate-50 text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text content):
+
+* h2 (text-2xl font-semibold text-slate-900):
+  “Recurring work that doesn’t slip through the cracks.”
+
+* Subtext (text-slate-600 text-sm leading-relaxed mb-6):
+  “Service agreements, seasonal checkups, membership plans — they generate automatically. You don’t have to remember who’s due.”
+
+* Bullets list (gap-4):
+
+  * “Recurring jobs and maintenance plans”
+    “Never forget contract visits.”
+  * “Auto-generate checklists”
+    “Techs see the exact steps for each visit.”
+  * “Subscription and recurring billing”
+    “Bill monthly or per visit without chasing payment.”
+    Use icons in blue #0B5FFF, same bullet pattern as before. Mark this feature cluster as higher-tier (Essential+ / Premium) in the bullet body with a tiny inline chip `bg-slate-200 text-slate-700 text-[10px] font-medium rounded-full px-1.5 py-[1px]`.
+
+* CTA block:
+
+  * Primary button (blue): “See Maintenance Plans”
+  * Under-button link (blue): “Compare Plans →”
+
+Right column = Spotlight Card “Maintenance Plans”
+
+* Card container:
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+* `<PlanRibbon plan="Essential+" />` top-right.
+* Eyebrow chip pill:
+  “Maintenance Plans”
+* Headline:
+  “Lock in recurring revenue.”
+* Body text:
+  “Your recurring service visits and billing run on rails. Stop trying to manage 60 renewal dates in your head.”
+* Inside card, include gray placeholder box:
+  `div class="bg-slate-100 rounded-lg h-32 w-full mt-4 flex items-center justify-center text-[11px] text-slate-500"`
+  Inner text: “Plan Schedule / Next Visits / Billing Status”
+* CTA small row inside card bottom:
+
+  * Button (blue, text-sm, px-3 py-2 rounded-md): “Start Free”
+
+SECTION 3 GOAL:
+This is for HVAC maintenance, lawn care, pest control, pool service. Recurring revenue is a huge hook. You’re telling them: “We run the contract automatically.”
+
+–––
+
+SECTION 4. ASSET / WARRANTY HISTORY
+Background: white
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card “Asset & Warranty History”
+
+* Card style same as other spotlight cards.
+* `<PlanRibbon plan="Premium" />` in top-right.
+* Eyebrow chip pill text: “Asset & Warranty History”
+* Headline (text-xl font-semibold text-slate-900):
+  “Prove what was serviced and when.”
+* Body (text-slate-600 text-sm leading-relaxed mb-6):
+  “Track each unit, its service history, its warranty status, and who owned it. When a customer says ‘you touched this last time,’ you’ll know the truth.”
+* Bullets (vertical stack):
+
+  * “Asset inspection & tracking”
+  * “Warranty tracking”
+  * “Ownership transfer history tied to property address”
+* CTA block at the bottom of the card:
+
+  * Primary button (blue): “See Asset Tracking”
+  * Under link (blue): “Compare Plans →”
+
+Right column = Trust / Objection / Cross-link
+Use a dark mini-block to contrast visually, but keep readable.
+Container:
+`bg-slate-900 text-white rounded-xl p-5 ring-1 ring-slate-800 shadow-sm flex flex-col justify-between`
+Content:
+
+* Headline (text-white font-semibold text-lg):
+  “Stop doing free ‘warranty’ work that isn’t yours.”
+* Subtext (text-white/70 text-sm leading-relaxed mb-6):
+  “Now you can prove what was installed, by who, and when. That ends arguments, unpaid callbacks, and blame-shifting.”
+* Small CTA row:
+
+  * Primary button (border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none):
+    “See Profit Tracking”
+    (link `/features/job-costing-reporting`)
+  * Secondary text link under in blue #0B5FFF:
+    “Start Free →”
+
+SECTION 4 GOAL:
+This section separates you from cheap “task list apps.” You’re saying: we do serious warranty / asset accountability so you don’t eat cost.
+
+–––
+
+SECTION 5. FINAL CTA BAND
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+* h2 (text-white font-semibold text-2xl sm:text-3xl):
+  “Your crew can start using this today.”
+* Subtext (text-white/70 text-sm sm:text-base leading-relaxed mt-3):
+  “Unlimited users on paid plans. No per-tech seat fees. Works with Google Calendar and Apple Calendar. Start free and see it on your own phone.”
+* CTA row (mobile stack flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4 mt-6):
+
+  * Primary button (blue #0B5FFF, white text, rounded-md, px-4 py-2 text-sm font-semibold shadow-sm focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none):
+    “Start Free”
+  * Secondary outline button (border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none):
+    “View Pricing”
+* TCPA line under in `text-[11px] text-white/60 mt-2`:
+  “By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+SECTION 5 GOAL:
+Close with urgency and the unlimited-users wedge.
+
+---
+
+## B. REPLIT IMPLEMENTATION INSTRUCTIONS
+
+Paste the rest of this section into Replit:
+
+1. Create a new page component for `/features/work-orders-mobile` in our codebase, following the exact structure, content, and styles from Section A above. Use the same design system and accessibility patterns we already established for `/features/scheduling-dispatch`.
+
+2. Head/meta:
+
+   * `<title>Mobile Work Orders App | Photos, Checklists, Signatures, Recurring Visits</title>`
+   * `<meta name="description" content="Your crew opens the job, sees where to go, what to do, what to document, and gets the signature. No clipboards. No ‘text me the address.’ Unlimited users on paid plans. No per-tech seat fees." />`
+   * Inject JSON-LD `SoftwareApplication`:
+
+     * name: "LinkServicePro Work Orders & Mobile App"
+     * applicationCategory: "Field service management software"
+     * offers.description: "Start free. Unlimited users on paid plans. No per-tech seat fees."
+   * Use the same utility you used on the Scheduling & Dispatch page for structured data.
+
+3. Build the 5 sections EXACTLY in this order:
+
+   1. HERO (dark navy #0E2A47, two-column grid, phone-style mock on the right)
+   2. FIELD EXECUTION CARD (white bg, spotlight card with PlanRibbon "Free → Essential+", and outcome rows in right column)
+   3. MAINTENANCE & RECURRING VISITS (bg-slate-50, left text + right spotlight card with PlanRibbon "Essential+")
+   4. ASSET / WARRANTY HISTORY (white bg, left spotlight card with PlanRibbon "Premium", right dark trust block)
+   5. FINAL CTA BAND (dark navy #0E2A47, centered text + Start Free / View Pricing buttons + TCPA line)
+
+4. Requirements for spotlight cards in sections 2, 3, and 4:
+
+   * Card wrapper:
+     `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+   * Top-right PlanRibbon positioned with `absolute -top-2 -right-2 z-20`.
+
+     * Section 2 main spotlight: `<PlanRibbon plan="Free → Essential+" />`
+     * Section 3 spotlight: `<PlanRibbon plan="Essential+" />`
+     * Section 4 spotlight: `<PlanRibbon plan="Premium" />`
+   * Eyebrow chip pill above headline:
+
+     * `inline-block text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-[3px] mb-3`
+     * Text depends on card:
+
+       * Section 2 card: “Work Orders in the Field”
+       * Section 3 card: “Maintenance Plans”
+       * Section 4 card: “Asset & Warranty History”
+   * Headline: `text-xl font-semibold text-slate-900`
+   * Body: `text-slate-600 text-sm leading-relaxed`
+   * Bullets: each bullet is a flex row with:
+
+     * Icon `text-[#0B5FFF] w-5 h-5 flex-shrink-0` with `aria-hidden="true"`
+     * Title `text-slate-700 text-sm font-medium`
+     * Supporting line `text-[13px] text-slate-500 leading-snug`
+   * Each spotlight card ends with a CTA block:
+
+     * Primary button `bg-[#0B5FFF] text-white font-semibold rounded-md px-4 py-2 text-sm shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+     * Below that, blue text link: `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+
+5. Icons:
+
+   * Use meaningful lucide icons:
+
+     * Clipboards / checkmarks for work orders and checklists.
+     * Camera or Image icon for “photo capture.”
+     * Signature icon (Pen tool / Edit3).
+     * Repeat / RefreshCw for recurring.
+     * ShieldCheck or Shield for liability protection.
+     * MapPin / Navigation for address & routing clarity.
+   * DO NOT reuse the same icon everywhere. Each bullet must feel intentional.
+
+6. “Outcome rows” in Section 2 (right column):
+
+   * These are NOT cards. Just stacked flex rows with icon + text.
+   * Style:
+
+     * Icon column: icon in `text-[#0B5FFF] w-5 h-5 flex-shrink-0` `aria-hidden="true"`.
+     * Text column:
+
+       * Headline: `text-slate-900 text-base font-semibold`
+       * Copy: `text-slate-600 text-sm leading-relaxed`
+   * After the 3 outcome rows, include a text link:
+
+     * Text: “See Scheduling & Dispatch →”
+     * href: `/features/scheduling-dispatch`
+     * Style: `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+
+7. Section 3 right-column “Maintenance Plans” spotlight card must include a gray placeholder mock inside:
+
+   * `div className="bg-slate-100 rounded-lg h-32 w-full mt-4 flex items-center justify-center text-[11px] text-slate-500"`
+   * inner text: “Plan Schedule / Next Visits / Billing Status”
+
+8. Section 4 right-side trust block:
+
+   * Container:
+     `bg-slate-900 text-white rounded-xl p-5 ring-1 ring-slate-800 shadow-sm flex flex-col justify-between`
+   * Headline: `text-white font-semibold text-lg`
+   * Body: `text-white/70 text-sm leading-relaxed mb-6`
+   * Two CTAs:
+
+     * Outline button:
+
+       * `border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+       * Text: “See Profit Tracking”
+       * href: `/features/job-costing-reporting`
+     * Under-button link:
+
+       * Blue text link `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+       * Text: “Start Free →”
+       * href: signup route
+
+9. Final CTA band:
+
+   * Full-width `bg-[#0E2A47] text-white`
+   * Wrapper: `max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+   * Heading: “Your crew can start using this today.”
+   * Subtext: “Unlimited users on paid plans. No per-tech seat fees. Works with Google Calendar and Apple Calendar. Start free and see it on your own phone.”
+   * CTA row:
+
+     * Primary button (blue #0B5FFF) “Start Free”
+     * Secondary outline “View Pricing”
+   * TCPA line under in `text-[11px] text-white/60 mt-2`:
+     “By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+10. Accessibility:
+
+* H1 only appears in Section 1.
+* All other section titles are `<h2>`.
+* Icons have `aria-hidden="true"`.
+* Buttons and interactive links have visible focus rings as described.
+* Maintain WCAG AA contrast from your Pro-Blueprint guidelines.
+
+11. Messaging to repeat consistently:
+
+* “Unlimited users on paid plans. No per-tech seat fees.”
+* “Works with Google Calendar and Apple Calendar.”
+* “No clipboards. No ‘text me the address.’”
+  These phrases must appear exactly as written.
+
+12. Do not alter global nav/footer or hero carousel logic from other pages. This page is standalone under `/features/work-orders-mobile`.
+
+After Replit implements this page, you’ll have:
+
+* `/features/scheduling-dispatch`
+* `/features/work-orders-mobile`
+
+Both built in the same system.
+Next page after this will be **Estimates & Quotes** unless you want to jump to Billing/Payments.

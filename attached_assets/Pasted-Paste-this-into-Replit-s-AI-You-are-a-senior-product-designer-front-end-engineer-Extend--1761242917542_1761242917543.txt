@@ -1,0 +1,193 @@
+Paste this into Replit’s AI:
+
+```
+You are a senior product designer + front-end engineer. Extend the existing LinkServicePro project into a full MOBILE-FIRST site with optimal content and clean code. Do NOT alter the homepage design except to wire navigation and shared layout.
+
+TECH
+- Keep React + Vite + Tailwind. Add React Router.
+- Structure:
+  src/
+    main.jsx
+    App.jsx
+    routes/
+      Features.jsx
+      FeatureDetail.jsx
+      Pricing.jsx
+      Resources.jsx
+      Blog.jsx
+      BlogPost.jsx
+      Guides.jsx
+      Guide.jsx
+      Webinars.jsx
+      HelpCenter.jsx
+      HelpArticle.jsx
+      ApiDocs.jsx
+      Industries.jsx
+      Industry.jsx
+      About.jsx
+      Contact.jsx
+      LegalPrivacy.jsx
+      LegalTerms.jsx
+    components/
+      Layout.jsx
+      Breadcrumbs.jsx
+      PageHeader.jsx
+      Section.jsx
+      CTABar.jsx
+      FeatureMatrix.jsx
+      PriceTable.jsx
+      FAQ.jsx
+      Testimonial.jsx
+      LogoRow.jsx
+      FormDemo.jsx
+      FormContact.jsx
+      Pill.jsx
+      Badge.jsx
+    data/
+      features.js
+      industries.js
+      posts/*.md
+      guides/*.md
+      help/*.md
+- Reuse existing navbar/footer via Layout. Keep custom underline hover and sharp buttons.
+
+GLOBAL UX
+- Mobile first. 320–1440 responsive.
+- Keyboard/focus states. aria-current on active nav.
+- JSON-LD on each page. OG/Twitter meta. Canonical tags.
+- Images: width/height, loading="lazy". No carousels beyond homepage.
+
+ROUTING
+- “Features” (index + detail routes)
+- “Industries” (index + dynamic :slug)
+- “Pricing”
+- “Resources” → Blog, Guides, Webinars, Help Center, API Docs
+- “About”
+- “Contact”
+- “Legal” → Privacy, Terms
+
+COPY STYLE
+- Contractor-plain. Benefit first, feature second. Short sentences. No jargon.
+
+--------------------------------
+CONTENT SPEC
+--------------------------------
+
+FEATURES (/: features)
+- PageHeader:
+  Title: “Everything you need to run the job.”
+  Sub: “Plan the day, deliver the work, get paid—fast.”
+  CTABar: [Start Free Trial] [Book a Demo].
+- Three sections with anchor TOC and cards:
+  1) Plan & Dispatch
+     Cards: Drag-and-drop Scheduling; Dispatch Board + Live Map; Route Optimization; Real-time GPS; Capacity Planning; Automated Job Reminders; Recurring Jobs.
+  2) Win & Deliver
+     Cards: CRM & Leads; Quote Builder + E-Sign; Work Orders; Project Tracking (multi-WO); Customer Portal; 2-Way SMS/Email; Review Requests.
+  3) Get Paid & Operate
+     Cards: Invoicing & Batch; Online & Field Payments; Deposits/Partials; Job Costing & Profit Reports; Payroll & Wage Scales; Purchase Orders & Vendor Management; QuickBooks/Xero Sync.
+- Each card: icon, 1-sentence benefit, “Learn more →” linking to /features/:slug.
+- Add FeatureDetail route for each item with: hero summary, 3 benefit bullets, 3 screenshots placeholders, small FAQ, CTABar.
+
+INDUSTRIES (/: industries)
+- PageHeader:
+  Title: “Built for your trade.”
+  Sub: “Templates, workflows, and pricing that fit your work.”
+- Three columns (reuse your groups):
+  Cleaning & Surfaces
+  Grounds & Seasonal
+  Building & Trades
+- Each tile links to /industries/:slug. Tile shows one-liner, 3-point workflow, and a niche testimonial.
+- Industry page (/industries/:slug) template:
+  H1: “[Industry] software that gets the work done.”
+  Sections:
+    1) “Typical day, streamlined” (3-step flow with icons)
+    2) “Jobs you’ll run better” (list 6 use-cases)
+    3) “What pros like you gain” (3 metrics e.g., “-18% drive time”)
+    4) Mini feature matrix highlighting ~8 features relevant to that industry
+    5) FAQ x5 tailored to the trade
+    6) CTABar
+- Provide content for these slugs: cleaning, janitorial-cleaning, pressure-washing, window-cleaning, lawn-care, tree-care, landscaping, snow-removal, general-contracting, plumbing, handyman, hvac, electrical, painting, roofing.
+
+PRICING (/: pricing)
+- PageHeader: “Simple, transparent pricing.”
+- PriceTable with three plans:
+  Starter — “Solo or first hire”
+    $29/mo; Users: 1; Jobs/mo: 60
+    Includes: Scheduling, Quotes + E-Sign, Invoicing, Online Payments, Basic Reports.
+  Team — “Growing crews”
+    $99/mo; Users: up to 10; Unlimited jobs
+    Adds: Dispatch + Live Map, Route Optimization, Customer Portal, 2-Way SMS/Email, Job Costing.
+  Business — “Multi-crew operations”
+    $249/mo; Users: up to 30
+    Adds: Projects (multi-WO), Payroll & Wage Scales, Purchase Orders & Vendor Mgmt, Batch Invoicing, API Access.
+- Add “Add-ons”: Recurring Billing, Review Requests, QuickBooks/Xero Sync.
+- Toggle Monthly/Annual (save 20%).
+- FAQs x6 (billing, users, add-ons, onboarding).
+- Comparison matrix component (rows = features; columns = plans).
+
+RESOURCES (/: resources)
+- H1: “Learn, level up, and grow.”
+- Grid linking to Blog, Guides, Webinars, Help Center, API Docs.
+- Blog (/: resources/blog)
+  - Index lists posts from /data/posts/*.md with title, date, tags, excerpt.
+  - Post page renders markdown with TOC, code highlighting, and JSON-LD Article.
+  - Seed 3 posts:
+    1) “How to schedule efficiently with live maps”
+    2) “Estimate templates that win more jobs”
+    3) “Job costing 101 for field service teams”
+- Guides (/: resources/guides)
+  - Long-form downloadable guides in markdown. Seed 2 guides:
+    a) “Field Service Playbook: From lead to paid”
+    b) “Dispatch SOP: Reducing windshield time”
+- Webinars (/: resources/webinars)
+  - List upcoming + past with registration links (placeholder).
+- Help Center (/: resources/help)
+  - Categories: Getting Started, Scheduling & Dispatch, Quotes & Invoices, Payments, Integrations.
+  - 3–5 markdown articles per category with short answers and step lists.
+- API Docs (/: resources/api)
+  - Intro, Auth, Rate limits, Example endpoints. Code blocks. “Request access” CTA.
+
+ABOUT (/: about)
+- Mission, leadership placeholders, timeline, careers CTA, contact info.
+
+CONTACT (/: contact)
+- FormContact: name, email, phone, company, industry (select), team size (select), message.
+- Show support email and phone. Consent checkbox. Success state.
+
+LEGAL (/: legal/privacy and /: legal/terms)
+- Plain language pages with anchors.
+
+FORMS
+- FormDemo modal available via CTABar on all pages; client-side validation; success message only.
+- Add data-cta attributes to all CTAs for analytics.
+
+DATA FILES
+- data/features.js → array with groups, slugs, titles, one-liners, detailed bullets, icon name.
+- data/industries.js → groups with items: slug, label, one-liner, 3-step workflow, 6 use-cases, FAQs.
+- Seed markdown posts/guides/help with realistic headings and lists.
+
+SEO & SCHEMA
+- Title and meta per page. Canonical.
+- JSON-LD:
+  - Organization on root
+  - WebSite + SearchAction
+  - Product on Features/FeatureDetail and Pricing (offers placeholders)
+  - Article on Blog posts
+  - FAQPage where applicable
+- Robots.txt and sitemap.xml (static).
+
+ACCESSIBILITY
+- Skip-to-content link.
+- Breadcrumbs on all subpages.
+- :focus-visible styles. aria-current on active sidebar links.
+- Reduced motion: disable non-essential animations.
+
+PERFORMANCE
+- Tree-shake icons. No images over 180KB. Use <picture> with srcset for industry headers.
+- Defer non-critical scripts. No third-party fonts unless already present.
+
+DELIVERABLES
+- All routes wired under Layout with current navbar/footer.
+- Fully responsive pages with real copy (no lorem).
+- README update: routes, where to edit content, how to add industries, posts, and guides.
+```

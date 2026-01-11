@@ -1,0 +1,102 @@
+Awesome—next micro-step: build a unique LinkServicePro “Industries We Serve” band with a vertical, continuously scrolling testimonials rail (inspired by the vibe you liked, but original). Here’s a single, surgical prompt for Replit Agent 3.
+
+⸻
+
+Create Industries We Serve section with a pills/tabs selector on the left and a right-side image + vertical testimonials rail below it. Use only LinkServicePro content (industries you already support). Mobile-first, battery-friendly animation, accessible. Do not change any other sections, routes, or meta.
+
+Files to add/edit
+	•	client/src/components/home/Industries.tsx (NEW – the whole band)
+	•	client/src/components/home/TestimonialsRail.tsx (NEW – vertical, continuous loop for small testimonial cards)
+	•	client/src/data/industries.ts (NEW – industries data; use our real slugs/titles and images; safe placeholders if missing)
+	•	client/src/data/testimonials.ts (NEW – short testimonials with industry tags)
+	•	client/src/pages/Home.tsx – insert <Industries /> beneath Field-to-Cash (or where you compose homepage)
+	•	Reuse existing Tailwind marquee keyframes (marqueeUp/marqueeDown). Do not touch global providers, Helmet, or header/footer.
+
+UX & layout (mobile-first)
+	•	Container: .container mx-auto px-4 sm:px-6 lg:px-8
+	•	Section: py-14 sm:py-16 lg:py-24
+	•	Mobile (default):
+	•	Pills horizontally scrollable.
+	•	Selected industry shows copy, a 16:9 image below, then the testimonials rail full width.
+	•	lg+:
+	•	12-col grid: left rail lg:col-span-7, right visual lg:col-span-5.
+	•	Right column shows the industry image. Below it, a TestimonialsRail that uses a smooth vertical loop. No sticky needed here.
+
+Behavior
+	•	Pills/tabs switch the active industry (client-side state only).
+	•	Testimonials rail is a continuous, fluid vertical loop (duplicates list internally; no “snap”). No timers; use CSS transforms.
+	•	Reduced motion: render testimonials as a static list (no movement).
+	•	A11y: tabs use role="tablist"/role="tab"/aria-selected; testimonials rail is aria-hidden="true" with an SR-only static list of names/companies for screen readers.
+
+Data shapes (use real content/assets you already have; placeholders only if missing)
+
+// client/src/data/industries.ts
+export type Industry = {
+  slug: string;             // e.g., "hvac"
+  name: string;             // e.g., "HVAC"
+  blurb: string;            // 1–2 sentence value prop tailored to that industry
+  image: { src: string; alt: string }; // 16:9 or 4:3, consistent style
+  ctaText: string;          // e.g., "Learn more"
+  ctaHref: string;          // e.g., "/industries/hvac"
+};
+export const industries: Industry[] = [
+  // Populate with your real industries. Example placeholders:
+  { slug: "hvac", name: "HVAC", blurb: "Keep crews scheduled, PMs organized, and invoices same-day.", image: { src: "/img/industries/hvac.jpg", alt: "HVAC rooftop units" }, ctaText: "Learn more", ctaHref: "/industries/hvac" },
+  { slug: "electrical", name: "Electrical", blurb: "Dispatch smarter, price accurately, and finish with clean paperwork.", image: { src: "/img/industries/electrical.jpg", alt: "Electricians at panel" }, ctaText: "Learn more", ctaHref: "/industries/electrical" },
+  { slug: "plumbing", name: "Plumbing", blurb: "Book jobs, send e-sign estimates, and collect payments in one place.", image: { src: "/img/industries/plumbing.jpg", alt: "Plumber on copper run" }, ctaText: "Learn more", ctaHref: "/industries/plumbing" },
+  // add more as appropriate
+];
+
+// client/src/data/testimonials.ts
+export type Testimonial = {
+  quote: string;            // short, 1–2 lines max
+  name: string;             // "Alex Rivera"
+  role: string;             // "Ops Manager, Northshore HVAC"
+  avatar?: string;          // optional 40x40
+  industry: string;         // industry.slug reference
+};
+export const testimonials: Testimonial[] = [
+  // Use your real quotes; examples shown:
+  { quote: "Scheduling is finally predictable. We cut callbacks by 20%.", name: "Alex Rivera", role: "Ops Manager, Northshore HVAC", industry: "hvac" },
+  { quote: "Invoices go out same day—cash flow is night and day.", name: "Jamie Chen", role: "Owner, Peak Plumbing", industry: "plumbing" },
+  { quote: "Route planning shaved an hour off our mornings.", name: "Morgan Lee", role: "Dispatch Lead, Volt Electric", industry: "electrical" },
+  // …add 8–12 total across your industries
+];
+
+Components (high-level instructions; implement with your existing utilities)
+
+TestimonialsRail.tsx
+	•	Accepts { items: Testimonial[], reverse?: boolean, speedSeconds?: number }.
+	•	Shape each item as a small card: avatar (optional), quote (2-line clamp), name/role.
+	•	Build a 200% vertical track by duplicating items and animating with marqueeUp/marqueeDown.
+	•	Add top/bottom mask gradient for soft edges.
+	•	Reduced motion: render as a static vertical list (no animation).
+	•	Mark animated container aria-hidden="true" and render a separate SR-only list of names/companies right after it.
+
+Industries.tsx
+	•	Local state activeSlug.
+	•	Render pills/tabs (scrollable on mobile). The active pill has brand blue outline and subtle inner shadow (same treatment as your nav hover).
+	•	Left column (lg+): H2 “Industries We Serve”, blurb for the active industry, CTA link.
+	•	Right column (lg+): responsive image for the active industry; under it, <TestimonialsRail items={testimonials.filter(t => t.industry === activeSlug)} />.
+	•	Mobile: show image and testimonials full width under the copy.
+	•	Keep headings semantic (H2 for section, H3 for industry name).
+
+Styling tokens & behaviors to match site
+	•	Use your brand blue for pill outlines; preserve focus ring for keyboard users.
+	•	Ensure width/height or aspect-[16/9] on images to avoid CLS.
+	•	No JS timers for the loop; CSS transforms only.
+	•	Respect prefers-reduced-motion.
+
+Acceptance criteria
+	1.	Pills/tabs switch industries instantly; keyboard users can move focus and activate via Enter/Space.
+	2.	Right column shows the selected industry image; below it, a smooth, continuous vertical testimonials loop (no snapback).
+	3.	On mobile, the same content stacks; testimonials appear as a static list when prefers-reduced-motion is set.
+	4.	No changes to header, hero, other sections, routes, or meta.
+	5.	Lighthouse on mobile remains healthy (no large layout shifts or heavy JS).
+
+Insertion
+	•	Import and place <Industries /> in your home composition immediately below the Field-to-Cash section (or wherever fits best in the narrative).
+
+⸻
+
+Run just this change. After it’s live, we can tune the number of testimonials per industry or add an optional “View more stories” link that routes to your existing customer stories or blog content.

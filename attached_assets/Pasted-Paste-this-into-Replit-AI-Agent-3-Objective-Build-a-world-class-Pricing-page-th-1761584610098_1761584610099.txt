@@ -1,0 +1,161 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+## Objective
+
+Build a **world-class Pricing page** that converts. Mobile-first, high contrast, sharp rectangles, bold type, underline hover drawn **right→left**. Match Home/Features aesthetic. Plans: **Free, Starter $29, Professional $99, Business $249, Enterprise $499+** billed monthly, with annual toggle and 2 months free.
+
+Ground feature gating and limits on the attached tier maps. (Free→Upper capability ladders, plan inclusions, user counts, support levels.)  
+
+---
+
+## Page structure (exact order)
+
+1. **Hero band**
+
+   * Title: **Simple, transparent pricing**
+   * Subtitle: *Pick your plan. Switch anytime. No contracts.*
+   * Toggle: **Monthly / Annual (save 16%)**. On toggle, prices and “per user” footers update with smooth 120ms transition.
+   * Trust row: lock icon “Secure checkout”, “Cancel anytime”, “No setup fees”.
+   * CTA buttons: **Start Free** (primary), **Talk to sales** (secondary).
+
+2. **Plan cards (5)**
+
+   * Mobile: horizontal scroll **snap**; ≥768px: 3-up; ≥1200px: 5-up.
+   * Each card: plan name, price (monthly + crossed-out annual equivalent when Annual is on), brief fit statement, top 6 highlights, primary CTA, secondary “See all features”.
+   * Add “Most popular” ribbon to **Professional**. Add “Best value” badge on **Business** when Annual is on.
+   * Buttons are rectangular, bold, full-width on mobile.
+   * Include usage caps and users per plan where applicable (see “Plan facts” below).
+
+3. **Feature comparison matrix**
+
+   * Sticky sub-nav: *Scheduling & Dispatch • Mobile App • CRM • Work Orders • Estimates & Invoicing • GPS & Time • Reporting • Integrations & Automation • Support & Security*
+   * Mobile: accordions per category showing rows with ✓ / — / “Upgrade” pill. Desktop: full matrix with frozen first column + plan headers.
+   * Row copy & plan availability must follow the tier specs below (“Plan facts”) and source docs.  
+
+4. **Calculator (optional but recommended)**
+
+   * Inputs: Technicians (#), Office users (#). Output: **Estimated monthly total** per plan (price + per-tech GPS add-on if enabled) with a bar chart. Let users email the estimate to themselves (inline lead capture).
+
+5. **What’s included in every plan**
+
+   * 6 icon chips: Scheduling, Mobile app, CRM contacts, Estimates & invoices, Templates, Categories. Short “action → outcome” copy.
+
+6. **Questions? (FAQ)**
+
+   * 6 items, short and direct: *How billing works? Can I add users mid-month? What’s counted as a user? Can I change plans? What discounts exist? Do you offer trials?*
+   * Include `FAQPage` JSON-LD.
+
+7. **Proof & trust**
+
+   * 3 micro-testimonials (HVAC, Landscaping, Cleaning) with one-line results.
+   * Security badges, uptime link, and support availability per plan.
+
+8. **Final CTA band**
+
+   * Headline: **Ready to get started?**
+   * Buttons: **Start Free**, **Talk to sales**.
+   * Sticky bottom CTA (always visible): Start Free | View all features.
+
+---
+
+## Visual & interaction rules
+
+* Mobile-first at 375px. No horizontal scroll. Tap targets ≥44px.
+* Plan cards: white background, 1px slate-200 ring, `.elev-2` shadow; on hover: lift + shadow increase.
+* Pricing numbers use large numeric with smaller “/mo” and “per user” footers when applicable.
+* Accessibility: visible focus rings, proper `aria-expanded` on accordions, `aria-pressed` on billing toggle.
+* Performance: preload plan font, lazy-load non-hero images, CLS < 0.05, Lighthouse ≥90/≥95 (Perf/A11y).
+
+---
+
+## Plan facts (bind these to UI)
+
+**Names & list price (Monthly):**
+
+* **Free** — $0
+* **Starter** — **$29**
+* **Professional** — **$99**
+* **Business** — **$249**
+* **Enterprise** — **$499+** (contact sales)
+
+**User allowances** (show under price):
+
+* Free: **1 user**
+* Starter: **1–3 users**
+* Professional: **up to 15 users**
+* Business: **up to 50 users**
+* Enterprise: **Unlimited users** 
+
+**Support** (badge in card footer):
+
+* Free: **Self-service help center**
+* Starter/Pro/Business/Enterprise: **24/7 Phone, Email, Chat**; higher tiers show “Priority / SLA” escalation in matrix. 
+
+**Feature gating** (drive card highlights + matrix rows):
+
+* **Scheduling & Dispatch**: all plans; *Free = basic calendar; mid tiers add route optimization; upper adds SLA/skills-based auto-assign*. 
+* **Mobile App**: all plans (capabilities scale by tier). 
+* **CRM**: all plans; *Free = contacts & history; mid adds tags/segments & follow-ups*. 
+* **Job Management (Work Orders/Tasks)**: **Starter+** (Free excludes work orders). 
+* **Estimates & Quotes**: all plans; *Free watermark & caps; paid removes caps*. 
+* **Invoicing & Payments**: all plans; *Free has monthly caps; higher tiers remove caps*. 
+* **Inventory**: **Starter+:** simple counts; **Business/Enterprise:** multi-warehouse + reorder alerts. 
+* **Accounting sync**: **Starter:** 1-way; **Professional:** 2-way; **Business/Enterprise:** premium connectors/API. 
+* **Reporting & Analytics**: **Starter:** standard; **Professional:** advanced; **Business/Enterprise:** custom exports. 
+* **Marketing/Lead Gen**: **Professional:** reminders & campaigns; **Business/Enterprise:** advanced automations. 
+* **GPS Tracking**: **Starter+** (show note “per-tech add-on possible”). 
+* **Customer Portal**: **Starter+** (upper tiers: white-label). 
+* **Integrations**: **Starter:** core; **Professional:** +Zapier; **Business/Enterprise:** API & premium. 
+* **Automation**: **Professional:** basic workflows; **Business/Enterprise:** multi-step + conditions. 
+* **Time Tracking**: all plans; *Free = manual clock; higher tiers add approvals & payroll export*. 
+* **Recurring Jobs/Service Plans**: **Starter+** (contracts, renewals; dunning in upper tiers). 
+* **Multi-Location**: **Enterprise only** (shared inventory & reporting). 
+* **Team Collaboration (users/roles)**: **Starter:** up to 3; **Pro/Business:** more users & roles. 
+* **Custom Branding**: **Professional:** branded emails/invoices; **Business/Enterprise:** full white-label. 
+* **Core objects (Categories, Crews, User Mgmt, Requests, etc.)**: present per plan as shown (matrix uses “Yes” across Starter+; Free limited where noted). 
+
+**Starter highlights** (suggest): Work orders & tasks, Quotes without caps, Invoicing without caps, Basic inventory, 1-way accounting sync, Standard reports.
+
+**Professional highlights**: Route optimization, 2-way accounting sync, Advanced reports, Campaigns & reminders, Automation (basic), Zapier, Customer portal.
+
+**Business highlights**: Skills/SLA auto-assign, Multi-warehouse inventory, API & premium connectors, Automation (multi-step), Custom exports, White-label portal.
+
+**Enterprise highlights**: Unlimited users, Multi-location, SSO/SLA, Dedicated CSM, Advanced security, Custom terms.
+
+---
+
+## Pricing math
+
+* Annual toggle = **×10** of monthly price (2 months free). Display “/mo billed annually” label.
+* If GPS per-tech add-on is enabled by product, add a clearly labeled line item in Calculator results (do not alter list prices here).
+
+---
+
+## SEO & schema
+
+* `<title>`: “Pricing • Field Service Software”
+* Meta description (≤160): “Free, Starter, Professional, Business, and Enterprise plans. Simple pricing, no contracts. Start free.”
+* Canonical, OG/Twitter tags.
+* JSON-LD:
+
+  * `Product` variants for each plan (price, billing period, description)
+  * `FAQPage` from FAQ section
+  * `Organization` (logo, sameAs)
+
+---
+
+## Images (optional, documentary, no screens)
+
+* 1–3 small jobsite images used as subtle textures behind band headings (blurred/low-opacity). Do not distract from pricing.
+
+---
+
+## Acceptance criteria
+
+* Five plan cards with monthly/annual toggle and clearly stated users/support.
+* Feature comparison matrix faithful to tier maps and notes.  
+* Inline lead capture in Calculator and sticky bottom CTA present.
+* Mobile snap-scroll cards; desktop 5-up; accessible focus states.
+* CLS < 0.05, LCP ≤ 2.3s, Lighthouse ≥90 Perf / ≥95 A11y.

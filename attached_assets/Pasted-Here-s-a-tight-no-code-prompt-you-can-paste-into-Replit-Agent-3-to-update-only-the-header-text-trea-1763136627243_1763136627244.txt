@@ -1,0 +1,39 @@
+Here’s a tight, no-code prompt you can paste into Replit Agent 3 to update only the header text treatment for the **Why Teams Switch** comparison section.
+
+---
+
+**Task:** Update the header copy for the “Why Teams Switch” comparison section. Remove the subtitle and change the eyebrow text. Do not modify any other sections, routes, or table data.
+
+### Scope
+
+* Touch **only** this section’s header block (eyebrow/H2/support sentence) and the spacing that surrounds it.
+* Keep container width, table, tooltips, CTAs, and a11y exactly as currently implemented.
+
+### Requirements (exact copy + style)
+
+1. **Eyebrow (replace text):** `See it in one table`
+
+   * Use the **eyebrow style** already used site-wide (same muted color, uppercase/lowercase behavior as the global eyebrow pattern—do **not** force blue).
+   * If the eyebrow component auto-uppercases, let it; otherwise render as written.
+2. **H2 (unchanged):** `Why Teams Switch`
+3. **Subtitle:** **remove entirely** (delete the subtitle node; do not leave an empty wrapper).
+4. **Support sentence (keep):**
+   `Projects with real dollars, hours, assets, and conversations—kept in one place so work flows and cash lands sooner.`
+5. **Alignment & rhythm:**
+
+   * Keep the header block **left-aligned**, matching other sections.
+   * After removing the subtitle, **collapse vertical spacing** so the distance between eyebrow → H2 and H2 → support sentence matches your standard section rhythm (no extra gap).
+
+### Do not change
+
+* Container width and paddings (stay within the site’s global container).
+* Table layout, column labels/wrapping, sticky header/first column, legend, tooltips, CTAs, or analytics.
+* Colors/typography tokens beyond using the standard eyebrow + H2 + support styles already defined.
+
+### Acceptance checklist
+
+* Eyebrow now reads **“See it in one table”** (in the site’s eyebrow style).
+* No subtitle is rendered; no visual gap remains.
+* H2 still reads **“Why Teams Switch”**.
+* Support sentence is present and left-aligned.
+* Spacing matches other sections; nothing else regressed.

@@ -1,0 +1,482 @@
+Now we build the **Job Costing & Reporting** page.
+
+This page is for the owner / GM who actually cares about money, not just “nice features.” This person wants to know: “Which jobs are profitable? Which techs are dragging margin down? Where am I bleeding on labor and materials?” None of your small competitors speak to this well. ServiceTitan does, but bloats it. You’re going to speak like a straight shooter.
+
+We target high-intent keywords like:
+
+* “job costing software for field service”
+* “HVAC job profitability tracking”
+* “track labor and material cost per job”
+* “field service reporting dashboard”
+* “technician performance reporting”
+
+Same output pattern:
+
+* Part A: Page spec (copy/sections)
+* Part B: Replit implementation block (you paste it and Replit builds it)
+
+---
+
+## A. PAGE SPEC: Job Costing & Reporting
+
+ROUTE / SLUG
+`/features/job-costing-reporting`
+
+META
+
+* `<title>`: “Job Costing & Profit Reporting | See Profit Per Job, Per Tech, Per Day”
+* `<meta name="description">`: “Know exactly what each job actually made after labor, drive time, and materials. Track wage cost, parts cost, purchase orders, and vendor status. Stop guessing which work is worth it.”
+
+PRIMARY SEO INTENT
+
+* “job costing for field service”
+* “HVAC job costing software”
+* “track profit per job”
+* “field service reporting dashboard”
+* “technician profitability tracking”
+
+H1 (hero heading)
+“See profit per job, per tech, per day.”
+
+Hero Subhead
+“Stop guessing. Track labor cost, material cost, drive time, and price. Know which work is actually worth doing — and which you should stop offering.”
+
+CORE MESSAGE TO HAMMER:
+
+* You finally see the truth: margin per job, per tech.
+* You stop doing money-loser work.
+* You tighten wages, routes, and pricing based on data — not emotion.
+
+PAGE STRUCTURE (4 sections + final CTA band):
+
+1. HERO (dark slate/near-black)
+2. TRUE JOB COSTING (spotlight card)
+3. PAYROLL / LABOR / MATERIALS VISIBILITY
+4. PURCHASING & VENDOR CONTROL
+5. FINAL CTA BAND
+
+We’re slightly changing palette in the hero and one section to match “financial control”: darker, serious, authority. We’ll use `bg-slate-900` instead of `#0E2A47` for the hero on THIS page only to make it feel “money & control.” Still keep brand cohesion for CTAs, buttons, etc.
+
+---
+
+SECTION 1. HERO
+Background: `bg-slate-900 text-white`
+(we intentionally go slate-900 on this page to signal “financial truth / control,” but we still use the brand blue CTA #0B5FFF)
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text):
+
+* Eyebrow chip pill:
+
+  * Text: “Job Costing & Reporting”
+  * Class: `inline-block text-[11px] font-semibold text-white bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-4`
+* H1 (white, bold, large):
+  “See profit per job, per tech, per day.”
+* Subhead (`text-white/80 text-sm leading-relaxed sm:text-base`):
+  “Stop guessing. Track labor cost, material cost, drive time, and price. Know which work is actually worth doing — and which you should stop offering.”
+* Value row (`flex flex-col gap-2 mt-4 text-[13px] text-white/80 sm:flex-row sm:flex-wrap sm:gap-4`):
+
+  * “Who made money today?”
+  * “Which tech is actually profitable?”
+  * “Which service should you drop?”
+    Icons for each in `text-[#0B5FFF]`.
+* Badge row (flex flex-wrap gap-2 text-[11px] mt-4):
+  Chip style: `bg-white/10 border border-white/20 text-white font-medium rounded-full px-3 py-[3px]`
+
+  * “Job costing”
+  * “Wage tracking”
+  * “Material tracking”
+  * “Profit dashboard”
+* CTA row:
+
+  * Primary CTA button:
+
+    * `bg-[#0B5FFF] text-white font-semibold rounded-md px-4 py-2 text-sm shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+    * Text: “Start Free”
+  * Secondary outline CTA:
+
+    * `border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+    * Text: “See Profit Dashboard”
+* Tiny reassurance line `text-[11px] text-white/60 mt-2`:
+  “Unlimited users on paid plans. No per-tech seat fees.”
+
+Right column (mock card):
+
+* Container:
+  `relative bg-white/5 border border-white/10 rounded-xl shadow-inner p-4 min-h-[260px] flex flex-col justify-between`
+* Top line (white text-sm font-semibold):
+  “Today’s Margin Report”
+* Inside: stack of gray bars in `bg-white/10 rounded-md h-4 w-3/4 mb-2`, etc., plus 1 thicker bar “Job 4821: 37% margin”
+* Bottom caption `text-[11px] text-white/60`:
+  “Job margin • Tech margin • Daily total • Red flags”
+
+SECTION 1 GOAL:
+Owner thinks: “This gives me control of the company, not just organized chaos.”
+
+---
+
+SECTION 2. TRUE JOB COSTING
+Background: `bg-white text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card “Job Costing”
+Card container:
+`relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+
+Inside:
+
+* `<PlanRibbon plan="Premium" />` (`absolute -top-2 -right-2 z-20`)
+* Eyebrow chip pill:
+
+  * Text: “Job Costing”
+  * Class: `inline-block text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-[3px] mb-3`
+* Headline (`text-xl font-semibold text-slate-900`):
+  “Know if you actually made money on that job.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “We tie revenue to labor, parts, and drive time so you can see true margin per job. You’ll know which work is worth repeating — and which work is quietly killing your business.”
+* Bullets (icon + text):
+  Bullet pattern: flex gap-2 items-start
+
+  * Icon `text-[#0B5FFF] w-5 h-5` `aria-hidden="true"`
+    Bullet 1:
+    Title: “Job costing & profitability reports”
+    Support: “Real margin on every visit and every invoice.”
+    Bullet 2:
+    Title: “Drive time and labor impact”
+    Support: “Route inefficiency shows up in the profit, not just on a map.”
+    Bullet 3:
+    Title: “See margin trends over time”
+    Support: “Watch how pricing, parts cost, or fuel costs hit you month-to-month.”
+* CTA block at bottom:
+
+  * Primary button (blue): “See Profit Dashboard”
+  * Blue text link: “Start Free →”
+
+Right column = Outcome Rows (not cards)
+Three stacked:
+
+1. Title: “Stop underbidding.”
+   Body: “If a service line is always low-margin, raise the rate or stop offering it.”
+2. Title: “Pay your top techs what they’re worth.”
+   Body: “You’ll see who quietly saves you money and who quietly burns it.”
+3. Title: “Fix pricing before busy season.”
+   Body: “Don’t find out in December that you underpriced all summer.”
+
+After rows:
+Blue link:
+
+* “See Invoicing & Payments →”
+* href `/features/invoicing-payments`
+* Style standard: `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+
+SECTION 2 GOAL:
+We’re not selling dashboards. We’re selling “you stop being blind.”
+
+---
+
+SECTION 3. PAYROLL / LABOR / MATERIALS VISIBILITY
+Background: `bg-slate-50 text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text):
+
+* h2 (`text-2xl font-semibold text-slate-900`):
+  “Every dollar accounted for.”
+* Subtext (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Tie wage cost, materials, and time-on-site directly to each job so you can prove where the money went.”
+* Bullets list (each bullet has icon, title, support, and inline plan chip):
+  Bullet 1:
+  Title: “Payroll & wage tracking”
+  Support: “See actual labor cost per job, per tech, per day.”
+  Chip inline: `bg-slate-200 text-slate-700 text-[10px] font-medium rounded-full px-1.5 py-[1px] ml-2`
+  Chip text: “Premium”
+  Bullet 2:
+  Title: “Expense & materials tracking”
+  Support: “Log parts, markups, and materials so margin is real, not theory.”
+  Chip: “Essential+”
+  Bullet 3:
+  Title: “Capacity planning”
+  Support: “Understand who’s overbooked, who’s underbooked, and how it affects your profit per route.”
+  Chip: “Essential+”
+* CTA block:
+
+  * Primary button (blue): “See Cost Breakdown”
+  * Blue link under: “View Scheduling & Dispatch →” `/features/scheduling-dispatch`
+
+Right column = Spotlight Card “Cost Breakdown”
+
+* Card container:
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+* `<PlanRibbon plan="Essential+ / Premium" />` top-right
+* Eyebrow chip pill:
+  Text: “Cost Breakdown”
+* Headline (`text-xl font-semibold text-slate-900`):
+  “Where did the money go?”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “See labor, parts, travel, and overhead against the price you charged. You’ll know why a ‘busy week’ didn’t feel like a profitable week.”
+* Gray placeholder mock:
+  `div className="bg-slate-100 rounded-lg h-32 w-full mt-4 flex items-center justify-center text-[11px] text-slate-500"`
+  Inner text: “Labor $ • Materials $ • Travel Time $ • Margin %”
+* CTA small row:
+
+  * Blue button text-sm: “See Cost Breakdown”
+  * Blue link: “Compare Plans →”
+
+SECTION 3 GOAL:
+We’re telling them: “You can see where your profit leaked. You can fix it immediately.”
+
+---
+
+SECTION 4. PURCHASING & VENDOR CONTROL
+Background: `bg-white text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card “Vendors & Purchasing”
+
+* Card container:
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+* `<PlanRibbon plan="Premium" />` top-right
+* Eyebrow chip pill:
+  Text: “Vendors & Purchasing”
+* Headline (`text-xl font-semibold text-slate-900`):
+  “No more ‘we’re out of parts’ surprises.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Track purchase orders, vendor status, and insurance compliance in one place. You’ll know what’s on order, who you’re waiting on, and whether they’re even allowed on your job.”
+* Bullets:
+
+  * “Purchase orders & vendor management”
+  * “Vendor insurance status tracking”
+  * “Property-tied document history”
+* CTA block:
+
+  * Primary button (blue): “See Vendor Controls”
+  * Blue link: “Compare Plans →”
+
+Right column = Trust block (dark mini-card)
+
+* Wrapper:
+  `bg-slate-900 text-white rounded-xl p-5 ring-1 ring-slate-800 flex flex-col justify-between`
+* Headline (`text-white font-semibold text-lg`):
+  “Catch problems before they blow up.”
+* Body (`text-white/70 text-sm leading-relaxed mb-6`):
+  “If a certain vendor keeps delaying installs, or keeps showing up uninsured, that’s money and risk. Now you’ll see the pattern — and fix it before it costs you another client.”
+* CTA block:
+
+  * Outline button:
+
+    * `border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+    * Text: “See Team Management”
+    * href: `/features/team-management`
+  * Blue link under:
+
+    * Text: “Start Free →”
+    * href: signup route
+
+SECTION 4 GOAL:
+This reassures bigger buyers (“I have crews, subs, vendors”) that you’re not just a little ‘to-do list app,’ you’re operational control.
+
+---
+
+SECTION 5. FINAL CTA BAND
+Background: `bg-[#0E2A47] text-white`
+(We go back to brand navy for the closer CTA, to keep global consistency.)
+
+Wrapper:
+`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+Headline (`text-white font-semibold text-2xl sm:text-3xl`):
+“Run the jobs that pay. Drop the ones that don’t.”
+
+Subtext (`text-white/70 text-sm sm:text-base leading-relaxed mt-3`):
+“See margin per job, per tech, per route. Track labor, parts, and vendor performance. Stop doing work that quietly loses money. Unlimited users on paid plans. No per-tech seat fees.”
+
+CTA row (mobile stack first):
+
+* Primary button (blue #0B5FFF): “Start Free”
+* Secondary outline (border-white/30): “View Pricing”
+  Both with focus-visible rings.
+
+TCPA line under in `text-[11px] text-white/60 mt-2`:
+“By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+---
+
+## B. REPLIT IMPLEMENTATION BLOCK
+
+Paste the following into Replit:
+
+1. Create a new page component at `/features/job-costing-reporting`. Follow the same Next.js + Tailwind + shadcn/ui conventions as the other feature pages. Do not touch global header/nav/footer.
+
+2. Add `<Head>` with:
+
+   ```html
+   <title>Job Costing & Profit Reporting | See Profit Per Job, Per Tech, Per Day</title>
+   <meta name="description" content="Know exactly what each job actually made after labor, drive time, and materials. Track wage cost, parts cost, purchase orders, and vendor status. Stop guessing which work is worth it." />
+   ```
+
+   Add JSON-LD structured data `SoftwareApplication`:
+
+   * name: "LinkServicePro Job Costing & Reporting"
+   * applicationCategory: "Field service management software"
+   * offers.description: "Start free. Unlimited users on paid plans. No per-tech seat fees."
+
+3. Render SECTIONS IN THIS EXACT ORDER with EXACT copy:
+
+   SECTION 1. HERO (bg-slate-900 text-white)
+
+   * Two-column grid.
+   * Left column: eyebrow chip “Job Costing & Reporting”; H1 “See profit per job, per tech, per day.”; subhead about “Stop guessing…”; value row; badge row; CTA buttons (“Start Free”, “See Profit Dashboard”); reassurance “Unlimited users on paid plans. No per-tech seat fees.”
+   * Right column: mock “Today’s Margin Report” card (bg-white/5, border-white/10, min-h-[260px]) with gray bars and caption “Job margin • Tech margin • Daily total • Red flags”.
+
+   SECTION 2. TRUE JOB COSTING (bg-white)
+
+   * Two-column grid.
+   * LEFT COLUMN = Spotlight Card:
+
+     * Wrapper:
+       `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+     * `<PlanRibbon plan="Premium" />` top-right `absolute -top-2 -right-2 z-20`
+     * Eyebrow chip pill “Job Costing”
+     * Headline “Know if you actually made money on that job.”
+     * Body: “We tie revenue to labor, parts, and drive time…”
+     * Bullets:
+
+       * Job costing & profitability reports
+       * Drive time and labor impact
+       * See margin trends over time
+     * CTA block:
+
+       * Blue button: “See Profit Dashboard”
+       * Blue link: “Start Free →”
+   * RIGHT COLUMN = Outcome Rows (NOT cards):
+
+     * “Stop underbidding.”
+     * “Pay your top techs what they’re worth.”
+     * “Fix pricing before busy season.”
+     * Blue link: “See Invoicing & Payments →” (href `/features/invoicing-payments`)
+
+   SECTION 3. PAYROLL / LABOR / MATERIALS VISIBILITY (bg-slate-50)
+
+   * Two-column grid.
+   * LEFT COLUMN text:
+
+     * h2 “Every dollar accounted for.”
+     * Subtext about tying wage cost, materials, time-on-site.
+     * Bullets (each with inline tiny tier chip):
+
+       * Payroll & wage tracking (Premium)
+       * Expense & materials tracking (Essential+)
+       * Capacity planning (Essential+)
+     * CTA block:
+
+       * Blue button: “See Cost Breakdown”
+       * Blue link: “View Scheduling & Dispatch →” (href `/features/scheduling-dispatch`)
+   * RIGHT COLUMN = Spotlight Card “Cost Breakdown”:
+
+     * Wrapper: white spotlight card wrapper with hover transition
+     * `<PlanRibbon plan="Essential+ / Premium" />`
+     * Eyebrow chip pill “Cost Breakdown”
+     * Headline “Where did the money go?”
+     * Body + gray placeholder mock showing “Labor $ • Materials $ • Travel Time $ • Margin %”
+     * CTA small row:
+
+       * Blue button text-sm “See Cost Breakdown”
+       * Blue link “Compare Plans →”
+
+   SECTION 4. PURCHASING & VENDOR CONTROL (bg-white)
+
+   * Two-column grid.
+   * LEFT COLUMN = Spotlight Card “Vendors & Purchasing”
+
+     * Wrapper: white spotlight card
+     * `<PlanRibbon plan="Premium" />`
+     * Eyebrow chip: “Vendors & Purchasing”
+     * Headline: “No more ‘we’re out of parts’ surprises.”
+     * Body: “Track purchase orders, vendor status, and insurance compliance…”
+     * Bullets:
+
+       * Purchase orders & vendor management
+       * Vendor insurance status tracking
+       * Property-tied document history
+     * CTA block:
+
+       * Blue button: “See Vendor Controls”
+       * Blue link: “Compare Plans →”
+   * RIGHT COLUMN = Trust block:
+
+     * Wrapper:
+       `bg-slate-900 text-white rounded-xl p-5 ring-1 ring-slate-800 flex flex-col justify-between`
+     * Headline: “Catch problems before they blow up.”
+     * Body: “If a certain vendor keeps delaying installs…”
+     * CTA block:
+
+       * Outline button:
+
+         * `border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+         * Text: “See Team Management”
+         * href: `/features/team-management`
+       * Blue link: “Start Free →” (signup route)
+
+   SECTION 5. FINAL CTA BAND (bg-[#0E2A47] text-white)
+
+   * Center `max-w-3xl mx-auto`
+   * Heading: “Run the jobs that pay. Drop the ones that don’t.”
+   * Subtext: “See margin per job, per tech, per route. Track labor, parts, and vendor performance. Stop doing work that quietly loses money. Unlimited users on paid plans. No per-tech seat fees.”
+   * CTA row (stack on mobile, row on desktop):
+
+     * Primary button (blue #0B5FFF): “Start Free”
+     * Secondary outline (border-white/30): “View Pricing”
+   * TCPA line under: “By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+4. Shared component / a11y rules (must match prior pages):
+
+   * Spotlight card wrapper (light):
+     `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+   * Dark spotlight card wrapper (if used in future pages):
+     same as we used in Invoicing & Payments profit section, but not required here except hero/trust blocks.
+   * `<PlanRibbon plan="..." />` is `absolute -top-2 -right-2 z-20`.
+   * Eyebrow chip pills are always above the card headline.
+   * Bullets are flex rows with:
+
+     * Icon: `text-[#0B5FFF] w-5 h-5 flex-shrink-0` `aria-hidden="true"`
+     * Text block:
+
+       * Title: `text-sm font-medium text-slate-700` (or `text-white` in dark sections)
+       * Support: `text-[13px] leading-snug text-slate-500` (or `text-white/60` in dark sections)
+   * For bullets in Section 3 with plan chips, append tiny pill:
+     `inline-block bg-slate-200 text-slate-700 text-[10px] font-medium rounded-full px-1.5 py-[1px] ml-2`
+   * Outcome Rows (right columns where specified) are NOT cards. They’re just icon + headline + supporting copy.
+   * All CTAs (buttons and important links) must have visible focus state:
+     `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+   * Semantic headings:
+
+     * H1 only in Section 1.
+     * All other major section headings should be `<h2>`.
+   * Maintain WCAG AA contrast on all backgrounds.
+
+5. Internal linking (MANDATORY):
+
+   * “See Invoicing & Payments →” → `/features/invoicing-payments`
+   * “View Scheduling & Dispatch →” → `/features/scheduling-dispatch`
+   * “See Team Management” → `/features/team-management`
+     These must be present so Google and AI connect profitability to ops, dispatch, and crew control.
+
+6. Critical phrases that MUST appear exactly:
+
+   * “See profit per job, per tech, per day.”
+   * “Know if you actually made money on that job.”
+   * “Every dollar accounted for.”
+   * “Where did the money go?”
+   * “No more ‘we’re out of parts’ surprises.”
+   * “Run the jobs that pay. Drop the ones that don’t.”
+   * “Unlimited users on paid plans. No per-tech seat fees.”
+
+After this page is done, the final core feature page we need to ship is **Team Management / Multi-team Control**, which sells foreman access, role permissions, assignments, and accountability. Say “next” and I’ll generate that.

@@ -1,0 +1,108 @@
+Here’s a single, surgical, no-code prompt to build the next band: a Quick Start CTA section that’s simple, mobile-first, and uses an email field with an attached button. It should sit right after the Property Linkware Integration band and before Pricing.
+
+⸻
+
+Task
+
+Create a new homepage section titled “Quick Start” that focuses purely on conversion with a short message, a compact trust row, and an email input + attached button (“Get Started Free”). Keep it lightweight, accessible, and inside the global container.
+
+Placement & scope
+	•	Insert directly after the Property Linkware Integration band and before Pricing.
+	•	Do not change routes, global SEO, or other sections.
+	•	If any previous “floating CTA” exists in this location, replace it with this new band.
+
+Objectives
+	•	Capture leads fast with minimal copy.
+	•	Reinforce value with three quick trust points (no long text, no carousels).
+	•	Provide optional mobile sticky CTA using the same attached input pattern (dismissible).
+
+⸻
+
+Structure (mobile → desktop)
+	1.	Header (inside global container)
+	•	Eyebrow: Get started
+	•	H2: Start free—move faster
+	•	Support (single sentence): Spin up projects, send quotes, and track jobs in minutes—no per-seat math.
+	2.	Trust row (3 compact items)
+	•	✓ Unlimited users on paid plans
+	•	✓ Job-based pricing
+	•	✓ Cancel anytime
+	•	Render as small pill badges in one wrap row on mobile; a single line on desktop. No tooltips.
+	3.	Email lead form (attached control) — the CTA
+	•	One input + button attached (shared border radius; no gap).
+	•	Placeholder: Enter your email
+	•	Button: Get Started Free →
+	•	Validation on submit (reasonable regex); inline error below input; success message inline: You’re in—check your email to get started.
+	•	Submit to existing handler or stub: POST /api/lead with { email, source: "home_quick_start" }
+	•	Below the form, muted xs legal line: By continuing you agree to our Terms and acknowledge our Privacy Policy.
+	4.	Secondary path (tiny)
+	•	Text link under the legal line: Talk to an expert → existing contact/demo route.
+	5.	Optional mobile sticky CTA (bottom sheet)
+	•	Trigger after user scrolls past 50% of this section (once per session); shows the same attached input control.
+	•	Dismissible (X button); remember dismissal for the session (no re-show).
+
+⸻
+
+Visual & motion
+	•	Use existing tokens: navy canvas, rounded-xl for form, subtle inner border on badges.
+	•	No background video, no parallax, no auto-animation. Only focus/hover states and the sticky sheet slide-in (respect prefers-reduced-motion).
+	•	Keep contrast AA; avoid blue subtitle text.
+
+⸻
+
+Accessibility
+	•	One h2 for the band; eyebrow as plain text above it.
+	•	Email field has a visible or sr-only label; type="email", autocomplete="email".
+	•	Error and success messages tied via aria-describedby and announced with aria-live="polite".
+	•	Buttons/links ≥44px hit targets; visible focus rings.
+	•	Sticky bottom sheet: role="dialog", labelled by its own title; ESC and close button both dismiss; return focus to trigger.
+
+⸻
+
+Performance
+	•	No third-party scripts, tooltips, or modals beyond the optional sticky sheet.
+	•	Zero CLS: fixed input/button sizes; consistent paddings.
+	•	Defer any nonessential JS for the sticky variant.
+
+⸻
+
+Copy (install exactly)
+	•	Eyebrow: Get started
+	•	H2: Start free—move faster
+	•	Support: Spin up projects, send quotes, and track jobs in minutes—no per-seat math.
+	•	Trust badges:
+	•	Unlimited users on paid plans
+	•	Job-based pricing
+	•	Cancel anytime
+	•	Form:
+	•	Placeholder: Enter your email
+	•	Button: Get Started Free →
+	•	Success: You’re in—check your email to get started.
+	•	Legal: By continuing you agree to our Terms and acknowledge our Privacy Policy.
+	•	Secondary link: Talk to an expert
+
+⸻
+
+Interaction rules
+	•	Pressing Enter in the field submits the form.
+	•	Disable the button while submitting.
+	•	On success: clear the input and show the success message; keep the viewport steady (no page jump).
+	•	Sticky sheet shows once per session and respects user dismissal.
+
+⸻
+
+Analytics
+	•	quick_start.view (once when ≥35% of band is in view)
+	•	quick_start.submit { email_domain, source: "home_quick_start" }
+	•	quick_start.contact_click for the “Talk to an expert” link
+	•	If sticky enabled: quick_start.sticky_show, quick_start.sticky_dismiss, quick_start.sticky_submit
+
+⸻
+
+Acceptance criteria
+	1.	Section renders inside the global container and aligns visually with other bands.
+	2.	Copy matches exactly; trust row shows three compact badges without wrapping into paragraphs.
+	3.	Email input + attached button works with validation, error, and success states; accessible and keyboard friendly.
+	4.	Optional sticky bottom sheet functions, is dismissible, and never reappears after dismissal during the session.
+	5.	No tooltips, no carousels, no third-party scripts; Lighthouse mobile shows no CLS and passes contrast.
+	6.	Analytics events fire as specified.

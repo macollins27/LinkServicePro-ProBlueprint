@@ -1,0 +1,121 @@
+Got it. Here’s a **single, surgical, no-code prompt** to replace the current “Why Teams Switch to LinkServicePro” with a new, competitor-oriented design that avoids tabs and avoids feature comparison tables.
+
+---
+
+**Task:** Redesign the “Why Teams Switch to LinkServicePro” homepage band to be **competitor-oriented** without tabs and without a matrix/table. The new section should communicate real switching motivations, migration simplicity, and clear outcomes—original to LinkServicePro. Do not change any other sections, routes, or SEO outside this band.
+
+### 0) Placement & scope
+
+* Replace the existing “Why Teams Switch to LinkServicePro” section in its current position (right after Industries).
+* Use existing design tokens (colors, spacing, typography, focus styles). No global refactors.
+
+### 1) Section purpose (what it must convey)
+
+* Teams leave **spreadsheet workflows**, **legacy desktop tools**, and **multi-app patchworks** because they cause retyping, delays, and errors.
+* LinkServicePro provides a **single, cohesive flow** (Scheduling/Dispatch → Estimates/Quotes → Invoicing/Payments → Maintenance Plans) with faster cash and fewer callbacks.
+* Switching is **safe and guided** (import, training, and support).
+
+### 2) Content structure (no tabs, no tables)
+
+**A) Header block**
+
+* Eyebrow: “Why Teams Switch”
+* H2: short, punchy headline (e.g., “Trade chaos for one clean flow.”)
+* One supporting sentence in plain language, non-comparative, no competitor names or logos.
+
+**B) “Breakup Stories” cards (3–5 cards, single row on desktop; stacked on mobile)**
+
+* Each card follows the same narrative:
+
+  * Title: the situation they’re leaving (e.g., “Spreadsheet Workarounds”, “Legacy Desktop System”, “4-App Patchwork”).
+  * “Before” pain: 2 short bullets (retyping, late invoices, unknown job status).
+  * “After” outcome with LinkServicePro: 2 short bullets (same-day invoicing, single source of truth, live crew status).
+  * Micro-metric or proof hint (qualitative if exact numbers aren’t available).
+  * CTA link: “See how we replace this” → a relevant feature/solutions page you already have.
+* Visual: neutral, **non-brand** illustration or AI-generated metaphor (no competitor IP, no logos). Consistent style across cards.
+
+**C) “Switch in 3 Steps” process strip (horizontal on desktop; vertical on mobile)**
+
+* Step 1: **Import** (customers, jobs, items).
+* Step 2: **Train** (dispatch + field app quickstart).
+* Step 3: **Go live** (first week: scheduling + quotes + invoices).
+* Each step shows a small icon and one sentence. Link to Help/Docs if available.
+
+**D) “Assurances” row (3 compact badges)**
+
+* Examples: “Unlimited users on paid plans”, “Calendar sync (Google & Apple)”, “Secure payments”.
+* Monochrome, low-contrast badges to avoid visual noise.
+
+**E) CTA block**
+
+* Primary: “Get Started Free” (existing route).
+* Secondary: “Talk to an expert” (existing contact/demo route).
+
+### 3) Layout & sizing (mobile-first)
+
+* **Mobile (default)**: Stack blocks in the order Header → Breakup Stories (cards stacked) → 3-Step strip → Assurances → CTA.
+* **Desktop (lg+)**:
+
+  * 12-column grid.
+  * Header spans 8–10 columns (centered or left-aligned).
+  * Breakup Stories cards in a 3–5 card row with equal widths and consistent heights (no Masonry).
+  * 3-Step strip as a horizontal band below the cards.
+  * Assurances row beneath, then the CTA.
+
+### 4) Interactions & motion (subtle; no auto-tabs, no carousels)
+
+* Card hover (desktop only): subtle lift or inner shadow; border becomes brand blue; **no layout shift** (keep a transparent border at rest).
+* Optional micro-motion for the 3-Step icons on viewport entry; disable for `prefers-reduced-motion`.
+* **No auto-rotate** and **no continuous motion** in this section.
+
+### 5) Copy guidance (original, competitor-oriented but neutral)
+
+* Avoid mentioning specific competitor brand names or copying their messaging.
+* “Before” bullets describe problems generically (retyping, late invoicing, status blind spots).
+* “After” bullets map to LinkServicePro outcomes you actually deliver (faster dispatch, same-day invoice, recurring plans).
+* Keep it concrete and short—contractor language, not buzzwords.
+
+### 6) Visual direction
+
+* Canvas/background matches the site’s navy tone.
+* Cards: rounded, inside border at low contrast; consistent internal padding; icons limited and purposeful.
+* Illustrations or AI images are **neutral metaphors** (workflow, tools, dashboards), **not** brand marks.
+* Color contrast: all text AA or better.
+
+### 7) Accessibility
+
+* Semantic structure: one H2 for the section; card titles as H3s.
+* All interactive elements (links, CTAs) have visible focus rings and ≥44px hit targets.
+* Decorative illustrations are `alt=""`; informative visuals have concise `alt`.
+* No content conveyed by color alone; keep icon + text pairing.
+
+### 8) Performance
+
+* No third-party embeds in this section.
+* Lazy-load imagery that’s below the fold; `decoding="async"`.
+* Provide intrinsic dimensions or aspect ratios to eliminate layout shift.
+
+### 9) SEO
+
+* Clean heading hierarchy; avoid keyword stuffing.
+* No Review/AggregateRating schema here (testimonials live elsewhere).
+* Internal links are crawlable and point to real pages (features/solutions/help).
+
+### 10) Analytics (events)
+
+* Track card clicks (`why-switch.card_click` with card key).
+* Track CTA clicks (`why-switch.cta_primary`, `why-switch.cta_secondary`).
+* Track 3-Step help/docs clicks if present.
+
+### 11) Acceptance criteria
+
+1. Section renders with **no tabs** and **no comparison table/matrix**.
+2. “Breakup Stories” cards clearly show **Before → After** with concise bullets and a CTA per card.
+3. “Switch in 3 Steps” is obvious and readable; icons and copy are consistent.
+4. Assurances are present but low-contrast; the CTA pair is visible and distinct.
+5. Accessibility, contrast, and focus states pass; no layout shift; no continuous animation.
+6. Routes and SEO outside this band remain unchanged.
+
+---
+
+When this ships, we can iterate on the **card copy** and add industry-specific “switch” variants (e.g., an HVAC-focused card) without ever resorting to a tabbed or table layout.

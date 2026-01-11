@@ -1,0 +1,119 @@
+You are a senior product designer + front-end engineer. Apply a VISUAL UPLIFT to the existing LinkServicePro site. Keep the current layout and copy. Mobile-first. No functional changes. Improve contrast, depth, and “wow” while respecting accessibility and performance.
+
+GOALS
+- Keep grayscale base. Add bold accents and depth in key spots.
+- Sharpen CTAs and navbar buttons.
+- Make the hero’s LEFT column visually striking.
+- Subtle shadows and layered gradients; fast and AA-compliant.
+
+ADD FILE
+- src/styles/theme.css (import in main.jsx)
+
+THEME TOKENS (use via utility classes + small custom CSS)
+- Colors: ink #0F172A, slate #1F2937, border #E5E7EB, blueprint #0B5FFF, teal #00C2A8, amber #F59E0B.
+- Elevations:
+  .elev-1 { box-shadow: 0 1px 2px rgba(15,23,42,.06), 0 1px 1px rgba(15,23,42,.04); }
+  .elev-2 { box-shadow: 0 8px 24px rgba(15,23,42,.12), 0 2px 6px rgba(15,23,42,.08); }
+  .elev-glow { filter: drop-shadow(0 6px 16px rgba(11,95,255,.35)); }
+- Section backgrounds:
+  .spot-bg { background: radial-gradient(120% 140% at 0% 0%, rgba(11,95,255,.08), transparent 60%), radial-gradient(120% 140% at 100% 0%, rgba(0,194,168,.06), transparent 60%); }
+  .hero-grid { background:
+      radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px) 0 0/22px 22px,
+      linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+  }
+- Buttons:
+  .btn { @apply inline-flex items-center justify-center px-5 py-3 font-extrabold tracking-tight rounded-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2; }
+  .btn-primary { @apply text-white bg-[#0B5FFF] hover:bg-[#0949C6]; }
+  .btn-primary-glow { @apply btn btn-primary; }
+  .btn-primary-glow:hover { filter: drop-shadow(0 8px 20px rgba(11,95,255,.45)); transform: translateY(-1px); }
+  .btn-outline { @apply text-[#0B5FFF] border border-[#0B5FFF] bg-white hover:bg-[#EFF6FF]; }
+  .btn-ghost { @apply text-slate-700 hover:text-slate-900; }
+
+GLOBAL
+- Increase text contrast across cards: use text-slate-900 on light backgrounds.
+- Add .elev-1 to cards by default; .elev-2 on hover with transition.
+- Keep reduced-motion safe. Prefer transform/opacity.
+
+NAVBAR (update Navbar.jsx)
+- Right buttons redesign:
+  Sign in → className="link-underline btn-ghost"
+  Book a Demo → className="btn btn-outline hidden lg:inline-flex"
+  Start Free Trial → className="btn-primary-glow ml-2"
+- Compact bar height ~64px. Add subtle bottom border: border-b border-slate-200/70 + backdrop-blur.
+- Keep underline hover for nav links. No persistent underline unless on that route.
+
+HERO LEFT (update Hero.jsx only for left column)
+- Wrap left column in a layered card with hero-grid + spot glow:
+  <div className="relative p-6 md:p-8 bg-white/90 hero-grid elev-2 ring-1 ring-slate-200">
+    - H1 uses gradient text:
+      className="text-3xl md:text-5xl font-extrabold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#0B5FFF] via-[#00C2A8] to-[#0B5FFF]"
+    - Subhead shorter. One metric chip row:
+      Chips: “Save 6–10 hrs/week”, “-18% drive time”, “Get paid faster”
+      className for chips: inline-flex items-center px-3 py-1 text-sm bg-slate-100 border border-slate-200
+    - CTA stack:
+      Primary → className="btn-primary-glow"
+      Secondary → className="btn btn-outline ml-3"
+    - Trust row under CTAs: small logos (placeholders) at 60–80px width with opacity-80 hover:opacity-100.
+  </div>
+- Keep the RIGHT image carousel. Add a frame for depth:
+  Carousel container className="relative elev-2 ring-1 ring-slate-200 bg-white"
+  Add a subtle gradient halo behind:
+    <div className="absolute -inset-6 -z-10 rounded-none blur-2xl opacity-30"
+         style={{background: 'radial-gradient(closest-side, rgba(11,95,255,.35), transparent)'}} />
+
+PILLARS (Get Organized / Win More Jobs / Work Smarter / Boost Profits)
+- Convert to color-coded accents instead of flat gray:
+  Left border 3px using blueprint/teal/amber/ink.
+  Hover: translate-y-[-2px] elev-2 ring-1 ring-slate-200 transition.
+- Make entire card clickable.
+
+SCHEDULING & DISPATCH SECTION
+- Add spot-bg to the whole section container for subtle color.
+- Increase mock size by 10–15%. Wrap mock in white card with .elev-2 and ring-1 ring-slate-200.
+- Add a small “stat strip” under bullets: three small boxes with ▲/▼ trend icons.
+
+QUOTE → WORK ORDER → INVOICE
+- Replace window chrome with large icons inside white cards.
+- Add connecting gradient line (CSS linear-gradient) beneath icons for motion-free “flow” feel.
+
+CUSTOMER EXPERIENCE
+- Flip layout on desktop: testimonial left, bullets right.
+- Testimonial card gets .elev-2 + left accent bar in teal.
+
+PROJECTS & JOB COSTING
+- KPI strip uses colored text for positive/negative metrics: green for margin up, slate for neutral. Add tiny sparkline SVG placeholders.
+
+INDUSTRIES GRID
+- Each tile gets icon + short benefit. On hover: ring-1 ring-[#0B5FFF] elev-2.
+- Add “See workflows →” link inside each card, right-aligned.
+
+INTEGRATIONS
+- Use logo tiles (grayscale → color on hover). Card class: bg-white elev-1 ring-1 ring-slate-200 hover:elev-2.
+
+PRICING TEASER
+- Add a gradient ribbon behind the CTA block:
+  <div className="relative py-10">
+    <div className="absolute inset-x-0 -z-10 h-1/2 bg-gradient-to-r from-[#0B5FFF]/10 via-[#00C2A8]/10 to-transparent"></div>
+  </div>
+
+STICKY MOBILE CTA
+- Add a bottom sticky bar on ≤640px:
+  <div className="fixed inset-x-0 bottom-0 z-40 bg-white/95 border-t border-slate-200 px-4 py-3 flex gap-3">
+    <a className="btn-primary flex-1 text-center">Start Free Trial</a>
+    <a className="btn-outline flex-1 text-center">Book a Demo</a>
+  </div>
+- Hide when a modal is open. Respect prefers-reduced-motion.
+
+MICRO-INTERACTIONS
+- Cards/buttons: transition-transform duration-150; hover:translate-y-[-1px]; active:translate-y-[0].
+- Focus-visible rings on all interactive elements: ring-2 ring-offset-2 ring-[#0B5FFF].
+
+A11Y + PERF
+- Maintain AA contrast. No animations if prefers-reduced-motion.
+- Keep images optimized; add width/height; loading="lazy".
+- Do not import new libs.
+
+DELIVERABLES
+- Updated Navbar, Hero (left column only), cards, and section containers with the classes above.
+- src/styles/theme.css with the utility classes supplied.
+- No layout rewrites. Visual uplift only.

@@ -1,0 +1,181 @@
+Refactor client/src/components/PillarsTabs.tsx into a high-clarity, high-contrast feature navigator.
+
+NAME
+FeatureNavigator4
+
+OBJECTIVE
+Make it instantly obvious that LinkServicePro is:
+1) Scheduling software
+2) Work order software
+3) Estimate + e-sign software
+4) Invoicing + payments software
+
+STYLE
+- Pro-Blueprint aesthetic: sharp corners, thick strokes, blueprint grid accents.
+- Custom inline SVG pictograms (not stock icons). Duotone navy #0E2A47 + blue #0B5FFF.
+- Large pictograms (72px). Minimal motion, respect reduced-motion.
+- Tabs look like individual cards with a tall icon header strip.
+- Content = short benefit bullets + tiny “how it helps” line.
+- Internal links to each feature page.
+- Remove reviews here.
+
+STRUCTURE (mobile-first)
+<section aria-labelledby="features-4ways-h2" class="px-4 sm:px-6 lg:px-8 py-12 bg-white">
+  <header>
+    <h2 id="features-4ways-h2" class="text-2xl sm:text-3xl font-extrabold text-slate-900">Four Ways to Grow</h2>
+    <p class="text-slate-700">Scheduling, work orders, estimates, and invoicing—built for crews in the field.</p>
+  </header>
+
+  <!-- Tab cards -->
+  <!-- Use Radix Tabs OR build with buttons+aria; either way keyboard accessible -->
+  <div role="tablist" aria-label="Product areas"
+       class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- Tab triggers: each its own card -->
+  </div>
+
+  <!-- Panels -->
+  <div id="feature-panels" class="mt-6">
+    <!-- One panel visible, others hidden -->
+  </div>
+
+  <!-- Standard CTAs -->
+  <div class="mt-6">
+    <ButtonsRow>
+      <StartFreeButton context="light" />
+      <ViewPricingButton context="light" />
+    </ButtonsRow>
+  </div>
+</section>
+
+TAB TRIGGERS (cards)
+Each trigger is a button with:
+- class="group rounded-none ring-1 ring-slate-200 bg-white p-4 elev-2 text-left focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2"
+- icon header: 100% width strip with blueprint grid bg and the custom SVG centered (h-18).
+- label: bold line + sublabel.
+
+Tabs:
+1) value="scheduling"
+   Label: “Scheduling”
+   Sublabel: “Drag. Drop. Done.”
+   Icon: calendar+route pictogram (see SVG spec below)
+
+2) value="workorders"
+   Label: “Work Orders”
+   Sublabel: “Jobs with checklists”
+   Icon: wrench+checkbox pictogram
+
+3) value="estimates"
+   Label: “Estimates + E-Sign”
+   Sublabel: “Approve in one tap”
+   Icon: document+pen pictogram
+
+4) value="invoicing"
+   Label: “Invoicing + Payments”
+   Sublabel: “Get paid faster”
+   Icon: invoice+card pictogram
+
+PANEL CONTENT (short, scannable)
+
+SCHEDULING (hrefs update to real slugs):
+<h3 class="text-xl font-extrabold text-slate-900">Scheduling</h3>
+<ul class="mt-3 grid gap-2 list-disc pl-5 text-slate-800">
+  <li>Drag to assign; conflicts auto-checked.</li>
+  <li>Live map and routes cut drive time.</li>
+  <li>Recurring jobs handled on autopilot.</li>
+  <li>Instant ETA texts to customers.</li>
+</ul>
+<nav class="mt-4 flex flex-wrap gap-4 text-[#0B5FFF] font-semibold">
+  <a href="/features/drag-and-drop-scheduling" class="link-underline">Drag-and-Drop Scheduling</a>
+  <a href="/features/dispatch-board" class="link-underline">Dispatch Board + Map</a>
+  <a href="/features/route-optimization" class="link-underline">Route Optimization</a>
+</nav>
+<p class="mt-2 text-sm text-slate-600">Outcome: stop double-booking and shave miles off every day.</p>
+
+WORK ORDERS
+<h3 class="text-xl font-extrabold text-slate-900">Work Orders</h3>
+<ul class="mt-3 grid gap-2 list-disc pl-5 text-slate-800">
+  <li>Job details, photos, and checklists in one place.</li>
+  <li>Track parts, time, and signatures on site.</li>
+  <li>Multi-WO projects with tasks and dependencies.</li>
+  <li>Offline capture; syncs when back online.</li>
+</ul>
+<nav class="mt-4 flex flex-wrap gap-4 text-[#0B5FFF] font-semibold">
+  <a href="/features/work-orders" class="link-underline">Work Orders</a>
+  <a href="/features/project-tracking" class="link-underline">Projects</a>
+  <a href="/features/customer-portal" class="link-underline">Customer Portal</a>
+</nav>
+<p class="mt-2 text-sm text-slate-600">Outcome: clean handoffs and first-time fixes rise.</p>
+
+ESTIMATES + E-SIGN
+<h3 class="text-xl font-extrabold text-slate-900">Estimates + E-Sign</h3>
+<ul class="mt-3 grid gap-2 list-disc pl-5 text-slate-800">
+  <li>Send professional quotes from phone or desktop.</li>
+  <li>E-sign approvals convert to work orders.</li>
+  <li>Price books and options in a few taps.</li>
+  <li>Auto follow-ups until you get a yes.</li>
+</ul>
+<nav class="mt-4 flex flex-wrap gap-4 text-[#0B5FFF] font-semibold">
+  <a href="/features/quote-builder" class="link-underline">Quote Builder</a>
+  <a href="/features/esign" class="link-underline">E-Sign</a>
+  <a href="/features/2-way-messaging" class="link-underline">2-Way Messaging</a>
+</nav>
+<p class="mt-2 text-sm text-slate-600">Outcome: win rate rises and sales cycle shrinks.</p>
+
+INVOICING + PAYMENTS
+<h3 class="text-xl font-extrabold text-slate-900">Invoicing + Payments</h3>
+<ul class="mt-3 grid gap-2 list-disc pl-5 text-slate-800">
+  <li>Invoice in the field; collect deposits and partials.</li>
+  <li>Batch invoices before crews clock out.</li>
+  <li>Cards and ACH; sync to QuickBooks/Xero.</li>
+  <li>Aging and reminders keep AR clean.</li>
+</ul>
+<nav class="mt-4 flex flex-wrap gap-4 text-[#0B5FFF] font-semibold">
+  <a href="/features/invoicing" class="link-underline">Invoicing</a>
+  <a href="/features/payments" class="link-underline">Payments</a>
+  <a href="/features/accounting-sync" class="link-underline">QuickBooks/Xero Sync</a>
+</nav>
+<p class="mt-2 text-sm text-slate-600">Outcome: days-to-paid drop; cash flow steadies.</p>
+
+CUSTOM SVG PICTOGRAMS (inline components, 72px, thick 2.5–3px strokes)
+- Use <svg viewBox="0 0 64 64" class="h-18 w-18"> with two colors:
+  stroke="#0E2A47" fill="none"; accents fill="#0B5FFF".
+- Scheduling icon: calendar grid + route polyline with waypoint dots (blue).
+- Work orders icon: wrench over a checklist card; check marks in blue.
+- Estimates icon: document with currency symbol and pen nib overlay; signature squiggle in blue.
+- Invoicing icon: invoice sheet + credit card; paid stamp rectangle accent in blue.
+- No external icon libs; embed SVG to control weight and brand feel.
+
+ACCESSIBILITY
+- Real tabs: role="tablist", buttons role="tab", aria-selected, aria-controls to panel ids.
+- ArrowLeft/Right/Home/End navigation on tabs.
+- Icons aria-hidden="true".
+- Visible focus: ring-2 #0B5FFF with ring-offset-2 (white).
+- Panels role="tabpanel" aria-labelledby link back to tab.
+
+INTERACTION
+- On tab change, animate the icon strip background with a quick 80ms opacity change (no movement). Respect prefers-reduced-motion.
+- On hover, underline tab label from right→left (existing global rule).
+
+CARDS & PANELS LAYOUT
+- Triggers: `grid grid-rows-[88px_auto]` so the pictogram sits in its own header strip with `.bg-[image:var(--blueprint-grid)]` subtle grid.
+- Panels: ring-1 ring-slate-200 elev-2 p-5 bg-white rounded-none.
+- Ensure no vertical bloat. Bullets max 8 words.
+
+CTAs
+- Below panels only. Use:
+  <ButtonsRow>
+    <StartFreeButton context="light" />
+    <ViewPricingButton context="light" />
+  </ButtonsRow>
+
+TEST IDS
+- data-testid="tabs-4ways"
+- data-testid="tab-scheduling" / "tab-workorders" / "tab-estimates" / "tab-invoicing"
+- data-testid="panel-scheduling" etc.
+
+ACCEPTANCE
+- At a glance, a new visitor understands we offer Scheduling, Work Orders, Estimates, and Invoicing.
+- Pictograms look custom, bold, and on-brand (not stock).
+- Bullets are short; each panel includes 2–3 internal feature links.
+- Section passes keyboard tab/arrow navigation and has visible focus.
+- No overflow at 375px. 

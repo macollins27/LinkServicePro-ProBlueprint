@@ -1,0 +1,202 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+## Goal
+
+For **every feature page**, keep the current high-converting landing layout and generate **one high-quality AI image per page** that delivers a strong “that’s me at work” reaction. Use that single image as:
+
+* The **hero** visual.
+* A **subtle blurred backdrop** for one mid-page section (CSS overlay).
+* A **small thumb** for related cards (auto-cropped).
+
+Mobile-first. Sharp corners. AA contrast. No horizontal scroll at 375px. Rectangular bold buttons. Sticky bottom CTA + inline lead form on every page. Do not change copy structure. Only add the new single-image workflow.
+
+---
+
+## Section order (unchanged per page)
+
+1. Hero band (Title, Subtitle, 3 KPI tiles, CTAs, single hero image)
+2. What it does (3 bullets)
+3. Why teams switch (Pain → Solve)
+4. How it works (3 steps)
+5. In the field (testimonial)
+6. Works with (integrations)
+7. Mini demo + lead capture
+8. Related features (use the same one image as a 1:1 thumb)
+9. FAQ
+10. Bottom CTA band
+11. Sticky bottom CTA
+
+---
+
+## Image rules (applies to every page)
+
+* **Exactly one AI-generated image per feature page.**
+* **No screens. No UI. No readable phones/tablets/laptops/monitors.** If a device appears, its screen is off or out of frame.
+* Documentary jobsite style. Natural light. 24–70mm look. Slightly warm. Moderate contrast. OSHA-safe PPE. Tight crop on hands, tools, vehicles, environments. No third-party logos.
+* Output: AVIF + WebP + JPEG at **1600 / 1200 / 768 / 480** widths, plus **LQIP 20px blur**. Provide alt text (role + task + context) and a short caption (≤80 chars).
+* Save to `/public/images/{slug}/hero.*` and return a manifest object per page with `srcsets`, `alt`, `caption`.
+
+---
+
+## Placement
+
+* **Hero:** place the single image full-bleed in the hero, left/top on mobile, side-by-side with KPIs/CTAs on desktop.
+* **Backdrop reuse:** apply a soft, low-opacity, blurred version behind **“How it works”** or **“Pain → Solve”** using CSS overlay (no readability loss).
+* **Related:** auto-generate a centered 1:1 crop for the related feature card.
+
+---
+
+## Per-feature single-image prompts
+
+Use the “No-Screens Documentary Macro” + the specific prompt below.
+**No-Screens Documentary Macro:**
+“{TRADE}, {ACTION}, {ENVIRONMENT DETAILS}, **no screens visible**, documentary jobsite, natural light, shallow depth, moderate contrast, PPE correct, tight crop on hands/tools/vehicle, 35mm composition.”
+
+### Plan & Dispatch
+
+* **drag-and-drop-scheduling**
+  HVAC technician in service van at dawn, checking a **printed run sheet** on a clipboard, gloves and tool bags visible, windshield glow.
+  Alt: HVAC tech reviewing printed route sheet in service van.
+  Caption: Morning dispatch before first stop.
+
+* **dispatch-board-live-map**
+  Dispatcher moving **colored magnetic job cards** on a wall map with zone outlines, radio on desk, tag tray nearby.
+  Alt: Dispatcher arranging crew magnets by zone on wall map.
+  Caption: Crews at a glance by zone.
+
+* **route-optimization**
+  Laminated city map on tailgate with **string route line** and numbered stop chips, hands resequencing stops.
+  Alt: Resequencing day’s route on laminated map.
+  Caption: Shortest path laid out.
+
+* **real-time-gps**
+  Yard gate with **geofence sign**, foreman holding a key tag stamped with time, work trucks in background.
+  Alt: Time-stamped key tag at geofenced yard gate.
+  Caption: Verified arrivals and departures.
+
+* **capacity-planning**
+  Wall calendar with **colored hour bars** made from magnetic strips; hand moving a job ticket from Fri to Wed.
+  Alt: Shifting workload with magnetic hour bars.
+  Caption: Balance crews before overtime.
+
+* **automated-reminders**
+  Stack of **pre-printed appointment cards** and stamped envelopes; hand placing today’s card on counter by front door.
+  Alt: Appointment reminder card prepared for customer.
+  Caption: Fewer no-shows, clearer windows.
+
+* **recurring-jobs**
+  Box of **monthly service tags** labeled by week; hand selecting “1st Tuesday” tag.
+  Alt: Picking recurring service tag for schedule.
+  Caption: Set once, repeat on cadence.
+
+### Win & Deliver
+
+* **crm-leads**
+  Shop counter pipeline rack with **paper lead intake cards** moving from “New” to “Quote”, pencil and call log pad.
+  Alt: Lead cards moving through physical pipeline.
+  Caption: Every inquiry tracked.
+
+* **quote-builder-e-sign**
+  Bound **estimate book** with carbon copy; customer initialing line item; deposit check stub clipped.
+  Alt: Customer initialing printed estimate with deposit.
+  Caption: Approvals without delay.
+
+* **work-orders**
+  **Laminated checklist** on clipboard clipped to a tool cart; boxes ticked with marker; parts bag labeled.
+  Alt: Work order checklist completed on site.
+  Caption: Do it right the first time.
+
+* **project-tracking**
+  Accordion folder with tabs **WOs / Estimates / Invoices**; printed timeline strip; jobsite photos clipped.
+  Alt: Project folder organizing multi-visit job.
+  Caption: Everything in one place.
+
+* **customer-portal**
+  Kitchen counter with **printed invoice and photo sheet**; homeowner marking “paid” with pen; toolbox nearby.
+  Alt: Homeowner reviewing printed invoice and photos.
+  Caption: Clear, simple, self-serve.
+
+* **two-way-messaging**
+  Shared **message pad** with job number and timestamp; slip being placed into a job folder.
+  Alt: Team message slip filed to job folder.
+  Caption: Conversations tied to work.
+
+* **review-requests**
+  **Printed review card** with QR sticker (blurred); tech placing it on fridge with magnet.
+  Alt: Review request card left after job.
+  Caption: Ask at the right time.
+
+### Get Paid & Operate
+
+* **invoicing-batch**
+  Collated stack of **printed invoices** stamped “SENT”; postage scale and date stamp.
+  Alt: Batch of invoices ready to send.
+  Caption: Billing in minutes.
+
+* **online-field-payments**
+  Customer **signing paper receipt** on clipboard; handheld receipt printer on belt; numbers obscured.
+  Alt: Customer signing field payment receipt.
+  Caption: Paid before leaving site.
+
+* **deposits-partials**
+  Quote packet with **deposit receipt** clipped and milestone tickets arranged in order.
+  Alt: Deposit attached to quoted work packet.
+  Caption: Cash flow secured.
+
+* **job-costing-profit**
+  Clipboard with **cost ledger printouts** and highlighter marks; calculator and tape measure.
+  Alt: Job cost ledger highlighted for variance.
+  Caption: See margin in real time.
+
+* **payroll-wage-scales**
+  Timecard rack with **stamped cards**; wage scale sheet pinned to corkboard (figures unreadable).
+  Alt: Timecards and wage scale rules posted.
+  Caption: Accurate pay without spreadsheets.
+
+* **pos-vendor-mgmt**
+  **Paper PO** stamped RECEIVED; vendor insurance certificate in sleeve (details unreadable); parts box behind.
+  Alt: PO received and documented at bench.
+  Caption: Materials under control.
+
+* **quickbooks-xero-sync**
+  Binders labeled **SYNCED** and **TO REVIEW**; printed audit log entries with redactions.
+  Alt: Accounting sync audit materials organized.
+  Caption: Books match the work.
+
+---
+
+## Implementation
+
+1. For each `slug`, generate the single image using its prompt + the **No-Screens Documentary Macro**.
+2. Export AVIF/WebP/JPEG at 1600/1200/768/480 + LQIP; save to `/public/images/{slug}/hero.*`.
+3. Return a manifest per page:
+
+```json
+{
+  "slug": "drag-and-drop-scheduling",
+  "hero": {
+    "alt": "HVAC tech reviewing printed route sheet in service van.",
+    "caption": "Morning dispatch before first stop.",
+    "srcset": {
+      "avif": ["/public/images/drag-and-drop-scheduling/hero-480.avif","/public/images/drag-and-drop-scheduling/hero-768.avif","/public/images/drag-and-drop-scheduling/hero-1200.avif","/public/images/drag-and-drop-scheduling/hero-1600.avif"],
+      "webp": ["/public/images/drag-and-drop-scheduling/hero-480.webp","/public/images/drag-and-drop-scheduling/hero-768.webp","/public/images/drag-and-drop-scheduling/hero-1200.webp","/public/images/drag-and-drop-scheduling/hero-1600.webp"],
+      "jpeg": ["/public/images/drag-and-drop-scheduling/hero-480.jpg","/public/images/drag-and-drop-scheduling/hero-768.jpg","/public/images/drag-and-drop-scheduling/hero-1200.jpg","/public/images/drag-and-drop-scheduling/hero-1600.jpg"]
+    },
+    "lqip": "data:image/jpeg;base64,..."
+  }
+}
+```
+
+4. Wire each page to use the new hero image in the hero, apply a blurred overlay reuse behind one mid-page section, and auto-crop a 1:1 center thumbnail for “Related features”.
+
+---
+
+## Acceptance
+
+* One authentic jobsite image per feature page.
+* No screens or UI. Strong “that’s me at work” feel.
+* Hero, backdrop reuse, related thumb all driven from the single asset.
+* Lighthouse: ≥90 Performance, ≥95 Accessibility.
+* No horizontal scroll at 375px.

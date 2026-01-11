@@ -1,0 +1,509 @@
+Locked in. This next page is **Invoicing & Payments**.
+
+This page must do two things:
+
+1. Convert the owner who’s sick of chasing money.
+2. Position you as the system that gets them paid fast and proves profit.
+
+People search for “field service invoicing software,” “take card payment in the field,” “HVAC invoicing app,” “batch invoicing,” “job costing.” This page needs to hit all of that, clearly, without fluff.
+
+Same format as before:
+
+* Part A: Page spec (copy and structure for `/features/invoicing-payments`)
+* Part B: Replit instructions (paste directly to Replit and they build it)
+
+We continue the visual system you’ve already committed to:
+
+* Dark navy hero
+* Spotlight cards with PlanRibbon
+* Light/dark section alternation
+* CTA every section
+* Internal linking to profit/costing page
+
+---
+
+## A. PAGE SPEC: Invoicing & Payments
+
+ROUTE / SLUG
+`/features/invoicing-payments`
+
+META
+
+* `<title>`: “Field Service Invoicing & Payments | Get Paid On-Site or Same Day”
+* `<meta name="description">`: “Send invoices from the job site, collect card payments in the field, batch bill every open job, and see what you actually made. Unlimited users on paid plans. No per-tech seat fees.”
+
+PRIMARY SEO INTENT
+
+* “field service invoicing software”
+* “HVAC invoice app”
+* “take payment in the field”
+* “batch invoicing”
+* “service business credit card payment app”
+* “job costing and profitability”
+
+H1 (hero heading on page)
+“Invoice on the spot. Get paid in hours, not days.”
+
+Hero Subhead
+“Send invoices from the job site or in bulk. Take card payment right there. Track what you actually made — after labor and materials — without chasing anybody.”
+
+CORE MESSAGE TO HAMMER:
+
+* You get paid faster.
+* You stop begging for money.
+* You know if the job was even profitable.
+* You’re not rebuilding invoices by hand in some other system.
+
+PAGE STRUCTURE (4 sections + final CTA):
+
+1. HERO: “Invoice on the spot” (dark navy)
+2. GET PAID FAST (spotlight card for invoicing / payments)
+3. CUSTOMER PORTAL & LESS CHASING
+4. KNOW YOUR PROFIT (costing / tracking / POs)
+5. FINAL CTA BAND
+
+---
+
+SECTION 1. HERO
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text):
+
+* Eyebrow chip pill:
+
+  * Text: “Invoicing & Payments”
+  * Class: `inline-block text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-4`
+* H1 (white, bold, large):
+  “Invoice on the spot. Get paid in hours, not days.”
+* Subhead (white/80, text-sm leading-relaxed sm:text-base):
+  “Send invoices from the job site or in bulk. Take card payment right there. Track what you actually made — after labor and materials — without chasing anybody.”
+* Value row (flex flex-col gap-2 mt-4 text-[13px] text-white/80 sm:flex-row sm:flex-wrap sm:gap-4):
+
+  * “Batch every unpaid job at once”
+  * “Tap to collect card on-site”
+  * “Partial deposits and progress billing”
+    Each prefixed with an icon in `text-[#0B5FFF]` (CreditCard, DollarSign, FileText).
+* Badge row (flex flex-wrap gap-2 text-[11px] mt-4):
+  Chips: `bg-white/10 border border-white/20 text-white font-medium rounded-full px-3 py-[3px]`
+
+  * “Batch invoicing”
+  * “Card payments in the field”
+  * “Deposits & partials”
+  * “Unlimited users on paid plans”
+* CTA row:
+
+  * Primary CTA button (blue #0B5FFF): “Start Free”
+  * Secondary outline button (border-white/30): “See Billing Flow”
+    Both with focus-visible rings.
+* Tiny reassurance line under (`text-[11px] text-white/60 mt-2`):
+  “No credit card to start. Works with Google Calendar and Apple Calendar for scheduled work.”
+
+Right column (mock):
+
+* Placeholder “Invoice / Pay Now” card:
+
+  * Container:
+    `relative bg-white/5 border border-white/10 rounded-xl shadow-inner p-4 min-h-[260px] flex flex-col justify-between`
+  * Top line (white text, text-sm font-semibold):
+    “Invoice #7421 — ‘Drain line jetting’”
+  * Stacked gray bars inside (`bg-white/10 rounded-md h-4 w-3/4 mb-2`, etc.) to simulate line items, total due, “Pay Now” button.
+  * Bottom caption in `text-[11px] text-white/60`:
+    “Amount due • Pay link • Signature / proof attached”
+
+SECTION 1 GOAL:
+Hit the “money now” nerve. Make them feel stupid for still waiting days.
+
+---
+
+SECTION 2. GET PAID FAST
+Background: white (`bg-white text-slate-900`)
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card “Get Paid Fast”
+Card container:
+`relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+
+Inside:
+
+* `<PlanRibbon plan="Free → Premium" />`
+  top-right, `absolute -top-2 -right-2 z-20`.
+  Meaning: basic single invoices available early, batch invoicing / advanced billing at higher tiers.
+* Eyebrow chip pill:
+
+  * Text: “Get Paid Fast”
+  * Class: `inline-block text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-[3px] mb-3`
+* Headline (`text-xl font-semibold text-slate-900`):
+  “Send an invoice and take payment before you leave the driveway.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Your tech finishes the job, shows the invoice, and collects payment right there. If the job’s not paid on-site, you can batch-send everything outstanding at the end of the day.”
+* Bullets (vertical stack gap-3, icon + text):
+  Bullet 1:
+  Icon: `CreditCard` (`text-[#0B5FFF] w-5 h-5`) `aria-hidden="true"`
+  Title: “Payment in the field”
+  Support: “Swipe or tap card. Get money now instead of ‘we’ll mail a check.’”
+  Bullet 2:
+  Icon: `Send` or `Mail`
+  Title: “Batch invoicing”
+  Support: “Send every unpaid job in one click instead of doing 18 separate emails.”
+  Bullet 3:
+  Icon: `DollarSign`
+  Title: “Deposits & partials”
+  Support: “Take a down payment on larger jobs, then bill progress.”
+* CTA at bottom of card:
+
+  * Primary button (blue): “See Billing Flow”
+  * Under-button blue text link: “Start Free →”
+
+Right column = Outcome Rows (not cards)
+Three stacked rows with icon + title + 1-line:
+Row 1:
+Title: “Less chasing.”
+Copy: “If they don’t pay on-site, they instantly get a ‘Pay Now’ link.”
+Row 2:
+Title: “Less confusion.”
+Copy: “Invoice shows exactly what was done with photos attached.”
+Row 3:
+Title: “Less admin.”
+Copy: “You’re not rebuilding invoices in another system at 9PM.”
+
+After rows:
+Blue link:
+
+* “See Estimates & Quotes →”
+  link `/features/estimates-quotes`
+* Style: `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+
+SECTION 2 GOAL:
+We’re telling them: you stop being a bill collector. You become “paid on completion.”
+
+---
+
+SECTION 3. CUSTOMER PORTAL & LESS CHASING
+Background: `bg-slate-50 text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text content):
+
+* h2 (`text-2xl font-semibold text-slate-900`):
+  “Your customer always knows what they owe.”
+* Subtext (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “No more ‘Can you resend that invoice?’ texts. They get a clean portal with their quotes, invoices, payments, and history — and a pay button.”
+* Bullets list (gap-4, icon + text):
+  Bullet 1:
+  Title: “Customer portal”
+  Body: “They can view past work, download invoices, and pay outstanding balance.”
+  Plan chip inline: `bg-slate-200 text-slate-700 text-[10px] font-medium rounded-full px-1.5 py-[1px] ml-2`
+  Chip text: “Starter+”
+  Bullet 2:
+  Title: “Automatic ‘Your invoice is ready’ messages”
+  Body: “No manual chasing. The system does the annoying part.”
+  Chip: “Starter+ / Essential+ for SMS”
+  Bullet 3:
+  Title: “Review requests & reputation”
+  Body: “We nudge happy customers to leave public reviews so you keep winning work.”
+  Chip: “Essential+”
+* CTA block:
+
+  * Primary button (blue): “Show Me the Portal”
+  * Secondary blue link: “Start Free →”
+
+Right column = Spotlight Card “Customer Portal”
+
+* Card container:
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+* `<PlanRibbon plan="Starter+" />` (top-right)
+* Eyebrow chip pill:
+  text: “Customer Portal”
+* Headline (`text-xl font-semibold text-slate-900`):
+  “They pay without calling you.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Your customer clicks the link, sees what they owe, taps pay. You’re out of the collections business.”
+* Gray placeholder mock inside:
+  `div className="bg-slate-100 rounded-lg h-32 w-full mt-4 flex items-center justify-center text-[11px] text-slate-500"`
+  Inner text: “Customer Portal / Invoice / Pay Now”
+* CTA small row in the card footer:
+
+  * Blue button text-sm: “See Billing Flow”
+  * Blue link under: “Compare Plans →”
+
+SECTION 3 GOAL:
+Owner hears: “I don’t have to nag. The system nags for me.”
+
+---
+
+SECTION 4. KNOW YOUR PROFIT
+Background: `bg-slate-900 text-white`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card “Profit & Cost Tracking”
+
+* Card container (DARK variant):
+  `relative bg-slate-800 ring-1 ring-slate-700 rounded-xl shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm text-white`
+* `<PlanRibbon plan="Premium" />`
+  Ribbon must still be visible against dark — keep our high-contrast ribbon style (light bg with dark text).
+* Eyebrow chip pill:
+
+  * Text: “Profit & Cost Tracking”
+  * Style: `inline-block text-[11px] font-semibold text-white bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-3`
+* Headline (`text-xl font-semibold text-white`):
+  “See profit per job, per tech, per day.”
+* Body (`text-white/70 text-sm leading-relaxed mb-6`):
+  “Stop guessing if the job made money. Track labor cost, materials cost, and actual margin. Know which work is worth taking — and which you should stop doing.”
+* Bullets (vertical stack gap-3):
+  Bullet pattern: flex gap-2 items-start
+
+  * Icon (BarChart, TrendingUp, DollarSignCircle) `text-[#0B5FFF] w-5 h-5` `aria-hidden="true"`
+  * Title `text-white text-sm font-medium`
+  * Support `text-[13px] text-white/60 leading-snug`
+    Bullet 1:
+    Title: “Job costing & profitability reports”
+    Support: “See margin on every single visit.”
+    Bullet 2:
+    Title: “Payroll & wage tracking”
+    Support: “Tie labor cost to each job so you know who’s productive.”
+    Bullet 3:
+    Title: “Expense & materials tracking”
+    Support: “Track parts, markups, and what you actually spent.”
+* CTA block at bottom of card:
+
+  * Outline-style button (border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none):
+    “See Profit Dashboard”
+  * Under-button link in blue `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`:
+    “Start Free →”
+
+Right column (text content):
+
+* Headline (`text-white font-semibold text-lg sm:text-xl`):
+  “Stop doing work that isn’t worth it.”
+* Subtext (`text-white/70 text-sm leading-relaxed mb-6`):
+  “You’ll see which jobs are killing your profit — long drive time, underpriced labor, parts that ate your margin — so you can fix it or stop offering it.”
+* Short list (icon in `text-[#0B5FFF] w-5 h-5`, text-white/80 text-sm):
+
+  * “Purchase orders & vendor management”
+  * “Vendor insurance status tracking”
+  * “Full history tied to the property address”
+* CTA block below:
+
+  * Outline button (same style as above):
+    “See Job Costing & Reporting”
+    link `/features/job-costing-reporting`
+  * Blue link below:
+    “View Scheduling & Dispatch →”
+    link `/features/scheduling-dispatch`
+
+SECTION 4 GOAL:
+Owner sees: “Not only do I get paid — I finally know if the job was even worth doing.”
+
+---
+
+SECTION 5. FINAL CTA BAND
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+Headline (`text-white font-semibold text-2xl sm:text-3xl`):
+“Get paid without chasing.”
+
+Subtext (`text-white/70 text-sm sm:text-base leading-relaxed mt-3`):
+“Batch invoices. Take card in the field. Show customers a portal instead of blowing up their phone. Unlimited users on paid plans. No per-tech seat fees.”
+
+CTA row (mobile stack first):
+
+* Primary button (blue #0B5FFF): “Start Free”
+* Secondary outline (border-white/30): “View Pricing”
+  All have focus-visible ring.
+
+TCPA line under, `text-[11px] text-white/60 mt-2`:
+“By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+---
+
+## B. REPLIT IMPLEMENTATION INSTRUCTIONS
+
+Paste this block into Replit:
+
+1. Create a new page component at `/features/invoicing-payments` using the same Next.js/React conventions and component patterns as the other feature pages we’ve already defined.
+
+2. Add `<Head>` with:
+
+   * `<title>Field Service Invoicing & Payments | Get Paid On-Site or Same Day</title>`
+   * `<meta name="description" content="Send invoices from the job site, collect card payments in the field, batch bill every open job, and see what you actually made. Unlimited users on paid plans. No per-tech seat fees." />`
+   * JSON-LD `SoftwareApplication` structured data:
+
+     * name: "LinkServicePro Invoicing & Payments"
+     * applicationCategory: "Field service management software"
+     * offers.description: "Start free. Unlimited users on paid plans. No per-tech seat fees."
+
+3. Render the following sections IN ORDER. Do not rearrange, do not rewrite copy:
+
+   SECTION 1. HERO (bg-[#0E2A47] text-white)
+
+   * Two-column grid. Left: hero text. Right: “Invoice #7421” mock card with gray bars and “Pay Now” caption.
+   * H1: “Invoice on the spot. Get paid in hours, not days.”
+   * Subhead about “Send invoices from the job site…”
+   * Value row, badge row, CTA buttons (“Start Free”, “See Billing Flow”), reassurance line under.
+   * Badge row includes “Batch invoicing,” “Card payments in the field,” “Deposits & partials,” “Unlimited users on paid plans.”
+
+   SECTION 2. GET PAID FAST (bg-white)
+
+   * Two-column grid.
+   * LEFT COLUMN: Spotlight Card
+
+     * Card wrapper:
+       `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+     * `<PlanRibbon plan="Free → Premium" />` absolute top-right.
+     * Eyebrow chip pill “Get Paid Fast”.
+     * Headline “Send an invoice and take payment before you leave the driveway.”
+     * Body and bullet list:
+
+       * Payment in the field
+       * Batch invoicing
+       * Deposits & partials
+         Each bullet is icon + title + supporting line.
+     * CTA block in card:
+
+       * Primary button (blue): “See Billing Flow”
+       * Under-button blue text link: “Start Free →”
+   * RIGHT COLUMN: Outcome rows (NOT cards)
+
+     * “Less chasing.” / “Less confusion.” / “Less admin.”
+     * Then blue link: “See Estimates & Quotes →” linking `/features/estimates-quotes`
+
+   SECTION 3. CUSTOMER PORTAL & LESS CHASING (bg-slate-50)
+
+   * Two-column grid.
+   * LEFT COLUMN: text content
+
+     * h2: “Your customer always knows what they owe.”
+     * Subtext: “No more ‘Can you resend that invoice?’…”
+     * Bullets: Customer portal, Automatic ‘Your invoice is ready’ messages, Review requests & reputation
+
+       * Each bullet uses icon in `text-[#0B5FFF] w-5 h-5`
+       * Each bullet ends with a tiny plan chip pill (Starter+ / Essential+ for SMS).
+     * CTA:
+
+       * Primary button (blue): “Show Me the Portal”
+       * Blue text link: “Start Free →”
+   * RIGHT COLUMN: Spotlight Card “Customer Portal”
+
+     * Same card wrapper class as spotlight
+     * `<PlanRibbon plan="Starter+" />`
+     * Eyebrow chip pill “Customer Portal”
+     * Headline: “They pay without calling you.”
+     * Body: “Your customer clicks the link…”
+     * Gray placeholder box:
+       `bg-slate-100 rounded-lg h-32 w-full mt-4 flex items-center justify-center text-[11px] text-slate-500`
+       text: “Customer Portal / Invoice / Pay Now”
+     * CTA small row:
+
+       * Blue button text-sm “See Billing Flow”
+       * Blue link “Compare Plans →”
+
+   SECTION 4. KNOW YOUR PROFIT (bg-slate-900 text-white)
+
+   * Two-column grid.
+   * LEFT COLUMN: Spotlight Card “Profit & Cost Tracking”
+
+     * Dark card wrapper:
+       `relative bg-slate-800 ring-1 ring-slate-700 rounded-xl shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm text-white`
+     * `<PlanRibbon plan="Premium" />` with high-contrast light ribbon.
+     * Eyebrow chip pill “Profit & Cost Tracking” (white/10 bg, border-white/20).
+     * Headline: “See profit per job, per tech, per day.”
+     * Body: about “Stop guessing…”
+     * Bullets:
+
+       * Job costing & profitability reports
+       * Payroll & wage tracking
+       * Expense & materials tracking
+         Each bullet = icon in `text-[#0B5FFF] w-5 h-5`, title white, support text-white/60.
+     * CTA block in card:
+
+       * Outline button (border-white/30): “See Profit Dashboard”
+       * Blue link under: “Start Free →”
+   * RIGHT COLUMN: text content / trust block
+
+     * Headline: “Stop doing work that isn’t worth it.”
+     * Subtext: “You’ll see which jobs are killing your profit…”
+     * Short list (icon + text) for:
+
+       * Purchase orders & vendor management
+       * Vendor insurance status tracking
+       * Full history tied to the property address
+     * CTA block under:
+
+       * Outline button (border-white/30): “See Job Costing & Reporting” linking `/features/job-costing-reporting`
+       * Blue link below: “View Scheduling & Dispatch →” linking `/features/scheduling-dispatch`
+
+   SECTION 5. FINAL CTA BAND (bg-[#0E2A47] text-white)
+
+   * Centered wrapper max-w-3xl.
+   * Heading: “Get paid without chasing.”
+   * Subtext: “Batch invoices. Take card in the field. Show customers a portal instead of blowing up their phone. Unlimited users on paid plans. No per-tech seat fees.”
+   * CTA row:
+
+     * Primary button (blue #0B5FFF): “Start Free”
+     * Secondary outline (border-white/30): “View Pricing”
+   * TCPA line: “By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+   * All interactive elements must have visible `focus-visible` rings:
+     `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+
+4. Components & styling:
+
+   * Spotlight cards in sections 2 and 3 use the light card style; spotlight card in section 4 uses the dark card style.
+   * Every spotlight card must include a PlanRibbon (`<PlanRibbon plan="..."/>`) in the top-right, positioned with `absolute -top-2 -right-2 z-20`.
+   * Eyebrow chip pill sits above each spotlight headline.
+   * Bullet rows are flex with:
+
+     * Icon `text-[#0B5FFF] w-5 h-5 flex-shrink-0` `aria-hidden="true"`
+     * Text wrapper:
+
+       * Title: `text-sm font-medium`
+       * Support: `text-[13px] leading-snug` in slate-500 for light sections, white/60 for dark sections.
+   * Outcome rows on the right side of section 2 are NOT cards (no border, no ribbon). They’re just icon + bold text + one-line supporting copy.
+   * The “customer portal” spotlight card in section 3 must include the gray placeholder box for now instead of a real screenshot.
+
+5. Messaging that MUST appear as-is on this page:
+
+   * “Invoice on the spot. Get paid in hours, not days.”
+   * “Send an invoice and take payment before you leave the driveway.”
+   * “Your customer always knows what they owe.”
+   * “See profit per job, per tech, per day.”
+   * “Unlimited users on paid plans. No per-tech seat fees.”
+   * “Stop doing work that isn’t worth it.”
+   * Do not water this down.
+
+6. Accessibility / semantics:
+
+   * Section 1 headline is the only `<h1>`.
+   * All other major section headlines should be `<h2>`.
+   * Icons include `aria-hidden="true"`.
+   * Buttons and important links have visible focus state using our standard ring.
+   * Contrast must remain WCAG AA (dark navy #0E2A47 with white text is OK, bg-slate-50 with slate-900 is OK, bg-slate-900 with white is OK).
+
+7. Internal linking:
+
+   * In section 2 right column:
+     “See Estimates & Quotes →” → `/features/estimates-quotes`
+   * In section 4 right column CTA block:
+     “See Job Costing & Reporting” → `/features/job-costing-reporting`
+     “View Scheduling & Dispatch →” → `/features/scheduling-dispatch`
+     These internal links are mandatory for SEO crawl depth and cross-page authority.
+
+After this is implemented, you’ll have four cornerstone feature pages:
+
+* Scheduling & Dispatch
+* Work Orders & Mobile
+* Estimates & Quotes
+* Invoicing & Payments
+
+Next, we’ll build **Customer Communication & Reminders**, unless you’d rather jump straight to “Job Costing & Reporting.”

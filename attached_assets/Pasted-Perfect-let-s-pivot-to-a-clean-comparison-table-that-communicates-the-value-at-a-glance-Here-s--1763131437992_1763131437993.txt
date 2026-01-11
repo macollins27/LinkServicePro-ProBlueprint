@@ -1,0 +1,131 @@
+Perfect—let’s pivot to a **clean comparison table** that communicates the value at a glance. Here’s a **single, surgical, no-code prompt** for Replit Agent 3 to replace the five cards with a **competitor comparison matrix** that’s fast to scan, mobile-first, accessible, and legally careful.
+
+---
+
+**Task:** Replace the current “Why Teams Switch to LinkServicePro” cards with a **comparison matrix**: competitors (rows) vs. capabilities/outcomes (columns). Use concise check/partial/x states with icons and color (green/amber/red), plus short tooltips for clarity. Keep it mobile-first, AA accessible, and performance-friendly. No changes outside this band.
+
+### 0) Placement & scope
+
+* Same section position (right after Industries).
+* Use existing design tokens (colors, spacing, typography). No global refactors.
+
+### 1) Framing & copy (top of section)
+
+* Eyebrow: **Why Teams Switch**
+* H2: **See it in one table**
+* Support line (one sentence): **“Where spreadsheets and multi-app stacks create retyping and delays, LinkServicePro keeps scheduling, quotes, invoices, and maintenance in one flow.”**
+* Small legal note under the table: **“Based on publicly available info and customer feedback; features change over time.”**
+
+### 2) Table content model (data-driven; no hardcoded markup here)
+
+* **Rows (competitors):**
+
+  * LinkServicePro (highlighted row, always first)
+  * Spreadsheets (Excel/Sheets)
+  * Legacy Desktop (generic)
+  * 4-App Patchwork (generic stack)
+  * Optional placeholders “Competitor A/B” (only if Product/Legal approves—otherwise hide)
+* **Columns (capabilities/outcomes):** keep to **6–8 max** for clarity; group by flow:
+
+  1. **Scheduling & Dispatch**
+  2. **Estimates with e-sign**
+  3. **Same-day invoicing & payments**
+  4. **Recurring maintenance plans**
+  5. **Single job timeline (photos/notes/signatures)**
+  6. **Mobile app for crews**
+  7. **Calendar sync (Google & Apple)**
+  8. **Unlimited users on paid plans**
+* **Cell states:**
+
+  * **✓ (green)** = included / strong
+  * **~ (amber)** = partial / workaround
+  * **✕ (red)** = missing
+  * Each cell also has a **short tooltip** (1 line) that explains the state (e.g., “Quotes convert to invoices in one click” vs “Manual copy/paste”).
+  * Provide **sr-only text** mirroring the symbol + meaning for screen readers.
+* **Optional “Cost drag” column** at the far right (desktop only): qualitative tag like *Seat-based*, *Multiple subscriptions*, *Time cost*. Tooltip required.
+
+### 3) Visual & interaction spec
+
+* **Desktop (lg+):**
+
+  * 12-column section grid; table uses full width inside the container.
+  * **Sticky header row** (columns) and **sticky first column** (competitor names) while horizontally scrolling if needed.
+  * Highlight LinkServicePro row with a subtle band (not an aggressive color block).
+  * Keep row height compact and **consistent**; text wraps to 2 lines max.
+* **Mobile (default):**
+
+  * Provide a **horizontal scroll** container with a visible gradient fade at both sides.
+  * Keep the **first column sticky** so the user knows which row they’re viewing.
+  * Add a quick **column picker** (multi-select) that defaults to 4–5 columns to reduce overload on small screens; selections update instantly.
+  * When `prefers-reduced-motion`, disable any scroll-snap effects.
+* **Color & icons:**
+
+  * Use brand **green** for ✓, **amber** for ~, **red** for ✕.
+  * Never rely on color alone—**pair each with an icon** and sr-only meaning.
+  * Maintain AA contrast on the navy canvas.
+* **Tooltips:**
+
+  * Lightweight, focusable, and accessible (trigger via icon or cell; ESC to close; arrow keys cycle).
+  * On touch, tap once to open, tap outside to dismiss.
+* **Row actions:**
+
+  * Each row (except LSP) includes a small **“What this means”** expander that reveals **two concise bullets** (e.g., for spreadsheets: “Manual copy/paste between steps” / “No single job timeline”). Expander is collapsed by default and keyboard-operable.
+
+### 4) Accessibility requirements
+
+* Semantic **table** with `<thead>`, `<tbody>`, `<th scope="col">`, `<th scope="row">`.
+* Symbols must include **sr-only labels**: “Included,” “Partial,” “Missing.”
+* Sticky header/first column must remain keyboard-reachable.
+* Tooltips are announced via `aria-describedby` and are dismissible with ESC.
+* Ensure **focus rings** on scrollable container, column picker, expanders, and CTAs.
+
+### 5) Performance & SEO
+
+* No third-party embeds.
+* Fixed column widths to prevent layout shift; intrinsic sizing for icons.
+* Lazy-render hidden expander content.
+* Add **FAQPage JSON-LD** only if you add a small FAQ under the table; otherwise none.
+
+### 6) Legal/comms guardrails
+
+* Use **generic rows** (Spreadsheets, Legacy Desktop, 4-App Patchwork).
+* Only include named competitors if Legal signs off; if not, hide those rows.
+* Keep claims qualitative; avoid unverifiable absolute numbers.
+* Include the “features change over time” note.
+
+### 7) Controls & CTAs
+
+* **Column picker** (mobile-friendly): checkboxes to show/hide columns; default to the most important 4–5.
+* **Sticky mini-CTA** above the table on mobile: “Compare less—try it free.”
+* **Primary CTA** below the table: **Get Started Free** → existing route.
+* **Secondary CTA:** **Talk to an expert** → existing route.
+
+### 8) Analytics
+
+* Event `comparison.column_toggle` with column key(s).
+* Event `comparison.row_expand` with row key.
+* Event `comparison.cta_primary` / `comparison.cta_secondary`.
+
+### 9) Acceptance criteria
+
+1. Cards are **removed**; the matrix renders with **clear rows/columns** and readable states.
+2. LinkServicePro row is highlighted but not shouty; symbols + color + tooltips make meaning obvious at a glance.
+3. Mobile experience is **usable**: horizontal scroll with sticky first column, column picker, no overflow bugs.
+4. A11y: proper table semantics, sr-only labels, focusable tooltips, ESC closes; contrast passes AA.
+5. Performance: no CLS from the table; icons are lightweight; no third-party scripts.
+6. Legal note is visible under the table.
+
+---
+
+### Suggested initial data (keep it editable; examples only)
+
+* **Rows:** `linkservicepro`, `spreadsheets`, `legacy_desktop`, `four_app_stack`
+* **Columns:** `dispatch`, `e_sign_quotes`, `same_day_invoicing`, `maintenance_plans`, `single_timeline`, `mobile_app`, `calendar_sync`, `unlimited_users`
+* **States (example):**
+
+  * LinkServicePro: ✓ on all eight.
+  * Spreadsheets: ~ on dispatch (manual), ✕ on e-sign quotes, ✕ on same-day invoicing, ✕ maintenance, ✕ single timeline, ✕ mobile app, ~ calendar sync (manual), ✓ unlimited users.
+  * Legacy Desktop: ✓ dispatch (office), ✕ e-sign quotes, ~ invoicing (batch), ✕ maintenance, ~ timeline (attachments later), ✕ mobile app, ✕ calendar sync, ~ users (seat-based).
+  * 4-App Patchwork: ~ dispatch (separate app), ~ e-sign quotes (separate app), ~ invoicing (integration), ~ maintenance (separate), ✕ single timeline, ✓ mobile app (varies), ~ calendar sync (varies), ✕ unlimited users (seat-based).
+
+If you’d like, I can also craft the exact tooltip lines for each cell so Replit can populate the dataset without improvising tone or claims.

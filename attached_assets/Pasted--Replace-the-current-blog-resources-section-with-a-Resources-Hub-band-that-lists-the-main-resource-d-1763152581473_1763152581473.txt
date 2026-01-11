@@ -1,0 +1,108 @@
+
+Replace the current blog/resources section with a Resources Hub band that lists the main resource destinations as simple tiles. No article cards, no pagination, no tooltips. Keep it fast, accessible, and inside the global container.
+
+Placement & scope
+	•	Lives after Pricing and before FAQ.
+	•	Update only this section and its data/config. Do not change routes, header, or other sections.
+
+Objectives (what this section must communicate)
+	•	One-stop access to: Blog, Help Desk, Free Guides, Contact Support.
+	•	Each destination has a short description and a single, obvious link.
+	•	Scan fast on mobile; zero clutter.
+
+⸻
+
+Structure (mobile → desktop)
+	1.	Header (left-aligned, inside global container)
+	•	Eyebrow: Resources
+	•	H2: All resources, one place
+	•	Support (one sentence): From how-to guides to product help and direct support—everything is here.
+	2.	Resource tiles grid (no articles, just destinations)
+	•	Mobile: 1 column (stacked).
+	•	Desktop (lg+): 2×2 grid (4 equal tiles).
+	•	Each tile anatomy (top → bottom):
+	•	Small icon (monochrome) + Title
+	•	One-line description
+	•	Inline link row with arrow (e.g., Visit blog →)
+	•	The entire tile is clickable (link wraps the card; also keep inline link text for clarity).
+	•	Tiles to include (exact labels & copy):
+	•	Blog — Stories, tips, and product insights. → /resources or /blog
+	•	Help Desk — Step-by-step answers to common questions. → /help or /docs
+	•	Free Guides — Downloadable checklists and playbooks. → /guides or /resources/guides
+	•	Contact Support — Get help from a human—fast. → /contact or /support
+	•	If a destination doesn’t exist yet, point to a placeholder route you own; do not use external domains.
+	3.	Footer row (optional, single line)
+	•	Left: View all resources → → /resources
+	•	Right: none (keep it clean)
+
+⸻
+
+Visual & motion
+	•	Use existing tokens: navy canvas, rounded-xl tiles, subtle inner border (bg-white/5, border-white/10).
+	•	Icons are simple (no color noise); keep consistent sizing.
+	•	Motion limited to hover/focus lift or inner shadow; respect prefers-reduced-motion.
+	•	No carousels, no auto-rotate, no images required.
+
+⸻
+
+Accessibility
+	•	One h2 for the band; each tile title is an h3.
+	•	Whole tile is a single anchor; include visible focus ring and 44px+ hit area.
+	•	Icons aria-hidden="true"; text must convey meaning without color.
+	•	Link text is descriptive (e.g., Visit blog →), not “Learn more”.
+
+⸻
+
+Performance
+	•	No third-party embeds, no tooltips/portals.
+	•	Zero CLS: fixed paddings and consistent tile heights.
+	•	No images required; if you add one, use WebP with intrinsic width/height and lazy loading.
+
+⸻
+
+Data model (tiny constants file)
+
+// resourcesHubData.ts
+export const RESOURCES_DESTINATIONS = [
+  { key: "blog",   title: "Blog",           blurb: "Stories, tips, and product insights.",          href: "/resources" },
+  { key: "help",   title: "Help Desk",      blurb: "Step-by-step answers to common questions.",     href: "/help" },
+  { key: "guides", title: "Free Guides",    blurb: "Downloadable checklists and playbooks.",        href: "/guides" },
+  { key: "support",title: "Contact Support",blurb: "Get help from a human—fast.",                   href: "/contact" }
+];
+
+⸻
+
+Copy to render (exact strings)
+	•	Eyebrow: Resources
+	•	H2: All resources, one place
+	•	Support: From how-to guides to product help and direct support—everything is here.
+	•	Tile links:
+	•	Blog → Visit blog →
+	•	Help Desk → Go to help desk →
+	•	Free Guides → Browse guides →
+	•	Contact Support → Contact support →
+	•	Footer (optional): View all resources →
+
+⸻
+
+Interaction rules
+	•	Entire tile is clickable and contains an inline text link; both target the same route.
+	•	Keyboard users can tab to each tile and press Enter to navigate.
+	•	No filters, no sorting, no lazy fetching—static, fast, and reliable.
+
+⸻
+
+Analytics
+	•	resources_hub.view (once when ≥35% of band is in view)
+	•	resources_hub.tile_click with { key }
+	•	If footer shown: resources_hub.view_all_click
+
+⸻
+
+Acceptance criteria (verify before finishing)
+	1.	Old articles/cards area is replaced by a simple 4-tile Resources Hub inside the global container; headings are left-aligned.
+	2.	Tiles show icon, title, one-line blurb, and a clear inline link; the whole card is clickable.
+	3.	No article thumbnails, no feeds, no carousels, no tooltips/portals; zero horizontal scroll on mobile.
+	4.	Focus rings visible; hit targets ≥44px; icons are decorative (aria-hidden="true").
+	5.	Optional “View all resources →” link routes to /resources.
+	6.	Lighthouse mobile shows no CLS and passes contrast.

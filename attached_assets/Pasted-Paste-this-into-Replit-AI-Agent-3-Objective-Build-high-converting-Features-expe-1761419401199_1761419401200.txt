@@ -1,0 +1,508 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+## Objective
+
+Build high-converting **Features** experiences that double as landing pages for SEO (e.g., “HVAC company scheduling software”). Ship:
+
+1. A browsable **All Features** showcase with filters, search, and cluster groupings.
+2. A **Feature Landing** template used by every feature, optimized for conversion, speed, and SEO.
+3. A small **content data model** so new features are one JSON entry.
+4. Global lead capture, sticky CTA, and internal-linking patterns.
+
+Mobile-first. Sharp corners. High contrast. One primary action per section. Every section begins with **Title + Subtitle** at **top-left**. Honor `prefers-reduced-motion`.
+
+---
+
+## Global rules
+
+* Framework: keep current stack. If Next.js, use `/pages`; if Vite/CRA, adapt routes 1:1.
+* Performance: lazy-load non-critical media; fixed heights for media to avoid CLS; image `loading="lazy"`.
+* A11y: semantic landmarks (`header/main/section/nav/footer`), ARIA for accordions, `focus-visible` rings, AA contrast.
+* UI system: reuse spacing and `elev-2` shadow. Rectangle buttons with bold labels. Links animate underline right→left.
+* No horizontal scroll at 375px. Tap targets ≥44px.
+
+---
+
+## 0) Data model
+
+**Create:** `src/data/features.json`
+Populate with **slug, name, cluster, hook, bullets[], kpis[], heroSubtitle, pains[], solves[], how[], proof{quote,person}, integrations[], related[]**.
+
+Use the exact clusters and features:
+
+* **Plan & Dispatch**
+
+  * Drag-and-drop Scheduling → `drag-and-drop-scheduling`
+  * Dispatch Board + Live Map → `dispatch-board-live-map`
+  * Route Optimization → `route-optimization`
+  * Real-time GPS → `real-time-gps`
+  * Capacity Planning → `capacity-planning`
+  * Automated Reminders → `automated-reminders`
+  * Recurring Jobs → `recurring-jobs`
+
+* **Win & Deliver**
+
+  * CRM & Leads → `crm-leads`
+  * Quote Builder + E-Sign → `quote-builder-e-sign`
+  * Work Orders → `work-orders`
+  * Project Tracking (multi-WO) → `project-tracking`
+  * Customer Portal → `customer-portal`
+  * 2-Way SMS/Email → `2-way-sms-email`
+  * Review Requests → `review-requests`
+
+* **Get Paid & Operate**
+
+  * Invoicing & Batch → `invoicing-batch`
+  * Online & Field Payments → `online-field-payments`
+  * Deposits/Partials → `deposits-partials`
+  * Job Costing & Profit → `job-costing-profit`
+  * Payroll & Wage Scales → `payroll-wage-scales`
+  * POs & Vendor Mgmt → `pos-vendor-mgmt`
+  * QuickBooks/Xero Sync → `quickbooks-xero-sync`
+
+> Add concise, benefit-driven `hook` lines and 2–3 `bullets` per feature. Keep `kpis` as `{label,value}` pairs (e.g., `{"label":"Drive time","value":"−18%"}`).
+
+---
+
+## 1) Shared building blocks
+
+**Create:** `src/components/SectionHeader.jsx`
+
+```jsx
+export default function SectionHeader({ title, subtitle, align="left" }) {
+  const a = align === "center" ? "text-center" : "text-left";
+  return (
+    <header className={`mb-6 sm:mb-8 ${a}`}>
+      <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">{title}</h2>
+      {subtitle && <p className="text-slate-700 max-w-[56ch]">{subtitle}</p>}
+    </header>
+  );
+}
+```
+
+**Create:** `src/components/LeadCaptureMini.jsx`
+
+```jsx
+import { useState } from "react";
+
+export default function LeadCaptureMini({ context }) {
+  const [email,setEmail]=useState(""); const [company,setCompany]=useState(""); const [msg,setMsg]=useState("");
+  function submit(e){ e.preventDefault();
+    if(!/^\S+@\S+\.\S+$/.test(email)){ setMsg("Enter a valid email."); return; }
+    setMsg("Thanks — we’ll reach out within one business day.");
+    setEmail(""); setCompany("");
+    window.dispatchEvent(new CustomEvent("lead_capture",{detail:{context}}));
+  }
+  return (
+    <form onSubmit={submit} className="bg-white ring-1 ring-slate-200 p-4 sm:p-5 elev-2 grid gap-2" aria-label="Request a demo">
+      <div className="font-extrabold text-slate-900">See it with your jobs</div>
+      <input aria-label="Work email" required value={email} onChange={e=>setEmail(e.target.value)}
+        placeholder="you@company.com" className="border border-slate-300 px-3 py-2 rounded-none" />
+      <input aria-label="Company" value={company} onChange={e=>setCompany(e.target.value)}
+        placeholder="Company" className="border border-slate-300 px-3 py-2 rounded-none" />
+      <button className="px-4 py-2 bg-slate-900 text-white font-extrabold rounded-none">Book a demo</button>
+      {msg && <p className="text-sm text-slate-700">{msg}</p>}
+    </form>
+  );
+}
+```
+
+**Create:** `src/components/StickyBar.jsx`
+
+```jsx
+export default function StickyBar({ label="Start free", href="/signup" }) {
+  return (
+    <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 px-4 sm:px-6 py-3 flex items-center justify-between">
+      <span className="text-sm sm:text-base font-semibold text-slate-900">Ready to try it?</span>
+      <div className="flex gap-2">
+        <a href="/pricing" className="px-4 py-2 border border-slate-900 font-extrabold rounded-none">View Pricing</a>
+        <a href={href} className="px-4 py-2 bg-slate-900 text-white font-extrabold rounded-none">{label}</a>
+      </div>
+    </div>
+  );
+}
+```
+
+**Append:** `src/styles/theme.css`
+
+```css
+.elev-2{ box-shadow:0 8px 24px rgba(15,23,42,.12),0 2px 6px rgba(15,23,42,.08); }
+a{ text-underline-offset:4px; } a:hover{ text-decoration-color: currentColor; }
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
+}
+```
+
+---
+
+## 2) All Features showcase
+
+**Create:** `src/pages/features/index.jsx`
+
+```jsx
+import features from "@/data/features.json";
+import SectionHeader from "@/components/SectionHeader";
+import { useMemo, useState } from "react";
+
+const CLUSTERS = ["Plan & Dispatch","Win & Deliver","Get Paid & Operate"];
+
+function Card({ f }) {
+  return (
+    <a href={`/features/${f.slug}`} className="bg-white ring-1 ring-slate-200 p-5 sm:p-6 elev-2 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B5FFF]">
+      <div className="flex items-start gap-3">
+        <span className="h-6 w-6 bg-slate-900" aria-hidden="true" />
+        <div>
+          <div className="font-extrabold text-slate-900">{f.name}</div>
+          <div className="text-slate-700 text-sm">{f.hook}</div>
+        </div>
+      </div>
+      <ul className="mt-3 text-sm text-slate-700 list-disc pl-5 space-y-1">
+        {f.bullets.slice(0,2).map((b,i)=><li key={i}>{b}</li>)}
+      </ul>
+      <div className="mt-4 inline-flex font-semibold text-[#0B5FFF] underline decoration-transparent hover:decoration-[#0B5FFF] underline-offset-4">
+        See how it works →
+      </div>
+    </a>
+  );
+}
+
+export default function AllFeatures() {
+  const [q,setQ]=useState(""); const [cluster,setCluster]=useState("All");
+  const filtered = useMemo(()=>{
+    return features.filter(f => {
+      const matchQ = (f.name+f.hook+f.cluster).toLowerCase().includes(q.toLowerCase());
+      const matchC = cluster==="All" || f.cluster===cluster;
+      return matchQ && matchC;
+    });
+  },[q,cluster]);
+
+  return (
+    <main className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <SectionHeader title="All Features" subtitle="Plan, dispatch, deliver, and get paid with one hub." />
+      <div className="grid gap-3 sm:flex sm:items-center sm:gap-4">
+        <label className="block max-w-xl grow">
+          <span className="sr-only">Search features</span>
+          <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search features"
+            className="w-full border border-slate-300 px-4 py-3 rounded-none" />
+        </label>
+        <select value={cluster} onChange={e=>setCluster(e.target.value)}
+          className="border border-slate-300 px-3 py-3 rounded-none">
+          <option>All</option>
+          {CLUSTERS.map(c=><option key={c}>{c}</option>)}
+        </select>
+      </div>
+
+      {CLUSTERS.map(c=>{
+        const group = filtered.filter(f=>f.cluster===c);
+        if(!group.length) return null;
+        return (
+          <section key={c} className="mt-8 sm:mt-10">
+            <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">{c}</h3>
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {group.map(f=><Card key={f.slug} f={f} />)}
+            </div>
+          </section>
+        );
+      })}
+
+      <section className="mt-12 sm:mt-16 bg-slate-50 p-6 text-center">
+        <div className="text-2xl font-extrabold text-slate-900">Not sure where to start?</div>
+        <p className="text-slate-700">See the platform in action.</p>
+        <div className="mt-3 flex justify-center gap-3">
+          <a href="/pricing" className="px-5 py-3 border border-slate-900 font-extrabold rounded-none">View Pricing</a>
+          <a href="/signup" className="px-5 py-3 bg-slate-900 text-white font-extrabold rounded-none">Start Free</a>
+        </div>
+      </section>
+    </main>
+  );
+}
+```
+
+**SEO for index page**
+Add `<title>Field Service Software Features • LinkServicePro</title>` and a 160-char meta description in your head component.
+
+---
+
+## 3) Feature landing template (conversion-optimized)
+
+**Create:** `src/components/FeatureLayout.jsx`
+
+```jsx
+import SectionHeader from "@/components/SectionHeader";
+export default function FeatureLayout({ title, subtitle, children, breadcrumb }) {
+  return (
+    <main className="px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <nav aria-label="Breadcrumb" className="mb-4">
+        <a href="/features" className="text-sm text-slate-600 underline decoration-transparent hover:decoration-slate-600">All Features</a>
+        {breadcrumb && <span className="text-slate-400"> / </span>}
+        {breadcrumb && <span className="text-sm text-slate-800">{breadcrumb}</span>}
+      </nav>
+      <SectionHeader title={title} subtitle={subtitle} />
+      {children}
+    </main>
+  );
+}
+```
+
+**Create:** `src/components/FeatureBlocks.jsx`
+
+```jsx
+import SectionHeader from "@/components/SectionHeader";
+import LeadCaptureMini from "@/components/LeadCaptureMini";
+
+export function HeroBand({ hook, kpis=[] }) {
+  return (
+    <section className="bg-slate-50 p-5 sm:p-6 ring-1 ring-slate-200">
+      <div className="text-slate-800">{hook}</div>
+      {kpis.length>0 && (
+        <div className="mt-3 grid grid-cols-3 gap-3 text-center text-sm">
+          {kpis.map((k,i)=>(
+            <div key={i} className="bg-white border border-slate-200 px-3 py-2">
+              <div className="font-extrabold text-slate-900">{k.value}</div>
+              <div className="text-slate-600">{k.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+export function WhatItDoes({ bullets=[] }) {
+  return (
+    <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mt-8">
+      <article className="bg-white ring-1 ring-slate-200 p-6 elev-2">
+        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">What it does</h3>
+        <ul className="mt-3 list-disc pl-5 text-slate-700 space-y-1">{bullets.map((b,i)=><li key={i}>{b}</li>)}</ul>
+      </article>
+      <aside className="bg-white ring-1 ring-slate-200 p-6 elev-2">
+        <div className="h-48 bg-slate-100" aria-label="Feature mockup" />
+        <p className="text-slate-600 text-sm mt-2">Illustrative mock — replace with final art.</p>
+      </aside>
+    </section>
+  );
+}
+
+export function PainSolve({ pains=[], solves=[] }) {
+  return (
+    <section className="mt-8">
+      <SectionHeader title="Why teams switch" subtitle="Common pains and how this feature solves them." />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-white ring-1 ring-slate-200 p-5 elev-2">
+          <h4 className="font-extrabold text-slate-900 mb-2">Pain</h4>
+          <ul className="list-disc pl-5 text-slate-700 space-y-1">{pains.map((p,i)=><li key={i}>{p}</li>)}</ul>
+        </div>
+        <div className="bg-white ring-1 ring-slate-200 p-5 elev-2">
+          <h4 className="font-extrabold text-slate-900 mb-2">Solve</h4>
+          <ul className="list-disc pl-5 text-slate-700 space-y-1">{solves.map((s,i)=><li key={i}>{s}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function HowItWorks({ items=[] }) {
+  if(!items.length) return null;
+  return (
+    <section className="mt-8">
+      <SectionHeader title="How it works" subtitle="Three steps from setup to results." />
+      <ol className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {items.map((s,i)=>(
+          <li key={i} className="bg-white ring-1 ring-slate-200 p-5 elev-2">
+            <div className="text-slate-500 text-xs">Step {i+1}</div>
+            <div className="font-extrabold text-slate-900">{s.step}</div>
+            <p className="text-slate-700 text-sm">{s.desc}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+export function SocialProof({ quote, person }) {
+  if(!quote) return null;
+  return (
+    <section className="mt-8">
+      <SectionHeader title="In the field" subtitle="What pros say after switching." />
+      <blockquote className="bg-white ring-1 ring-slate-200 p-5 elev-2 text-slate-800">
+        {quote}
+        <footer className="text-sm text-slate-600 mt-2">— {person}</footer>
+      </blockquote>
+    </section>
+  );
+}
+
+export function WorksWith({ list=[] }) {
+  if(!list.length) return null;
+  return (
+    <section className="mt-8">
+      <SectionHeader title="Works with" subtitle="Connect your current tools." />
+      <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+        {list.map(x=>(
+          <div key={x} className="bg-white ring-1 ring-slate-200 p-3 elev-2 text-center text-sm font-semibold text-slate-900">{x}</div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function Related({ items=[] }) {
+  if(!items.length) return null;
+  return (
+    <section className="mt-8">
+      <SectionHeader title="Related features" subtitle="Often used together." />
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {items.map(f=>(
+          <a key={f.slug} href={`/features/${f.slug}`} className="bg-white ring-1 ring-slate-200 p-5 elev-2 block">
+            <div className="font-extrabold text-slate-900">{f.name}</div>
+            <div className="text-slate-700 text-sm">{f.hook}</div>
+            <div className="mt-3 inline-flex text-[#0B5FFF] font-semibold underline decoration-transparent hover:decoration-[#0B5FFF] underline-offset-4">
+              See how it works →
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function DemoAndLead({ bullets=[] }) {
+  return (
+    <section className="mt-8">
+      <SectionHeader title="See it in 60 seconds" subtitle="A quick walkthrough, then try it with your data." />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 bg-white ring-1 ring-slate-200 p-5 elev-2">
+          <div className="h-56 bg-slate-100" aria-label="interactive demo" />
+          <ul className="mt-3 list-disc pl-5 text-slate-700 text-sm space-y-1">{bullets.map((b,i)=><li key={i}>{b}</li>)}</ul>
+        </div>
+        <LeadCaptureMini context="feature-demo" />
+      </div>
+    </section>
+  );
+}
+
+export function BottomCTA() {
+  return (
+    <section className="mt-10 bg-slate-50 px-5 py-6 text-center">
+      <div className="text-2xl font-extrabold text-slate-900">Ready to try it?</div>
+      <p className="text-slate-700">Simple pricing. No contracts.</p>
+      <div className="mt-3 flex justify-center gap-3">
+        <a href="/pricing" className="px-5 py-3 border border-slate-900 font-extrabold rounded-none">View Pricing</a>
+        <a href="/signup" className="px-5 py-3 bg-slate-900 text-white font-extrabold rounded-none">Start Free</a>
+      </div>
+    </section>
+  );
+}
+```
+
+---
+
+## 4) Dynamic feature route
+
+**Create:** `src/pages/features/[slug].jsx`
+
+```jsx
+import features from "@/data/features.json";
+import FeatureLayout from "@/components/FeatureLayout";
+import StickyBar from "@/components/StickyBar";
+import { HeroBand, WhatItDoes, PainSolve, HowItWorks, SocialProof, WorksWith, Related, DemoAndLead, BottomCTA } from "@/components/FeatureBlocks";
+
+export default function FeaturePage({ f, related }) {
+  if(!f) return null;
+  return (
+    <>
+      <FeatureLayout title={f.name} subtitle={f.heroSubtitle} breadcrumb={f.name}>
+        <HeroBand hook={f.hook} kpis={f.kpis} />
+        <WhatItDoes bullets={f.bullets} />
+        <PainSolve pains={f.pains||[]} solves={f.solves||[]} />
+        <HowItWorks items={f.how||[]} />
+        <SocialProof quote={f.proof?.quote} person={f.proof?.person} />
+        <WorksWith list={f.integrations||[]} />
+        <Related items={related} />
+        <DemoAndLead bullets={["Live schedule view","Assign crews","Notify customer automatically"]} />
+        <BottomCTA />
+      </FeatureLayout>
+      <StickyBar />
+    </>
+  );
+}
+
+export async function getStaticProps({ params }) {
+  const f = features.find(x => x.slug === params.slug) || null;
+  const related = (f?.related || []).map(slug => features.find(x => x.slug === slug)).filter(Boolean).slice(0,3);
+  return { props: { f, related } };
+}
+
+export async function getStaticPaths() {
+  return { paths: features.map(f => ({ params: { slug: f.slug } })), fallback: false };
+}
+```
+
+---
+
+## 5) SEO and schema
+
+**Create:** `src/components/SeoHead.jsx`
+
+```jsx
+export default function SeoHead({ title, description, url }) {
+  const t = title ? `${title} • LinkServicePro` : "LinkServicePro";
+  return (
+    <>
+      <title>{t}</title>
+      <meta name="description" content={description || "Field service software for scheduling, dispatch, quotes, work orders, and payments."} />
+      <link rel="canonical" href={url} />
+      <meta property="og:title" content={t} />
+      <meta property="og:description" content={description || ""} />
+      <meta property="og:type" content="website" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context":"https://schema.org",
+          "@type":"SoftwareApplication",
+          "name": title,
+          "applicationCategory":"BusinessApplication",
+          "operatingSystem":"Web, iOS, Android",
+          "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+        })
+      }} />
+    </>
+  );
+}
+```
+
+Use on each feature page head with `title=f.name`, `description=f.hook`, `url=current URL`. Add a short 4–6 item FAQ accordion at the bottom if you want `FAQPage` schema; keep answers ≤2 sentences.
+
+---
+
+## 6) Copy guidance per feature (convert fast)
+
+* **Hero:** one-line benefit (`hook`) + 2–3 KPI tiles from `kpis`.
+* **What it does:** 3 bullets, each action + outcome (“Drag to day — crew notified automatically.”).
+* **Pain/Solve:** list 3–5 pains and matching solutions. Keep contractor language. No jargon.
+* **How it works:** 3 steps. One sentence each.
+* **Proof:** one quote with role and trade (e.g., “Owner, HVAC”).
+* **Works with:** logos or text chips for QuickBooks, Xero, ecosystem apps.
+* **Demo + Lead:** interactive mock placeholder + small form.
+* **Bottom CTA:** “View Pricing” + “Start Free”.
+* **Sticky bar:** always visible on scroll.
+
+---
+
+## 7) Navigation and internal linking
+
+* In the main **Features** nav or megamenu, list the three clusters. Under each, link to all feature slugs.
+* On every feature page, the **Related features** grid must include complementary items to drive multi-page exploration.
+
+---
+
+## 8) Acceptance criteria
+
+* `/features` shows search + cluster filter; groups cards by **Plan & Dispatch**, **Win & Deliver**, **Get Paid & Operate**; mobile 1-col, desktop 2–3 col.
+* Each `/features/[slug]` renders: HeroBand → What it does → Pain/Solve → How it works → Social proof → Works with → Related → Demo+Lead → BottomCTA + StickyBar.
+* All sections begin with **Title + Subtitle** at **top-left**. Buttons rectangular and bold. Links animate underline.
+* No horizontal scroll at 375px. CLS < 0.05. Lighthouse: Perf ≥90, A11y ≥95, Best Practices ≥95.
+* SEO: unique `<title>`, meta description, canonical, Open Graph, and JSON-LD per feature.
+
+Implement exactly as specified.

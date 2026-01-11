@@ -1,0 +1,365 @@
+[
+  {
+    "slug": "drag-and-drop-scheduling",
+    "name": "Drag-and-drop Scheduling",
+    "cluster": "Plan & Dispatch",
+    "hook": "Move jobs on the calendar in seconds.",
+    "bullets": ["Day, week, crew views", "Capacity view prevents overbooking"],
+    "kpis": [{"label":"Drive time","value":"-18%"},{"label":"On-time","value":"96%"}],
+    "heroSubtitle": "Schedule faster and keep crews in sync.",
+    "pains": ["Spreadsheets break when multiple people edit", "Can't see who's available across all crews", "Techs get double-booked or sent to wrong locations"],
+    "solves": ["Real-time calendar prevents conflicts automatically", "Color-coded view shows capacity across all crews", "Mobile-friendly interface works on any device"],
+    "how": [
+      {"step":"Create job","desc":"Add from web or mobile with items and photos."},
+      {"step":"Place on calendar","desc":"Drag to day and assign a crew."},
+      {"step":"Notify","desc":"Auto SMS/email with arrival window."}
+    ],
+    "proof":{"quote":"We reshuffle routes in minutes and cut callbacks.","person":"Mike R., HVAC"},
+    "integrations":["QuickBooks","Xero"],
+    "related":["dispatch-board-live-map","route-optimization"]
+  },
+  {
+    "slug": "dispatch-board-live-map",
+    "name": "Dispatch Board + Live Map",
+    "cluster": "Plan & Dispatch",
+    "hook": "See every crew on one screen.",
+    "bullets": ["Real-time GPS and ETA","Drag jobs between techs"],
+    "kpis": [{"label":"Same-day jobs","value":"+23%"}],
+    "heroSubtitle": "Real-time command center for busy days.",
+    "pains": ["Can't find closest tech for emergency calls", "No visibility into who's running late", "Phone tag wastes time coordinating next job"],
+    "solves": ["Live map shows nearest available tech instantly", "Auto-notifications when jobs assigned or rescheduled", "ETA tracking so you always know arrival times"],
+    "how": [
+      {"step":"Assign","desc":"Drag jobs to available techs."},
+      {"step":"Optimize","desc":"Sort stops to cut windshield time."},
+      {"step":"Track","desc":"See arrival, start, wrap-up live."}
+    ],
+    "proof":{"quote":"No more where are you calls.","person":"Sarah K., Plumbing"},
+    "integrations":["PropertyLinkWare"],
+    "related":["drag-and-drop-scheduling","route-optimization"]
+  },
+  {
+    "slug": "route-optimization",
+    "name": "Route Optimization",
+    "cluster": "Plan & Dispatch",
+    "hook": "Shortest routes. More jobs per tech.",
+    "bullets": ["One-tap optimize","Avoids traffic and time windows"],
+    "kpis": [{"label":"Jobs/tech/day","value":"+1.3"}],
+    "heroSubtitle": "Hit more stops without overtime.",
+    "pains": ["Techs waste 2-3 hours per day just driving", "Manual routing misses better options", "Can't fit more jobs without hiring"],
+    "solves": ["Smart algorithm finds shortest routes in seconds", "Automatically clusters nearby jobs same day", "Factors in real-time traffic and time windows"],
+    "how":[
+      {"step":"Plan","desc":"Pick today's jobs and constraints."},
+      {"step":"Optimize","desc":"We build the fastest route."},
+      {"step":"Dispatch","desc":"Send to tech with turn-by-turn."}
+    ],
+    "proof":{"quote":"We added an extra stop per tech.","person":"Luis P., Cleaning"},
+    "integrations":["LinkInspectPro"],
+    "related":["dispatch-board-live-map"]
+  },
+  {
+    "slug": "real-time-gps",
+    "name": "Real-time GPS",
+    "cluster": "Plan & Dispatch",
+    "hook": "Know where crews are without calling.",
+    "bullets": ["Live location pings","Geofenced job arrivals"],
+    "kpis": [{"label":"No-show rate","value":"-31%"}],
+    "heroSubtitle": "Live location and geofences on one map.",
+    "how":[
+      {"step":"Enable GPS","desc":"Techs sign in on mobile."},
+      {"step":"Set geofences","desc":"Arrivals/Departures log automatically."},
+      {"step":"Review day","desc":"Timeline view for each tech."}
+    ],
+    "proof":{"quote":"Fewer on my way calls, more work done.","person":"Dana S., Electrical"},
+    "integrations":[],
+    "related":["dispatch-board-live-map"]
+  },
+  {
+    "slug": "capacity-planning",
+    "name": "Capacity Planning",
+    "cluster": "Plan & Dispatch",
+    "hook": "Book the right amount of work per day.",
+    "bullets": ["Utilization by crew","Overtime warnings"],
+    "kpis": [{"label":"Overtime","value":"-15%"}],
+    "heroSubtitle": "Balance workload across teams.",
+    "how":[
+      {"step":"Set capacity","desc":"Hours per tech and vehicle."},
+      {"step":"Schedule","desc":"See available slots at a glance."},
+      {"step":"Adjust","desc":"Shift work before it becomes overtime."}
+    ],
+    "proof":{"quote":"Smoother weeks and fewer late nights.","person":"Ari P., Roofing"},
+    "integrations":[],
+    "related":["drag-and-drop-scheduling"]
+  },
+  {
+    "slug": "automated-reminders",
+    "name": "Automated Reminders",
+    "cluster": "Plan & Dispatch",
+    "hook": "Reduce no-shows with automatic reminders.",
+    "bullets": ["SMS + email","Custom timing and templates"],
+    "kpis": [{"label":"No-shows","value":"-40%"}],
+    "heroSubtitle": "Keep customers ready when crews arrive.",
+    "how":[
+      {"step":"Choose timing","desc":"Day-before and day-of windows."},
+      {"step":"Personalize","desc":"Merge fields like date and tech."},
+      {"step":"Track reads","desc":"See delivery and replies."}
+    ],
+    "proof":{"quote":"Confirmations doubled in a week.","person":"Tanya L., Painting"},
+    "integrations":[],
+    "related":["two-way-messaging","customer-portal"]
+  },
+  {
+    "slug": "recurring-jobs",
+    "name": "Recurring Jobs",
+    "cluster": "Plan & Dispatch",
+    "hook": "Set it once. We schedule the rest.",
+    "bullets": ["Weekly/Monthly/Seasonal plans","Auto reminders"],
+    "kpis": [{"label":"Renewals","value":"+28%"}],
+    "heroSubtitle": "Maintenance plans without spreadsheets.",
+    "how":[
+      {"step":"Pick cadence","desc":"Weekly, monthly, seasonal."},
+      {"step":"Attach plan","desc":"Auto-creates visits and invoices."},
+      {"step":"Review","desc":"See renewals and revenue."}
+    ],
+    "proof":{"quote":"Contracts run themselves now.","person":"Ben W., Lawn Care"},
+    "integrations":[],
+    "related":["automated-reminders","invoicing-batch"]
+  },
+  {
+    "slug":"crm-leads",
+    "name":"CRM & Leads",
+    "cluster":"Win & Deliver",
+    "hook":"Capture, track, and convert more work.",
+    "bullets":["Lead sources and stages","Quick follow-ups"],
+    "kpis":[{"label":"Lead-to-job","value":"+19%"}],
+    "heroSubtitle":"Keep every opportunity moving.",
+    "how":[
+      {"step":"Capture","desc":"Forms, calls, imports."},
+      {"step":"Nurture","desc":"Tasks and reminders."},
+      {"step":"Convert","desc":"Create quote in one tap."}
+    ],
+    "proof":{"quote":"Leads stopped slipping through cracks.","person":"Ralph D., Handyman"},
+    "integrations":[],
+    "related":["quote-esign"]
+  },
+  {
+    "slug":"quote-esign",
+    "name":"Quote Builder + E-Sign",
+    "cluster":"Win & Deliver",
+    "hook":"Professional quotes that get approved fast.",
+    "bullets":["Line items & photos","E-sign built in"],
+    "kpis":[{"label":"Approval rate","value":"+22%"}],
+    "heroSubtitle":"Send quotes customers love to approve.",
+    "how":[
+      {"step":"Build","desc":"Items, options, photos."},
+      {"step":"Send","desc":"SMS or email with link."},
+      {"step":"Approve","desc":"E-sign converts to work order."}
+    ],
+    "proof":{"quote":"Approvals same-day now.","person":"Kim T., General Contracting"},
+    "integrations":[],
+    "related":["work-orders","payments"]
+  },
+  {
+    "slug":"work-orders",
+    "name":"Work Orders",
+    "cluster":"Win & Deliver",
+    "hook":"Clear instructions for crews and customers.",
+    "bullets":["Checklists & photos","Parts and labor"],
+    "kpis":[{"label":"Callbacks","value":"-17%"}],
+    "heroSubtitle":"Do the job right the first time.",
+    "how":[
+      {"step":"Assign","desc":"Crew and timeframe."},
+      {"step":"Complete","desc":"Checklist with photos."},
+      {"step":"Close","desc":"Customer signs on device."}
+    ],
+    "proof":{"quote":"Techs know exactly what to do.","person":"Olga M., Electrical"},
+    "integrations":[],
+    "related":["project-tracking"]
+  },
+  {
+    "slug":"project-tracking",
+    "name":"Project Tracking (multi-WO)",
+    "cluster":"Win & Deliver",
+    "hook":"Multi-visit jobs tracked end-to-end.",
+    "bullets":["Multiple work orders","Docs and photos"],
+    "kpis":[{"label":"Margin visibility","value":"Real-time"}],
+    "heroSubtitle":"Keep long jobs organized.",
+    "how":[
+      {"step":"Kickoff","desc":"Scope and master docs."},
+      {"step":"Track","desc":"Work orders and spend."},
+      {"step":"Bill","desc":"Invoice by phase or total."}
+    ],
+    "proof":{"quote":"No more email hunting for files.","person":"Jess P., GC"},
+    "integrations":[],
+    "related":["work-orders","invoicing-batch"]
+  },
+  {
+    "slug":"customer-portal",
+    "name":"Customer Portal",
+    "cluster":"Win & Deliver",
+    "hook":"Quotes, invoices, and history in one place.",
+    "bullets":["Secure links","Self-service updates"],
+    "kpis":[{"label":"Phone time","value":"-50%"}],
+    "heroSubtitle":"Customers stay informed without calling.",
+    "how":[
+      {"step":"Invite","desc":"Portal link auto-sends."},
+      {"step":"Access","desc":"Quotes, invoices, jobs."},
+      {"step":"Pay/Review","desc":"Payments and reviews."}
+    ],
+    "proof":{"quote":"Support calls dropped immediately.","person":"Mike R., HVAC"},
+    "integrations":[],
+    "related":["two-way-messaging","review-requests"]
+  },
+  {
+    "slug":"two-way-messaging",
+    "name":"2-Way SMS/Email",
+    "cluster":"Win & Deliver",
+    "hook":"All messages in one thread.",
+    "bullets":["Text and email together","Photos and files"],
+    "kpis":[{"label":"Response time","value":"-35%"}],
+    "heroSubtitle":"Fast, clear communication with customers.",
+    "how":[
+      {"step":"Reply","desc":"From web or mobile inbox."},
+      {"step":"Automate","desc":"Templates and reminders."},
+      {"step":"Track","desc":"Read receipts and history."}
+    ],
+    "proof":{"quote":"We never lose the message trail.","person":"Tara V., Plumbing"},
+    "integrations":[],
+    "related":["customer-portal","automated-reminders"]
+  },
+  {
+    "slug":"review-requests",
+    "name":"Review Requests",
+    "cluster":"Win & Deliver",
+    "hook":"Boost reputation after each job.",
+    "bullets":["Auto send on completion","Links to top sites"],
+    "kpis":[{"label":"New reviews","value":"+3x"}],
+    "heroSubtitle":"Ask at the right time automatically.",
+    "how":[
+      {"step":"Finish","desc":"Job marked complete."},
+      {"step":"Send","desc":"SMS/email with review link."},
+      {"step":"Grow","desc":"Track ratings over time."}
+    ],
+    "proof":{"quote":"Stars jumped and calls increased.","person":"Noah F., Cleaning"},
+    "integrations":[],
+    "related":["customer-portal"]
+  },
+  {
+    "slug":"invoicing-batch",
+    "name":"Invoicing & Batch",
+    "cluster":"Get Paid & Operate",
+    "hook":"Invoices build themselves from work.",
+    "bullets":["Batch send in clicks","Late notices"],
+    "kpis":[{"label":"Days to paid","value":"-3"}],
+    "heroSubtitle":"Bill faster with fewer errors.",
+    "how":[
+      {"step":"Generate","desc":"From work orders or projects."},
+      {"step":"Send","desc":"Email/SMS with pay link."},
+      {"step":"Track","desc":"Paid, partial, overdue."}
+    ],
+    "proof":{"quote":"Billing hours cut in half.","person":"Evan J., GC"},
+    "integrations":["QuickBooks","Xero"],
+    "related":["payments","deposits-partials"]
+  },
+  {
+    "slug":"payments",
+    "name":"Online & Field Payments",
+    "cluster":"Get Paid & Operate",
+    "hook":"Get paid in the field or online.",
+    "bullets":["Tap, chip, or link","Auto-reconcile"],
+    "kpis":[{"label":"Collection rate","value":"+14%"}],
+    "heroSubtitle":"Convenient payments for customers.",
+    "how":[
+      {"step":"Collect","desc":"Card reader or payment link."},
+      {"step":"Deposit","desc":"Funds hit your bank fast."},
+      {"step":"Sync","desc":"Posts to accounting."}
+    ],
+    "proof":{"quote":"We get paid before leaving site.","person":"Ivy C., Handyman"},
+    "integrations":["QuickBooks","Xero"],
+    "related":["invoicing-batch","deposits-partials"]
+  },
+  {
+    "slug":"deposits-partials",
+    "name":"Deposits/Partials",
+    "cluster":"Get Paid & Operate",
+    "hook":"Take deposits and progress payments.",
+    "bullets":["Flexible schedules","Automatic reminders"],
+    "kpis":[{"label":"Cash flow","value":"+21%"}],
+    "heroSubtitle":"Bill in stages with less chasing.",
+    "how":[
+      {"step":"Set terms","desc":"Deposit, milestones, final."},
+      {"step":"Collect","desc":"Pay links at each stage."},
+      {"step":"Reconcile","desc":"Totals always match."}
+    ],
+    "proof":{"quote":"Cash flow improved immediately.","person":"Sid N., Roofing"},
+    "integrations":["QuickBooks","Xero"],
+    "related":["payments"]
+  },
+  {
+    "slug":"job-costing",
+    "name":"Job Costing & Profit",
+    "cluster":"Get Paid & Operate",
+    "hook":"Know your margin on every job.",
+    "bullets":["Labor, materials, overhead","Real-time margin"],
+    "kpis":[{"label":"Visibility","value":"Live"}],
+    "heroSubtitle":"See profit as you work.",
+    "how":[
+      {"step":"Track","desc":"Time and materials roll up."},
+      {"step":"Compare","desc":"Estimate vs actuals."},
+      {"step":"Decide","desc":"Fix under-priced work."}
+    ],
+    "proof":{"quote":"We stopped losing margin quietly.","person":"Liam B., Electrical"},
+    "integrations":[],
+    "related":["accounting-sync"]
+  },
+  {
+    "slug":"payroll-wage-scales",
+    "name":"Payroll & Wage Scales",
+    "cluster":"Get Paid & Operate",
+    "hook":"Accurate time and wage tracking.",
+    "bullets":["Wage classes","Overtime rules"],
+    "kpis":[{"label":"Payroll time","value":"-30%"}],
+    "heroSubtitle":"Pay correctly without spreadsheets.",
+    "how":[
+      {"step":"Classify","desc":"Wage scales per employee."},
+      {"step":"Review","desc":"Timesheets and approvals."},
+      {"step":"Export","desc":"Push to payroll."}
+    ],
+    "proof":{"quote":"Payroll prep is painless now.","person":"Gina T., Painting"},
+    "integrations":[],
+    "related":["job-costing"]
+  },
+  {
+    "slug":"po-vendor",
+    "name":"POs & Vendor Mgmt",
+    "cluster":"Get Paid & Operate",
+    "hook":"Control materials and costs.",
+    "bullets":["POs by job","Receive and reconcile"],
+    "kpis":[{"label":"Material variance","value":"-11%"}],
+    "heroSubtitle":"Keep purchases tied to work.",
+    "how":[
+      {"step":"Create PO","desc":"By job or project."},
+      {"step":"Receive","desc":"Mark items received."},
+      {"step":"Match","desc":"Invoice vs PO vs job."}
+    ],
+    "proof":{"quote":"Stray spend disappeared.","person":"Kurt L., GC"},
+    "integrations":[],
+    "related":["accounting-sync","job-costing"]
+  },
+  {
+    "slug":"accounting-sync",
+    "name":"QuickBooks/Xero Sync",
+    "cluster":"Get Paid & Operate",
+    "hook":"Accounting stays in sync automatically.",
+    "bullets":["Two-way mapping","Clean reconciliation"],
+    "kpis":[{"label":"Admin time","value":"-25%"}],
+    "heroSubtitle":"Invoices, payments, and customers in sync.",
+    "how":[
+      {"step":"Connect","desc":"Map items and taxes once."},
+      {"step":"Post","desc":"Invoices and payments sync."},
+      {"step":"Reconcile","desc":"Books stay clean."}
+    ],
+    "proof":{"quote":"No more double entry.","person":"Kara A., HVAC"},
+    "integrations":["QuickBooks","Xero"],
+    "related":["invoicing-batch","payments"]
+  }
+]

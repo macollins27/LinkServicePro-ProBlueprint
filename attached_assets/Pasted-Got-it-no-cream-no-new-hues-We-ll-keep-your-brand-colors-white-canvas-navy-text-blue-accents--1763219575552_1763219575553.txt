@@ -1,0 +1,110 @@
+Got it — no cream, no new hues. We’ll keep your brand colors (white canvas, navy text, blue accents, green checks) and “warm” the From first call to cash band purely with neutral (grayscale) depth: softer ambient vignette, rounder/softer shadows, and a subtle top highlight on cards. No other sections touched.
+
+Paste this into Replit Agent 3.
+
+⸻
+
+Task
+
+Make the Workflow section (“From first call to cash—one clean flow”) feel warmer without adding any non-brand colors. Keep the white background and existing blue/green accents. Replace the cold blueprint grid with a neutral (grayscale) ambient vignette, and soften card depth via neutral shadows. Do not change copy, layout, tracer animation, routes, or other sections.
+
+Scope guardrails
+	•	Touch only:
+	•	src/styles/workflow-white.css
+	•	src/sections/WorkflowWhite.tsx
+	•	No global tokens/resets. No changes to other bands.
+
+⸻
+
+1) Update the stylesheet (neutral “cozy” variant)
+
+Open src/styles/workflow-white.css and:
+
+A) Ensure the cold micro-grid is off for the cozy mode
+
+Replace your existing grid rule with this :not(.cozy) guard so the grid renders only when NOT cozy:
+
+/* Cold micro-grid (only when NOT cozy) */
+.wf-section:not(.cozy)::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(2,6,23,.04) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(2,6,23,.04) 0 1px, transparent 1px 24px);
+  opacity: .55;
+  mask-image: linear-gradient(#000, rgba(0,0,0,.7));
+}
+
+B) Append a neutral-only cozy mode (no hue)
+
+Add this at the end of the file. These values use only grayscale (rgba blacks/whites), keeping your brand blue/green untouched.
+
+/* ===== Neutral cozy variant (no new color hues) ===== */
+.wf-section.cozy {
+  position: relative;
+  /* Keep your existing tokens; we only relax shadows/borders neutrally */
+  --wf-surface: #FFFFFF;               /* still white */
+  --wf-text: #0B1220;                  /* your dark body token */
+  --wf-muted: #475569;                 /* unchanged slate */
+  --wf-border: #E7E9EE;                /* slightly softer neutral border */
+  --wf-card: #FFFFFF;
+  --wf-card-tint: #FFFFFF;             /* no warm tint; keep pure white */
+  --wf-card-shadow:       0 1px 0 rgba(3,7,18,.05), 0 14px 34px rgba(3,7,18,.10);
+  --wf-card-shadow-hover: 0 2px 0 rgba(3,7,18,.05), 0 20px 44px rgba(3,7,18,.14);
+}
+
+/* Neutral ambient vignette (grayscale only) to add softness on white */
+.wf-section.cozy::before {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(900px 420px at 18% -10%, rgba(0,0,0,.045), transparent 60%),
+    radial-gradient(740px 340px at 85% -5%,  rgba(0,0,0,.035), transparent 55%),
+    linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,0) 38%),
+    linear-gradient(180deg, transparent 70%, rgba(0,0,0,.03));
+  opacity: .9;
+}
+
+/* Cards keep white fill; add subtle top highlight (neutral) */
+.wf-card {
+  /* existing background/border/shadow remain, driven by tokens above */
+  border-color: var(--wf-border);
+}
+.wf-card::after {
+  content: "";
+  position: absolute; left: 10px; right: 10px; top: 0; height: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,0));
+  border-top-left-radius: 14px; border-top-right-radius: 14px;
+  pointer-events: none;
+  opacity: .9;
+}
+
+/* Chips/links/icons remain brand-colored (blue/green) — no change needed */
+
+This keeps the animated blue perimeter tracer intact and unchanged.
+
+⸻
+
+2) Activate cozy mode on this one band
+
+Open src/sections/WorkflowWhite.tsx and add cozy to the wrapper:
+
+// Before:
+// <section className="wf-section" aria-labelledby="wf-heading">
+
+// After:
+<section className="wf-section cozy" aria-labelledby="wf-heading">
+
+No other edits. Leave copy, icons, chips, tracer, and grid settings alone.
+
+⸻
+
+3) Acceptance checklist
+	•	Background stays white; no cream or warm hue added.
+	•	Cold micro-grid is gone for this section only; replaced by a neutral (grayscale) ambient vignette that adds depth without color shifts.
+	•	Cards feel softer and more inviting via neutral shadows and a gentle white top highlight, while retaining their pop, chips, and animated tracer.
+	•	Brand accents (blue links/icons, green checks) remain exactly the same.
+	•	No other band changed; removing cozy reverts to your previous look instantly.
+
+If you want even subtler ambiance, reduce the opacities in the .cozy::before gradients by ~0.01–0.015. If you want a tiny bit more pop, increase --wf-card-shadow blur by ~6–8px (keep rgba neutral).

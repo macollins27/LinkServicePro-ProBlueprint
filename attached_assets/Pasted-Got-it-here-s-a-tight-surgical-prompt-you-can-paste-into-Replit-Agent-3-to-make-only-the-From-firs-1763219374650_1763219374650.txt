@@ -1,0 +1,105 @@
+Got it—here’s a tight, surgical prompt you can paste into Replit Agent 3 to make only the “From first call to cash—one clean flow” section feel warm. It won’t touch any other bands or global styles.
+
+⸻
+
+Task
+
+Warm up the Workflow section (the “From first call to cash—one clean flow” band) by swapping the cold blueprint grid for a soft warm vignette and using cream-tinted surfaces/shadows. Keep all copy, layout, tracer animation, links, and routes exactly as-is.
+
+Scope guardrails
+	•	Touch only:
+	•	src/styles/workflow-white.css
+	•	src/sections/WorkflowWhite.tsx
+	•	Do not modify any other section, tokens, or globals.
+
+⸻
+
+1) Update the section stylesheet (warm variant)
+
+Open src/styles/workflow-white.css and make these two edits:
+
+A) Make the cold micro-grid apply only when NOT warm
+
+Replace your current micro-grid rule with this (note the :not(.warm) selector):
+
+/* Subtle blueprint micro-grid behind content (cool look only) */
+.wf-section:not(.warm)::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(2,6,23,.04) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(2,6,23,.04) 0 1px, transparent 1px 24px);
+  opacity: .55;
+  mask-image: linear-gradient(#000, rgba(0,0,0,.7));
+  z-index: 0;
+}
+
+B) Append a warm theme block (tokens + vignette + chip tint)
+
+Append this at the end of the file (don’t remove your existing rules):
+
+/* ===== Warm variant for Workflow (activates when .warm is on the section) ===== */
+.wf-section.warm {
+  /* Warm, paper-like tokens */
+  --wf-surface: #FFFCF7; /* soft cream background */
+  --wf-text: #0B1220;
+  --wf-muted: #5b5f67;   /* slightly warmer slate */
+  --wf-border: #F0EAE2;  /* warm border */
+  --wf-card: #FFFFFF;
+  --wf-card-tint: #FFF6EA;   /* warm wash inside cards */
+  --wf-card-shadow: 0 1px 0 rgba(87,63,24,.04), 0 12px 28px rgba(87,63,24,.10);
+  --wf-card-shadow-hover: 0 2px 0 rgba(87,63,24,.05), 0 18px 36px rgba(87,63,24,.14);
+  --wf-accent: #2F7CFF;      /* keep brand blue for links/icons/tracer */
+  --wf-accent-weak: #EDF4FF;
+
+  /* Warm spec-chip treatment */
+  --wf-chip-bg: rgba(255,184,76,.12);  /* amber-400 @ 12% */
+  --wf-chip-br: rgba(255,184,76,.28);
+}
+
+/* Replace grid with a soft warm vignette on warm sections */
+.wf-section.warm { position: relative; }
+.wf-section.warm::before {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(255,197,112,.12), transparent 60%),
+    radial-gradient(1000px 500px at 85% -5%,  rgba(255,171, 92,.10), transparent 55%),
+    linear-gradient(180deg, rgba(255,226,170,.05), rgba(255,226,170,0) 35%),
+    linear-gradient(180deg, transparent 70%, rgba(125,94,23,.04));
+  opacity: .9;
+}
+
+/* Spec chips inherit warm tone automatically */
+.wf-section.warm .wf-chip {
+  background: var(--wf-chip-bg);
+  border-color: var(--wf-chip-br);
+}
+
+The tracer border you added earlier remains blue (brand-consistent) and still animates.
+
+⸻
+
+2) Activate warmth on the Workflow band only
+
+Open src/sections/WorkflowWhite.tsx and add warm to the wrapper section class:
+
+// Before:
+// <section className="wf-section" aria-labelledby="wf-heading">
+
+// After:
+<section className="wf-section warm" aria-labelledby="wf-heading">
+
+No other changes to this component.
+
+⸻
+
+3) Acceptance checklist
+	•	Only the Workflow band now uses a soft warm vignette on a cream surface.
+	•	Cards keep their depth but use warm shadows and a subtle warm tint—no layout/copy changes.
+	•	Links, icons, and animated perimeter tracer remain brand blue for contrast.
+	•	All other sections (including hero and navy bands) are untouched.
+	•	Removing .warm on this one section instantly reverts to the cool micro-grid if you want to compare.
+
+If you want it a touch warmer/cooler: tweak --wf-card-tint toward #FFF9F0 (warmer) or #FFF3E4 (richer), or nudge the first two radial-gradient alphas by ±0.02.

@@ -1,0 +1,451 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+## Objective
+
+Apply the new homepage system site-wide, starting with **Features**. Build:
+
+1. A **new All Features index** with clusters.
+2. A **Feature Detail template** used by every feature.
+3. A **data model** so adding features is one JSON entry.
+
+Mobile-first. Sharp corners. High contrast. One primary action per page/section. Every section begins with a **Title + Subtitle at top-left**. Respect `prefers-reduced-motion`.
+
+---
+
+## Global rules
+
+* No horizontal scroll at 375px.
+* Typography: body 16px mobile / 18px desktop. H2 24/32. Max line length 28–36 chars mobile, 48–64 desktop.
+* Cards use single shadow `elev-2`. Rectangle buttons with bold text. Links use right→left underline animation.
+* AA contrast. Proper semantics and focus rings.
+
+---
+
+## 0) Data model
+
+**Create:** `src/data/features.json`
+Populate with the full list below. Use the three clusters exactly: **Plan & Dispatch**, **Win & Deliver**, **Get Paid & Operate**.
+
+```json
+[
+  {
+    "slug": "drag-and-drop-scheduling",
+    "name": "Drag-and-drop Scheduling",
+    "cluster": "Plan & Dispatch",
+    "hook": "Move jobs on the calendar in seconds.",
+    "bullets": ["Day, week, crew views", "Capacity view prevents overbooking"],
+    "kpis": [{"label":"Drive time","value":"−18%"},{"label":"On-time","value":"96%"}],
+    "heroSubtitle": "Schedule faster and keep crews in sync.",
+    "how": [
+      {"step":"Create job","desc":"Add from web or mobile with items and photos."},
+      {"step":"Place on calendar","desc":"Drag to day and assign a crew."},
+      {"step":"Notify","desc":"Auto SMS/email with arrival window."}
+    ],
+    "proof":{"quote":"“We reshuffle routes in minutes and cut callbacks.”","person":"Mike R., HVAC"},
+    "integrations":["QuickBooks","Xero"],
+    "related":["dispatch-board-live-map","route-optimization"]
+  },
+  {
+    "slug": "dispatch-board-live-map",
+    "name": "Dispatch Board + Live Map",
+    "cluster": "Plan & Dispatch",
+    "hook": "See every crew on one screen.",
+    "bullets": ["Real-time GPS and ETA","Drag jobs between techs"],
+    "kpis": [{"label":"Same-day jobs","value":"+23%"}],
+    "heroSubtitle": "Real-time command center for busy days.",
+    "how": [
+      {"step":"Assign","desc":"Drag jobs to available techs."},
+      {"step":"Optimize","desc":"Sort stops to cut windshield time."},
+      {"step":"Track","desc":"See arrival, start, wrap-up live."}
+    ],
+    "proof":{"quote":"“No more ‘where are you?’ calls.”","person":"Sarah K., Plumbing"},
+    "integrations":["PropertyLinkWare"],
+    "related":["drag-and-drop-scheduling","route-optimization"]
+  },
+  {
+    "slug": "route-optimization",
+    "name": "Route Optimization",
+    "cluster": "Plan & Dispatch",
+    "hook": "Shortest routes. More jobs per tech.",
+    "bullets": ["One-tap optimize","Avoids traffic and time windows"],
+    "kpis": [{"label":"Jobs/tech/day","value":"+1.3"}],
+    "heroSubtitle": "Hit more stops without overtime.",
+    "how":[
+      {"step":"Plan","desc":"Pick today’s jobs and constraints."},
+      {"step":"Optimize","desc":"We build the fastest route."},
+      {"step":"Dispatch","desc":"Send to tech with turn-by-turn."}
+    ],
+    "proof":{"quote":"“We added an extra stop per tech.”","person":"Luis P., Cleaning"},
+    "integrations":["LinkInspectPro"],
+    "related":["dispatch-board-live-map"]
+  },
+  {
+    "slug": "real-time-gps",
+    "name": "Real-time GPS",
+    "cluster": "Plan & Dispatch",
+    "hook": "Know where crews are without calling.",
+    "bullets": ["Live location pings","Geofenced job arrivals"],
+    "kpis": [{"label":"No-show rate","value":"−31%"}],
+    "heroSubtitle": "Live location and geofences on one map.",
+    "how":[
+      {"step":"Enable GPS","desc":"Techs sign in on mobile."},
+      {"step":"Set geofences","desc":"Arrivals/Departures log automatically."},
+      {"step":"Review day","desc":"Timeline view for each tech."}
+    ],
+    "proof":{"quote":"“Fewer ‘on my way’ calls, more work done.”","person":"Dana S., Electrical"},
+    "integrations":[],
+    "related":["dispatch-board-live-map"]
+  },
+  {
+    "slug": "capacity-planning",
+    "name": "Capacity Planning",
+    "cluster": "Plan & Dispatch",
+    "hook": "Book the right amount of work per day.",
+    "bullets": ["Utilization by crew","Overtime warnings"],
+    "kpis": [{"label":"Overtime","value":"−15%"}],
+    "heroSubtitle": "Balance workload across teams.",
+    "how":[
+      {"step":"Set capacity","desc":"Hours per tech and vehicle."},
+      {"step":"Schedule","desc":"See available slots at a glance."},
+      {"step":"Adjust","desc":"Shift work before it becomes overtime."}
+    ],
+    "proof":{"quote":"“Smoother weeks and fewer late nights.”","person":"Ari P., Roofing"},
+    "integrations":[],
+    "related":["drag-and-drop-scheduling"]
+  },
+  {
+    "slug": "automated-reminders",
+    "name": "Automated Reminders",
+    "cluster": "Plan & Dispatch",
+    "hook": "Reduce no-shows with automatic reminders.",
+    "bullets": ["SMS + email","Custom timing and templates"],
+    "kpis": [{"label":"No-shows","value":"−40%"}],
+    "heroSubtitle": "Keep customers ready when crews arrive.",
+    "how":[
+      {"step":"Choose timing","desc":"Day-before and day-of windows."},
+      {"step":"Personalize","desc":"Merge fields like date and tech."},
+      {"step":"Track reads","desc":"See delivery and replies."}
+    ],
+    "proof":{"quote":"“Confirmations doubled in a week.”","person":"Tanya L., Painting"},
+    "integrations":[],
+    "related":["2-way-sms-email","customer-portal"]
+  },
+  {
+    "slug": "recurring-jobs",
+    "name": "Recurring Jobs",
+    "cluster": "Plan & Dispatch",
+    "hook": "Set it once. We schedule the rest.",
+    "bullets": ["Weekly/Monthly/Seasonal plans","Auto reminders"],
+    "kpis": [{"label":"Renewals","value":"+28%"}],
+    "heroSubtitle": "Maintenance plans without spreadsheets.",
+    "how":[
+      {"step":"Pick cadence","desc":"Weekly, monthly, seasonal."},
+      {"step":"Attach plan","desc":"Auto-creates visits and invoices."},
+      {"step":"Review","desc":"See renewals and revenue."}
+    ],
+    "proof":{"quote":"“Contracts run themselves now.”","person":"Ben W., Lawn Care"},
+    "integrations":[],
+    "related":["automated-reminders","invoicing-batch"]
+  },
+
+  { "slug":"crm-leads","name":"CRM & Leads","cluster":"Win & Deliver","hook":"Capture, track, and convert more work.","bullets":["Lead sources and stages","Quick follow-ups"],"kpis":[{"label":"Lead-to-job","value":"+19%"}],"heroSubtitle":"Keep every opportunity moving.","how":[{"step":"Capture","desc":"Forms, calls, imports."},{"step":"Nurture","desc":"Tasks and reminders."},{"step":"Convert","desc":"Create quote in one tap."}],"proof":{"quote":"“Leads stopped slipping through cracks.”","person":"Ralph D., Handyman"},"integrations":[],"related":["quote-builder-e-sign"] },
+  { "slug":"quote-builder-e-sign","name":"Quote Builder + E-Sign","cluster":"Win & Deliver","hook":"Professional quotes that get approved fast.","bullets":["Line items & photos","E-sign built in"],"kpis":[{"label":"Approval rate","value":"+22%"}],"heroSubtitle":"Send quotes customers love to approve.","how":[{"step":"Build","desc":"Items, options, photos."},{"step":"Send","desc":"SMS or email with link."},{"step":"Approve","desc":"E-sign converts to work order."}],"proof":{"quote":"“Approvals same-day now.”","person":"Kim T., General Contracting"},"integrations":[],"related":["work-orders","online-field-payments"] },
+  { "slug":"work-orders","name":"Work Orders","cluster":"Win & Deliver","hook":"Clear instructions for crews and customers.","bullets":["Checklists & photos","Parts and labor"],"kpis":[{"label":"Callbacks","value":"−17%"}],"heroSubtitle":"Do the job right the first time.","how":[{"step":"Assign","desc":"Crew and timeframe."},{"step":"Complete","desc":"Checklist with photos."},{"step":"Close","desc":"Customer signs on device."}],"proof":{"quote":"“Techs know exactly what to do.”","person":"Olga M., Electrical"},"integrations":[],"related":["project-tracking"] },
+  { "slug":"project-tracking","name":"Project Tracking (multi-WO)","cluster":"Win & Deliver","hook":"Multi-visit jobs tracked end-to-end.","bullets":["Multiple work orders","Docs and photos"],"kpis":[{"label":"Margin visibility","value":"Real-time"}],"heroSubtitle":"Keep long jobs organized.","how":[{"step":"Kickoff","desc":"Scope and master docs."},{"step":"Track","desc":"Work orders and spend."},{"step":"Bill","desc":"Invoice by phase or total."}],"proof":{"quote":"“No more email hunting for files.”","person":"Jess P., GC"},"integrations":[],"related":["work-orders","invoicing-batch"] },
+  { "slug":"customer-portal","name":"Customer Portal","cluster":"Win & Deliver","hook":"Quotes, invoices, and history in one place.","bullets":["Secure links","Self-service updates"],"kpis":[{"label":"Phone time","value":"−50%"}],"heroSubtitle":"Customers stay informed without calling.","how":[{"step":"Invite","desc":"Portal link auto-sends."},{"step":"Access","desc":"Quotes, invoices, jobs."},{"step":"Pay/Review","desc":"Payments and reviews."}],"proof":{"quote":"“Support calls dropped immediately.”","person":"Mike R., HVAC"},"integrations":[],"related":["2-way-sms-email","review-requests"] },
+  { "slug":"2-way-sms-email","name":"2-Way SMS/Email","cluster":"Win & Deliver","hook":"All messages in one thread.","bullets":["Text and email together","Photos and files"],"kpis":[{"label":"Response time","value":"−35%"}],"heroSubtitle":"Fast, clear communication with customers.","how":[{"step":"Reply","desc":"From web or mobile inbox."},{"step":"Automate","desc":"Templates and reminders."},{"step":"Track","desc":"Read receipts and history."}],"proof":{"quote":"“We never lose the message trail.”","person":"Tara V., Plumbing"},"integrations":[],"related":["customer-portal","automated-reminders"] },
+  { "slug":"review-requests","name":"Review Requests","cluster":"Win & Deliver","hook":"Boost reputation after each job.","bullets":["Auto send on completion","Links to top sites"],"kpis":[{"label":"New reviews","value":"+3×"}],"heroSubtitle":"Ask at the right time automatically.","how":[{"step":"Finish","desc":"Job marked complete."},{"step":"Send","desc":"SMS/email with review link."},{"step":"Grow","desc":"Track ratings over time."}],"proof":{"quote":"“Stars jumped and calls increased.”","person":"Noah F., Cleaning"},"integrations":[],"related":["customer-portal"] },
+
+  { "slug":"invoicing-batch","name":"Invoicing & Batch","cluster":"Get Paid & Operate","hook":"Invoices build themselves from work.","bullets":["Batch send in clicks","Late notices"],"kpis":[{"label":"Days to paid","value":"−3"}],"heroSubtitle":"Bill faster with fewer errors.",
+    "how":[{"step":"Generate","desc":"From work orders or projects."},{"step":"Send","desc":"Email/SMS with pay link."},{"step":"Track","desc":"Paid, partial, overdue."}],
+    "proof":{"quote":"“Billing hours cut in half.”","person":"Evan J., GC"},"integrations":["QuickBooks","Xero"],"related":["online-field-payments","deposits-partials"] },
+  { "slug":"online-field-payments","name":"Online & Field Payments","cluster":"Get Paid & Operate","hook":"Get paid in the field or online.","bullets":["Tap, chip, or link","Auto-reconcile"],"kpis":[{"label":"Collection rate","value":"+14%"}],"heroSubtitle":"Convenient payments for customers.",
+    "how":[{"step":"Collect","desc":"Card reader or payment link."},{"step":"Deposit","desc":"Funds hit your bank fast."},{"step":"Sync","desc":"Posts to accounting."}],
+    "proof":{"quote":"“We get paid before leaving site.”","person":"Ivy C., Handyman"},"integrations":["QuickBooks","Xero"],"related":["invoicing-batch","deposits-partials"] },
+  { "slug":"deposits-partials","name":"Deposits/Partials","cluster":"Get Paid & Operate","hook":"Take deposits and progress payments.","bullets":["Flexible schedules","Automatic reminders"],"kpis":[{"label":"Cash flow","value":"+21%"}],"heroSubtitle":"Bill in stages with less chasing.",
+    "how":[{"step":"Set terms","desc":"Deposit, milestones, final."},{"step":"Collect","desc":"Pay links at each stage."},{"step":"Reconcile","desc":"Totals always match."}],
+    "proof":{"quote":"“Cash flow improved immediately.”","person":"Sid N., Roofing"},"integrations":["QuickBooks","Xero"],"related":["online-field-payments"] },
+  { "slug":"job-costing-profit","name":"Job Costing & Profit","cluster":"Get Paid & Operate","hook":"Know your margin on every job.","bullets":["Labor, materials, overhead","Real-time margin"],"kpis":[{"label":"Visibility","value":"Live"}],"heroSubtitle":"See profit as you work.",
+    "how":[{"step":"Track","desc":"Time and materials roll up."},{"step":"Compare","desc":"Estimate vs actuals."},{"step":"Decide","desc":"Fix under-priced work."}],
+    "proof":{"quote":"“We stopped losing margin quietly.”","person":"Liam B., Electrical"},"integrations":[],"related":["quickbooks-xero-sync"] },
+  { "slug":"payroll-wage-scales","name":"Payroll & Wage Scales","cluster":"Get Paid & Operate","hook":"Accurate time and wage tracking.","bullets":["Wage classes","Overtime rules"],"kpis":[{"label":"Payroll time","value":"−30%"}],"heroSubtitle":"Pay correctly without spreadsheets.",
+    "how":[{"step":"Classify","desc":"Wage scales per employee."},{"step":"Review","desc":"Timesheets and approvals."},{"step":"Export","desc":"Push to payroll."}],
+    "proof":{"quote":"“Payroll prep is painless now.”","person":"Gina T., Painting"},"integrations":[],"related":["job-costing-profit"] },
+  { "slug":"pos-vendor-mgmt","name":"POs & Vendor Mgmt","cluster":"Get Paid & Operate","hook":"Control materials and costs.","bullets":["POs by job","Receive and reconcile"],"kpis":[{"label":"Material variance","value":"−11%"}],"heroSubtitle":"Keep purchases tied to work.",
+    "how":[{"step":"Create PO","desc":"By job or project."},{"step":"Receive","desc":"Mark items received."},{"step":"Match","desc":"Invoice vs PO vs job."}],
+    "proof":{"quote":"“Stray spend disappeared.”","person":"Kurt L., GC"},"integrations":[],"related":["quickbooks-xero-sync","job-costing-profit"] },
+  { "slug":"quickbooks-xero-sync","name":"QuickBooks/Xero Sync","cluster":"Get Paid & Operate","hook":"Accounting stays in sync automatically.","bullets":["Two-way mapping","Clean reconciliation"],"kpis":[{"label":"Admin time","value":"−25%"}],"heroSubtitle":"Invoices, payments, and customers in sync.",
+    "how":[{"step":"Connect","desc":"Map items and taxes once."},{"step":"Post","desc":"Invoices and payments sync."},{"step":"Reconcile","desc":"Books stay clean."}],
+    "proof":{"quote":"“No more double entry.”","person":"Kara A., HVAC"},"integrations":["QuickBooks","Xero"],"related":["invoicing-batch","online-field-payments"] }
+]
+```
+
+---
+
+## 1) All Features page
+
+**Create:** `src/pages/features/index.jsx`
+
+```jsx
+import features from "@/data/features.json";
+import SectionHeader from "@/components/SectionHeader";
+import { useMemo, useState } from "react";
+
+const CLUSTERS = ["Plan & Dispatch","Win & Deliver","Get Paid & Operate"];
+
+function FeatureCard({ f }) {
+  return (
+    <a href={`/features/${f.slug}`} className="bg-white ring-1 ring-slate-200 p-5 sm:p-6 elev-2 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B5FFF]">
+      <div className="flex items-start gap-3">
+        <span className="h-6 w-6 bg-slate-900" aria-hidden="true" />
+        <div>
+          <div className="font-extrabold text-slate-900">{f.name}</div>
+          <div className="text-slate-700 text-sm">{f.hook}</div>
+        </div>
+      </div>
+      <ul className="mt-3 text-sm text-slate-700 list-disc pl-5 space-y-1">
+        {f.bullets.slice(0,2).map((b,i)=><li key={i}>{b}</li>)}
+      </ul>
+      <div className="mt-4 inline-flex font-semibold text-[#0B5FFF] underline decoration-transparent hover:decoration-[#0B5FFF] underline-offset-4">
+        See how it works →
+      </div>
+    </a>
+  );
+}
+
+export default function AllFeatures() {
+  const [q,setQ] = useState("");
+  const filtered = useMemo(()=> features.filter(f => {
+    const s = (f.name+f.hook+f.cluster).toLowerCase();
+    return s.includes(q.toLowerCase());
+  }),[q]);
+
+  return (
+    <main className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <SectionHeader
+        title="All Features"
+        subtitle="Everything your team needs to plan, dispatch, deliver, and get paid."
+      />
+      <label className="block max-w-xl">
+        <span className="sr-only">Search features</span>
+        <input
+          value={q}
+          onChange={e=>setQ(e.target.value)}
+          placeholder="Search features"
+          className="w-full border border-slate-300 px-4 py-3 rounded-none"
+        />
+      </label>
+
+      {CLUSTERS.map(c => {
+        const group = filtered.filter(f => f.cluster === c);
+        if(!group.length) return null;
+        return (
+          <section key={c} className="mt-8 sm:mt-10">
+            <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">{c}</h3>
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {group.map(f => <FeatureCard key={f.slug} f={f} />)}
+            </div>
+          </section>
+        );
+      })}
+    </main>
+  );
+}
+```
+
+---
+
+## 2) Feature Detail template
+
+**Create:** `src/components/FeatureLayout.jsx`
+
+```jsx
+import SectionHeader from "@/components/SectionHeader";
+export default function FeatureLayout({ title, subtitle, children }) {
+  return (
+    <main className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <SectionHeader title={title} subtitle={subtitle} />
+      {children}
+    </main>
+  );
+}
+```
+
+**Create:** `src/components/FeatureBlocks.jsx`
+
+```jsx
+export function HeroStats({ kpis=[] }) {
+  if(!kpis.length) return null;
+  return (
+    <div className="mt-4 grid grid-cols-3 gap-3 text-center text-sm">
+      {kpis.map((k,i)=>(
+        <div key={i} className="border border-slate-200 px-3 py-2">
+          <div className="font-extrabold text-slate-900">{k.value}</div>
+          <div className="text-slate-600">{k.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function WhatItDoes({ bullets=[] }) {
+  return (
+    <article className="bg-white ring-1 ring-slate-200 p-6 sm:p-8 elev-2">
+      <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">What it does</h3>
+      <ul className="mt-3 list-disc pl-5 text-slate-700 space-y-1">{bullets.map((b,i)=><li key={i}>{b}</li>)}</ul>
+    </article>
+  );
+}
+
+export function VisualMock() {
+  return (
+    <aside className="bg-white ring-1 ring-slate-200 p-6 sm:p-8 elev-2">
+      <div className="h-48 bg-slate-100" aria-hidden="true" />
+      <p className="text-slate-600 text-sm mt-2">Illustrative mock — replace with final art.</p>
+    </aside>
+  );
+}
+
+export function HowItWorks({ items=[] }) {
+  if(!items.length) return null;
+  return (
+    <section className="mt-8 sm:mt-10">
+      <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">How it works</h3>
+      <ol className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {items.map((s,i)=>(
+          <li key={i} className="bg-white ring-1 ring-slate-200 p-5 elev-2">
+            <div className="text-slate-500 text-xs">Step {i+1}</div>
+            <div className="font-extrabold text-slate-900">{s.step}</div>
+            <p className="text-slate-700 text-sm">{s.desc}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+export function Proof({ quote, person }) {
+  if(!quote) return null;
+  return (
+    <section className="mt-8 sm:mt-10">
+      <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">In the field</h3>
+      <blockquote className="bg-white ring-1 ring-slate-200 p-5 elev-2 text-slate-800">
+        {quote}
+        <footer className="text-sm text-slate-600 mt-2">— {person}</footer>
+      </blockquote>
+    </section>
+  );
+}
+
+export function WorksWith({ list=[] }) {
+  if(!list.length) return null;
+  return (
+    <section className="mt-8 sm:mt-10">
+      <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">Works with</h3>
+      <div className="mt-3 grid grid-cols-3 sm:grid-cols-6 gap-3">
+        {list.map(x=>(
+          <div key={x} className="bg-white ring-1 ring-slate-200 p-3 elev-2 text-center text-sm font-semibold text-slate-900">{x}</div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function Related({ items=[] }) {
+  if(!items.length) return null;
+  return (
+    <section className="mt-8 sm:mt-10">
+      <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">Related features</h3>
+      <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {items.map(f=>(
+          <a key={f.slug} href={`/features/${f.slug}`} className="bg-white ring-1 ring-slate-200 p-5 elev-2 block">
+            <div className="font-extrabold text-slate-900">{f.name}</div>
+            <div className="text-slate-700 text-sm">{f.hook}</div>
+            <div className="mt-3 inline-flex text-[#0B5FFF] font-semibold underline decoration-transparent hover:decoration-[#0B5FFF] underline-offset-4">
+              See how it works →
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function CTA() {
+  return (
+    <section className="mt-10 sm:mt-12 bg-slate-50 px-5 py-6 text-center">
+      <div className="text-2xl font-extrabold text-slate-900">Ready to try it?</div>
+      <p className="text-slate-700">Simple pricing. No contracts.</p>
+      <div className="mt-3 flex justify-center gap-3">
+        <a href="/pricing" className="px-5 py-3 bg-slate-900 text-white font-extrabold rounded-none">View Pricing</a>
+        <a href="/signup" className="px-5 py-3 font-extrabold border border-slate-900 rounded-none">Start Free</a>
+      </div>
+    </section>
+  );
+}
+```
+
+---
+
+## 3) Dynamic feature route
+
+**Create:** `src/pages/features/[slug].jsx`
+
+```jsx
+import features from "@/data/features.json";
+import FeatureLayout from "@/components/FeatureLayout";
+import { WhatItDoes, VisualMock, HeroStats, HowItWorks, Proof, WorksWith, Related, CTA } from "@/components/FeatureBlocks";
+
+export default function Feature({ f, related }) {
+  if(!f) return null;
+  return (
+    <FeatureLayout title={f.name} subtitle={f.heroSubtitle}>
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+        <div>
+          <WhatItDoes bullets={f.bullets} />
+          <HeroStats kpis={f.kpis} />
+        </div>
+        <VisualMock />
+      </section>
+
+      <HowItWorks items={f.how} />
+      <Proof quote={f.proof?.quote} person={f.proof?.person} />
+      <WorksWith list={f.integrations} />
+      <Related items={related} />
+      <CTA />
+    </FeatureLayout>
+  );
+}
+
+export async function getStaticProps({ params }) {
+  const f = features.find(x => x.slug === params.slug) || null;
+  const related = (f?.related || []).map(slug => features.find(x => x.slug === slug)).filter(Boolean).slice(0,3);
+  return { props: { f, related } };
+}
+
+export async function getStaticPaths() {
+  return { paths: features.map(f => ({ params: { slug: f.slug } })), fallback: false };
+}
+```
+
+> If not using Next.js, adapt routing; keep component structure.
+
+---
+
+## 4) Navigation
+
+* Ensure **Features** link points to `/features`.
+* Optional: update the desktop mega menu to list the three clusters with links generated from `features.json`.
+
+---
+
+## 5) Acceptance checklist
+
+* All Features index groups by **Plan & Dispatch**, **Win & Deliver**, **Get Paid & Operate**; searchable; mobile 1-col, desktop 2–3 col.
+* Each Feature Detail uses **Title + Subtitle** at top-left, then: What it does, KPIs, Visual mock, How it works (3 steps), In-the-field quote, Works with, Related features, CTA band.
+* Visual consistency with homepage: sharp corners, `elev-2`, bold buttons, underline animation.
+* No horizontal scroll at 375px. Lighthouse: Perf ≥90, A11y ≥95, Best Practices ≥95.
+
+Implement exactly as specified.

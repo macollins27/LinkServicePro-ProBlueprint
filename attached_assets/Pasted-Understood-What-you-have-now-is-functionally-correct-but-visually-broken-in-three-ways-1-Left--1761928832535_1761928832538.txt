@@ -1,0 +1,294 @@
+Understood. What you have now is functionally correct but visually broken in three ways:
+
+1. Left columns are stacked vertically with no breathing room, so each link block feels cramped and tall.
+2. The right promo panel is too wide and mostly empty which exaggerates the imbalance.
+3. The whole mega menu is anchored too far right and can overflow the viewport on smaller laptop screens.
+
+We solve this with layout, spacing, and width rules. Below are the corrections and then a final prompt you can paste into Replit to update the component cleanly.
+
+–––
+WHAT NEEDS TO CHANGE
+
+1. Constrain total width and center the panel
+
+   * The dropdown wrapper should have a fixed `max-width` (like `max-w-4xl` or `max-w-[64rem]`) and should be horizontally centered below the “Resources” nav item, not glued to the far right of the viewport.
+   * On smaller screens it must clamp and never overflow.
+
+   We’ll do:
+
+   ```html
+   <div className="relative">
+     <div className="absolute left-1/2 -translate-x-1/2">
+       <div className="w-screen max-w-4xl ...">...</div>
+     </div>
+   </div>
+   ```
+
+   This guarantees the panel is centered under the trigger and doesn’t shoot off-screen.
+
+2. Use 2-column grid instead of 3 skinny columns
+
+   * Currently: two 1-column nav stacks + a huge CTA column. That forces the left stacks to be narrow and tall and makes the right tile look like wasted real estate.
+   * Fix: use a responsive **two-column** layout:
+
+     * Left column = two logical groups (“LEARN THE BUSINESS” and “GET HELP”) arranged in a 2-column grid on desktop, not 1 skinny column.
+     * Right column = CTA tile, narrower and vertically tight.
+
+   Visually:
+
+   * On desktop (≥lg):
+
+     * left side: grid with 2 columns of link blocks
+     * right side: CTA card ~300px width
+   * On mobile (<lg):
+
+     * stack everything vertical full-width
+
+   That solves jammed text and wasted navy space.
+
+3. Improve link block density
+
+   * Each resource link row should NOT include a long paragraph wrapping under the icon.
+   * Instead we want: icon in a colored square, then title + short 1-line subtext side-by-side vertically.
+   * We’ll bump font sizes slightly, tighten copy.
+
+   Example row:
+
+   ```html
+   <Link ... className="flex items-start gap-3 rounded-lg p-3 hover:bg-slate-50 hover:shadow-sm hover:ring-1 hover:ring-[#0B5FFF] focus-visible:ring-2 ...">
+     <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[#0B5FFF]/10 text-[#0B5FFF] ring-1 ring-[#0B5FFF]/20 flex-shrink-0">
+       <Newspaper className="h-4 w-4" aria-hidden="true" />
+     </div>
+     <div className="flex flex-col">
+       <div className="text-[14px] font-semibold text-slate-900 leading-tight">Blog & Updates</div>
+       <div className="text-[12px] text-slate-600 leading-snug">Field-tested tactics, product updates, honest advice.</div>
+     </div>
+   </Link>
+   ```
+
+   This gives each item a defined block height and fixes readability.
+
+4. Compress promo card
+
+   * Tighten headline + body.
+   * Put both CTAs side-by-side (primary blue button, outline button) instead of stacked. This shrinks vertical waste.
+   * Keep the compliance line (calendar + unlimited users) under buttons.
+
+   That will cut the dead navy area.
+
+Now, here is the full updated prompt to hand to Replit.
+
+–––
+FINAL REPLIT PROMPT TO FIX RESOURCES DROPDOWN
+
+````txt
+You are Replit Agent. Do NOT rebuild the app. We are only updating the Resources mega menu styling/structure so it:
+1) does not overflow the right edge,
+2) stops cramming the link text,
+3) uses the space better,
+4) matches our design system (navy #0E2A47, CTA blue #0B5FFF, slate neutrals).
+
+We already have ResourcesMegaMenu.tsx. Replace its panel markup with the new layout below, and adjust the parent positioning logic:
+
+A. POSITIONING / WRAPPER
+- The dropdown panel must be horizontally centered under the "Resources" nav item and never overflow small laptop screens.
+- Use an absolutely positioned container with:
+  className="absolute left-1/2 z-[200] mt-2 w-screen max-w-4xl -translate-x-1/2 rounded-xl bg-white shadow-xl ring-1 ring-slate-200 p-4"
+  (Adjust `z` to match other menus.)
+- On mobile (<lg) this still works because max-w-4xl will clamp and w-screen will just fill.
+
+B. INTERNAL LAYOUT
+Inside that panel, use a 2-column responsive grid:
+```jsx
+<div className="grid gap-6 lg:grid-cols-[1fr_300px]">
+  {/* LEFT CONTENT BLOCKS */}
+  <div className="grid gap-6 sm:grid-cols-2">
+    {/* Column A: LEARN THE BUSINESS */}
+    <div className="flex flex-col gap-2">
+      <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">LEARN THE BUSINESS</div>
+
+      {/* Blog */}
+      <Link ...> ... </Link>
+
+      {/* Guides */}
+      <Link ...> ... </Link>
+
+      {/* Webinars */}
+      <Link ...> ... </Link>
+    </div>
+
+    {/* Column B: GET HELP */}
+    <div className="flex flex-col gap-2">
+      <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">GET HELP</div>
+
+      {/* Help Center */}
+      <Link ...> ... </Link>
+
+      {/* Popular Articles */}
+      <Link ...> ... </Link>
+
+      {/* Contact Support */}
+      <Link ...> ... </Link>
+    </div>
+  </div>
+
+  {/* RIGHT CTA CARD */}
+  <div className="flex flex-col justify-between rounded-xl bg-[#0E2A47] text-white ring-1 ring-slate-800 shadow-inner p-4">
+    ... (details below)
+  </div>
+</div>
+````
+
+This solves the "squished text in one tall column" issue. We now have two logical columns (“LEARN THE BUSINESS”, “GET HELP”) side by side on desktop in the LEFT block, and then the CTA sits to the RIGHT in a fixed ~300px column. On mobile, the grid will stack automatically.
+
+C. LINK ROW COMPONENT STYLE
+For every resource row (<Link>), use this same pattern and classes:
+
+```jsx
+<Link
+  href="/target-route"
+  className="group flex items-start gap-3 rounded-lg p-3 hover:bg-slate-50 hover:shadow-sm hover:ring-1 hover:ring-[#0B5FFF] focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none"
+>
+  <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[#0B5FFF]/10 text-[#0B5FFF] ring-1 ring-[#0B5FFF]/20 flex-shrink-0">
+    {/* icon goes here, h-4 w-4, aria-hidden="true" */}
+  </div>
+  <div className="flex flex-col">
+    <div className="text-[14px] font-semibold text-slate-900 leading-tight">
+      Title here
+    </div>
+    <div className="text-[12px] text-slate-600 leading-snug">
+      Subtext here
+    </div>
+  </div>
+</Link>
+```
+
+Use lucide-react icons:
+
+* Blog & Updates => Newspaper
+* Free Guides & Playbooks => BookOpen
+* Webinars & Training => Video
+* Help Center => LifeBuoy
+* Popular Articles => ClipboardList
+* Contact Support => Phone
+
+All icons `aria-hidden="true"`.
+
+ROUTE & COPY for each:
+
+LEARN THE BUSINESS column:
+
+1. Blog & Updates
+   href="/blog"
+   Title: "Blog & Updates"
+   Subtext: "Field-tested tactics, product updates, honest advice."
+2. Free Guides & Playbooks
+   href="/guides"
+   Title: "Free Guides & Playbooks"
+   Subtext: "Dispatch, pricing, recurring revenue, same-day payment."
+3. Webinars & Training
+   href="/webinars"
+   Title: "Webinars & Training"
+   Subtext: "Live / on-demand sessions for owners and ops."
+
+GET HELP column:
+
+1. Help Center
+   href="/help"
+   Title: "Help Center"
+   Subtext: "Step-by-step answers for scheduling, dispatch, invoices, and more."
+2. Popular Articles
+   href="/help"
+   Title: "Popular Articles"
+   Subtext: "Scheduling jobs, taking deposits, sending e-sign estimates."
+3. Contact Support
+   href="/help"
+   Title: "Contact Support"
+   Subtext: "Email or call 631-206-3700 Mon–Fri 9a–5p ET."
+
+Do NOT wrap text under the icon the way it is now. Text should live next to the icon as shown above. That fixes the 'squished and stacked' look.
+
+D. CTA CARD (RIGHT SIDE)
+Replace the current tall navy block with a tighter card:
+
+```jsx
+<div className="flex flex-col justify-between rounded-xl bg-[#0E2A47] text-white ring-1 ring-slate-800 shadow-inner p-4">
+  <div className="flex flex-col gap-2">
+    <div className="inline-block rounded-full bg-white/10 border border-white/20 text-white/80 text-[11px] font-semibold px-2 py-[2px] w-fit">
+      Built for the field
+    </div>
+
+    <div className="text-[15px] font-semibold text-white leading-snug">
+      Stop duct-taping 4 apps
+    </div>
+
+    <div className="text-[12px] leading-snug text-white/70">
+      Live dispatch board, route planning, quotes with e-sign, and same-day payment — all in one hub.
+    </div>
+  </div>
+
+  <div className="mt-4 flex flex-wrap gap-2">
+    <Link
+      href="/signup"
+      className="bg-[#0B5FFF] text-white text-[13px] font-semibold rounded-md px-3 py-2 shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none focus-visible:ring-offset-[#0E2A47]"
+    >
+      Get Started Free
+    </Link>
+
+    <Link
+      href="/contact"
+      className="text-white/80 text-[13px] font-semibold rounded-md px-3 py-2 ring-1 ring-white/30 hover:text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none focus-visible:ring-offset-[#0E2A47]"
+    >
+      Talk to Sales
+    </Link>
+  </div>
+
+  <div className="mt-3 text-[11px] text-white/60 leading-snug">
+    Works with Google Calendar and Apple Calendar. Unlimited users on paid plans.
+  </div>
+</div>
+```
+
+Key changes vs current:
+
+* Much less dead vertical space.
+* Buttons are side-by-side instead of stacked. That uses width instead of height.
+* Fine print stays visible but compact.
+
+E. ACCESSIBILITY & INTERACTION
+
+* Keep aria-haspopup="true" and aria-expanded={isOpen} on the "Resources" trigger exactly how you did for Features / Industries.
+* The parent `absolute left-1/2 -translate-x-1/2` wrapper means the panel will appear centered below the trigger and won't overflow off the right edge on smaller screens.
+* Keep `focus-visible:ring-2` classes on every <Link> row so keyboard nav is first-class.
+
+F. CLEANUP OLD STYLES
+
+* Remove the previous single-column vertical stacks with long paragraphs under each link.
+* Remove the giant empty navy block.
+* Ensure spacing between rows in each column is driven by `gap-2`, not giant margin-bottoms.
+
+After you update ResourcesMegaMenu.tsx according to A–E above:
+
+* Visually re-check at 1280px width and 1024px width. The panel must stay fully in-frame.
+* On <lg screens, the grid will stack. That’s fine. Each link row remains at least ~44px tall.
+
+This will fix:
+
+1. The links being vertically squished and hard to read.
+2. The huge empty navy section on the right.
+3. The panel drifting off the screen on smaller displays.
+4. The overall balance so it matches the polish level of Features / Industries.
+
+```
+
+–––
+Summary of what you’re telling Replit:
+- Center the dropdown with `left-1/2 -translate-x-1/2` and `max-w-4xl`.
+- Convert left side into a 2-column grid of link rows (Learn the Business / Get Help).
+- Redesign each link row into [icon box + title + subtext], not tall paragraph columns.
+- Compress the right CTA tile, make buttons horizontal.
+- Keep accessibility rings and responsive stack.
+
+After this, your Resources dropdown will look clean, balanced, and consistent across screen sizes.
+::contentReference[oaicite:0]{index=0}
+```

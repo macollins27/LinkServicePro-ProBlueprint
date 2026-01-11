@@ -1,0 +1,657 @@
+We’ll build `Resources` as a real landing page, not a junk drawer.
+
+Purpose:
+
+* Signal authority (you teach, not just sell).
+* Funnel visitors into self-education (blog, guides, webinars, help center).
+* Generate leads (CTAs in every section).
+* Give AI/Google clean topical structure (“This company has training, compliance, onboarding material”).
+
+Here’s the plan:
+
+1. I’ll outline the page sections, content, and visual style.
+2. Then I’ll give you a clean Replit prompt you can paste so it builds `/resources` with proper links, placeholders, and CTAs.
+
+All styling assumes:
+
+* React + Vite + Wouter
+* Tailwind
+* lucide-react
+* Your brand colors:
+
+  * Navy `#0E2A47`
+  * Accent blue `#0B5FFF`
+  * White / slate neutrals
+* CTA buttons and focus rings follow the same pattern as the rest of your site.
+
+---
+
+## SECTION LAYOUT / CONTENT
+
+### 1. Page hero (top)
+
+Goal: Establish “Tools to run a serious business and grow it.”
+
+Visual:
+
+* Soft light background (slate-50 / subtle gradient). Not the navy hero. This page is “education”, so lighter tone.
+
+Content:
+
+* Headline: “Resources for field service businesses”
+* Subtext: “Learn how to schedule smarter, quote faster, get paid sooner, and scale without chaos.”
+* Two CTAs:
+
+  * Primary: “Get Started Free” → `/signup` (or whatever your trial route is)
+  * Secondary: “Talk to Sales” → `/contact` or a phone tel: link
+
+Also include trust badges just below, like:
+
+* “Built for contractors in HVAC, Plumbing, Electrical, Cleaning, and more.”
+* “Unlimited users on paid plans.”
+  These reinforce positioning right away.
+
+We’ll use lucide icons inline for credibility.
+
+---
+
+### 2. Quick-access cards row (“What do you need today?”)
+
+Goal: Immediately route them to the most useful resource types.
+
+Grid of 4 cards (1 row on desktop, stacks on mobile). Each card is clickable, uses icon + headline + short description + “Explore →” link. Cards:
+
+1. Blog & Updates
+
+   * Icon: Newspaper
+   * Title: Blog & Updates
+   * Copy: “Industry tips, product updates, and real talk from the field.”
+   * Link: `/blog`
+
+2. Guides & Playbooks
+
+   * Icon: BookOpen
+   * Title: Free Guides & Playbooks
+   * Copy: “Step-by-step checklists for dispatch, pricing, and scaling.”
+   * Link: `/guides`
+
+3. Webinars & Training
+
+   * Icon: Video
+   * Title: Webinars & Training
+   * Copy: “Live and on-demand sessions for owners and ops managers.”
+   * Link: `/webinars`
+
+4. Help Center
+
+   * Icon: LifeBuoy
+   * Title: Help Center
+   * Copy: “How to use LinkServicePro in your business, day one.”
+   * Link: `/help`
+
+Each card:
+
+* Rounded-xl
+* Border + subtle shadow
+* On hover: ring `#0B5FFF` and slight elevate.
+* On focus: normal focus-visible ring.
+
+This “choose your path” block should sit high on the page, right under the hero, for clarity.
+
+---
+
+### 3. Featured Guide (Conversion block)
+
+Goal: Lead gen. This becomes your “download our guide / watch now / etc.”
+
+Layout:
+
+* Two-column block in a white card on a light gray section background.
+* Left side: headline + bullets of value.
+* Right side: gray placeholder thumbnail for now (we pretend it’s a PDF cover / webinar screenshot).
+
+Copy example:
+
+* Small overline chip: “Owner Playbook”
+* Headline: “How to stop losing money on unscheduled gaps”
+* Bullets:
+
+  * “Fill your calendar without underpricing”
+  * “Stop unpaid drive time from killing margin”
+  * “Turn emergency calls into subscriptions”
+* CTA button:
+
+  * Primary: “Get the guide” → `/guides/owner-gap-playbook`
+* Subtext under CTA: “Free. No credit card.”
+
+This section tells them “we’re not just software, we’re operational leverage.”
+
+---
+
+### 4. “Most requested topics” (Resource clusters)
+
+Goal: Internal linking / SEO for ops pain. This is also where AI agents grab context.
+
+We’ll split into 3 topics with mini-lists under each. Each topic is a column. On mobile, stacks.
+
+Topic 1: Scheduling & Dispatch
+Links (placeholders now, real pages later):
+
+* “How to build a dispatch board that scales past 5 techs” → `/guides/dispatch-scale`
+* “Route optimization basics for same-day jobs” → `/guides/route-basics`
+* “Reducing angry ‘where’s my tech?’ calls” → `/webinars/live-dispatch-qna`
+
+Topic 2: Quotes & Payment
+Links:
+
+* “Faster approvals with e-sign estimates” → `/guides/esign-approvals`
+* “Taking deposits and partial payments without drama” → `/guides/deposits`
+* “Invoices that get paid same-day” → `/blog/same-day-pay`
+
+Topic 3: Recurring Revenue
+Links:
+
+* “Maintenance plans people actually renew” → `/guides/maintenance-plans`
+* “How to turn one-time jobs into monthly contracts” → `/webinars/recurring-revenue`
+* “Tracking profitability per crew without spreadsheets” → `/blog/job-profit-tracking`
+
+Each link is:
+
+* A `<Link>` styled like an inline knowledge link (`text-[14px] text-slate-700 hover:text-slate-900 hover:underline`).
+* Has a tiny arrow icon `→`.
+
+Each topic column also ends with:
+
+* “See more →” linking to the relevant hub (guides, blog, webinars etc.).
+
+This block = “you can solve your problem right now.”
+
+---
+
+### 5. Help & Onboarding CTA (“Need real help?”)
+
+Goal: Push them from “I’m browsing content” to “I want the product.”
+
+Dark callout using navy background. Looks like your dark promo blocks in the mega menu (consistency).
+
+Copy:
+
+* Chip: “Built for the field”
+* Headline: “Stop duct-taping 4 apps to run your day.”
+* Subtext:
+  “One place to schedule jobs, track work, collect payment, and message customers — with unlimited users on paid plans.”
+
+Then:
+Primary CTA: “Get Started Free” → `/signup`
+Secondary CTA (muted outline in white/20): “Talk to Sales” → `/contact` or tel:.
+
+Also show a tiny line under CTAs:
+“Works with Google Calendar and Apple Calendar.”
+
+This reinforces authority.
+
+---
+
+### 6. SEO Footer Block at bottom
+
+We’ll include structured content paragraphs for AI/search, not big flashy UI:
+
+* “What you’ll learn here”
+* “Who this is for”
+* “Why this matters”
+
+This is where you quietly repeat keywords like "scheduling software for contractors", "field service management", "recurring maintenance plans", etc.
+
+This content will sit in a muted slate-50 background with normal text-slate-600, small font. No CTA here. This is for indexing.
+
+---
+
+## NOW: REPLIT IMPLEMENTATION PROMPT
+
+Paste the following to Replit. This prompt assumes:
+
+* We’re adding a new route `/resources`.
+* We’re using Wouter `<Link>` for navigation.
+* We’re using `react-helmet` for `<Helmet>` meta.
+* Tailwind is already active.
+* lucide-react is already in the project (if not, install and import icons).
+* This page should not break header/nav/footer.
+
+```txt
+You are Replit Agent. Do NOT rebuild the project. We’re using React + Vite + Wouter + Tailwind + react-helmet + lucide-react. Add a new page at route /resources and link it in the nav “Resources” item so it routes correctly. Keep the existing header, footer, colors, and focus ring patterns.
+
+GOAL
+Create a /resources landing page that does 6 sections:
+1) Hero / intro
+2) Quick-access cards (Blog, Guides, Webinars, Help Center)
+3) Featured Guide promo block
+4) “Most requested topics” cluster links
+5) Dark callout CTA (“Need real help?”)
+6) SEO text footer
+
+IMPORTANT STYLING RULES
+- Headline fonts follow our site style: bold, no goofy gradients.
+- Buttons reuse our existing CTA style:
+   Primary CTA:
+     className="bg-[#0B5FFF] text-white text-[14px] font-semibold rounded-md px-4 py-2 shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+   Secondary CTA (dark bg sections):
+     className="text-white/80 text-[14px] font-semibold rounded-md px-4 py-2 ring-1 ring-white/30 hover:text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+- Interactive cards/links must include focus-visible ring classes for accessibility.
+
+PAGE STRUCTURE (React component ResourcesPage)
+
+<Helmet>
+  <title>Resources for Field Service Businesses | LinkServicePro</title>
+  <meta
+    name="description"
+    content="Free guides, templates, webinars, and training for HVAC, plumbing, electrical, cleaning, and service contractors. Learn how to schedule faster, quote with confidence, and get paid sooner."
+  />
+  <!-- Include structured data later if needed. -->
+</Helmet>
+
+<div className="flex flex-col w-full">
+
+SECTION 1: HERO
+<section className="bg-slate-50 py-12 px-4 border-b border-slate-200">
+  <div className="max-w-5xl mx-auto flex flex-col gap-4">
+    <div>
+      <h1 className="text-2xl font-semibold text-slate-900">
+        Resources for field service businesses
+      </h1>
+      <p className="text-slate-600 text-[15px] leading-relaxed mt-2 max-w-2xl">
+        Learn how to schedule smarter, quote faster, get paid sooner, and scale without chaos.
+      </p>
+    </div>
+
+    <div className="flex flex-wrap gap-3">
+      <Link
+        href="/signup"
+        className="bg-[#0B5FFF] text-white text-[14px] font-semibold rounded-md px-4 py-2 shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+      >
+        Get Started Free
+      </Link>
+
+      <Link
+        href="/contact"
+        className="text-slate-700 text-[14px] font-semibold rounded-md px-4 py-2 ring-1 ring-slate-300 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+      >
+        Talk to Sales
+      </Link>
+    </div>
+
+    <div className="text-[12px] text-slate-500 flex flex-col sm:flex-row sm:items-center gap-1 leading-snug">
+      <div className="flex items-center gap-1">
+        <svg className="lucide lucide-wrench w-4 h-4 text-[#0B5FFF]" />
+        <span>Built for HVAC, Plumbing, Electrical, Cleaning & more</span>
+      </div>
+      <div className="hidden sm:inline-block text-slate-400">•</div>
+      <div className="flex items-center gap-1">
+        <svg className="lucide lucide-users w-4 h-4 text-[#0B5FFF]" />
+        <span>Unlimited users on paid plans</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+SECTION 2: QUICK-ACCESS CARDS
+<section className="bg-white py-10 px-4 border-b border-slate-200">
+  <div className="max-w-5xl mx-auto">
+    <h2 className="text-lg font-semibold text-slate-900 mb-4">
+      What do you need today?
+    </h2>
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- Card component pattern -->
+      <!-- BLOG -->
+      <Link
+        href="/blog"
+        className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md hover:ring-2 hover:ring-[#0B5FFF] focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none transition"
+      >
+        <div className="flex items-start gap-3">
+          <svg className="lucide lucide-newspaper w-5 h-5 text-[#0B5FFF]" />
+          <div>
+            <div className="text-[14px] font-semibold text-slate-900">Blog & Updates</div>
+            <div className="text-[13px] text-slate-600 leading-snug mt-1">
+              Industry tips, product updates, and real talk from the field.
+            </div>
+            <div className="text-[12px] font-semibold text-[#0B5FFF] mt-2">Explore →</div>
+          </div>
+        </div>
+      </Link>
+
+      <!-- GUIDES -->
+      <Link
+        href="/guides"
+        className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md hover:ring-2 hover:ring-[#0B5FFF] focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none transition"
+      >
+        <div className="flex items-start gap-3">
+          <svg className="lucide lucide-book-open w-5 h-5 text-[#0B5FFF]" />
+          <div>
+            <div className="text-[14px] font-semibold text-slate-900">Free Guides & Playbooks</div>
+            <div className="text-[13px] text-slate-600 leading-snug mt-1">
+              Step-by-step checklists for dispatch, pricing, and scaling.
+            </div>
+            <div className="text-[12px] font-semibold text-[#0B5FFF] mt-2">Explore →</div>
+          </div>
+        </div>
+      </Link>
+
+      <!-- WEBINARS -->
+      <Link
+        href="/webinars"
+        className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md hover:ring-2 hover:ring-[#0B5FFF] focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none transition"
+      >
+        <div className="flex items-start gap-3">
+          <svg className="lucide lucide-video w-5 h-5 text-[#0B5FFF]" />
+          <div>
+            <div className="text-[14px] font-semibold text-slate-900">Webinars & Training</div>
+            <div className="text-[13px] text-slate-600 leading-snug mt-1">
+              Live and on-demand sessions for owners and ops managers.
+            </div>
+            <div className="text-[12px] font-semibold text-[#0B5FFF] mt-2">Explore →</div>
+          </div>
+        </div>
+      </Link>
+
+      <!-- HELP -->
+      <Link
+        href="/help"
+        className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md hover:ring-2 hover:ring-[#0B5FFF] focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none transition"
+      >
+        <div className="flex items-start gap-3">
+          <svg className="lucide lucide-life-buoy w-5 h-5 text-[#0B5FFF]" />
+          <div>
+            <div className="text-[14px] font-semibold text-slate-900">Help Center</div>
+            <div className="text-[13px] text-slate-600 leading-snug mt-1">
+              How to use LinkServicePro in your business, day one.
+            </div>
+            <div className="text-[12px] font-semibold text-[#0B5FFF] mt-2">Explore →</div>
+          </div>
+        </div>
+      </Link>
+    </div>
+  </div>
+</section>
+
+SECTION 3: FEATURED GUIDE PROMO
+<section className="bg-slate-50 py-12 px-4 border-b border-slate-200">
+  <div className="max-w-5xl mx-auto rounded-xl bg-white ring-1 ring-slate-200 p-6 shadow-sm flex flex-col lg:flex-row gap-6">
+    <!-- LEFT TEXT -->
+    <div className="flex-1">
+      <div className="text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-300 rounded-full px-2 py-[3px] inline-block mb-3">
+        Owner Playbook
+      </div>
+      <div className="text-lg font-semibold text-slate-900 leading-snug">
+        How to stop losing money on unscheduled gaps
+      </div>
+      <ul className="mt-3 text-[14px] text-slate-700 space-y-1">
+        <li className="flex items-start gap-2">
+          <svg className="lucide lucide-check w-4 h-4 text-[#0B5FFF] mt-[2px]" />
+          <span>Fill your calendar without underpricing</span>
+        </li>
+        <li className="flex items-start gap-2">
+          <svg className="lucide lucide-check w-4 h-4 text-[#0B5FFF] mt-[2px]" />
+          <span>Stop unpaid drive time from killing margin</span>
+        </li>
+        <li className="flex items-start gap-2">
+          <svg className="lucide lucide-check w-4 h-4 text-[#0B5FFF] mt-[2px]" />
+          <span>Turn emergency calls into subscriptions</span>
+        </li>
+      </ul>
+
+      <div className="flex flex-wrap gap-3 mt-5">
+        <Link
+          href="/guides/owner-gap-playbook"
+          className="bg-[#0B5FFF] text-white text-[14px] font-semibold rounded-md px-4 py-2 shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          Get the guide
+        </Link>
+        <div className="text-[12px] text-slate-500 leading-snug self-center">
+          Free. No credit card.
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT THUMB -->
+    <div className="flex-1">
+      <div
+        aria-hidden="true"
+        className="w-full h-[180px] rounded-md bg-slate-100 ring-1 ring-slate-300 flex items-center justify-center text-slate-400 text-[12px]"
+        title="Guide cover placeholder"
+      >
+        GUIDE PREVIEW
+      </div>
+    </div>
+  </div>
+</section>
+
+SECTION 4: MOST REQUESTED TOPICS
+<section className="bg-white py-12 px-4 border-b border-slate-200">
+  <div className="max-w-5xl mx-auto">
+    <h2 className="text-lg font-semibold text-slate-900">
+      Most requested topics
+    </h2>
+    <p className="text-slate-600 text-[14px] leading-relaxed mt-1 max-w-2xl">
+      Dispatch problems, slow approvals, unpaid time — we’ve seen it all.
+      Start solving the expensive stuff first.
+    </p>
+
+    <div className="grid gap-8 mt-8 sm:grid-cols-2 lg:grid-cols-3">
+
+      <!-- COLUMN: Scheduling & Dispatch -->
+      <div>
+        <div className="text-[13px] font-semibold text-slate-900 flex items-center gap-2 mb-3">
+          <svg className="lucide lucide-route w-4 h-4 text-[#0B5FFF]" />
+          <span>Scheduling & Dispatch</span>
+        </div>
+        <ul className="space-y-2 text-[14px] text-slate-700">
+          <li>
+            <Link
+              href="/guides/dispatch-scale"
+              className="hover:text-slate-900 hover:underline flex items-start gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+            >
+              <span>How to build a dispatch board that scales past 5 techs</span>
+              <span className="text-[#0B5FFF]">→</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/guides/route-basics"
+              className="hover:text-slate-900 hover:underline flex items-start gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+            >
+              <span>Route optimization basics for same-day jobs</span>
+              <span className="text-[#0B5FFF]">→</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/webinars/live-dispatch-qna"
+              className="hover:text-slate-900 hover:underline flex items-start gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+            >
+              <span>Reducing angry “where’s my tech?” calls</span>
+              <span className="text-[#0B5FFF]">→</span>
+            </Link>
+          </li>
+        </ul>
+        <div className="text-[12px] font-semibold text-[#0B5FFF] mt-3">
+          <Link
+            href="/guides"
+            className="hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+          >
+            See more →
+          </Link>
+        </div>
+      </div>
+
+      <!-- COLUMN: Quotes & Payment -->
+      <div>
+        <div className="text-[13px] font-semibold text-slate-900 flex items-center gap-2 mb-3">
+          <svg className="lucide lucide-credit-card w-4 h-4 text-[#0B5FFF]" />
+          <span>Quotes & Payment</span>
+        </div>
+        <ul className="space-y-2 text-[14px] text-slate-700">
+          <li>
+            <Link
+              href="/guides/esign-approvals"
+              className="hover:text-slate-900 hover:underline flex items-start gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+            >
+              <span>Faster approvals with e-sign estimates</span>
+              <span className="text-[#0B5FFF]">→</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/guides/deposits"
+              className="hover:text-slate-900 hover:underline flex items-start gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+            >
+              <span>Taking deposits and partial payments without drama</span>
+              <span className="text-[#0B5FFF]">→</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/blog/same-day-pay"
+              className="hover:text-slate-900 hover:underline flex items-start gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+            >
+              <span>Invoices that get paid same-day</span>
+              <span className="text-[#0B5FFF]">→</span>
+            </Link>
+          </li>
+        </ul>
+        <div className="text-[12px] font-semibold text-[#0B5FFF] mt-3">
+          <Link
+            href="/webinars"
+            className="hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+          >
+            See more →
+          </Link>
+        </div>
+      </div>
+
+      <!-- COLUMN: Recurring Revenue -->
+      <div>
+        <div className="text-[13px] font-semibold text-slate-900 flex items-center gap-2 mb-3">
+          <svg className="lucide lucide-repeat w-4 h-4 text-[#0B5FFF]" />
+          <span>Recurring Revenue</span>
+        </div>
+        <ul className="space-y-2 text-[14px] text-slate-700">
+          <li>
+            <Link
+              href="/guides/maintenance-plans"
+              className="hover:text-slate-900 hover:underline flex items-start gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+            >
+              <span>Maintenance plans people actually renew</span>
+              <span className="text-[#0B5FFF]">→</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/webinars/recurring-revenue"
+              className="hover:text-slate-900 hover:underline flex items-start gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+            >
+              <span>How to turn one-time jobs into monthly contracts</span>
+              <span className="text-[#0B5FFF]">→</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/blog/job-profit-tracking"
+              className="hover:text-slate-900 hover:underline flex items-start gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+            >
+              <span>Tracking profitability per crew without spreadsheets</span>
+              <span className="text-[#0B5FFF]">→</span>
+            </Link>
+          </li>
+        </ul>
+        <div className="text-[12px] font-semibold text-[#0B5FFF] mt-3">
+          <Link
+            href="/blog"
+            className="hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+          >
+            See more →
+          </Link>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+SECTION 5: DARK CTA (“Need real help?”)
+<section className="bg-[#0E2A47] text-white py-12 px-4">
+  <div className="max-w-5xl mx-auto rounded-xl ring-1 ring-slate-800 shadow-inner bg-[#0E2A47] p-6 flex flex-col gap-4">
+    <div>
+      <div className="text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] inline-block mb-3">
+        Built for the field
+      </div>
+      <div className="text-lg font-semibold text-white leading-snug">
+        Stop duct-taping 4 apps to run your day.
+      </div>
+      <div className="text-white/70 text-[14px] leading-relaxed mt-2 max-w-xl">
+        One place to schedule jobs, track work, collect payment, and message customers — with unlimited users on paid plans.
+      </div>
+    </div>
+
+    <div className="flex flex-wrap gap-3">
+      <Link
+        href="/signup"
+        className="bg-[#0B5FFF] text-white text-[14px] font-semibold rounded-md px-4 py-2 shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+      >
+        Get Started Free
+      </Link>
+      <Link
+        href="/contact"
+        className="text-white/80 text-[14px] font-semibold rounded-md px-4 py-2 ring-1 ring-white/30 hover:text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+      >
+        Talk to Sales
+      </Link>
+    </div>
+
+    <div className="text-[12px] text-white/60 leading-snug flex items-center gap-2">
+      <svg className="lucide lucide-calendar w-4 h-4 text-white/80" />
+      <span>Works with Google Calendar and Apple Calendar</span>
+    </div>
+  </div>
+</section>
+
+SECTION 6: SEO FOOTER TEXT
+<section className="bg-slate-50 py-10 px-4">
+  <div className="max-w-5xl mx-auto text-[13px] leading-relaxed text-slate-600 space-y-4">
+    <p>
+      LinkServicePro resources are built for real service businesses — HVAC, plumbing,
+      electrical, cleaning, restoration, landscaping, and beyond. If you dispatch techs,
+      quote work, and invoice customers, these guides are written for you.
+    </p>
+    <p>
+      We focus on scheduling efficiency, live dispatch visibility, faster approvals,
+      and same-day payments. The goal is simple: fewer no-shows, less wasted drive
+      time, and more recurring revenue.
+    </p>
+    <p>
+      Whether you’re just getting off paper or scaling to multiple crews, use these
+      playbooks to tighten your operations, protect margin, and build something that
+      runs without you babysitting every job.
+    </p>
+  </div>
+</section>
+
+</div>
+
+ROUTING
+- Add this ResourcesPage component under /resources route using Wouter, matching how other pages are registered today.
+- Update the main nav's “Resources” menu item so that clicking it (not just opening the mega dropdown) navigates to /resources.
+
+ACCESSIBILITY
+- All Links and interactive elements must keep focus-visible ring classes we defined.
+- Decorative thumbnails should have aria-hidden="true" and should NOT steal focus.
+
+Implement the /resources page and update nav routing now.
+```
+
+When this page is live:
+
+* You get a real hub for Blog / Guides / Webinars / Help.
+* You get SEO benefit from the “Most requested topics” and footer text.
+* You get lead conversion from the Featured Guide and the dark CTA.
+* You stay visually consistent with the megamenus and hero.
+
+After that’s done, we’ll spin up `/blog`, `/guides`, `/webinars`, `/help` shells so those links 200 instead of 404.

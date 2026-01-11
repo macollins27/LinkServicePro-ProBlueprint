@@ -1,0 +1,200 @@
+Here’s a clean, professional **Blog** that matches your site, is mobile-first, and sets you up for SEO. I’ll give you:
+
+1. The page and UX you’ll get
+2. Content model (lightweight for now, easy to migrate)
+3. A single paste-ready Replit prompt to implement:
+
+   * `/blog` index with search, tags, categories, pagination, featured post
+   * `/blog/:slug` post detail with TOC, reading time, share, prev/next
+   * Structured data and `<Helmet>` SEO
+   * Tailwind + Wouter + react-helmet + lucide-react, no rebuilds
+
+---
+
+## 1) Blog UX overview
+
+### Blog Home `/blog`
+
+* **Hero featured post** (big card)
+  Title, excerpt, author, date, estimated read, tag chips, “Read article” CTA.
+* **Filter bar**
+
+  * Search input
+  * Tag chips (scrollable on mobile)
+  * Category dropdown
+* **Post grid**
+  Responsive cards, each with:
+
+  * Category chip, title, 2–3 line excerpt
+  * Author + date + read time
+  * Tags
+* **Pagination**
+  Simple "Previous / Next" with page numbers.
+* **Newsletter CTA**
+  Small “Get updates” box with email input (can be Mailchimp later).
+* **SEO intro**
+  Two short paragraphs at bottom for indexing.
+
+### Blog Post `/blog/:slug`
+
+* **Readable layout**
+  H1 title, metadata row, hero image placeholder, table of contents (auto; based on headings), content with nice typography.
+* **Share row** (Copy link, X/Twitter, Facebook, LinkedIn—plain links)
+* **Prev/Next** post links
+* **Author box** (photo placeholder, name, short bio)
+* **Related posts** (3 cards)
+* **Structured data**: Article schema
+* **SEO** via `<Helmet>`.
+
+---
+
+## 2) Content model (lightweight, easy to migrate)
+
+For now, store posts in `src/data/blog-posts.ts` as an array. Each item:
+
+```ts
+export type BlogPost = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  html?: string;           // optional pre-rendered HTML
+  content?: string;        // optional markdown string (render later)
+  category: 'Operations' | 'Sales' | 'Product' | 'Finance' | 'People' | string;
+  tags: string[];
+  author: {
+    name: string;
+    role?: string;
+    avatarUrl?: string;
+  };
+  cover?: { alt: string };
+  publishedAt: string;     // ISO
+  updatedAt?: string;      // ISO
+  readMinutes: number;
+};
+```
+
+You can later switch to Markdown/MDX files or CMS; routes stay the same.
+
+---
+
+## 3) Paste this to Replit (builds Blog index + blog article pages)
+
+```txt
+You are Replit Agent. Do NOT rebuild the project. Stack: React + Vite + Wouter + Tailwind + react-helmet + lucide-react. Create a production-quality Blog with:
+- /blog   (index with search, tags, categories, pagination, featured post)
+- /blog/:slug  (post detail with TOC, share, prev/next, related)
+- Light data model in src/data/blog-posts.ts
+- Components under src/components/blog/*
+- Accessible, mobile-first, matches site palette (navy #0E2A47, accent #0B5FFF, slate neutrals)
+- All links use Wouter <Link>
+- All interactive elements have focus-visible ring classes
+
+A) DATA
+Create src/data/blog-posts.ts exporting:
+- type BlogPost (fields: slug, title, excerpt, html?, content?, category, tags[], author{name,role?,avatarUrl?}, cover{alt?}, publishedAt ISO, updatedAt?, readMinutes number)
+- an array 'blogPosts' with 8–10 sample posts (mix categories: Operations, Sales, Product; tags like dispatch, estimates, payments, maintenance).
+- Make 1 post flagged as “featured” via a helper function (featured = first post).
+
+B) UTILITIES
+Create src/utils/blog.ts with helpers:
+- getAllCategories(posts)
+- getAllTags(posts)
+- filterPosts(posts, { query?: string; category?: string; tags?: string[] })
+- paginate<T>(items, page: number, pageSize: number)
+- formatDate(iso: string) -> “Jan 5, 2025”
+- estimateReadMinutesFromText(text: string): number
+- buildTocFromHtml(html: string): Array<{id:string, text:string, level:number}>
+- getPrevNext(posts, slug): { prev?: BlogPost; next?: BlogPost }
+Sort posts by publishedAt desc.
+
+C) SHARED CARD
+Create src/components/blog/BlogCard.tsx:
+- Props: BlogPost
+- Card layout:
+  - top row: category chip (text-[11px], rounded-full, bg-slate-100, ring-slate-200)
+  - title (font-semibold), 2–3 line excerpt
+  - meta row: author, date, readMinutes (Timer icon), tags as pills
+- Entire card clickable <Link href={`/blog/${slug}`}> with hover:shadow-md hover:ring-2 hover:ring-[#0B5FFF], focus-visible ring.
+- Mobile-first, md:grid md:grid-cols-[1fr].
+
+D) BLOG INDEX PAGE
+Create src/pages/blog/BlogIndex.tsx using Helmet and Wouter’s Link/Navigate.
+Route path: /blog
+
+Structure:
+1) <Helmet> with title “Blog & Updates | LinkServicePro” and description.
+2) Hero featured post block (use the most recent post as featured):
+   - Large card with title, excerpt, author/date/read, primary CTA “Read article”
+   - Gray cover placeholder: <div aria-hidden className="h-[160px] md:h-[220px] bg-slate-100 rounded-md ring-1 ring-slate-200" />
+3) Filter bar below hero:
+   - Search input (type="search") with icon (Search lucide)
+   - Horizontal scrollable tag chips (getAllTags)
+   - Category <select> (getAllCategories)
+   - All controls respond instantly; store in local component state (query, selectedTag(s) single select for now), selectedCategory.
+4) Posts grid:
+   - Use filterPosts() with current filters
+   - Paginate with pageSize=9; show page param (?page=1)
+   - Show empty state if no results
+5) Pagination:
+   - Prev / Next buttons and numbered pages. Update query string.
+6) Newsletter CTA box near bottom:
+   - Small card: “Get new posts in your inbox” [email input + Subscribe]. For now, no backend; prevent default and console.log.
+7) SEO text section with 2 short paragraphs.
+
+Styling:
+- Page wrapper: <section className="bg-white py-8 px-4 border-b border-slate-200">
+- Container: max-w-5xl mx-auto
+- Buttons:
+  className="bg-[#0B5FFF] text-white text-[14px] font-semibold rounded-md px-4 py-2 shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+- Input:
+  className="w-full rounded-md border border-slate-300 px-3 py-2 text-[14px] focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus:outline-none"
+
+E) BLOG POST PAGE
+Create src/pages/blog/BlogPostPage.tsx
+Route path: /blog/:slug
+
+Behavior:
+- Find post by slug from blogPosts
+- If not found, show simple “Not found”
+- <Helmet> with dynamic title/description; canonical /blog/slug
+- Inject Article structured data (JSON-LD) including headline, datePublished, dateModified, author, articleSection (category), keywords (tags)
+- Layout:
+  - Header: small category chip, H1 title, metadata row (author, formatDate, readMinutes with Timer icon)
+  - Cover placeholder (gray block) 240–300px tall
+  - Table of contents box on left (lg) or collapsible on mobile:
+      buildTocFromHtml(post.html ?? '') and render heading links
+  - Content area: render post.html if provided; else render <pre>content</pre> as placeholder
+    Use prose/typography classes (Tailwind typography not required; if not present, just set readable styles: max-w-3xl, text-slate-800, leading-7)
+  - Share row: small buttons linking to twitter.com/intent/tweet?url=..., linkedin, facebook, and a “Copy link” button (navigator.clipboard.writeText)
+  - Prev/Next from getPrevNext()
+  - Related posts: choose 3 by shared category or tag, excluding current
+  - Author box: avatar circle placeholder, name, role/bio snippet
+
+F) ROUTING
+Register routes:
+- /blog -> BlogIndex
+- /blog/:slug -> BlogPostPage
+Ensure nav “Resources” > Blog link points to /blog.
+
+G) ACCESSIBILITY
+- All <Link> and buttons use focus-visible ring as elsewhere.
+- Form labels and aria-labels for search and newsletter email.
+- Decorative images are aria-hidden="true".
+
+H) QUALITY
+- Mobile first
+- No console errors
+- No rebuilds or changes to header/hero/carousel
+
+Implement now.
+```
+
+---
+
+### After it’s live
+
+* We can swap the array to Markdown/MDX later without changing routes.
+* We can wire the newsletter to Mailchimp.
+* We’ll add category hubs (`/blog/category/operations`) if you want deeper SEO silos.
+
+Want me to draft 8 seed posts’ titles/excerpts tailored to HVAC/Plumbing/Electrical to populate the page?

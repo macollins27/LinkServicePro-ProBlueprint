@@ -1,0 +1,512 @@
+You’re asking for the master Features page. Not one feature detail page, but the single `/features` index page customers land on to understand “what this platform can actually do.”
+
+You want:
+
+* Professional, serious, credible.
+* “Wow factor” but not gimmicky.
+* Mobile-first layout.
+* Strong visual hierarchy.
+* Clean sections with different backgrounds, so the eye doesn’t get bored.
+* Tight, readable cards with correct icons, sharp borders, real plan ribbons (like we spec’d), and grouped capability themes so users don’t drown in 40 bullets.
+
+Below is the full recommended `/features` page structure. After that, you’ll get the Replit build prompt to implement it in your codebase using the Pro-Blueprint system already documented. 
+
+---
+
+## /features Page Structure (final design spec)
+
+### 0. Global rules
+
+* This page uses the site design system (“Pro-Blueprint”): sharp, tool-grade, high contrast, blueprint/industrial tone, WCAG AA compliant. 
+* All sections stack vertical on mobile: `px-4 sm:px-6 lg:px-8`, `py-12 sm:py-16`.
+* Max width: `max-w-6xl mx-auto`.
+* Headings:
+
+  * Page H1 only once at the top.
+  * Section headings are `<h2>` with strong contrast.
+* Cards:
+
+  * `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm`
+* Plan ribbons:
+
+  * Use the corner ribbon component we just defined (PlanRibbon). Each card shows the earliest plan that unlocks that capability. “Unlimited users on paid plans. No per-tech seat fees.” is repeated in copy on the page. This is a key differentiator.
+
+---
+
+### SECTION 1. Page hero
+
+**Background:** dark navy `#0E2A47` full-width band.
+**Layout:**
+
+* Left column (text).
+* Right column (device mock cluster placeholder, light gray boxes stacked, no real screenshots yet).
+* On mobile, text first, mock under.
+
+**Content:**
+
+* H1:
+  “All the tools to run your field service business in one platform.”
+* Subhead (1–2 sentences):
+  “Schedule work. Dispatch crews. Track jobs. Get paid. LinkServicePro replaces whiteboards, group texts, and chasing signatures. Works with Google Calendar and Apple Calendar.”
+* Trust badges row (wrap on mobile):
+
+  * “Unlimited users on paid plans”
+  * “No per-tech seat fees”
+  * “Google Calendar sync”
+  * “Apple Calendar sync”
+    Each badge: pill style, `bg-white/10 text-white border border-white/20 rounded-full text-xs px-3 py-1 font-medium`.
+* CTA row:
+
+  * Primary: “Start Free” (blue #0B5FFF on white text, bold).
+  * Secondary: “View Pricing” (border-2, white text, border-white/40 hover:bg-white/10).
+* KPI strip under CTAs (3 mini stat pills in a row on desktop, stacked on mobile):
+
+  * “35% faster scheduling”
+  * “2× quicker approvals”
+  * “<24 hr average time-to-pay”
+    Style: small white/10 rounded cards similar to your hero stat style. We’ve used this pattern before and it tested well for trust on hero + feature pages. 
+
+**Why this matters:**
+This section establishes legitimacy and answers “What is this thing?” in under 5 seconds.
+
+---
+
+### SECTION 2. Core Workflows (Quote → Dispatch → Job → Get Paid)
+
+**Background:** light gray `bg-slate-50`.
+
+Goal: You’re not selling 40 features. You’re selling the daily loop. We map 4 pillars and show which features power each pillar.
+
+#### Layout:
+
+* Heading (h2, centered):
+  “Your whole day. Covered end to end.”
+* Subtext (centered, `text-slate-600 text-sm sm:text-base max-w-xl mx-auto`):
+  “From the first call to getting paid, LinkServicePro keeps jobs moving without chaos.”
+* Grid: 4 horizontal “pillar cards” on desktop (`grid-cols-4 gap-4`), 2x2 on tablet, 1x4 stack on mobile.
+
+Each pillar card:
+
+* Icon (lucide) in blue #0B5FFF, 24px.
+* Pillar title (bold): e.g.
+
+  1. “Book & Quote”
+  2. “Schedule & Dispatch”
+  3. “Do the Work”
+  4. “Invoice & Get Paid”
+* Bullet list (2–3 bullets). Each bullet references specific features below so users connect the flow.
+
+Example:
+
+1. “Book & Quote”
+
+   * Lead management & pipeline
+   * Estimates with digital signatures
+   * Automated follow-ups to win the job
+2. “Schedule & Dispatch”
+
+   * Drag-and-drop scheduling with Google/Apple Calendar sync
+   * Dispatch board + live map view
+   * Route optimization, capacity planning
+3. “Do the Work”
+
+   * Work orders with photos, checklists, signatures
+   * Recurring jobs and maintenance plans
+   * Asset tracking, warranty history
+4. “Invoice & Get Paid”
+
+   * Batch invoicing and online card payments
+   * Job costing & profitability reports
+   * Customer portal for invoices, receipts, payment history
+
+Visual style:
+
+* Card: white with ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5.
+* “Learn more →” small text link at bottom of each pillar card that scrolls/jumps you down-page to relevant “feature clusters.”
+
+Why this matters:
+This reframes the product as a single operational system, not “a bunch of tabs”. It gives structure to all future sections.
+
+---
+
+### SECTION 3. Scheduling & Dispatch
+
+This is Feature Cluster #1.
+**Background:** white.
+
+Heading (h2):
+“Scheduling & Dispatch”
+
+Subtext:
+“Stay on top of today’s chaos without calling every truck. Drag, drop, done.”
+
+Layout:
+
+* 2-column on desktop: left column grid of cards, right column has one tall “command center” mock placeholder (gray box with ‘Live Map / Calendar View’ label). On mobile, mock goes below cards.
+
+Cards (each is one feature with PlanRibbon):
+
+1. Drag-and-drop scheduling
+
+   * Badge: `Free`
+   * Icon: Calendar icon
+   * Body: “Eliminate double-booking. Balance crews in seconds. Live sync to Google Calendar and Apple Calendar.”
+   * Link: `/features/drag-and-drop-scheduling`
+2. Calendar integration
+
+   * Badge: `Free`
+   * Icon: Link/chain or calendar+arrow
+   * Body: “Two-way sync with Google and Apple Calendar so every tech knows where they’re going.”
+3. Dispatch board for technicians
+
+   * Badge: `Starter`
+   * Icon: Users/clipboard
+   * Body: “See every tech, every job, and assign work with one click.”
+4. Dispatch via live map / route board
+
+   * Badge: `Essential+`
+   * Icon: MapPin / Map icon
+   * Body: “Drop jobs on a live map, send nearest tech, reduce wasted drive time.”
+5. Route optimization & capacity planning
+
+   * Badge: `Essential+`
+   * Icon: Navigation/route arrows
+   * Body: “Auto-build efficient routes and load-balance so nobody is overloaded.”
+6. Real-time GPS tracking
+
+   * Badge: `Essential+`
+   * Icon: Target / gps-crosshair
+   * Body: “See where the fleet actually is. Confirm arrival, reduce ‘where are you?’ calls.”
+
+All these cards:
+
+* Relative container + PlanRibbon in the top-right (slanted ribbon).
+* `p-4` interior.
+* Title in `text-base font-semibold text-slate-900`.
+* Body text in `text-sm text-slate-600`.
+* “Learn more →” inline link in blue #0B5FFF with `hover:underline`.
+
+Also under this cluster, add a one-line reassurance block in `text-xs text-slate-500 mt-6`:
+“Unlimited users on paid plans. No per-tech seat fees.”
+
+Why this matters:
+Scheduling/dispatch pain is always first pain. We make this cluster first for scanning speed.
+
+---
+
+### SECTION 4. Customer Communication & Service Experience
+
+Feature Cluster #2.
+**Background:** `bg-slate-50`.
+
+Heading (h2):
+“Customer Communication & Service Experience”
+
+Subtext:
+“Stop chasing people. The system reminds customers, updates them, and gets sign-off.”
+
+Layout:
+
+* 3-column responsive grid (1 column mobile, 2 on tablet, 3 desktop).
+* Each card uses PlanRibbon.
+
+Cards:
+
+1. Automated job reminders & multi-channel notifications
+
+   * Badge: `Starter` (Email at Starter, SMS at Essential+ — call this clearly in ribbon or body)
+   * Icon: Bell / MessageSquare
+   * Body: “Reduce no-shows. Send ETA texts and reminder emails automatically.”
+2. Two-way customer messaging (SMS / email)
+
+   * Badge: `Starter` (with note that SMS unlocks higher tier)
+   * Icon: Chat bubbles
+   * Body: “Keep all conversation in one thread. No more ‘Who talked to them?’”
+3. Customer portal (invoices, payment history, job history)
+
+   * Badge: `Starter` or `Essential` (use your actual gating)
+   * Icon: User-circle / FileText
+   * Body: “Customers can review quotes, pay invoices, and see what’s been done.”
+4. Review requests & reputation tools
+
+   * Badge: `Essential+`
+   * Icon: Star
+   * Body: “Auto-send review links after the job. Build reputation without begging.”
+5. Automated follow-ups
+
+   * Badge: `Starter+`
+   * Icon: Arrow-repeat
+   * Body: “Quote sent? We nudge them. Unpaid invoice? We remind them. You don’t babysit it.”
+6. Subscription / recurring billing
+
+   * Badge: `Premium`
+   * Icon: Refresh cw
+   * Body: “Keep monthly maintenance plans active and bill automatically.”
+
+At the bottom of this section, add an inline reassurance band:
+
+* Style: subtle card inside the `bg-slate-50` section:
+
+  * `bg-white ring-1 ring-slate-200 rounded-xl p-4 text-xs text-slate-600`
+  * Content: “Your customers get a professional experience from the first text to the paid invoice. You stop copy/pasting messages from your personal phone.”
+
+Why this matters:
+This cluster answers: “Will this make me look professional so I can charge more?”
+
+---
+
+### SECTION 5. Field Work & Job Execution
+
+Feature Cluster #3.
+**Background:** white.
+
+Heading (h2):
+“Doing the work in the field”
+
+Subtext:
+“Everything techs need on-site. Nothing extra.”
+
+Layout:
+
+* 2-column grid on desktop, stacked on mobile.
+
+Cards (PlanRibbon each):
+
+1. Mobile field access / Work orders / Photos / Checklists
+
+   * Badge: `Free`
+   * Icon: Clipboard-check / Camera
+   * Body: “Document the job with photos, notes, parts used, and signatures. All from the phone.”
+   * This card can combine: Work order management, mobile access, photos, estimates with signatures, project-to-estimate linkage.
+2. Recurring jobs & maintenance plans
+
+   * Badge: `Essential+`
+   * Icon: Repeat / CalendarRefresh
+   * Body: “Auto-generate repeat service visits. Keep recurring contracts actually recurring.”
+3. Asset inspection & tracking
+
+   * Badge: `Premium`
+   * Icon: PackageSearch / Wrench
+   * Body: “Track each unit, record service history, and prove what was done.”
+   * Include warranty tracking, ownership transfer history, ownership tied to property address. This sells well to HVAC/plumbing.
+4. Project tracking with multiple work orders
+
+   * Badge: `Premium`
+   * Icon: FolderTree / Layers
+   * Body: “For bigger jobs and multi-day work. Tie everything to one project: estimates, work orders, invoices.”
+   * Mention project-to-invoice and project-to-estimate linkage.
+5. Task management / assignments
+
+   * Badge: `Starter`
+   * Icon: CheckSquare
+   * Body: “Assign tasks, see what’s overdue, and make sure it actually gets done. Techs can update status in the field.”
+   * Mention employee-created tasks with manager oversight.
+
+Bottom helper text (`text-xs text-slate-500 mt-6`):
+“Your crew doesn’t need to ‘figure out software.’ They just open the job, follow the checklist, and tap Done.”
+
+Why this matters:
+This section answers “Will my guys actually use this?” which is always an objection.
+
+---
+
+### SECTION 6. Money, Cost, and Financial Control
+
+Feature Cluster #4.
+**Background:** `bg-slate-900 text-white` (dark band, but not the final CTA band; this is a trust band).
+
+Heading (h2):
+“Money in, money out, and proof you’re not losing profit”
+
+Subtext (in `text-slate-300 text-sm sm:text-base max-w-2xl`):
+“Quote it. Invoice it. Get paid. Track what you spent. Know what you actually made.”
+
+Layout:
+
+* 2-column grid on desktop (4 cards total, 2 per column); stacked on mobile.
+* Each card is a dark-mode variant of our standard card:
+
+  * `relative bg-slate-800 ring-1 ring-slate-700 rounded-xl p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5`
+  * PlanRibbon still exists, but Ribbon colors need high contrast. For dark, invert text (text-slate-900) with a lighter bg. This is allowed.
+
+Cards:
+
+1. Invoicing & batch invoicing
+
+   * Badge: `Free → Premium` (since basic invoicing is free, batch at higher tiers)
+   * Icon: FileText / Receipt
+   * Body: “Send invoices from the job site or in bulk. No manual copying job notes into QuickBooks.”
+   * Mention deposits / partial payments.
+2. Payment collection in the field & online
+
+   * Badge: `Free` or `Starter` depending on how you gate card payments
+   * Icon: CreditCard
+   * Body: “Take card on-site or send a pay link. Get paid in hours, not days.”
+3. Job costing & profitability
+
+   * Badge: `Premium`
+   * Icon: BarChart / TrendingUp
+   * Body: “Track labor, materials, and margin per job or per tech. See what you actually made.”
+   * Mention expense/materials tracking.
+4. Purchase orders & vendor management
+
+   * Badge: `Premium`
+   * Icon: ClipboardList / Truck
+   * Body: “Issue POs, track vendor insurance status, and organize parts availability. Stop sending techs out blind.”
+
+Below the grid, still in dark mode, add a line of credibility in `text-slate-400 text-xs`:
+“Stop guessing which jobs are profitable. You’ll know.”
+
+Why this matters:
+Money is high-intent. This block justifies paid tiers.
+
+---
+
+### SECTION 7. Control, Oversight, and Scale
+
+Feature Cluster #5.
+**Background:** white.
+
+Heading (h2):
+“Control the business, not just today’s tickets”
+
+Layout:
+
+* 3-column responsive grid.
+
+Cards (PlanRibbon each):
+
+1. Multi-user support with manager roles
+
+   * Badge: `Starter`
+   * Icon: UsersCog
+   * Body: “Give leads and managers oversight without sharing your entire account.”
+2. Internal employee messaging
+
+   * Badge: `Starter`
+   * Icon: MessagesSquare / Users
+   * Body: “Keep chatter away from personal group texts. Centralize crew messaging.”
+3. Manager-to-employee task assignments
+
+   * Badge: `Starter`
+   * Icon: ClipboardCheck
+   * Body: “Send instructions, request photos, confirm work is done.”
+4. Customizable dashboard widgets
+
+   * Badge: `Premium`
+   * Icon: LayoutDashboard
+   * Body: “Build a control center. See revenue, open jobs, late invoices, GPS status, all on one screen.”
+5. Built-in bug tracking at project level
+
+   * Badge: `Platinum`
+   * Icon: Bug
+   * Body: “Log issues, assign owners, keep problems from getting buried.”
+6. Nexus / LinkInspectPro / PropertyOrganizer ecosystem integrations
+
+   * Badge: `Platinum`
+   * Icon: Boxes / Share
+   * Body: “Connect inspections, property records, and service history. Everything tied back to the address.”
+
+At the bottom of this section:
+Small compliance-style line in `text-xs text-slate-500`:
+“Advanced tiers include audit trails, asset ownership history, warranty tracking, and property-tied documentation so nothing ‘mysteriously disappears.’”
+
+Why this matters:
+This makes Platinum feel like “serious operation” not just “more features.”
+
+---
+
+### SECTION 8. Final Conversion Band
+
+**Background:** full-width dark navy `#0E2A47` again.
+
+Layout:
+
+* Centered content inside `max-w-3xl mx-auto text-center text-white`.
+* Heading (h2 in white):
+  “Start free. Scale when you’re ready.”
+* Subtext (text-slate-300 text-sm sm:text-base):
+  “No credit card required. Import jobs via CSV. Unlimited users on paid plans. No per-tech seat fees.”
+* Inline email capture form / button row:
+
+  * Email field (rounded, white bg)
+  * Primary CTA button “Get Started Free”
+  * TCPA / consent line under in tiny type (`text-[11px] text-slate-400`) similar to how we handle consent now.
+* Under that, small line of trust in `text-[11px] text-slate-400 mt-4`:
+  “Works with Google Calendar and Apple Calendar out of the box.”
+
+Why this matters:
+We end on value and next step. We restate your biggest wedge versus competitors: “Unlimited users,” “No per-tech seat fees,” and “Calendar sync.”
+
+---
+
+## How Replit should build this
+
+Use this as the implementation prompt for your team / Replit Agent:
+
+1. Create/Update `client/src/pages/Features.tsx` to implement the /features page using the section structure above, in this exact order:
+
+   * Hero (dark navy)
+   * Core Workflows band (light gray)
+   * Scheduling & Dispatch cluster (white)
+   * Customer Communication cluster (slate-50)
+   * Field Work cluster (white)
+   * Money & Financial Control band (slate-900 dark mode)
+   * Control & Scale cluster (white)
+   * Final CTA band (dark navy)
+
+2. You already have `PlanRibbon` and card styling patterns from our previous work:
+
+   * Every feature card in clusters must:
+
+     * Be `relative` and include `<PlanRibbon plan="Starter" />` etc.
+     * Include an icon (lucide) that matches the capability theme (calendar, chat bubble, map pin, credit card, clipboard check, etc.). The icons MUST NOT all be the same. Each card must use a distinct, appropriate icon.
+     * Title: `text-base font-semibold text-slate-900` (or `text-white` in dark sections)
+     * Body: `text-sm text-slate-600` (or `text-slate-300` in dark sections)
+     * “Learn more →” link that routes to the relevant `/features/:slug` detail page. Those slugs already exist / are being built in `features/content.ts` per the Feature Template System. 
+     * On hover: `hover:shadow-md hover:-translate-y-0.5`.
+     * Focus ring: Use the global focus-visible ring pattern from Pro-Blueprint for keyboard accessibility. 
+
+3. Each cluster section should:
+
+   * Have a parent `<section>` with proper background color class (`bg-white`, `bg-slate-50`, `bg-slate-900 text-white`, etc.).
+   * Contain a wrapper div `max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16`.
+   * Include `<h2>` for the cluster heading and a supporting `<p>` for subtext as described.
+
+4. The “Core Workflows” section:
+
+   * Must present the 4-phase flow in pillar cards.
+   * Each pillar card can internally list multiple of the lower-level features so users start to map how pieces fit.
+   * Each pillar card should have its own subtle white card style even though the section background is `bg-slate-50`.
+
+5. The “Money in / money out” section:
+
+   * Use dark mode styling. That means the cards in that band use dark card variants:
+
+     * `bg-slate-800 ring-1 ring-slate-700 rounded-xl shadow-sm text-white`
+     * Body text: `text-slate-300`.
+     * Icon color: use `text-[#0B5FFF]` so the icon pops in dark.
+   * Make sure `PlanRibbon` still renders clearly on dark. For ribbons in this dark band, force high-contrast light backgrounds (emerald-100, blue-100, violet-100) with dark text per the mapping.
+
+6. Re-use the consent / TCPA and final CTA patterns we already defined in other pages (Final CTA band should match our existing footer-style free signup block in tone and focus ring behavior). 
+
+7. Include a one-line global differentiator (“Unlimited users on paid plans. No per-tech seat fees.”) in at least:
+
+   * Hero badges
+   * Scheduling & Dispatch cluster footer text
+   * Final CTA band
+
+8. Make sure everything is responsive and meets accessibility guidelines already defined in `TECHNICAL_DOCUMENTATION.md`, including focus-visible rings, semantic headings, and WCAG AA contrast. 
+
+---
+
+Result:
+This /features page becomes the master tour. It:
+
+* Groups 40+ individual features into mental buckets.
+* Uses real contractor language.
+* Repeats key differentiators.
+* Looks like serious software, not a toy.
+* Gives each card a consistent, credible visual system.
+
+This is the spec Replit should now implement.

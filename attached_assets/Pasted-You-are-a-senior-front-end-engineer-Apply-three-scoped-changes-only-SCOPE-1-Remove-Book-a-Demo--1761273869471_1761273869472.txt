@@ -1,0 +1,78 @@
+You are a senior front-end engineer. Apply three scoped changes only.
+
+SCOPE
+1) Remove “Book a Demo” from the NAVBAR right side (desktop). Keep it elsewhere (hero, footer) unchanged.
+2) Make the FEATURES megamenu never clip on any viewport. It should center under the header, clamp to the viewport width, and be scrollable on small screens.
+3) Make the HERO left column fully readable with strong contrast. No gradient text. Solid ink text on a light card.
+
+DO NOT change layout, copy, routing, or other components.
+
+FILES TO EDIT
+- src/components/Navbar.jsx
+- src/components/MegaMenu.jsx (or wherever the Features menu is rendered)
+- src/components/Hero.jsx
+- src/styles/theme.css (additions)
+
+DETAILS
+
+A) NAVBAR
+- In Navbar.jsx, remove the demo button in the right action group.
+  BEFORE (example):
+    <a href="/demo" className="btn btn-outline hidden lg:inline-flex">Book a Demo</a>
+    <a href="/start" className="btn-primary-glow ml-2">GET STARTED FREE</a>
+  AFTER:
+    {/* demo button removed */}
+    <a href="/start" className="btn-primary-glow">GET STARTED FREE</a>
+- Keep “Sign in” and the primary CTA. Ensure spacing still looks balanced.
+
+B) FEATURES MEGAMENU (no cutoff)
+- Ensure the menu container is NOT inside an overflow-hidden parent. If header has overflow-hidden, remove it.
+- Render the menu as a fixed overlay anchored to the header bottom.
+  Replace the container class with:
+    className="mega-fixed z-50"
+- Implement .mega-fixed in theme.css:
+    .mega-fixed{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      top:var(--header-bottom, 64px); /* fallback for 64px header */
+      width:min(1100px, calc(100vw - 32px));
+      max-height:min(74vh, 720px);
+      overflow:auto;
+      background:#fff;
+      border:1px solid #E5E7EB;
+      box-shadow:0 8px 24px rgba(15,23,42,.12), 0 2px 6px rgba(15,23,42,.08);
+    }
+- On mount, set --header-bottom to the actual header bottom:
+  In Navbar.jsx (useEffect once):
+    const h = document.querySelector('header');
+    if (h) document.documentElement.style.setProperty('--header-bottom', `${h.getBoundingClientRect().bottom}px`);
+  Update it on window resize.
+- For ≤1024px, make the menu full-width:
+    @media (max-width:1024px){
+      .mega-fixed{ left:0; transform:none; width:100vw; }
+    }
+
+C) HERO LEFT COLUMN READABILITY
+- In Hero.jsx, wrap the left column content in a high-contrast card and drop gradient text.
+  Replace the left container class with:
+    className="relative p-6 md:p-8 bg-white/95 text-slate-900 ring-1 ring-slate-200 elev-2"
+- Heading:
+  BEFORE: className="... text-transparent bg-clip-text bg-gradient-to-r ..."
+  AFTER:  className="text-3xl md:text-5xl font-extrabold leading-tight text-slate-900"
+- Subhead:
+  className="mt-3 text-base md:text-lg text-slate-700"
+- Metric chips (if present):
+  className="inline-flex items-center px-3 py-1 text-sm bg-white border border-slate-200 text-slate-800"
+- Ensure hero background overlays (grids/noise) are ≤ .03 opacity or remove if they lower contrast.
+
+D) STYLE HELPERS (theme.css additions)
+  .elev-2 { box-shadow:0 8px 24px rgba(15,23,42,.12), 0 2px 6px rgba(15,23,42,.08); }
+  /* Keep existing underline hover. Ensure focus-visible states remain. */
+
+TESTS
+- Resize from 320px → 1440px. Features menu must never clip. It should scroll when tall.
+- Keyboard: open Features via keyboard, tab through links, ESC closes.
+- Hero: run Lighthouse a11y; H1 and subhead must pass AA contrast.
+
+Make only the edits above. No other visual or content changes.

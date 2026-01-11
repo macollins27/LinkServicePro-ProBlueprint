@@ -1,0 +1,178 @@
+Here’s a **surgical prompt** to clean the hover/active styling so it looks **professional**. It removes the gimmicky gradient shimmer and replaces it with restrained elevation, tint, and crisp focus rings. Paste this into Replit.
+
+---
+
+## PROMPT: “Industry slider — professional hover/focus styling”
+
+**Scope**
+
+* Only change styling in the **industry section** component you just added (`client/src/sections/IndustryGridSlider.tsx`) and, if needed, the section’s small CSS module or utility file.
+* Do **not** touch hero or other sections.
+* Keep the 2-row × 4-cards/page slider behavior exactly as implemented.
+
+### Goals
+
+* Remove the blue→green gradient hover.
+* Use subtle elevation, background tint, and icon/text emphasis.
+* Keep WCAG AA focus rings and smooth but minimal motion.
+* Respect `prefers-reduced-motion`.
+
+---
+
+## Replace current card wrapper styles with this spec
+
+### Card base (default state)
+
+* Container uses a `group` so child elements can react on hover/focus.
+* **Base classes** on the clickable card link (`<Link …>`):
+
+  ```
+  block h-full rounded-2xl border border-slate-200 bg-white/95 
+  shadow-sm backdrop-blur-[0] 
+  transition-[transform,box-shadow,background-color,border-color] duration-150 ease-out
+  focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2
+  hover:border-slate-300
+  ```
+* Inner layout (icon + texts) wrapper:
+
+  ```
+  flex h-full flex-col justify-between p-4 sm:p-5
+  ```
+
+### Icon + text
+
+* Icon wrapper:
+
+  ```
+  text-slate-400 transition-colors duration-150
+  group-hover:text-[#0B5FFF] group-focus-visible:text-[#0B5FFF]
+  ```
+* Title:
+
+  ```
+  mt-3 text-[clamp(0.95rem,2vw,1.05rem)] font-medium leading-tight 
+  text-slate-900 line-clamp-1
+  ```
+* Subline:
+
+  ```
+  mt-1 text-xs text-slate-500 line-clamp-1
+  ```
+
+### Hover / Active / Focus styles (professional)
+
+* **Hover (pointer devices)**:
+
+  * Slight lift and sharper shadow:
+
+    ```
+    group-hover:shadow-md group-hover:-translate-y-0.5
+    ```
+  * Background tint only if the card is on a light surface:
+
+    ```
+    group-hover:bg-white
+    ```
+* **Active (mouse down / touch)**:
+
+  * Micro compress for click feedback:
+
+    ```
+    active:translate-y-0
+    ```
+* **Focus (keyboard)**:
+
+  * Keep the blue focus ring from base classes; **no** extra glow.
+
+### Selected/Active page indicator (optional polish)
+
+* If you mark the current page’s cards as “active”, apply:
+
+  ```
+  data-active="true":ring-1 data-active:ring-[#0B5FFF]/30
+  ```
+
+  Don’t add glow; just a faint ring.
+
+### Remove these (explicit)
+
+* Any `before:` gradient border or shimmer effects.
+* Any `scale-[1.02+]` or big movement. Keep to `-translate-y-0.5` max.
+* Any `bg-gradient-to-*` on cards.
+* Any `drop-shadow-2xl` or heavy shadows.
+
+---
+
+## Code edits (example snippet)
+
+Find the card link element in `IndustryGridSlider.tsx` and replace its className with:
+
+```tsx
+<Link
+  to={`/industries/${slug}`}
+  aria-label={`View ${name} workflows`}
+  className={clsx(
+    "group block h-full rounded-2xl border border-slate-200 bg-white/95",
+    "shadow-sm transition-[transform,box-shadow,background-color,border-color] duration-150 ease-out",
+    "hover:border-slate-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5",
+    "active:translate-y-0",
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2"
+  )}
+>
+  <div className="flex h-full flex-col justify-between p-4 sm:p-5">
+    <div className="text-slate-400 transition-colors duration-150 group-hover:text-[#0B5FFF] group-focus-visible:text-[#0B5FFF]">
+      <Icon size={28} className="sm:w-8 sm:h-8" />
+    </div>
+    <div>
+      <h3 className="mt-3 text-[clamp(0.95rem,2vw,1.05rem)] font-medium leading-tight text-slate-900 line-clamp-1">
+        {name}
+      </h3>
+      <p className="mt-1 text-xs text-slate-500 line-clamp-1">
+        Estimate → Schedule → Invoice
+      </p>
+    </div>
+  </div>
+</Link>
+```
+
+If you previously used a gradient ring via `before:`, **delete that wrapper** entirely.
+
+---
+
+## Motion safety
+
+Add this to the card link’s className so motion is reduced for users who prefer it:
+
+```
+motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm
+```
+
+---
+
+## Section controls (Prev/Next) styling
+
+Use neutral buttons:
+
+```
+rounded-full bg-white/85 backdrop-blur ring-1 ring-slate-200 
+shadow-sm hover:bg-white hover:shadow-md 
+text-slate-700 transition-colors duration-150
+focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2
+```
+
+No glow. Icon `size={18}`.
+
+---
+
+## Acceptance criteria
+
+* No gradient shimmer anywhere in the industry section.
+* Hover = mild lift, mild shadow, icon becomes blue. Background stays white.
+* Keyboard focus ring is visible and consistent.
+* No text clipping. Titles and sublines remain single-line with `line-clamp-1`.
+* Motion respects `prefers-reduced-motion`.
+* Slider still shows **2 rows × 4 cards per page** (6 on tablet, 4 on mobile) with working Prev/Next and dots.
+
+---
+
+If any part still looks heavy, reduce shadow to `shadow-sm` on hover and remove the translate-y. This keeps it strictly enterprise-clean.

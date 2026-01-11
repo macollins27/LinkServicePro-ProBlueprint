@@ -1,0 +1,147 @@
+
+You are a senior product designer + front-end engineer. Build a HIGH-CONVERTING, SEO-optimized homepage for “LinkServicePro” (field service management software). Deliver a complete, production-ready single page (React + Vite + Tailwind). No lorem ipsum. Plain contractor language. Fast, accessible, and distinct from competitors.
+
+STACK & FILES
+- React + Vite + Tailwind only. src/main.jsx, src/App.jsx, src/components/*, src/styles/underline.css, index.html, tailwind.css.
+- Mobile-first. Ship <80KB CSS. No heavy libs. Use small CSS for custom effects.
+
+UNIQUE LOOK & FEEL: “Pro-Blueprint”
+- Aesthetic: premium, rugged, tool-grade. Clean layout with subtle blueprint grid + paper texture overlays (CSS only, no images).
+- Colors: Ink #0F172A, Blueprint #0B5FFF, Safety Teal #00C2A8, Accent Amber #F59E0B, Neutrals #111827/#374151/#E5E7EB.
+- Typography: Inter or system stack. Headings 700. Body 400–500. Buttons 800. No rounded corners (rounded-none).
+- Components use “rivet” details: thin 1px borders, micro shadows, small corner notches on cards (clip-path) for a distinctive look.
+- Active section tabs use a colored “staple” indicator (2px tall full-width top border).
+- Link hover = RIGHT→LEFT drawn underline (see CSS spec below). Active nav item shows persistent underline.
+
+ACCESSIBILITY
+- WCAG AA+ contrast. All menus keyboard navigable. Visible focus states. aria-expanded, aria-controls, aria-current where relevant.
+- Reduced motion media query respected.
+
+NAVBAR (sticky)
+- Left: wordmark “LinkServicePro”.
+- Center nav: Features (megamenu), Industries (dropdown), Pricing, Resources. Apply custom underline hover and persistent active underline on “Pricing”.
+- Right: Sign in (text) + primary CTA [Start Free Trial]. Secondary CTA [Book a Demo] appears on mobile menu.
+- Megamenu (Features): 3 columns with short one-liners.
+  1) Plan & Dispatch: Drag-and-drop Scheduling; Dispatch Board + Live Map; Route Optimization; Real-time GPS; Capacity Planning; Automated Reminders; Recurring Jobs.
+  2) Win & Deliver: CRM & Leads; Quote Builder + E-Sign; Work Orders; Project Tracking (multi-WO); Customer Portal; 2-Way SMS/Email; Review Requests.
+  3) Get Paid & Operate: Invoicing & Batch; Online & Field Payments; Deposits/Partials; Job Costing & Profit; Payroll & Wage Scales; POs & Vendor Mgmt; QuickBooks/Xero Sync.
+- Industries dropdown: two-column list linking to /industries/<slug>
+  Cleaning, Janitorial Cleaning, Pressure Washing, Window Cleaning, Lawn Care, Tree Care, Landscaping, Snow Removal, General Contracting, Plumbing, Handyman, HVAC, Electrical, Painting, Roofing.
+- Resources dropdown: Blog, Guides, Webinars, Help Center, API Docs.
+
+HERO (distinct layout)
+- Left: copy block.
+  H1: “Run your field service business from one hub.”
+  Sub: “Schedule jobs, track crews, send quotes, and get paid—fast.”
+  CTAs: [Start Free Trial] (primary) and [Book a Demo] (secondary) with “No credit card needed.”
+  Trust chips row: ★ ratings + small logos row (placeholders).
+- Right: VERTICAL CAROUSEL (autoplay)
+  - A stacked strip of tall cards that auto-scroll vertically.
+  - Each card = field photo placeholder + caption (e.g., “Plumbing • Same-day quote approved”).
+  - 5–6 cards loop; pause on hover; swipe on touch; keyboard accessible. Progress dots vertically aligned.
+  - Use CSS transforms + requestAnimationFrame or simple interval; no external carousel libs.
+- Background: layered CSS—subtle noise + blueprint grid using repeating-linear-gradient; slight angle mask at hero bottom for unique edge.
+
+BENEFIT PILLARS (4 cards)
+- Get Organized — “Leads, jobs, and documents in one place.”
+- Win More Jobs — “Quotes with e-sign turn into work orders.”
+- Work Smarter — “Live map, routes, and automated reminders.”
+- Boost Profits — “Real job costing and faster invoicing.”
+- Each card has icon, one-line proof, and “See features” link.
+
+FEATURE SPOTLIGHT: Scheduling & Dispatch
+- Split section. Left copy with 3 bullets: “Drag-and-drop schedule,” “Live GPS + route optimization,” “Capacity view reduces overtime.”
+- Right: static interactive-looking mock (ARIA-hidden decorative) showing tech pins, route, ETAs.
+
+FEATURE FLOW: Quotes → Work Orders → Invoices
+- Three panels with arrows and micro-badges: “E-Sign approved,” “Deposit requested,” “Paid.”
+
+CUSTOMER EXPERIENCE
+- Headline: “Keep customers in the loop.”
+- Bullets: Portal, 2-way SMS/email, automated reminders, review requests.
+- Small testimonial block with name + trade.
+
+PROJECTS & JOB COSTING
+- Explain multi-visit projects, documents, and profitability in real time.
+- KPI strip: Labor • Materials • Margin with sample numbers.
+
+INDUSTRIES GRID
+- 3×5 responsive grid. Each card: short benefit + link “See how it works”.
+
+INTEGRATIONS
+- QuickBooks, Xero, PropertyLinkWare, LinkInspectPro, PropertyOrganizer; one-liners.
+
+PRICING TEASER
+- “Simple, transparent pricing.” Button → /pricing. Small FAQ link. “30-day free trial” badge.
+
+TRUST & SECURITY
+- Badges row, uptime note, encryption statement, SOC2-ready placeholder.
+
+FAQ (5 items)
+- Scheduling, payments, integrations, onboarding time, support.
+
+FOOTER
+- Columns: Product, Industries, Resources, Company, Legal. Address placeholder, support email, social links.
+
+COPY RULES
+- Short sentences. Benefit first, feature second. No jargon. Speak to contractors.
+
+SEO
+- Proper <title>, meta description, canonical.
+- H1 unique, H2/H3 hierarchy.
+- JSON-LD: Organization + Website + Product (offers placeholder).
+- OG + Twitter cards. All images with width/height + loading="lazy".
+
+ANALYTICS & FORMS
+- Data attributes on CTAs. Footer email capture.
+- Demo modal: name, email, phone, company size, industry, buying timeframe.
+
+PERFORMANCE
+- System font stack fallback. Defer non-critical scripts. No carousels libs. Optimize CLS.
+
+CUSTOM EFFECTS IMPLEMENTATION
+
+// underline.css
+.link-underline { position: relative; }
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -2px; height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .18s ease-out;
+}
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.nav-active::after { transform: scaleX(1); transform-origin: left; }
+
+/* card notch */
+.card-notch { clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%); }
+
+/* blueprint grid + noise */
+.blueprint-bg {
+  background:
+    radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px) 0 0/24px 24px,
+    repeating-linear-gradient(0deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 1px, transparent 1px, transparent 24px),
+    linear-gradient(#0B5FFF, #0A4BE0);
+}
+
+TEXT TO USE
+Hero:
+- H1: Run your field service business from one hub.
+- Sub: Schedule jobs, track crews, send quotes, and get paid—fast.
+Benefit lines:
+- Get Organized | Win More Jobs | Work Smarter | Boost Profits.
+
+INTERACTION NOTES
+- Megamenu opens on hover/focus, closes on ESC/blur. Trap focus when open. 150ms mouseleave delay.
+- Vertical carousel: autoplay 4s/card; pause on hover, focus, or reduced-motion. Buttons: Prev/Next with aria-labels. Dots have aria-current.
+
+DELIVERABLES
+- Full working page with components: Navbar + Megamenu, Hero with vertical carousel, all sections above, Footer.
+- src/components: Navbar.jsx, MegaMenu.jsx, IndustriesMenu.jsx, Hero.jsx, VerticalCarousel.jsx, Pillars.jsx, DispatchSpotlight.jsx, FlowPanels.jsx, CustomerXP.jsx, ProjectsCosting.jsx, IndustriesGrid.jsx, Integrations.jsx, PricingTeaser.jsx, Trust.jsx, FAQ.jsx, Footer.jsx.
+- Include README with run instructions and copy locations. 

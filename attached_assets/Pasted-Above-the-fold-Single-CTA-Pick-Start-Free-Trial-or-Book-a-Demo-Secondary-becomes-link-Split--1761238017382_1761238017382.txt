@@ -1,0 +1,116 @@
+Above the fold
+
+Single CTA. Pick “Start Free Trial” or “Book a Demo.” Secondary becomes link. Split attention lowers clicks.
+
+Hero copy weight. Trim subhead to one sentence. Add one quantified proof (e.g., “save 6–10 hrs/week”).
+
+Trust row. Add 4–6 recognizable logos. Ratings need a source link.
+
+Navigation
+
+Menu affordance. Add chevrons on Features/Industries/Resources. Expand on focus + hover. ESC closes.
+
+Scan blocks (pillars)
+
+Card contrast. Increase text contrast; current gray-on-gray is borderline. Use #111827 on light cards.
+
+Clickable area. Make whole card clickable. Add right-arrow affordance.
+
+Order. Put “Work Smarter” before “Win More Jobs” if scheduling is your core hook.
+
+Scheduling & Dispatch section
+
+Visual proof. Add one micro-metric row: “-18% drive time,” “+1.3 jobs/tech/day.” Even if placeholder, format now.
+
+Mock alignment. Center the route mock; current looks light and small. Use 560–640px width on desktop.
+
+Quote → Work Order → Invoice
+
+Reduce chrome. Panels look like empty app windows. Replace with large icons + three bullets each.
+
+Add “Get paid” proof. “Deposits and partials supported.” “Avg. days-to-paid ↓.”
+
+Customer experience section
+
+Social proof. Move the testimonial to the left of bullets. Add headshot or logo.
+
+Messaging clarity. Label “2-Way SMS/Email” as “Text and email customers from the job screen” to remove jargon.
+
+Projects & Job Costing
+
+KPI alignment. Use equal widths. Ensure currency formatting consistent. Add small trend arrows.
+
+Explain projects. One line: “Group multiple visits, docs, and invoices under one project.”
+
+Industries grid
+
+CTA. Each tile gets “See workflows” not “See how it works.” Stronger intent.
+
+Integrations
+
+Logos > pills. Use logos with one-line benefit. Add “View all integrations →”.
+
+Accounting first. QuickBooks/Xero top-left. PropertyLinkWare group second.
+
+Pricing teaser
+
+Clarity. Add “Sign Up for Free. No card.” 
+
+Anchor links. Buttons to #pricing, #faq. Include “Compare plans” link.
+
+Trust & security
+
+Real claims only. If SOC2 isn’t complete, switch to “SOC2 in progress.” Add data encryption, uptime %, and link to status page.
+
+FAQ
+
+Expand/collapse icons. Use +/– with clear focus states. Allow deep link to each item via id.
+
+Footer
+
+Contact info. Add phone and support hours. Add company address or city/state.
+
+Legal. Add Privacy, Terms, Cookies.
+
+Accessibility
+
+Focus states. High-contrast outlines on links, buttons, menu items.
+
+Landmarks. Use <header>, <nav>, <main>, <section>, <footer>. One H1 per page.
+
+Alt text. Real descriptions for field images. No “image-1.”
+
+Reduced motion. Disable autoplay when prefers-reduced-motion is on.
+
+Performance/SEO
+
+CLS. Set width/height on all images and icons. Use loading="lazy" below the fold.
+
+Fonts. Use system stack or font-display: swap. Keep CSS < 80KB.
+
+Meta. Title ≤60 chars. Meta description 150–160 chars. Canonical tag.
+
+Schema. Add JSON-LD for Organization, Website, Product (with offers placeholder).
+
+Analytics. Data attributes on CTAs: data-cta="hero-start-trial", etc.
+
+Forms
+
+Demo modal. Name, email, phone, company size, industry, timeline. Inline validation. Privacy note under button.
+
+Newsletter. Clarify value: “Monthly tips and templates.” Checkbox for consent if required.
+
+Micro-UI
+
+Underline hover. Keep right→left draw. Add :focus-visible to match.
+
+Buttons. Sharp corners already fine. Add press state (2px translateY).
+
+Icons. Use a consistent set. Size 20–24px. Left of headlines in feature cards.
+
+Content
+
+Voice. Short, active sentences. Benefit first. No jargon.
+
+Proof. At least one metric in first screen. Add two short case snippets by industry under grid.
+

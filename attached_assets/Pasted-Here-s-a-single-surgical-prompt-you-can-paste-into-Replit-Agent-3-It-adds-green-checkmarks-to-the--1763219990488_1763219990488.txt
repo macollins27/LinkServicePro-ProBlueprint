@@ -1,0 +1,100 @@
+Here’s a single, surgical prompt you can paste into Replit Agent 3. It adds green checkmarks to the bullet lists inside the Workflow cards only, and makes each card title’s text height match the icon height (so they align perfectly). It doesn’t touch copy, layout, routes, or any other sections.
+
+⸻
+
+Task
+
+In the Workflow section (“From first call to cash”), update the list style to show green checkmarks and align each card title’s text height to the icon height for a tighter, professional header row.
+
+Scope guardrails
+	•	Touch only src/styles/workflow-white.css.
+	•	Do not change any other files, tokens, content, or sections.
+
+⸻
+
+Exact changes (copy/paste)
+
+Open src/styles/workflow-white.css and:
+
+1) Add/confirm success color token (near your other tokens)
+
+:root {
+  /* existing tokens … */
+  --wf-success: #22C55E; /* emerald-500 for checkmarks */
+  --wf-title-icon: 36px; /* icon size used in the title row */
+}
+
+2) Make the card title text the same height as the icon
+
+/* Title row already exists; just ensure the measurements match */
+.wf-title { 
+  grid-template-columns: var(--wf-title-icon) 1fr; 
+}
+
+/* Make the H3’s line-height equal the icon height so they align perfectly */
+.wf-title h3 {
+  font-size: clamp(18px, 2.1vw, 22px);   /* tasteful scale */
+  line-height: var(--wf-title-icon);     /* same visual height as icon */
+  font-weight: 800;
+  margin: 0;
+}
+
+/* Keep the icon container locked to the same size */
+.wf-icon {
+  width: var(--wf-title-icon);
+  height: var(--wf-title-icon);
+  border-radius: 10px;
+  background: var(--wf-accent-weak);
+  display: grid;
+  place-items: center;
+  outline: 1px solid rgba(47,124,255,.22);
+}
+.wf-icon svg { width: 20px; height: 20px; color: var(--wf-accent); }
+
+3) Replace default bullets with green checkmarks (cards only)
+
+/* Remove default bullets and add green check “pills” */
+.wf-bullets {
+  list-style: none;
+  padding-left: 0;
+  margin: 12px 0 10px 0;
+  color: var(--wf-muted);
+}
+
+.wf-bullets li {
+  position: relative;
+  padding-left: 28px;        /* room for the check pill */
+  margin: 8px 0;
+}
+
+/* Accessible, high-contrast green check inside a soft green pill */
+.wf-bullets li::before {
+  content: "✓";
+  position: absolute;
+  left: 0; top: 0.15rem;
+  width: 18px; height: 18px;
+  line-height: 18px;
+  border-radius: 999px;
+  background: rgba(34,197,94,.14); /* soft green backdrop */
+  color: var(--wf-success);        /* vivid green check */
+  font-weight: 900;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Respect reduced motion users (no motion here, but keep for consistency) */
+@media (prefers-reduced-motion: reduce) {
+  .wf-bullets li::before { transition: none; }
+}
+
+No TSX changes needed—the lists already render as <ul class="wf-bullets">…</ul>. This CSS swaps the bullet style just for this section.
+
+⸻
+
+Acceptance checklist
+	•	Each card’s title row: the icon and the text label are vertically aligned, with the text taking the same height as the icon.
+	•	Each bullet now shows a green check pill (accessible contrast) instead of a disc.
+	•	No copy/structure changed; this applies only to the Workflow cards.
+	•	Other sections remain untouched.

@@ -1,0 +1,178 @@
+Awesome—moving to the **next section**: the customer **logo/emblem row** beneath the hero. Here’s a **single, surgical prompt** you can paste into Replit Agent 3 to turn that row into a **continuous, fluid horizontal marquee** (mobile-first, battery-friendly, a11y-sound), without touching anything else.
+
+---
+
+Create **Logo Row: Continuous Horizontal Marquee (mobile-first)**. Do not modify copy/CTAs, routing, Helmet, or any sections other than the logo row under the Hero.
+
+### Files to add/edit
+
+* `client/src/components/animation/InfiniteHorizontalMarquee.tsx` (NEW)
+* `client/src/data/customerLogos.ts` (NEW)
+* `client/src/components/Hero.tsx` (replace existing logo row with marquee)
+* `tailwind.config.ts` (ensure marqueeX keyframes)
+
+### Requirements
+
+* **Animation:** CSS transform–based, **continuous** loop using duplicated tracks (no snapback). **No timers** (`setInterval`/`requestAnimationFrame`) for movement.
+* **Mobile-first layout:**
+
+  * Mobile: single marquee row, full width, 56–72px tall logos.
+  * md+: same row with increased gap; optional second “lane” disabled for now.
+* **Sizing/visuals:** logos wrapped in fixed-height container (`h-12 sm:h-14`), auto width; subtle grayscale + reduced opacity; on hover (md+) lift grayscale and increase opacity.
+* **A11y:** animated row `aria-hidden="true"`. Provide SR-only unordered list of company names below the marquee.
+* **Reduced motion:** when `prefers-reduced-motion` is on, render a static grid of logos (no animation).
+* **Performance:** SVGs preferred; otherwise provide `width`/`height` attributes on rasters to prevent CLS; `loading="lazy" decoding="async"`.
+
+---
+
+### 1) Tailwind keyframes (add if missing)
+
+```ts
+// tailwind.config.ts (extend)
+extend: {
+  keyframes: {
+    marqueeX: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } },
+  },
+  animation: {
+    marqueeX: 'marqueeX 40s linear infinite',
+  },
+}
+```
+
+---
+
+### 2) Marquee component
+
+```tsx
+// client/src/components/animation/InfiniteHorizontalMarquee.tsx
+import * as React from "react";
+
+type Logo = { src: string; alt: string; width?: number; height?: number };
+
+export default function InfiniteHorizontalMarquee({
+  items,
+  speedSeconds = 40,
+  className = "",
+}: {
+  items: Logo[];
+  speedSeconds?: number;
+  className?: string;
+}) {
+  const prefersReduce =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  // Static fallback
+  if (prefersReduce) {
+    return (
+      <ul className={`grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 ${className}`}>
+        {items.map((l, i) => (
+          <li key={i} className="flex items-center justify-center h-12 sm:h-14 opacity-80">
+            <img
+              src={l.src}
+              alt={l.alt}
+              loading="lazy"
+              decoding="async"
+              width={l.width}
+              height={l.height}
+              className="max-h-full w-auto object-contain"
+            />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  // Animated path: duplicate items for seamless 200% track
+  const track = [...items, ...items];
+
+  return (
+    <div className={`group relative overflow-hidden ${className}`}>
+      <div
+        aria-hidden="true"
+        className="flex animate-marqueeX gap-10 sm:gap-12 md:gap-16 will-change-transform"
+        style={{ animationDuration: `${speedSeconds}s` }}
+      >
+        {track.map((l, i) => (
+          <div key={i} className="flex items-center justify-center h-12 sm:h-14 opacity-70 grayscale transition
+                                  group-hover:opacity-90 group-hover:grayscale-0">
+            <img
+              src={l.src}
+              alt="" // hidden in animated path; SR-only list provided elsewhere
+              loading="lazy"
+              decoding="async"
+              width={l.width}
+              height={l.height}
+              className="max-h-full w-auto object-contain"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+### 3) Logo data (use your real assets; SVGs ideal)
+
+```ts
+// client/src/data/customerLogos.ts
+export type CustomerLogo = { src: string; alt: string; width?: number; height?: number };
+
+export const customerLogos: CustomerLogo[] = [
+  { src: "/img/logos/astra.svg", alt: "Astra" },
+  { src: "/img/logos/baker-electric.svg", alt: "Baker Electric" },
+  { src: "/img/logos/binsky.svg", alt: "Binsky" },
+  { src: "/img/logos/chief.svg", alt: "Chief" },
+  { src: "/img/logos/hvacx.svg", alt: "HVACx" },
+  { src: "/img/logos/hay.svg", alt: "H.A.Y." },
+  // add 4–8 more so the track feels substantial (10–14 total recommended)
+];
+export const customerNames = customerLogos.map(l => l.alt);
+```
+
+---
+
+### 4) Wire it into the Hero (replace your existing logo row only)
+
+```tsx
+// client/src/components/Hero.tsx (snippet)
+import InfiniteHorizontalMarquee from "./animation/InfiniteHorizontalMarquee";
+import { customerLogos, customerNames } from "../data/customerLogos";
+
+// ...inside the <section> after your hero content block:
+<div className="mt-10 sm:mt-12">
+  <InfiniteHorizontalMarquee
+    items={customerLogos}
+    className="[mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]"
+    speedSeconds={42} // adjust between 36–48 for the feel you like
+  />
+
+  {/* SR-only list for a11y */}
+  <ul className="sr-only" aria-label="Companies that trust LinkServicePro">
+    {customerNames.map((name, i) => <li key={i}>{name}</li>)}
+  </ul>
+</div>
+```
+
+---
+
+### What NOT to do
+
+* Don’t animate with JS timers.
+* Don’t place the marquee outside the container or with absolute positioning.
+* Don’t ship retina-huge rasters; prefer SVG or optimized PNG with explicit `width/height`.
+
+### QA (acceptance)
+
+* Smooth, continuous loop with **no snap** at the seam.
+* Mobile: single lane fits the container; logos ~48–56px tall; no horizontal scrollbar.
+* Hover (desktop): logos de-grayscale and brighten; animation **pauses** if you want—optional: add `group-hover:[animation-play-state:paused]` to the animated `div` if pausing is desired.
+* Reduced motion: static grid visible; screen readers announce the SR-only list once.
+* CLS remains near zero (explicit `width/height` on rasters or SVGs).
+
+---
+
+Ship this, verify spacing/contrast against your background, and then we’ll take on the **“Dashboards / Workflows / AI” sticky crossfade** section next.

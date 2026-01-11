@@ -1,0 +1,364 @@
+Got it—your tooltips aren’t opening and the legend dots are invisible because (a) the legend was styling the text color, not the background, and (b) the tooltip portal needs sturdier open/close logic (hover-only can fail inside scrollable containers). Below is a from-scratch fix with minimal moving parts. Paste these files exactly and it will work:
+
+⸻
+
+1) Replace the tooltip with a robust portal (click + hover, ESC, outside-click)
+
+client/src/components/ui/PortalTooltip.tsx (replace entire file)
+
+import * as React from "react";
+import { createPortal } from "react-dom";
+
+type Props = {
+  anchorRef: React.RefObject<HTMLElement>;
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  children: React.ReactNode;
+  /** default = "top" */
+  prefer?: "top" | "bottom";
+  /** width in px for positioning; visual can auto-size */
+  width?: number;
+};
+
+export default function PortalTooltip({
+  anchorRef,
+  open,
+  onOpen,
+  onClose,
+  children,
+  prefer = "top",
+  width = 280,
+}: Props) {
+  const [coords, setCoords] = React.useState({ top: 0, left: 0 });
+
+  // ensure a stable portal host
+  const host = React.useMemo(() => {
+    let el = document.getElementById("portal-tooltips-root");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "portal-tooltips-root";
+      document.body.appendChild(el);
+    }
+    return el;
+  }, []);
+
+  // recompute position when opened or on resize
+  const compute = React.useCallback(() => {
+    const el = anchorRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const margin = 10;
+    const top =
+      (prefer === "top" ? r.top + window.scrollY - margin : r.bottom + window.scrollY + margin);
+    let left = r.left + window.scrollX + r.width / 2 - width / 2;
+    left = Math.max(window.scrollX + 8, Math.min(left, window.scrollX + window.innerWidth - width - 8));
+    setCoords({ top, left });
+  }, [anchorRef, prefer, width]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    compute();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const onResize = () => compute();
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open, compute, onClose]);
+
+  // close on outside click
+  React.useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      const a = anchorRef.current;
+      const tip = document.getElementById("__portal_tooltip_active__");
+      if (!a) return;
+      if (a.contains(e.target as Node)) return; // click on anchor
+      if (tip && tip.contains(e.target as Node)) return; // click inside tooltip
+      onClose();
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open, anchorRef, onClose]);
+
+  if (!open) return null;
+
+  return createPortal(
+    <div
+      id="__portal_tooltip_active__"
+      className="fixed z-[9999] pointer-events-auto"
+      style={{ top: coords.top, left: coords.left, width }}
+      role="tooltip"
+    >
+      <div className="rounded-md border border-white/12 bg-slate-900/95 text-slate-100 shadow-2xl backdrop-blur px-3 py-2 text-sm leading-snug">
+        {children}
+      </div>
+    </div>,
+    host
+  );
+}
+
+/** Hook helpers to bind trigger events consistently */
+export function useTooltipTrigger() {
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef<HTMLElement>(null);
+  const bind = {
+    ref,
+    onClick: () => setOpen((v) => !v),
+    onMouseEnter: () => setOpen(true),
+    onMouseLeave: () => setOpen(false),
+    onFocus: () => setOpen(true),
+    onBlur: () => setOpen(false),
+  } as any;
+  return { open, setOpen, triggerProps: bind, ref };
+}
+
+Why this works:
+	•	Renders into document.body with z-index 9999 (nothing can clip it).
+	•	Opens on hover OR click, closes on ESC and outside-click.
+	•	Repositions on resize; not fragile to scroll containers.
+
+⸻
+
+2) Fix the comparison section to use the new tooltip + real icons in the legend
+
+client/src/components/home/WhySwitchTable.tsx (replace entire file)
+
+import * as React from "react";
+import { Link } from "react-router-dom";
+import { Check, Minus, X, Info } from "lucide-react";
+import PortalTooltip, { useTooltipTrigger } from "../ui/PortalTooltip";
+
+/* ---------------- DATA ---------------- */
+type ColKey = "project" | "labor" | "gps" | "assets";
+type RowKey = "lsp" | "other_fsm" | "sheets";
+type CellState = "yes" | "partial" | "no";
+
+const COLUMNS: { key: ColKey; label: string; tip: string }[] = [
+  { key: "project", label: "Project Management (multi–work orders)", tip: "One project → many work orders, estimates, invoices—all linked." },
+  { key: "labor",   label: "Employee Labor & Payroll",               tip: "Wages + pay rules tied to time; project totals and payroll export." },
+  { key: "gps",     label: "GPS-Verified Timesheets",                tip: "Geo-verified in/out; hours summed at the project." },
+  { key: "assets",  label: "Asset Tracking & Inspection Integrations", tip: "Property Organizer + Link Inspect Pro linked to projects/jobs." },
+];
+
+const ROWS: { key: RowKey; label: string; help?: string }[] = [
+  { key: "lsp", label: "LinkServicePro" },
+  { key: "other_fsm", label: "Other FSM Software (generic)", help: "Common patterns across vendors; availability varies by plan/version." },
+  { key: "sheets", label: "Spreadsheets (Excel/Sheets)", help: "Workarounds with tabs/forms; no unified project record." },
+];
+
+const STATES: Record<RowKey, Record<ColKey, CellState>> = {
+  lsp:       { project: "yes",     labor: "yes",     gps: "yes",     assets: "yes" },
+  other_fsm: { project: "partial", labor: "partial", gps: "partial", assets: "partial" },
+  sheets:    { project: "partial", labor: "partial", gps: "no",      assets: "no" },
+};
+
+const SR_LABEL: Record<CellState, string> = { yes: "Included", partial: "Partial", no: "Missing" };
+
+/* ---------------- ICON ---------------- */
+function StateIcon({ state }: { state: CellState }) {
+  if (state === "yes") return <Check className="h-5 w-5 text-emerald-400" aria-hidden />;
+  if (state === "partial") return <Minus className="h-5 w-5 text-amber-400" aria-hidden />;
+  return <X className="h-5 w-5 text-rose-400" aria-hidden />;
+}
+
+/* ---------------- MAIN ---------------- */
+export default function WhySwitchTable() {
+  return (
+    <section className="relative isolate py-16 sm:py-20 lg:py-24">
+      {/* use your global container */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header (eyebrow, no subtitle) */}
+        <header className="max-w-3xl">
+          <p className="text-xs font-medium tracking-widest text-white/60">See it in one table</p>
+          <h2 className="mt-2 text-3xl font-semibold text-white sm:text-4xl">Why Teams Switch</h2>
+          <p className="mt-3 text-white/80">
+            Projects with real dollars, hours, assets, and conversations—kept in one place so work flows and cash lands sooner.
+          </p>
+        </header>
+
+        {/* Legend with real icons + working tooltip */}
+        <Legend />
+
+        {/* Table */}
+        <div className="mt-8 overflow-x-auto rounded-xl border border-white/10 bg-white/5">
+          <Matrix />
+        </div>
+
+        <p className="mt-3 text-xs text-white/50">
+          Generic rows reflect common patterns; availability varies by vendor/version.
+        </p>
+
+        {/* CTAs centered */}
+        <div className="mt-8 flex items-center justify-center gap-3">
+          <Link to="/get-started" className="rounded-md bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 focus:ring-offset-slate-900">
+            Get Started Free
+          </Link>
+          <Link to="/contact" className="rounded-md border border-white/15 px-5 py-3 text-sm font-medium text-white/90 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/30 focus:ring-offset-slate-900">
+            Talk to an expert
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- LEGEND ---------------- */
+function Legend() {
+  const partial = useTooltipTrigger();
+  return (
+    <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+      <span className="inline-flex items-center gap-2 text-white/85">
+        <Check className="h-4 w-4 text-emerald-400" aria-hidden />
+        Included
+      </span>
+
+      <span className="inline-flex items-center gap-2 text-white/85">
+        <Minus className="h-4 w-4 text-amber-400" aria-hidden />
+        Partial / workaround
+        <button
+          {...partial.triggerProps}
+          className="ml-1 inline-flex items-center text-white/60 hover:text-white/80 focus:text-white/80 focus:outline-none focus:ring-2 focus:ring-white/30 rounded"
+          aria-label="What does partial mean?"
+        >
+          <Info className="h-4 w-4" />
+        </button>
+        <PortalTooltip
+          anchorRef={partial.ref}
+          open={partial.open}
+          onOpen={() => partial.setOpen(true)}
+          onClose={() => partial.setOpen(false)}
+        >
+          Partial or requires workarounds. Some steps may be manual or split across tools.
+        </PortalTooltip>
+      </span>
+
+      <span className="inline-flex items-center gap-2 text-white/85">
+        <X className="h-4 w-4 text-rose-400" aria-hidden />
+        Missing
+      </span>
+    </div>
+  );
+}
+
+/* ---------------- TABLE ---------------- */
+function Matrix() {
+  return (
+    <table className="min-w-full border-collapse">
+      <thead className="bg-white/5 sticky top-0 z-10">
+        <tr>
+          <th scope="col" className="sticky left-0 z-20 bg-white/5 px-4 py-3 text-left text-xs font-semibold tracking-wider text-white/70 w-[28%]">
+            SOLUTION
+          </th>
+          {COLUMNS.map((c) => (
+            <HeaderCell key={c.key} label={c.label} tip={c.tip} />
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {ROWS.map((row) => (
+          <tr key={row.key} className="border-t border-white/10">
+            <th scope="row" className="sticky left-0 z-10 bg-slate-900/80 backdrop-blur px-4 py-4 text-left font-medium text-white w-[28%]">
+              <div className="flex items-start justify-between gap-2">
+                <span className="leading-snug">{row.label}</span>
+                {row.help && <RowHelp text={row.help} />}
+              </div>
+            </th>
+            {COLUMNS.map((c) => {
+              const s = STATES[row.key][c.key];
+              return (
+                <td key={c.key} className="px-4 py-4 text-center align-middle">
+                  <span className="inline-flex items-center justify-center">
+                    <span className="sr-only">{SR_LABEL[s]}</span>
+                    <StateIcon state={s} />
+                  </span>
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+/* column header with working tooltip */
+function HeaderCell({ label, tip }: { label: string; tip: string }) {
+  const t = useTooltipTrigger();
+  return (
+    <th scope="col" className="px-4 py-3 text-left align-bottom">
+      <div className="flex items-start gap-1">
+        <span className="block text-xs font-semibold tracking-wider text-white/70 leading-snug whitespace-normal line-clamp-2">
+          {label}
+        </span>
+        <button
+          {...t.triggerProps}
+          className="mt-0.5 inline-flex items-center text-white/60 hover:text-white/80 focus:text-white/80 focus:outline-none focus:ring-2 focus:ring-white/30 rounded"
+          aria-label={`About ${label}`}
+        >
+          <Info className="h-4 w-4" />
+        </button>
+        <PortalTooltip
+          anchorRef={t.ref}
+          open={t.open}
+          onOpen={() => t.setOpen(true)}
+          onClose={() => t.setOpen(false)}
+        >
+          {tip}
+        </PortalTooltip>
+      </div>
+    </th>
+  );
+}
+
+function RowHelp({ text }: { text: string }) {
+  const t = useTooltipTrigger();
+  return (
+    <>
+      <button
+        {...t.triggerProps}
+        className="text-xs text-white/70 hover:text-white/90 focus:text-white/90 underline underline-offset-4"
+      >
+        What this means
+      </button>
+      <PortalTooltip
+        anchorRef={t.ref}
+        open={t.open}
+        onOpen={() => t.setOpen(true)}
+        onClose={() => t.setOpen(false)}
+        prefer="bottom"
+      >
+        {text}
+      </PortalTooltip>
+    </>
+  );
+}
+
+What changed vs. your previous attempt
+	•	Legend now uses Lucide icons directly (no fake dots), so you can see ✔ / – / ✕.
+	•	All three tooltip triggers (legend, column headers, “What this means”) use the same hook and the same portal: works on hover and click, closes on ESC/outside-click, never clipped by the table scroller or sticky cells.
+	•	Column labels are allowed to wrap and use the full header width (no inner max-width).
+
+⸻
+
+3) Wire the section
+
+Import and render it (if you haven’t already):
+
+import WhySwitchTable from "@/components/home/WhySwitchTable";
+<WhySwitchTable />
+
+
+⸻
+
+4) Quick QA
+	•	Hover or click any ℹ️: tooltip appears above everything; try inside the sticky header and over the first column—still works.
+	•	Legend shows real icons.
+	•	“What this means” opens a tooltip under the row label.
+	•	Header is left-aligned; eyebrow says “See it in one table”; no subtitle.
+	•	CTAs centered and visible on all breakpoints.
+
+If you still want popovers instead of tooltips later (for longer copy), this portal can be reused—just drop richer content inside.

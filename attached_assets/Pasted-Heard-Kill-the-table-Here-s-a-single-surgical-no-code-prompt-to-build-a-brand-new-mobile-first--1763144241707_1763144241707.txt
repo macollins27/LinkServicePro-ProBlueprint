@@ -1,0 +1,190 @@
+Heard. Kill the table. Here’s a single, surgical, no-code prompt to build a brand-new, mobile-first comparison section that scans fast, uses no tooltips, and highlights your real differentiators. It replaces the matrix entirely.
+
+⸻
+
+Task
+
+Replace the current comparison matrix with a mobile-first “Feature Matchups” section that compares LinkServicePro to two contexts (Other FSM software and Spreadsheets) using stacked matchup cards. No tables, no tooltips, no portals. Keep it accessible, fast, and within the global container.
+
+Placement & scope
+	•	Lives exactly where the matrix was (after Industries).
+	•	Update only this section and its data/config. Do not change routes, header, or other sections.
+
+Objectives (what this section must communicate)
+	•	LinkServicePro uniquely delivers:
+	1.	Project Management (multi–work orders)
+	2.	Employee Labor & Payroll
+	3.	GPS-Verified Timesheets
+	4.	Asset Tracking & Inspection Integrations (Property Organizer + Link Inspect Pro)
+	•	Price model advantage: Unlimited users / job-based (surface as a callout, not a column).
+
+⸻
+
+Structure (mobile → desktop)
+	1.	Header (left-aligned, inside global container)
+	•	Eyebrow: See it in one table (keep eyebrow style; not blue)
+	•	H2: Why Teams Switch
+	•	Support: Projects with real dollars, hours, assets, and conversations—kept in one place so work flows and cash lands sooner.
+	2.	Context Switcher (pills)
+	•	Two pills: Other FSM (default) and Spreadsheets.
+	•	Pills act like a radiogroup with aria-selected, keyboard Left/Right/Home/End.
+	•	On small screens, place pills directly under the header with a bit of top stickiness (optional) so users can switch while scrolling.
+	3.	Score Strip (1 line, no icons needed)
+	•	LinkServicePro: 4/4 wins vs. {Active Context}: {2 or fewer}/4
+	•	Color the counts (green for LSP, neutral for the context).
+	4.	Feature Matchup Cards (one per differentiator; stacked vertically)
+	•	Card anatomy (top → bottom):
+	•	Feature icon + Title (e.g., “Project Management (multi–work orders)”)
+	•	LSP row: green ✓ + 1-line benefit
+	•	Context row: amber “–” (partial) or red ✕ (missing) + 1-line limitation
+	•	Disclosure: “Show details” expands to 1–2 concise bullets per side (LSP vs Context). Uses native <button> with aria-expanded.
+	•	Cards are single-column on mobile. On desktop, cards can sit in a 2×2 grid, but keep content identical.
+	5.	Pricing Callout (small band)
+	•	Tag: Unlimited users on paid plans • Job-based pricing
+	•	1-line explainer: Grow crews without per-seat math; pricing aligns to work, not headcount.
+	6.	CTAs (centered)
+	•	Primary: Get Started Free
+	•	Secondary: Talk to an expert
+	7.	Footnote
+	•	Generic comparisons reflect common patterns; availability varies by vendor/version.
+
+⸻
+
+Visual & motion
+	•	Cards: rounded corners, inner border at low contrast, compact padding.
+	•	State indicators: ✓ (green), – (amber), ✕ (red). Never rely on color alone—show the symbol too.
+	•	Motion: only the disclosure open/close; respect prefers-reduced-motion. No auto-animation, no carousels.
+
+⸻
+
+Accessibility
+	•	Context pills: role="tablist" with role="tab", aria-selected, aria-controls; keyboard Left/Right/Home/End.
+	•	Each card title is an h3 under the section’s h2.
+	•	Disclosure is a <button> with aria-expanded + aria-controls. Focus ring visible everywhere.
+	•	Icons have aria-hidden="true"; each state has visible symbols and sr-only text: “Included”, “Partial”, “Missing”.
+
+⸻
+
+Performance
+	•	No tooltips, no portals, no third-party embeds.
+	•	Images/icons lazy-load where appropriate; fixed intrinsic sizes to prevent CLS.
+	•	All copy inline; data-driven for easy updates.
+
+⸻
+
+Data model (create a small constants file)
+
+// comparisonData.ts (or JSON)
+export const FEATURES = [
+  {
+    key: "project",
+    title: "Project Management (multi–work orders)",
+    lsp: { state: "yes", oneLine: "One project → many work orders, estimates, invoices—all linked.", details: [
+      "Schedule and track multiple tickets under a single project.",
+      "Roll-up billing or per-ticket invoicing."
+    ]},
+    other_fsm: { state: "partial", oneLine: "Tickets exist; true project roll-ups vary by product/plan.", details: [
+      "Projects spread across modules; linkage is inconsistent.",
+      "Roll-ups often manual."
+    ]},
+    sheets: { state: "partial", oneLine: "Tabs approximate projects; no automatic linkage.", details: [
+      "Manual copy/paste between tabs.",
+      "No project timeline."
+    ]},
+    icon: "ClipboardList" // use your icon set
+  },
+  {
+    key: "labor",
+    title: "Employee Labor & Payroll",
+    lsp: { state: "yes", oneLine: "Wages & rules tied to time; project totals and payroll export.", details: [
+      "Track hours per project, apply overtime rules.",
+      "Export or sync to payroll."
+    ]},
+    other_fsm: { state: "partial", oneLine: "Time capture common; wage rules/payroll export vary by tier.", details: [
+      "Often requires add-ons.",
+      "Totals rarely roll up cleanly at project."
+    ]},
+    sheets: { state: "partial", oneLine: "Formulas possible; error-prone and manual.", details: [
+      "No pay rules engine.",
+      "No audit trail."
+    ]},
+    icon: "Users"
+  },
+  {
+    key: "gps",
+    title: "GPS-Verified Timesheets",
+    lsp: { state: "yes", oneLine: "Geo-verified in/out; hours summed at the project.", details: [
+      "Location checks at clock events.",
+      "Reduces time fraud, improves job costing."
+    ]},
+    other_fsm: { state: "partial", oneLine: "GPS exists, but project-level roll-ups vary", details: [
+      "Geo attached to the person, not the project.",
+      "Summaries require exports."
+    ]},
+    sheets: { state: "no", oneLine: "No GPS verification.", details: [
+      "Manual entry only.",
+      "No location context."
+    ]},
+    icon: "MapPin"
+  },
+  {
+    key: "assets",
+    title: "Asset Tracking & Inspection Integrations",
+    lsp: { state: "yes", oneLine: "Property Organizer + Link Inspect Pro tied to jobs/projects.", details: [
+      "Asset files, photos, and inspections live on the timeline.",
+      "Reports attached to work orders."
+    ]},
+    other_fsm: { state: "partial", oneLine: "Integrations limited or gated; linkage inconsistent.", details: [
+      "Assets exist, but inspection flows vary.",
+      "Cross-module context gets lost."
+    ]},
+    sheets: { state: "no", oneLine: "No structured assets or inspections.", details: [
+      "Files live in drives/email.",
+      "No audit trail."
+    ]},
+    icon: "Package"
+  }
+];
+
+export const CONTEXTS = [
+  { key: "other_fsm", label: "Other FSM" },
+  { key: "sheets", label: "Spreadsheets" }
+];
+
+
+⸻
+
+Copy to render (exact, one-liners per state)
+	•	Included (✓) → “Included”
+	•	Partial (–) → “Partial / workaround”
+	•	Missing (✕) → “Missing”
+
+⸻
+
+Interaction rules
+	•	Default context = Other FSM.
+	•	Tapping a pill swaps only the context rows inside each card (no page jump; no layout shift).
+	•	“Show details” toggles per card; remember open/close state per card when switching context (optional, nice-to-have).
+	•	Sticky CTA (optional on mobile): a small bottom sheet with the primary CTA appears after 50% scroll; dismissible.
+
+⸻
+
+Analytics
+	•	compare.context_change with {context}.
+	•	compare.card_toggle with {featureKey, expanded: boolean}.
+	•	compare.cta_primary / compare.cta_secondary.
+
+⸻
+
+Acceptance criteria (verify before finishing)
+	1.	Matrix is gone; new Feature Matchups section renders inside the global container and aligns with other sections.
+	2.	Mobile view is single-column, tap-friendly, with 44px+ targets and readable text; no horizontal scroll, no tooltips.
+	3.	Context switcher works with touch/keyboard; ARIA tab semantics pass.
+	4.	Each card shows LSP vs. active context with ✓ / – / ✕ and one-line explanations; “Show details” reveals 1–2 bullets per side.
+	5.	Small score strip updates counts correctly (LSP 4/4; Other FSM ~2/4; Spreadsheets ≤2/4).
+	6.	Pricing callout present; CTAs centered and visible; footnote included.
+	7.	Lighthouse mobile shows no CLS, and all controls have visible focus rings.
+
+⸻
+
+When this ships, we can A/B the order of the four cards or swap in “Unlimited users / job-based pricing” as a fifth quick card if you want the pricing advantage higher up without clutter.

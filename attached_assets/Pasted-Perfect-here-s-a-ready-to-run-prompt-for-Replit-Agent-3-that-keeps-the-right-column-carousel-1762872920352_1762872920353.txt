@@ -1,0 +1,224 @@
+Perfect—here’s a ready-to-run prompt for Replit Agent 3 that:
+
+* keeps the **right column carousel untouched**
+* switches the **hero** to a **dark blue** background with a unique, lightweight “blueprint + route glow” effect
+* makes the **navbar blend** into the hero on load (transparent at top; solid on scroll)
+* updates only the **left column content** for high-clarity, no-abbreviation copy
+
+---
+
+## Update HERO (dark background + left column) and NAVBAR blend
+
+**SCOPE:** Change hero background and left column content. Add navbar “blend into background” behavior. **Do not modify the right column carousel** (markup, classes, logic, images).
+
+### DO NOT TOUCH
+
+* Any element inside the carousel column.
+* Any carousel classes, ids, data attributes, or timers.
+
+---
+
+### COLORS (lock these)
+
+* **Navy-900:** `#0A1326` (base)
+* **Navy-950:** `#060B18` (deep edge)
+* **Indigo Glow:** `#153B7A` at 20% opacity (radial highlight)
+* **Accent Blue:** `#2D6BFF` (primary)
+* **Accent Blue Hover:** `#255AE0`
+
+---
+
+## 1) HERO — Background + Left Column only
+
+**Section wrapper:** replace the hero `<section>` classes with this dark layered background.
+This uses **two CSS gradients** plus a faint **grid overlay** (CSS only, no images) and a subtle **route glow** SVG. Motion respects `prefers-reduced-motion`.
+
+```tsx
+// Hero.tsx (update only wrapper + left column; leave the carousel column exactly as-is)
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
+
+export default function Hero() {
+  return (
+    <section
+      aria-label="Hero"
+      className="
+        relative overflow-hidden
+        px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24
+        text-white
+        bg-[linear-gradient(180deg,#0A1326,#060B18),radial-gradient(900px_600px_at_0%_0%,rgba(21,59,122,0.25),transparent)]
+        [background-blend-mode:screen,normal]
+      "
+    >
+      {/* GRID OVERLAY (subtle blueprint lines) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+          maskImage:
+            "radial-gradient(1200px 800px at 20% 10%, black, transparent 70%)"
+        }}
+      />
+
+      {/* ROUTE GLOW (decorative, respects reduced motion) */}
+      <RouteGlow />
+
+      <div className="relative mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        {/* LEFT COLUMN — updated content only */}
+        <div className="lg:col-span-6 max-w-xl">
+          <p className="text-xs uppercase tracking-wide text-slate-300 mb-3">
+            Best field service management software for contractors
+          </p>
+
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
+            Do more jobs. Get paid faster.
+          </h1>
+
+          <p className="mt-4 text-lg sm:text-xl text-slate-300">
+            Scheduling, estimates, invoices, and payments in one place. Built for field teams.
+            Unlimited users with simple, job-based pricing.
+          </p>
+
+          <ul className="mt-6 space-y-2 text-base text-slate-200">
+            <li>• Schedule and assign jobs in minutes.</li>
+            <li>• Send estimates and get quick approval.</li>
+            <li>• Create invoices and collect payments the same day.</li>
+            <li>• Reduce missed appointments with automatic reminders.</li>
+          </ul>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link to="/signup">
+              <Button size="lg" className="bg-[#2D6BFF] hover:bg-[#255AE0] text-white">
+                Start your trial
+              </Button>
+            </Link>
+            <Link to="/pricing">
+              <Button variant="outline" size="lg" className="border-slate-500 text-white">
+                View pricing
+              </Button>
+            </Link>
+          </div>
+
+          <p className="mt-3 text-sm text-slate-300">
+            Trusted by over 1,200 contracting teams • Rated 4.8 out of 5 by customers
+          </p>
+          <p className="mt-1 text-xs text-slate-400">Live in under 5 minutes.</p>
+        </div>
+
+        {/* RIGHT COLUMN — DO NOT TOUCH */}
+        <div
+          className="lg:col-span-6 hero-carousel"
+          data-role="hero-carousel"
+          data-lock="carousel"
+        >
+          {/* existing carousel component/markup remains unchanged */}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Decorative route path with soft glow. */
+function RouteGlow() {
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+  }, []);
+
+  return (
+    <svg
+      aria-hidden="true"
+      className="absolute inset-0 w-[120%] h-[120%] -left-10 -top-10 opacity-30"
+      viewBox="0 0 1200 800"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <filter id="soft-glow">
+          <feGaussianBlur stdDeviation="8" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      <path
+        d="M -50 650 C 200 520, 420 720, 620 600 S 980 320, 1250 420"
+        fill="none"
+        stroke="#2D6BFF"
+        strokeOpacity="0.35"
+        strokeWidth="2"
+        filter="url(#soft-glow)"
+        style={{
+          strokeDasharray: "8 10",
+          animation: "dash-move 14s linear infinite"
+        }}
+      />
+      <style>{`
+        @media (prefers-reduced-motion: reduce) {
+          svg .route { animation: none !important; }
+        }
+        @keyframes dash-move { to { stroke-dashoffset: -180; } }
+      `}</style>
+    </svg>
+  );
+}
+```
+
+---
+
+## 2) NAVBAR — Blend on load, solid on scroll
+
+**Goal:** Navbar is transparent over the dark hero at first. Once the user scrolls past the hero, the navbar becomes solid and gains a subtle border.
+
+### Markup/classes
+
+* Initial classes: `bg-transparent text-white`
+* When scrolled: add `bg-[#0A1326]/90 backdrop-blur border-b border-white/10`
+
+```tsx
+// Navbar.tsx (minimal changes)
+import { useEffect, useState } from "react";
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const hero = document.querySelector('[aria-label="Hero"]');
+    if (!hero) return;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => setScrolled(!entry.isIntersecting),
+      { threshold: 0.01 }
+    );
+    obs.observe(hero);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <header
+      className={
+        "fixed top-0 inset-x-0 z-50 transition-colors " +
+        (scrolled
+          ? "bg-[#0A1326]/90 backdrop-blur border-b border-white/10 text-white"
+          : "bg-transparent text-white")
+      }
+    >
+      {/* existing nav content */}
+    </header>
+  );
+}
+```
+
+---
+
+## QA (must pass)
+
+* [ ] Carousel column has **no diff**.
+* [ ] Navbar is transparent on page load and becomes solid when the hero leaves the viewport.
+* [ ] Background shows dark navy gradient, faint grid, and soft route glow. Motion stops with reduced motion preference.
+* [ ] Left column uses simple sentences, no abbreviations, and high contrast.
+
+If this look feels right, I’ll bake these tokens and the “blend” behavior into the site-wide template so every page inherits the same dark theme rhythm, CTA colors, and spacing.

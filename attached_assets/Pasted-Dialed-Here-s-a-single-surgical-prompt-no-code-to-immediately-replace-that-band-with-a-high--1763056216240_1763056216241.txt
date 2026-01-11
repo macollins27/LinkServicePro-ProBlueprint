@@ -1,0 +1,125 @@
+Dialed. Here’s a **single, surgical prompt** (no code) to immediately replace that band with a high-conversion, non-redundant section: a **“Why Teams Switch to LinkServicePro”** differentiators panel. It highlights how your all-in-one flow beats spreadsheets and Franken-stacks—zero overlap with the Industries/testimonials content.
+
+---
+
+**Task:** Replace the recently added “Customer Results” band with a new homepage section titled **“Why Teams Switch to LinkServicePro”**. This is a **differentiators** panel (not testimonials) that contrasts LinkServicePro vs. spreadsheets and multi-app setups. **Mobile-first**, accessible, SEO-sound, and performance friendly. Do **not** modify header, hero, existing Industries/testimonials, routes, or global SEO.
+
+### 0) Placement & scope
+
+* Insert this section **directly after the Industries band** (where the removed section was).
+* Only create/update files strictly required for this section. Use existing design tokens and patterns (colors, spacing, typography, focus rings).
+
+### 1) Section goals (what it must communicate)
+
+* LinkServicePro consolidates **Scheduling/Dispatch → Estimates/Quotes → Invoicing/Payments → Maintenance Plans** in one flow.
+* Contractors escape hidden costs of **spreadsheets** and **4+ disconnected apps** (errors, retyping, slow handoffs).
+* Users can start immediately and scale without per-seat tax.
+
+### 2) Content structure (mobile-first → desktop)
+
+* **Header**
+
+  * Eyebrow: “Why Teams Switch”
+  * H2 (original language): short and punchy (e.g., “Ditch the duct-tape stack.”)
+  * One supporting sentence (plain English, no jargon).
+* **Comparison tabs (3 options)**
+
+  * Tabs: **All-in-one**, **Spreadsheets**, **4-App Workarounds**.
+  * Selecting a tab updates a **features checklist** and **pains/reliefs** column.
+* **Features checklist (data-driven)**
+
+  * Rows for the core flow: Scheduling/Dispatch, Estimates/Quotes, Invoicing/Payments, Maintenance Plans, Customer history, Mobile app, Reporting.
+  * Each row shows: availability (✔ / —), effort (e.g., “1 step” vs “multi-hand-off”), error risk (low/med/high).
+* **Pain/relief cards**
+
+  * For **Spreadsheets**: “Typos & retyping,” “No live status,” “Late invoices.”
+  * For **4-App Workarounds**: “Logins everywhere,” “Import/export grind,” “Missed context.”
+  * For **All-in-one**: “Single source of truth,” “Same-day invoice,” “Live visibility.”
+* **Mini proof (non-testimonial)**
+
+  * Small row of **trust badges** (integrations compatibility, unlimited users on paid plans, calendar sync). Keep them low-contrast and monochrome.
+* **CTA block**
+
+  * Primary: “Get Started Free” → existing route.
+  * Secondary: “See pricing” → existing route.
+
+### 3) Interaction & behavior
+
+* **Tabs**
+
+  * Mobile: horizontally scrollable pills with **left/right arrows** for overflow; swipe works; arrows disabled at ends.
+  * Desktop: pills centered or left-aligned; no line-wrap.
+  * Keyboard support: Left/Right/Home/End; `aria-selected` updates; focus ring visible.
+* **Checklist**
+
+  * Switches content instantly with **no layout shift**. Use consistent row heights and icons.
+  * Optional micro-motion: a **short opacity crossfade** between tab states; disabled for `prefers-reduced-motion`.
+* **Pains/reliefs**
+
+  * Display 3 concise chips for the active tab; each chip includes a short description line under the label.
+  * No continuous animation; subtle hover lift only on desktop.
+
+### 4) Data (create lightweight, editable data sources)
+
+* A JSON/TS constants file for:
+
+  * `tabs` = [“All-in-one”, “Spreadsheets”, “4-App Workarounds”].
+  * `features` rows (keys + human labels).
+  * `matrix` mapping tab → { available: boolean | “partial”, effort: “1 step/2–3 steps/manual”, risk: “low/med/high” } per feature.
+  * `painsReliefs` mapping tab → 3 items with title + 1-line description.
+  * `badges`: [“Works with Google & Apple Calendar”, “Unlimited users on paid plans”, “Secure payments”] with icons only (monochrome).
+
+### 5) Visual spec (use existing tokens)
+
+* **Cards & chips**
+
+  * Rounded corners as used elsewhere, inside border at low contrast (no heavy drop shadows).
+  * Active tab/pill: brand blue outline + subtle inner shadow (match navbar hover aesthetic); transparent border at rest to avoid layout shift.
+* **Colors & contrast**
+
+  * Navy canvas background; ensure AA contrast for text/icons.
+* **Typography**
+
+  * H2 scale matches other sections; checklist labels in medium weight; chips in small/medium text with generous line height.
+
+### 6) Accessibility
+
+* Tabs implement ARIA **tab** pattern: `role="tablist"`, each pill `role="tab"`, `aria-selected`, `id`/`aria-controls` wiring, and keyboard navigation.
+* Checklist is a semantic list or table: if using table semantics, include `scope="col"` headers and concise labels.
+* Badges have `aria-label` equivalents; decorative icons can be `aria-hidden="true"`.
+* All interactive elements preserve focus rings and meet 44px minimum hit area.
+
+### 7) Performance
+
+* Zero third-party embeds in this section.
+* No timers or continuous motion; micro-transitions only and disabled for reduced-motion users.
+* Prevent layout shift by giving explicit dimensions or using consistent row heights for the checklist.
+
+### 8) SEO
+
+* One H2 only; meaningful copy in the supporting sentence.
+* Optional JSON-LD: **FAQPage** is **not** used here; avoid Review/AggregateRating (that’s covered elsewhere).
+* Internal links are crawlable (no `rel="nofollow"` on your own pages).
+
+### 9) Analytics (events)
+
+* Track tab selections (`why-switch.tab_change` with tab name).
+* Track CTA clicks (`why-switch.cta_primary`, `why-switch.cta_secondary`).
+
+### 10) QA checklist (self-verify before finishing)
+
+* Tabs operate with mouse, touch, and keyboard; focus returns gracefully when closing/escaping the tablist.
+* No horizontal overflow; pill row scrolls on small screens with working arrows.
+* Checklist rows don’t jump when switching tabs; icons aligned; text wraps cleanly.
+* Contrast and focus states pass AA.
+* Lighthouse (mobile): no CLS warnings; script size delta minimal.
+
+### 11) Deliverables
+
+* Fully implemented **“Why Teams Switch to LinkServicePro”** section per spec.
+* Small data file for tabs/features/pains/badges (easy to update later).
+* Brief doc note (where to edit copy and the matrix).
+
+---
+
+Once this ships, we can optionally add a **tiny ROI micro-calculator** (inputs: avg jobs/day, avg invoice value, callback rate) as a separate follow-up, also with a no-code prompt.

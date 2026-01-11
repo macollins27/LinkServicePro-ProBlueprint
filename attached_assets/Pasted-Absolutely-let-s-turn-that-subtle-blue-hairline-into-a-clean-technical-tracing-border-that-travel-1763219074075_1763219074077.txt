@@ -1,0 +1,118 @@
+Absolutely—let’s turn that subtle blue hairline into a clean, technical “tracing” border that travels around each card’s perimeter. This only updates the WorkflowWhite section and keeps everything else exactly the same.
+
+Paste this into Replit Agent 3.
+
+⸻
+
+Task
+
+Add an animated perimeter highlight to the Workflow — From first call to cash cards. Keep the white canvas, current layout, copy, shadows, chips, etc. The animation should trace the card border smoothly and respect prefers-reduced-motion.
+
+Scope guardrails
+	•	Touch only src/styles/workflow-white.css.
+	•	Do not edit markup, copy, routes, other sections, or globals.
+
+⸻
+
+Code changes (replace the hairline with a perimeter trace)
+
+Open src/styles/workflow-white.css and:
+	1.	Remove the old hairline rule:
+
+/* REMOVE this block */
+.wf-card::before {
+  content: "";
+  position: absolute; left: 10px; right: 10px; top: -1px; height: 2px;
+  background: var(--wf-accent-line);
+  border-radius: 2px;
+}
+
+	2.	Add the animated perimeter tracer (drop this near the top, after the :root block):
+
+/* Animated perimeter tracer around the card border */
+@property --wf-anim-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+:root {
+  /* …existing tokens… */
+  --wf-anim-angle: 0deg;     /* current angle of the tracer */
+  --wf-anim-br: 2px;         /* tracer border thickness */
+}
+
+/* Default static fallback for older engines (will be overridden by @supports below) */
+.wf-card::before {
+  content: "";
+  position: absolute; inset: -1px;
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+/* Use conic-gradient + masking to reveal only the border ring, then animate the angle */
+@supports (background: conic-gradient(from 0deg, red, blue)) {
+  .wf-card {
+    position: relative;
+    /* keep your existing border/shadow/tint */
+  }
+
+  .wf-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;                         /* sit just outside the 1px border */
+    border-radius: 14px;
+    padding: var(--wf-anim-br);          /* thickness of the animated stroke */
+    pointer-events: none;
+    background:
+      conic-gradient(
+        from var(--wf-anim-angle),
+        rgba(47,124,255,0) 0turn 0.08turn,      /* quiet zone */
+        rgba(47,124,255,.70) 0.12turn,          /* bright “head” of the tracer */
+        rgba(47,124,255,0) 0.18turn 1turn       /* fade tail */
+      );
+
+    /* Mask so only the border ring shows: content-box XOR border-box */
+    -webkit-mask: 
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: 
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+            mask-composite: exclude;
+
+    animation: wf-trace 8s linear infinite;
+    opacity: .9; /* subtle but visible */
+  }
+
+  /* Speed up slightly on hover for a responsive feel */
+  .wf-card:hover::before { animation-duration: 4s; }
+
+  @keyframes wf-trace {
+    to { --wf-anim-angle: 1turn; }
+  }
+
+  /* Respect reduced motion: keep a static subtle highlight */
+  @media (prefers-reduced-motion: reduce) {
+    .wf-card::before { animation: none; opacity: .6; }
+  }
+}
+
+Notes
+	•	This uses a conic-gradient and a mask to show only a slim ring (the animated line) around the card’s border radius.
+	•	The tracer is independent of your existing 1px border/shadow, so the card keeps its depth.
+	•	The animation is GPU-friendly and won’t shift layout.
+
+⸻
+
+Acceptance checklist
+	•	The thin blue line now travels smoothly around each card’s perimeter.
+	•	Hovering a card slightly speeds the trace; prefers-reduced-motion disables animation.
+	•	No layout, copy, shadows, chips, links, or other sections changed.
+	•	Performance and contrast remain excellent on white.
+
+If you want the tracer subtler or bolder, tweak:
+	•	--wf-anim-br (thickness),
+	•	the alpha stops in the conic-gradient,
+	•	or the animation-duration.

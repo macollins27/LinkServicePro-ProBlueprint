@@ -1,0 +1,74 @@
+Love the direction. Here’s a single, surgical prompt for Replit Agent 3 that fixes the big left-column void, adds all industries with scrollable tabs + arrow controls (optional gentle auto-scroll), and instructs AI image generation for original, industry-specific visuals. No other sections touched.
+
+⸻
+
+Task: Refactor the Industries We Serve band to (1) remove empty space on the left with richer content, (2) include every available industry as tabs with horizontal scroll + arrow buttons, and (3) replace stock photos with AI-generated industry images in a consistent style. Keep the right-side testimonials rail as is. Do not alter header/hero/routes/SEO elsewhere.
+
+Scope & files
+	•	Edit only the Industries section files already created for this band (component, data, and styles tied to it).
+	•	Use the existing industry data source (slugs/titles) so tabs are data-driven—no hardcoding.
+
+1) Fix the left column (kill the empty space)
+	•	Layout: switch the section to a 12-column grid on lg+ with left: col-span 7–8, right: col-span 4–5, and smaller inter-column gap.
+	•	Content structure (mobile-first):
+	•	H2: “Industries We Serve”
+	•	Active industry name (H3) and a 2–3 sentence blurb focused on outcomes your product actually delivers.
+	•	2–3 quick bullets (short and concrete).
+	•	Primary CTA → the active industry page (existing route).
+	•	Customer Voices mini-block directly below (still in the left column) to visually balance the right side:
+	•	Eyebrow: “Customer Voices”
+	•	1-sentence paragraph about real-world results
+	•	Secondary CTA → your customer stories/blog/help content
+	•	On mobile: stack this left content above the image and testimonials.
+
+2) Tabs: include all industries + horizontal scrolling with arrows
+	•	Build the tab list from the existing industries dataset (names/slugs/images).
+	•	Overflow behavior:
+	•	The pill row must be horizontally scrollable (touch swipe on mobile).
+	•	Add left/right arrow buttons outside the scroll container that call a smooth programmatic scroll (e.g., by container width or a fixed amount).
+	•	Disable/ghost arrows when you hit the ends; hide them entirely if content fits.
+	•	Active styling: keep your blue outline + subtle inner shadow (same vibe as updated nav hover). Keep a transparent border at rest to avoid layout shift. Preserve the visible keyboard focus ring.
+	•	Optional idle motion: on desktop only, when there hasn’t been user interaction for ~6s, gently auto-scroll the tab row at a very slow, CSS-based pace. Immediately stop on any pointer/keyboard interaction. Respect prefers-reduced-motion by disabling idle auto-scroll.
+
+3) Right column: keep testimonials rail; swap image for AI-generated visuals
+	•	The right column continues to show the active industry image above the testimonials rail.
+	•	Replace stock photos with original AI-generated images per industry. Generate 2 images per industry so you can rotate or A/B later (but show just one here).
+	•	Style guide for image generation (apply consistently across all industries):
+	•	Look/feel: documentary-style photo of tradespeople working on location (jobsite, rooftop, plant room, kitchen, etc.); naturalistic color; mild cool-navy grade to match brand; OSHA-compliant PPE; diverse crew; authentic tools/materials.
+	•	Composition: foreground subject in action; mild depth-of-field (not portrait shallow); clean background; avoid tight face crops.
+	•	Technical: 16:9 aspect, ~1920×1080; high detail; no text/overlays; no brand logos.
+	•	Negative cues: “no text, no watermark, no brand marks, no warped hands, no AI artifacts, no double tools.”
+	•	Per-industry prompt templates (use the same style; swap nouns/tools/location):
+	•	HVAC: “Field technician servicing a rooftop condenser on a commercial building, late afternoon sky, tools bag open, PPE (gloves, safety glasses), documentary photo, realistic lighting, 16:9.”
+	•	Electrical: “Two electricians inspecting a breaker panel in a utility room, conduit and label rails visible, PPE, documentary photo, 16:9.”
+	•	Plumbing: “Commercial plumber crimping PEX manifold in mechanical room, copper and PEX lines, PPE, documentary photo, 16:9.”
+	•	Landscaping: “Crew operating commercial mower and trimming hedges on a corporate campus, safety vests/ear protection, documentary photo, 16:9.”
+	•	Facilities: “Facility maintenance team checking air handler in plant room, gauges and clipboard, PPE, documentary photo, 16:9.”
+	•	Construction: “Foreman reviewing tablet with plans on active jobsite, steel framing in background, PPE, documentary photo, 16:9.”
+	•	(Repeat for any additional industries you support; keep the same aesthetic.)
+	•	Asset pipeline:
+	•	Save to /public/img/industries/{slug}-{01..02}.jpg.
+	•	Optimize to ~150–220KB each with perceptual quality.
+	•	Provide srcset for 1x/2x and set explicit width/height or use aspect-[16/9] to prevent CLS.
+
+4) Interaction & accessibility
+	•	Tabs follow ARIA patterns: role="tablist", each pill role="tab" with aria-selected, id, aria-controls pointing to the active panel, keyboard support (Left/Right/Home/End).
+	•	Arrow buttons are button elements with aria-label="Scroll industries left/right"; disabled state conveyed with aria-disabled.
+	•	Testimonials rail remains aria-hidden="true" when animated; provide a short SR-only list of names/companies immediately after it.
+	•	Respect prefers-reduced-motion: disable tab-row idle auto-scroll and keep testimonials static.
+
+5) Performance
+	•	Lazy-load offscreen images; decoding="async".
+	•	Preload the active industry’s image; only load others when selected.
+	•	Keep JS minimal on the tab row (native scroll + small helpers). No timers for continuous motion.
+
+6) Acceptance criteria
+	1.	Left column no longer feels empty: it shows industry title, a helpful paragraph, 2–3 bullets, a CTA, and a “Customer Voices” mini-block.
+	2.	Tabs include every industry from your dataset; they scroll horizontally on overflow with working left/right arrows and correct ARIA/keyboard behavior.
+	3.	Active industry image uses the new AI-generated photo; consistent style across all industries; images are optimized and CLS-safe.
+	4.	Testimonials rail remains as implemented; section looks balanced and connected on desktop; mobile stacks cleanly.
+	5.	No regressions to header/hero/routes/SEO elsewhere.
+
+⸻
+
+Fire this update, and then we can fine-tune the copy in the Customer Voices block and adjust which AI image becomes the default per industry.

@@ -1,0 +1,158 @@
+Awesome. Here’s your next **single, surgical prompt**—purely descriptive, no code—to have Replit Agent 3 create a **unique “Customer Results” band** right after the Industries section. It’s original to LinkServicePro (not BuildOps copy), mobile-first, and obsessively detailed so the agent can write and research its own code.
+
+---
+
+**Task:** Add a new homepage section titled **“Customer Results”** directly **after the Industries band** and before any pricing/resources. This band highlights real outcomes (speed, revenue, accuracy) with a small proof grid, one featured testimonial (video or quote), optional badges, and a “See more stories” CTA. Do **not** change header, hero, or other sections. Keep routing and SEO intact.
+
+### 0) Placement & scope
+
+* Insert the new band on the homepage only, immediately below the “Industries We Serve” section you just built.
+* Do not alter any other routes, providers, or Helmet configuration.
+* Use existing design tokens (colors, spacing, typography, focus styles).
+
+### 1) Section objectives (what this band must communicate)
+
+* LinkServicePro helps crews **move faster**, **win more jobs**, **invoice same-day**, and **reduce callbacks**.
+* Social proof must be **verifiable** (names/roles/companies where available), never fake.
+* The layout must be **mobile-first** and **Core Web Vitals-friendly** (no layout shift, minimal JS).
+
+### 2) Content structure (mobile-first → then desktop)
+
+* **Section wrapper**
+
+  * Top/bottom padding: comfortable but compact on mobile; larger on desktop.
+  * Background: your existing navy canvas. Optional faint blueprint grid overlay at 4–6% opacity (non-scrolling).
+* **Header block**
+
+  * Eyebrow: “Customer Results”
+  * H2: A short, original headline (e.g., “What teams achieve with LinkServicePro”).
+  * One supporting sentence that summarizes outcomes in contractor language (no jargon).
+* **Metrics grid (3 items)**
+
+  * Three compact metric cards in one row on desktop, stacked on mobile:
+
+    * Example metric categories (adjust to your actual claims):
+
+      * “Same-day invoicing” — subline: “no paper chase”
+      * “Fewer callbacks” — subline: “measurable quality”
+      * “Faster scheduling” — subline: “less dispatch chaos”
+  * Each card shows: bold metric value (use a realistic placeholder if you don’t have exact numbers), short label, 1-line explainer. Include a small icon (Lucide or your set).
+  * The grid must degrade gracefully if one metric is missing (don’t leave holes).
+* **Featured proof (left on desktop; top on mobile)**
+
+  * Choose **one**: a short customer **video** (preferred) or a longer **quote**.
+  * If video:
+
+    * Use a lightweight embed (research and use a “lite” technique) to avoid heavy third-party iframes on initial load.
+    * Show a poster image with a big play button; load the player only on interaction.
+    * Provide captions (VTT) and mute by default.
+  * If quote:
+
+    * Include headshot (optional), name, role, company; 2–3 sentence quote; link to “Read the story.”
+* **Badges/assurances row (optional)**
+
+  * Small row of trust badges (e.g., “Works with Google Calendar & Apple Calendar”, “Unlimited users on paid plans”, “Secure payments”).
+  * Keep them monochrome and low-contrast to avoid visual noise.
+* **CTA block**
+
+  * Primary button: “Get Started Free” (existing route).
+  * Secondary link: “See more customer stories” (route to your blog/resources/help category that actually exists).
+
+### 3) Layout requirements
+
+* **Mobile (default)**
+
+  * Stack order: Header → Featured proof → Metrics grid (stacked) → Badges → CTA block.
+  * Keep tap targets 44px+ high; ensure no horizontal scrolling.
+* **Desktop (lg+)**
+
+  * Use a 12-column grid.
+
+    * Left column (content): spans ~7–8 columns (header + featured proof).
+    * Right column (metrics + badges + CTA): spans ~4–5 columns; make this column visually connected (same card style).
+  * Inter-column gap: small to medium; avoid large voids.
+  * Section max width: the same container you’ve used elsewhere.
+
+### 4) Visual & motion spec
+
+* **Cards**
+
+  * Compact, rounded corners consistent with site; inside border at very low contrast (to separate from background).
+  * Subtle hover on desktop only (slight raise or inner shadow). Respect `prefers-reduced-motion`.
+* **Icons**
+
+  * Use your existing icon library. Size modestly; don’t over-decorate.
+* **Typography**
+
+  * H2: same scale as other section headings.
+  * Metric value: visually dominant but not cartoonish.
+  * Labels and explainer text: readable on navy background with AA contrast.
+* **Color & contrast**
+
+  * Ensure all text meets WCAG AA against the canvas. Keep proof cards slightly lighter than the canvas to lift them.
+* **Animation**
+
+  * No continuous motion needed. Only small entrance transitions allowed and must be disabled for reduced-motion users.
+
+### 5) Data & sources (what to pull from your project)
+
+* Use real **names/roles/companies/quotes** that already exist in your content system; if examples are placeholders, clearly mark them for future replacement.
+* For metrics:
+
+  * If you have reliable numbers (case studies, customer quotes, internal stats), use them.
+  * If you don’t, use qualitative phrasing instead of a fake number (e.g., “Same-day invoicing” instead of “100% faster”).
+* For the video:
+
+  * If you have a video asset, use that; if not, skip video and use a quote.
+  * Store posters and thumbnails in your public assets with explicit width/height to prevent CLS.
+
+### 6) Accessibility requirements
+
+* **Semantic structure**
+
+  * One H2 for the section. Metric items use headings or `aria-labels` so screen readers can quickly navigate.
+* **Video**
+
+  * Must be keyboard-operable. Play button has a visible focus ring.
+  * Provide captions; expose transcript link if available.
+* **Images**
+
+  * Posters and headshots must have meaningful `alt` text or `alt=""` if purely decorative (decide correctly).
+* **Links & buttons**
+
+  * CTA buttons must have descriptive names; ensure primary/secondary colors have sufficient contrast.
+
+### 7) Performance & SEO
+
+* **Performance**
+
+  * Lazy-load all offscreen images; decode async.
+  * Use an ultra-light embed for video; load the heavy player only on demand.
+  * Provide intrinsic sizes for raster images or use CSS aspect-ratio to eliminate layout shift.
+* **SEO**
+
+  * Add JSON-LD `Review` (single) only if you are quoting a real customer with attribution; do not fabricate ratings.
+  * Do not add `AggregateRating` unless you have compliant, verifiable data.
+  * Keep the heading hierarchy clean; no duplicate H1s.
+* **Analytics (events)**
+
+  * Track: video play, “Get Started Free” click, “See more customer stories” click.
+
+### 8) QA checklist (what to self-verify before finishing)
+
+* Section appears immediately after Industries; navigation and routes unchanged.
+* On mobile: clear reading order, no overflow, CTAs easily tappable.
+* On desktop: no large empty spaces; columns feel connected; metrics grid doesn’t overwhelm.
+* Video (if used) loads only on interaction; poster shows; captions available.
+* All text passes color-contrast checks; focus states visible and consistent.
+* Lighthouse mobile: no CLS flags, minimal JS impact from the embed.
+
+### 9) Deliverables (what must be produced)
+
+* A fully implemented “Customer Results” band per the spec above, using existing tokens and patterns.
+* New content entries (metrics, quote/video, badges) in your project’s data layer or constants so they’re easy to update later.
+* Documentation note (inline comment or brief readme entry) explaining where to edit the metrics and proof content.
+
+---
+
+When this ships, we’ll do another micro-step: a **compact pricing preview** teaser that nudges users toward the Pricing page without duplicating it—again with a descriptive, no-code prompt.

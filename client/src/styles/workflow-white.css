@@ -1,0 +1,275 @@
+/* Animated perimeter tracer around the card border */
+@property --wf-anim-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* --- Workflow (white + technical) tokens --- */
+:root {
+  --wf-surface: #ffffff;                   /* section background */
+  --wf-text: #0B1220;                      /* body text on light */
+  --wf-muted: #475569;                     /* slate-600 */
+  --wf-border: #E5E7EB;                    /* slate-200 */
+
+  --wf-card: #ffffff;                      /* card surface */
+  --wf-card-tint: #F4F7FF;                 /* very light blue wash */
+  --wf-card-shadow: 0 1px 0 rgba(2,6,23,.04), 0 12px 28px rgba(2,6,23,.08);
+  --wf-card-shadow-hover: 0 2px 0 rgba(2,6,23,.04), 0 18px 36px rgba(2,6,23,.12);
+
+  --wf-accent: #2F7CFF;                    /* brand blue */
+  --wf-accent-weak: #E8F1FF;               /* blue-50 */
+  --wf-accent-line: linear-gradient(90deg, rgba(47,124,255,.0), rgba(47,124,255,.4), rgba(47,124,255,.0));
+
+  --wf-chip-bg: rgba(47,124,255,.08);
+  --wf-chip-br: rgba(47,124,255,.22);
+
+  --wf-anim-angle: 0deg;                   /* current angle of the tracer */
+  --wf-anim-br: 2px;                       /* tracer border thickness */
+  
+  --wf-success: #22C55E;                   /* emerald-500 for checkmarks */
+  --wf-title-icon: 36px;                   /* icon size used in the title row */
+}
+
+/* Section wrapper */
+.wf-section {
+  position: relative;
+  background: var(--wf-surface);
+  color: var(--wf-text);
+  overflow: hidden; /* for grid overlay fade */
+}
+
+/* Cold micro-grid (only when NOT cozy) */
+.wf-section:not(.cozy)::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(2,6,23,.04) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(2,6,23,.04) 0 1px, transparent 1px 24px);
+  opacity: .55;
+  mask-image: linear-gradient(#000, rgba(0,0,0,.7));
+}
+
+/* Container sits above grid */
+.wf-section > .container { position: relative; z-index: 1; }
+
+/* Blue underline/highlight for key words */
+.wf-mark {
+  background: linear-gradient(transparent 64%, rgba(47,124,255,.18) 0);
+  border-radius: 2px;
+}
+
+/* Grid */
+.wf-grid { display: grid; gap: 24px; }
+@media (min-width: 1024px) { .wf-grid { grid-template-columns: 1fr 1fr; } }
+
+/* Card */
+.wf-card {
+  position: relative;
+  background:
+    linear-gradient(0deg, var(--wf-card) 0%, var(--wf-card) 100%),
+    linear-gradient(0deg, var(--wf-card-tint) 0%, var(--wf-card-tint) 100%);
+  border: 1px solid var(--wf-border);
+  border-radius: 14px;
+  box-shadow: var(--wf-card-shadow);
+  padding: 18px 18px 16px;
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+
+/* Default static fallback for older engines (will be overridden by @supports below) */
+.wf-card::before {
+  content: "";
+  position: absolute; inset: -1px;
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+/* Use conic-gradient + masking to reveal only the border ring, then animate the angle */
+@supports (background: conic-gradient(from 0deg, red, blue)) {
+  .wf-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;                         /* sit just outside the 1px border */
+    border-radius: 14px;
+    padding: var(--wf-anim-br);          /* thickness of the animated stroke */
+    pointer-events: none;
+    background:
+      conic-gradient(
+        from var(--wf-anim-angle),
+        rgba(47,124,255,0) 0turn 0.08turn,      /* quiet zone */
+        rgba(47,124,255,.70) 0.12turn,          /* bright "head" of the tracer */
+        rgba(47,124,255,0) 0.18turn 1turn       /* fade tail */
+      );
+
+    /* Mask so only the border ring shows: content-box XOR border-box */
+    -webkit-mask: 
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: 
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+            mask-composite: exclude;
+
+    animation: wf-trace 8s linear infinite;
+    opacity: .9; /* subtle but visible */
+  }
+
+  /* Speed up slightly on hover for a responsive feel */
+  .wf-card:hover::before { animation-duration: 4s; }
+
+  @keyframes wf-trace {
+    to { --wf-anim-angle: 1turn; }
+  }
+
+  /* Respect reduced motion: keep a static subtle highlight */
+  @media (prefers-reduced-motion: reduce) {
+    .wf-card::before { animation: none; opacity: .6; }
+  }
+}
+
+/* Corner glyphs (subtle technical vibe) - only when NOT cozy */
+.wf-section:not(.cozy) .wf-card::after {
+  content: "";
+  position: absolute; right: 10px; bottom: 10px; width: 18px; height: 18px;
+  background:
+    linear-gradient(90deg, rgba(47,124,255,.35), rgba(47,124,255,0)) top left / 100% 1px no-repeat,
+    linear-gradient(0deg,  rgba(47,124,255,.35), rgba(47,124,255,0)) top left / 1px 100% no-repeat;
+  opacity: .35;
+}
+
+.wf-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--wf-card-shadow-hover);
+}
+
+/* Title row (icon + h3 + chips) */
+.wf-title {
+  display: grid; grid-template-columns: var(--wf-title-icon) 1fr; gap: 12px; align-items: start;
+}
+.wf-title h3 {
+  font-size: clamp(18px, 2.1vw, 22px);   /* tasteful scale */
+  line-height: var(--wf-title-icon);     /* same visual height as icon */
+  font-weight: 800;
+  margin: 0;
+}
+
+/* Spec chips row */
+.wf-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.wf-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 10px; border-radius: 999px;
+  background: var(--wf-chip-bg); border: 1px solid var(--wf-chip-br);
+  font-weight: 700; font-size: .8rem; color: var(--wf-text);
+}
+.wf-chip::before {
+  content: ""; width: 6px; height: 6px; border-radius: 999px; background: var(--wf-accent);
+}
+
+/* Body text and bullets */
+.wf-lead { color: var(--wf-muted); margin-top: 10px; }
+.wf-bullets {
+  list-style: none;
+  padding-left: 0;
+  margin: 12px 0 10px 0;
+  color: var(--wf-muted);
+}
+
+.wf-bullets li {
+  position: relative;
+  padding-left: 28px;        /* room for the check pill */
+  margin: 8px 0;
+}
+
+/* Accessible, high-contrast green check inside a soft green pill */
+.wf-bullets li::before {
+  content: "✓";
+  position: absolute;
+  left: 0; top: 0.15rem;
+  width: 18px; height: 18px;
+  line-height: 18px;
+  border-radius: 999px;
+  background: rgba(34,197,94,.14); /* soft green backdrop */
+  color: var(--wf-success);        /* vivid green check */
+  font-weight: 900;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Respect reduced motion users */
+@media (prefers-reduced-motion: reduce) {
+  .wf-bullets li::before { transition: none; }
+}
+
+/* Inline link CTA */
+.wf-link {
+  color: var(--wf-accent); font-weight: 800; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.wf-link:hover { text-decoration: underline; }
+
+/* Icon chip */
+.wf-icon {
+  width: var(--wf-title-icon);
+  height: var(--wf-title-icon);
+  border-radius: 10px;
+  background: var(--wf-accent-weak);
+  display: grid;
+  place-items: center;
+  outline: 1px solid rgba(47,124,255,.22);
+}
+.wf-icon svg { width: 20px; height: 20px; color: var(--wf-accent); }
+
+/* A11y focus */
+.wf-card:focus-within,
+.wf-link:focus-visible {
+  outline: 3px solid rgba(47,124,255,.35); outline-offset: 2px; border-radius: 12px;
+}
+
+/* Motion-respect */
+@media (prefers-reduced-motion: reduce) {
+  .wf-card { transition: none; }
+  .wf-card:hover { transform: none; }
+}
+
+/* ===== Neutral cozy variant (no new color hues) ===== */
+.wf-section.cozy {
+  position: relative;
+  /* Keep your existing tokens; we only relax shadows/borders neutrally */
+  --wf-surface: #FFFFFF;               /* still white */
+  --wf-text: #0B1220;                  /* your dark body token */
+  --wf-muted: #475569;                 /* unchanged slate */
+  --wf-border: #E7E9EE;                /* slightly softer neutral border */
+  --wf-card: #FFFFFF;
+  --wf-card-tint: #FFFFFF;             /* no warm tint; keep pure white */
+  --wf-card-shadow:       0 1px 0 rgba(3,7,18,.05), 0 14px 34px rgba(3,7,18,.10);
+  --wf-card-shadow-hover: 0 2px 0 rgba(3,7,18,.05), 0 20px 44px rgba(3,7,18,.14);
+}
+
+/* Neutral ambient vignette (grayscale only) to add softness on white */
+.wf-section.cozy::before {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(900px 420px at 18% -10%, rgba(0,0,0,.045), transparent 60%),
+    radial-gradient(740px 340px at 85% -5%,  rgba(0,0,0,.035), transparent 55%),
+    linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,0) 38%),
+    linear-gradient(180deg, transparent 70%, rgba(0,0,0,.03));
+  opacity: .9;
+}
+
+/* Cards keep white fill; add subtle top highlight (neutral) */
+.wf-section.cozy .wf-card {
+  border-color: var(--wf-border);
+}
+.wf-section.cozy .wf-card::after {
+  content: "";
+  position: absolute; left: 10px; right: 10px; top: 0; height: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,0));
+  border-top-left-radius: 14px; border-top-right-radius: 14px;
+  pointer-events: none;
+  opacity: .9;
+}

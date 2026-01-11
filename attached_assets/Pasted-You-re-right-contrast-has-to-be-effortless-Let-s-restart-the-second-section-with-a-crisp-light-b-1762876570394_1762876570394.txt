@@ -1,0 +1,210 @@
+You’re right—contrast has to be effortless. Let’s restart the second section with a **crisp, light band** that cleanly contrasts your dark hero, keeps copy ultra-clear, and uses premium details without visual noise.
+
+Below is a **drop-in prompt for Replit Agent 3**. It creates a brand-new section under the hero. It does not touch the hero or the carousel.
+
+---
+
+## Replace the next section with **“Value Pillars — Light”**
+
+**Scope:** Add a new section directly below the hero. Remove the previous “Connected Outcomes” attempt. Do **not** modify the hero or the carousel.
+
+### Visual goals (high contrast, calm, premium)
+
+* Section background: pure **white** for maximum contrast with the dark hero.
+* Text color: deep navy `#0A1326` (not gray) for strong legibility.
+* Card background: white. Border: `#E6EAF2`. Subtle inner shadow on hover only.
+* Accent: primary blue `#2D6BFF` with hover `#255AE0`.
+* No gradients behind text. No low-contrast overlays.
+
+### Content (plain language, no abbreviations)
+
+* Title: **“Everything you need in one place”**
+
+* Subtitle: *Plan the day, send estimates, and collect payments without switching tools.*
+
+* Three cards with short intro + three bullets + CTA button on each:
+
+  1. **Schedule and dispatch**
+     Intro: *Assign jobs to the right person in minutes.*
+     Bullets:
+
+     * *Drag and drop jobs onto the schedule.*
+     * *Match by skills, distance, and priority.*
+     * *Give every technician the plan on their phone.*
+       CTA: **See scheduling** → `/features/scheduling`
+  2. **Send estimates and get approval**
+     Intro: *Create clear estimates on site or in the office.*
+     Bullets:
+
+     * *Use saved items and prices to build fast.*
+     * *Send by email and text with one click.*
+     * *Customers approve online without a call.*
+       CTA: **See estimates** → `/features/estimates`
+  3. **Invoice and get paid**
+     Intro: *Create an invoice and collect payment the same day.*
+     Bullets:
+
+     * *Accept cards and bank payments securely.*
+     * *Send receipts and keep records in one place.*
+     * *Track what is due and what is paid.*
+       CTA: **See payments** → `/features/payments`
+
+* Section-level CTA at bottom: **Start your trial** → `/signup`
+
+### Layout & spacing
+
+* Section padding: `px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24`.
+* Grid: `1 / 2 / 3` cards across breakpoints.
+* Card padding: `p-6 sm:p-7 lg:p-8`.
+* Tight typographic scale for clarity:
+
+  * H2: `text-3xl sm:text-4xl font-semibold`
+  * Intro text: `text-lg text-[#334155]`
+  * Card title: `text-xl font-semibold text-[#0A1326]`
+  * Body: `text-[#1F2937]`
+* Subtle uniqueness: a thin **blue top border** on each card (2px) that aligns across the grid, giving a “product line” feel without distraction.
+
+### Accessibility
+
+* `<section aria-labelledby="pillars-title">`
+* Button focus rings visible (`ring-2 ring-[#2D6BFF] ring-offset-2`).
+* Icons marked `aria-hidden="true"` if used.
+* Color contrast AA+ verified (dark text on white; blue buttons on white).
+
+---
+
+## Implementation (React + Tailwind)
+
+```tsx
+// components/ValuePillarsLight.tsx
+import { Link } from "react-router-dom";
+
+type Pillar = {
+  title: string;
+  intro: string;
+  bullets: string[];
+  cta: string;
+  href: string;
+};
+
+const pillars: Pillar[] = [
+  {
+    title: "Schedule and dispatch",
+    intro: "Assign jobs to the right person in minutes.",
+    bullets: [
+      "Drag and drop jobs onto the schedule.",
+      "Match by skills, distance, and priority.",
+      "Give every technician the plan on their phone."
+    ],
+    cta: "See scheduling",
+    href: "/features/scheduling"
+  },
+  {
+    title: "Send estimates and get approval",
+    intro: "Create clear estimates on site or in the office.",
+    bullets: [
+      "Use saved items and prices to build fast.",
+      "Send by email and text with one click.",
+      "Customers approve online without a call."
+    ],
+    cta: "See estimates",
+    href: "/features/estimates"
+  },
+  {
+    title: "Invoice and get paid",
+    intro: "Create an invoice and collect payment the same day.",
+    bullets: [
+      "Accept cards and bank payments securely.",
+      "Send receipts and keep records in one place.",
+      "Track what is due and what is paid."
+    ],
+    cta: "See payments",
+    href: "/features/payments"
+  }
+];
+
+export default function ValuePillarsLight() {
+  return (
+    <section aria-labelledby="pillars-title" className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+        <header className="max-w-2xl">
+          <h2 id="pillars-title" className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#0A1326]">
+            Everything you need in one place
+          </h2>
+          <p className="mt-3 text-lg text-[#334155]">
+            Plan the day, send estimates, and collect payments without switching tools.
+          </p>
+        </header>
+
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {pillars.map(p => (
+            <article
+              key={p.title}
+              className="
+                relative rounded-lg bg-white p-6 sm:p-7 lg:p-8
+                border border-[#E6EAF2]
+                shadow-[0_1px_2px_rgba(16,24,40,0.04)]
+                hover:shadow-[0_6px_16px_rgba(16,24,40,0.08)]
+                transition
+              "
+            >
+              {/* subtle blue top rule */}
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-[#2D6BFF] rounded-t-lg" aria-hidden="true" />
+
+              <h3 className="text-xl font-semibold text-[#0A1326]">{p.title}</h3>
+              <p className="mt-2 text-[#1F2937]">{p.intro}</p>
+              <ul className="mt-4 space-y-2 text-[#1F2937]">
+                {p.bullets.map((b, i) => <li key={i}>• {b}</li>)}
+              </ul>
+
+              <div className="mt-6">
+                <Link
+                  to={p.href}
+                  className="
+                    inline-flex items-center justify-center rounded-md
+                    bg-[#2D6BFF] px-4 py-2 text-sm font-medium text-white
+                    hover:bg-[#255AE0]
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D6BFF] focus-visible:ring-offset-2
+                  "
+                  aria-label={`Learn more about ${p.title.toLowerCase()}`}
+                >
+                  {p.cta}
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Section-level CTA */}
+        <div className="mt-10">
+          <Link
+            to="/signup"
+            className="
+              inline-flex items-center justify-center rounded-md
+              bg-[#2D6BFF] px-5 py-3 text-base font-medium text-white
+              hover:bg-[#255AE0]
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D6BFF] focus-visible:ring-offset-2
+            "
+          >
+            Start your trial
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+### Placement
+
+* Import and render `<ValuePillarsLight />` directly **after** the hero section.
+* Remove the previous outcomes section component so there is only one immediate light band.
+
+### Why this will read and convert better
+
+* **Hard contrast**: white band under dark hero makes the next story obvious.
+* **Legible colors**: deep navy headings and black-on-white body text avoid the washed contrast you saw.
+* **Premium restraint**: crisp borders, a single blue line, and clean spacing signal quality without gimmicks.
+* **Every card has a CTA** and a bottom CTA to catch high intent.
+
+If this look feels right once you see it live, we’ll lock these color tokens and card patterns into the site-wide template so every page keeps the same contrast and CTA rhythm.

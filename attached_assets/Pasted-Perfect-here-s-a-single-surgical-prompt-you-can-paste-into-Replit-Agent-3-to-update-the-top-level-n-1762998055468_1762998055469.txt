@@ -1,0 +1,45 @@
+Perfect—here’s a single, surgical prompt you can paste into Replit Agent 3 to update the top-level navbar item hover so it matches the look of your mega-menu cards (blue outline + subtle inner shadow), without touching routing, copy, or other sections.
+
+⸻
+
+Task: Update the top-level navbar item hover state (e.g., Features, Industries, Pricing, Resources) to use a LinkServicePro-styled blue outline and a subtle inner shadow, inspired by the mega-menu item hover. Replace the current hover underline with this treatment. Keep focus rings, keyboard behavior, and mega-menu accessibility intact. Use the existing design system tokens and utilities.  ￼  ￼  ￼  ￼
+
+Scope
+	•	Only edit the desktop + mobile Navbar component (top-level items + their triggers).
+	•	Do not change routes, Helmet, layout, or menu content. Keep all ARIA and keyboard interactions as implemented.  ￼  ￼
+
+Targets
+	•	File: client/src/components/Navbar.tsx (or wherever the primary nav links/triggers live).
+	•	Apply the new hover treatment to:
+	•	Top-level nav links/buttons that open mega menus.
+	•	Top-level non-menu links (e.g., Pricing).
+	•	The existing mega-menu hover look is the reference for tone (outline + subtle elevation), not exact pixels.  ￼
+
+Visual spec (use your existing tokens/utilities)
+	•	Color: brand blue for the outline (#0B5FFF).  ￼
+	•	Outline/Border: visible 1px “blue” outline on hover. There must be no layout shift—use techniques that don’t change element width on hover (e.g., maintain a transparent border at rest or use an inset shadow).
+	•	Inner shadow: very subtle inset shadow/elevation to echo the mega-menu item feel (no heavy drop shadows). Keep it crisp against the dark header.
+	•	Shape: keep your nav item shape consistent with the design system (minimal rounding, tool-grade aesthetic).  ￼
+	•	Focus state: preserve the existing focus ring style (ring-2 brand blue with ring-offset) so keyboard users get the same experience. Hover must not suppress focus ring.  ￼
+	•	Remove underline on hover: the old blue underline should not appear on hover. If you need a persistent active route marker, keep your current active style unchanged—this request is hover only.
+
+Behavior & a11y
+	•	Hover/press states must not interfere with the mega-menu open/close logic, click-outside, or Escape-to-close. Keep current ARIA and keyboard navigation exactly as documented.  ￼
+	•	Maintain 44px+ hit target and consistent spacing so nothing “jumps” when hovering.
+	•	Respect prefers-reduced-motion (no animated shadows/outlines).  ￼
+
+Acceptance criteria
+	1.	On desktop, hovering Features/Industries/Pricing/Resources shows a blue 1px outline and subtle inner shadow with no layout shift; the old underline does not appear.
+	2.	Keyboard focus still shows the focus ring (brand blue, offset) and is not overridden by hover.  ￼
+	3.	Mega-menu accessibility remains intact: triggers announce expanded state, Escape closes, focus is trapped appropriately when open.  ￼
+	4.	Mobile/touch: press states look consistent (outline/inner shadow) and do not collide with the mobile menu styling.
+	5.	No changes to routes, titles, SEO, or other sections of the site.
+
+Implementation notes (guidance, not code)
+	•	Use the same utility system you’re already using (Tailwind/shadcn) for borders, ring, and shadow; apply them to the nav item wrapper so the effect looks like a pill/lozenge around the label.  ￼
+	•	To avoid layout shift, keep a baseline transparent border (or equivalent) at rest and only change color/elevation on hover.
+	•	Ensure the new hover style is consistent across both link and button triggers in the Navbar.
+
+⸻
+
+Run just this change and keep everything else untouched. Once it’s live, we can tune the intensity and spacing to taste and then move on to the next refinement.

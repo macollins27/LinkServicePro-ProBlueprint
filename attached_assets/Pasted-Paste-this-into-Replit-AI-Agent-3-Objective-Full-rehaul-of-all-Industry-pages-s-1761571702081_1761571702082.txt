@@ -1,0 +1,286 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+## Objective
+
+Full rehaul of **all Industry pages** so each becomes a **standalone, high-converting landing page** aligned with the new Home + Features design. Mobile-first. Fast. SEO-ready for queries like “{Industry} field service management software.”
+
+Do the work now across all industries:
+Cleaning, Janitorial Cleaning, Pressure Washing, Window Cleaning, Lawn Care, Tree Care, Landscaping, Snow Removal, General Contracting, Plumbing, Handyman, HVAC, Electrical, Painting, Roofing.
+
+---
+
+## Global rules
+
+* Mobile-first at 375px. No horizontal scroll. Tap targets ≥44px.
+* Sharp corners, high contrast (AA), bold rectangular buttons.
+* Each section begins with **Title + Subtitle** at top-left.
+* Sticky bottom CTA on every page. Inline lead form above the fold.
+* One **authentic AI-generated image per page** (see Image spec). Reuse as hero, subtle backdrop, and 1:1 thumb.
+* Respect `prefers-reduced-motion`. Lazy-load all non-hero media.
+
+---
+
+## Page template (for every Industry page)
+
+Use this exact section order and structure:
+
+1. **Hero band**
+
+   * Title: “{Industry} Software”
+   * Subtitle: 1-line benefit tailored to trade.
+   * KPI tiles (3): outcome metrics relevant to the trade (placeholders OK).
+   * Primary CTA: **Start Free**. Secondary: **View Pricing**.
+   * Single hero image (AI-generated).
+
+2. **What it does for {Industry}**
+
+   * 3 bullets, each **action → outcome** in plain language.
+
+3. **Jobs you can run**
+
+   * 6–9 chips listing common job types for the trade.
+
+4. **Why teams switch (Pain → Solve)**
+
+   * Two cards. Left: 3–5 pains. Right: 3–5 solves tied to our product.
+
+5. **How it works for {Industry} (3 steps)**
+
+   * Step 1: Intake/Quote
+   * Step 2: Schedule/Dispatch
+   * Step 3: Do the work → Invoice/Payment
+
+6. **In the field (testimonial)**
+
+   * One quote with name + role. Portrait crops welcomed from hero if available.
+
+7. **Features {Industry} uses most**
+
+   * 6 feature cards linking to Feature pages. Use the site’s new card style.
+
+8. **Integrations**
+
+   * Chips (QuickBooks, Xero, PropertyLinkWare, LinkInspectPro, SMS/Email).
+
+9. **Mini demo + lead capture**
+
+   * Left: “See it in 60 seconds” poster (reuse hero as blurred overlay).
+   * Right: Lead form (“See it with your jobs.” email + company). One-line success.
+
+10. **FAQ for {Industry}**
+
+* 5–6 Q&As. Short, direct, de-jargonized.
+
+11. **Bottom CTA band**
+
+* “Ready to try it?” + buttons.
+
+12. **Sticky bottom CTA**
+
+* Always visible on scroll.
+
+---
+
+## SEO + schema (per page)
+
+* `<title>`: “{Industry} Software • Field Service Management”
+* Meta description (≤160 chars) using the page subtitle.
+* Canonical, OG tags, Twitter tags.
+* JSON-LD:
+
+  * `SoftwareApplication` with `applicationCategory: "BusinessApplication"`.
+  * `FAQPage` for the page’s FAQ.
+  * `Product` with review aggregate placeholders if available.
+
+Internal linking:
+
+* Within copy, link to **Scheduling**, **Dispatch Board + Live Map**, **Route Optimization**, **Work Orders**, **Quote + E-Sign**, **Invoicing & Payments**.
+* Breadcrumbs: Home → Industries → {Industry}.
+
+---
+
+## Image generation (one image per page)
+
+**Hard constraint:** no screens, no visible UI. If a device appears, its screen is off, obscured, or out of frame.
+
+**Style macro**
+“{INDUSTRY PRO}, {ACTION}, {CONCRETE JOBSITE DETAILS}, **no screens visible**, documentary jobsite, natural light, shallow depth, moderate contrast, OSHA-safe PPE, tight crop on hands/tools/vehicle, 35mm composition, no third-party logos.”
+
+**Output per page**
+
+* AVIF + WebP + JPEG at **1600 / 1200 / 768 / 480** widths.
+* LQIP 20px base64 blur.
+* Alt text (role + task + context). Caption ≤80 chars.
+* Save to `/public/images/industries/{slug}/hero.*`.
+* Return a JSON manifest per page with `alt`, `caption`, `srcsets`, `lqip`.
+
+**Placement**
+
+* Full-bleed **hero** image.
+* Subtle **blurred overlay** behind either “How it works” or “Pain → Solve”.
+* Auto 1:1 thumb for “Features {Industry} uses most” card headers.
+
+---
+
+## Content map (use these slugs and copy primitives)
+
+### Cleaning  (`cleaning`)
+
+* Subtitle: “Schedule crews, track jobs, and get paid the same day.”
+* Jobs: Move-out clean, Post-construction, Deep clean, Recurring, Office night shift, Kitchen hood.
+* Pains: last-minute cancels; key handoff chaos; who has supplies?; missed add-ons.
+* Solves: reminders + windows; crew notes + supply checklist; upsell templates.
+* Image prompt: “Cleaning crew leader taping checklist to cart, gloves and caddy, facility hallway, no screens.”
+* Alt: Crew lead taping checklist to cart. Caption: Ready and organized.
+
+### Janitorial Cleaning  (`janitorial-cleaning`)
+
+* Subtitle: “Nightly routes that run like clockwork.”
+* Jobs: Nightly office, Restroom service, Floor care, Waste, Supply restock, Inspection.
+* Pains: missed buildings; unclear scope; supply counts.
+* Solves: route tags; scope on work order; supply tracking.
+* Image: “Janitorial tech loading cart near elevator bank, badge and gloves, route sheet on clipboard, no screens.”
+
+### Pressure Washing  (`pressure-washing`)
+
+* Subtitle: “Fast quotes. Smart routes. Before/after proof.”
+* Jobs: Driveways, Siding, Decks, Fleet, Graffiti, Walkways.
+* Pains: water access; neighbors; overspray claims.
+* Solves: pre-job notes; door hangers; photo proof.
+* Image: “Tech connecting hose to bib, surface cleaner on ground, truck-mounted reel, no screens.”
+
+### Window Cleaning  (`window-cleaning`)
+
+* Subtitle: “Ladder-safe scheduling with repeat plans.”
+* Jobs: Residential exterior, Commercial storefront, High-reach poles, Skylights.
+* Pains: weather reschedules; ladder time; streak complaints.
+* Solves: weather rules; crew pairing; photo proof.
+* Image: “Window cleaner attaching squeegee to extension pole, belt holster, bucket, no screens.”
+
+### Lawn Care  (`lawn-care`)
+
+* Subtitle: “Seasonal routes without the spreadsheet.”
+* Jobs: Mow, Trim, Fertilize, Aerate, Overseed, Leaf, Spring/Fall.
+* Pains: seasonality; rain delays; missed gates.
+* Solves: recurring plans; rain buffers; gate notes.
+* Image: “Crew foreman checking printed route tags at truck bed, trimmers and fuel cans, dawn light.”
+
+### Tree Care  (`tree-care`)
+
+* Subtitle: “Safer jobs, tighter estimates, clearer scope.”
+* Jobs: Pruning, Removal, Stump grind, Cabling, Storm.
+* Pains: permits; power lines; cleanup.
+* Solves: required-docs checklist; hazard notes; debris line item.
+* Image: “Arborist tying saw lanyard at base of tree, helmet and eye protection, cones visible.”
+
+### Landscaping  (`landscaping`)
+
+* Subtitle: “Design to maintenance on one calendar.”
+* Jobs: Install beds, Irrigation, Hardscape, Mulch, Weekly maintenance.
+* Pains: crew mixups; materials; punch lists.
+* Solves: crew assignments; POs per job; checklists.
+* Image: “Crew loading mulch forks from trailer, supervisor with printed job tickets.”
+
+### Snow Removal  (`snow-removal`)
+
+* Subtitle: “Storm nights coordinated without chaos.”
+* Jobs: Plow routes, Sidewalk crews, Salting, De-icing, Haul.
+* Pains: call-ins; overlapping routes; slip claims.
+* Solves: route tags; capacity by truck; incident logs.
+* Image: “Operator attaching plow blade pin in lot, reflective jacket, route clipboard.”
+
+### General Contracting  (`general-contracting`)
+
+* Subtitle: “Projects, subs, and change orders without the guesswork.”
+* Jobs: Kitchen, Bath, Additions, Framing, Punch.
+* Pains: sub schedules; change tracking; draw payments.
+* Solves: project folder; linked docs; deposits/partials.
+* Image: “GC reviewing printed plans on sawhorses, pencil and measuring tape.”
+
+### Plumbing  (`plumbing`)
+
+* Subtitle: “Same-day calls without double-booking.”
+* Jobs: Leaks, Water heaters, Rough-in, Drains, Repipes.
+* Pains: access windows; parts; emergency shuffles.
+* Solves: arrival windows; parts PO; drag-drop reschedule.
+* Image: “Plumber tightening compression fitting under sink, bucket and rags.”
+
+### Handyman  (`handyman`)
+
+* Subtitle: “Small jobs, big throughput.”
+* Jobs: Doors, Fixtures, Drywall patch, Mounting, Caulk.
+* Pains: under-scoped visits; materials runs.
+* Solves: checklist templates; parts notes.
+* Image: “Handyman organizing fasteners in bin, printed task list, tool belt.”
+
+### HVAC  (`hvac`)
+
+* Subtitle: “Tighter routes. Fewer callbacks.”
+* Jobs: Tune-ups, No-cool, Install, Ducts, PM contracts.
+* Pains: seasonal swings; callbacks; rooftop access.
+* Solves: recurring PM; checklists; access notes.
+* Image: “HVAC tech checking pressures on condenser with analog gauge set, rooftop, no screens.”
+
+### Electrical  (`electrical`)
+
+* Subtitle: “Clean work orders. Safer panels.”
+* Jobs: Service calls, Panel upgrades, EV, Lighting, Rough.
+* Pains: panel labeling; parts; inspections.
+* Solves: WO checklists; POs; inspection docs.
+* Image: “Electrician tightening lug in panel with insulated driver, labels taped nearby.”
+
+### Painting  (`painting`)
+
+* Subtitle: “Prep right. Hit the window. Bill cleanly.”
+* Jobs: Interior, Exterior, Cabinets, Deck stain, Touch-ups.
+* Pains: weather; color swaps; punch lists.
+* Solves: weather rules; color fields; checklist.
+* Image: “Painter taping trim with steady hand, drop cloths and ladder.”
+
+### Roofing  (`roofing`)
+
+* Subtitle: “Storm workload without the chaos.”
+* Jobs: Leak repair, Tear-off, Re-roof, Flashing, Inspection.
+* Pains: weather shifts; safety; debris; warranties.
+* Solves: weather buffers; safety checklist; warranty tracking.
+* Image: “Roofer placing bundle on roof with harness and anchor, early light.”
+
+---
+
+## Features to highlight per industry
+
+Use 6 cards per page from: Drag-and-drop Scheduling, Dispatch Board + Live Map, Route Optimization, Work Orders, Quote + E-Sign, Invoicing & Batch, Online & Field Payments, Deposits/Partials, Customer Portal, Review Requests, Capacity Planning. Choose the most relevant per trade.
+
+---
+
+## FAQs (model; rewrite per industry in contractor language)
+
+* How fast can we import our customers and jobs?
+* Can crews see the day’s work without calling in?
+* What happens when weather hits?
+* Can we collect deposits or take payment on site?
+* Does this work offline?
+* How does pricing work?
+
+---
+
+## Implementation steps
+
+1. Create routes `/industries/{slug}` for all listed slugs.
+2. Apply the **Industry Page template** and populate with the Content map.
+3. Generate **one image per page** using the **Style macro** and each page’s prompt. Export AVIF/WebP/JPEG at 1600/1200/768/480 + LQIP. Save to `/public/images/industries/{slug}/hero.*`. Return a manifest per page.
+4. Wire image into Hero, reuse blurred overlay mid-page, and auto-crop 1:1 thumb for “Features {Industry} uses most.”
+5. Add JSON-LD for `SoftwareApplication` + `FAQPage`. Set unique `<title>` + meta description.
+6. Ensure internal links to relevant **Feature** pages.
+7. QA at 375px: no horizontal scroll, keyboard access on accordion, focus rings, Lighthouse ≥90 Perf and ≥95 A11y, CLS < 0.05.
+
+---
+
+## Acceptance criteria
+
+* Each Industry page is a standalone landing page with hero image, tailored copy, sticky CTA, inline lead form, and SEO/schema.
+* Images are authentic jobsite photos **with no screens** and create a “that’s me at work” reaction.
+* Internal links drive to the most relevant Feature pages.
+* Performance and accessibility targets met across all pages.

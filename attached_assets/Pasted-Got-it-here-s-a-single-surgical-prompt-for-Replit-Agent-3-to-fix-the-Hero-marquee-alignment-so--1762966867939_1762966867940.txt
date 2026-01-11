@@ -1,0 +1,88 @@
+Got it—here’s a **single, surgical prompt** for Replit Agent 3 to fix the Hero marquee alignment so it sits **inside the site container**, aligned with the grid (not hugging the far right), and still mobile-first.
+
+---
+
+**Task:** Adjust the Hero marquee layout so the two vertical image columns live **inside the standard page container** and align with the grid. Do not modify copy, CTAs, routing, Helmet, or other sections. Only touch the Hero markup/styles.
+
+**Files to edit**
+
+* `client/src/components/Hero.tsx` (layout adjustments only)
+* No other files.
+
+**Requirements**
+
+1. The marquee wrapper must be **inside** the same `.container mx-auto px-4 sm:px-6 lg:px-8` as the left copy.
+2. On **mobile**: single marquee column centered below the text.
+   On **lg+**: two columns in the right grid column with a fixed max width so they don’t bleed into the gutter.
+3. Remove any absolute positioning or outer `justify-end` that pushes the images past the container. Use grid alignment instead.
+4. Add an explicit right-column width: `lg:max-w-[360px] xl:max-w-[400px]` (roughly half the BuildOps footprint), and align using `justify-self-end` (not `justify-end` on a flex parent).
+5. Keep all animation logic exactly as implemented; only the **containering and alignment** changes.
+
+**Exact changes (apply verbatim)**
+
+```tsx
+// client/src/components/Hero.tsx
+// Replace ONLY the layout wrapper for the marquee area.
+// Keep your existing imports, copy, CTAs, and heroImages array.
+
+export function Hero() {
+  return (
+    <section className="relative isolate pt-10 sm:pt-14">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Use a grid that reserves a predictable right column */}
+        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(260px,400px)]">
+          {/* Left: copy + CTAs (UNCHANGED) */}
+          <div>
+            {/* ...your existing headline/paragraph/bullets/CTAs... */}
+          </div>
+
+          {/* Right: marquee columns INSIDE the container & aligned to grid */}
+          <div
+            className="
+              justify-self-end            /* align within grid cell, not page edge */
+              lg:max-w-[360px] xl:max-w-[400px]
+              w-full
+            "
+          >
+            {/* Center on mobile, split to two columns at sm+ */}
+            <div className="mx-auto flex justify-center gap-4 sm:gap-6">
+              {/* Column A (hidden on xs? keep if desired) */}
+              <div className="hidden sm:block">
+                <InfiniteVerticalLoop
+                  items={heroImages.slice(0, Math.ceil(heroImages.length / 2))}
+                  reverse={false}
+                />
+              </div>
+
+              {/* Column B */}
+              <div>
+                <InfiniteVerticalLoop
+                  items={heroImages.slice(Math.ceil(heroImages.length / 2))}
+                  reverse={true}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Leave the logo row / anything below as-is */}
+      </div>
+    </section>
+  );
+}
+```
+
+**Clean-up notes**
+
+* If you previously had `lg:justify-end` on the parent flex, **remove it**—it pushes content to the container’s outer edge. `justify-self-end` on the grid cell keeps the marquee inside the grid’s right column without escaping the container.
+* Ensure there’s **no negative margin** or `pr-*` on the marquee wrapper that nudges it past the container padding. The code above intentionally omits such classes.
+* Keep the image columns’ widths controlled by the **image size** (your `w-[140px] sm:w-[160px]` in the `InfiniteVerticalLoop`) and the **right-column max width** (360–400px), so the block never looks oversized.
+
+**QA checklist (for this change)**
+
+* At `lg` and above, the right image stack ends **flush with the container’s right padding**, not the viewport edge.
+* At mobile widths, the images **center under the text** and do not push content off-screen.
+* No horizontal scrollbars.
+* Animations continue to run smoothly; reduced-motion still yields a static grid.
+
+When this looks correct on your end, we’ll move to the next tiny step (logo row marquee).

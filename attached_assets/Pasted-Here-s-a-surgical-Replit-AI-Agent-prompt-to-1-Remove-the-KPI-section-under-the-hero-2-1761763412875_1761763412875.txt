@@ -1,0 +1,227 @@
+Here’s a **surgical** Replit AI Agent prompt to:
+
+1. **Remove the KPI section under the hero**,
+2. **Move the Industry section up directly under the hero**, and
+3. **Rebuild the Industry carousel** to be mobile-first, high-impact, and include **all industries you listed**.
+
+Paste this as-is.
+
+---
+
+## PROMPT: “Homepage order change + New Industry Carousel (mobile-first, wow factor)”
+
+**Do not rebuild the app. Do not touch the hero carousel.** Only change homepage layout order and the Industry section design/logic.
+
+### Scope
+
+* Keep existing tech stack and routing.
+* File paths from current project conventions:
+
+  * Homepage: `client/src/pages/home.tsx`
+  * Sections directory: `client/src/sections/`
+  * Data directory: `client/src/data/`
+  * Shared components: `client/src/components/`
+* You may add new section and data files but **must not** change other pages.
+
+---
+
+## 1) Remove KPI section and move Industries up
+
+* In `client/src/pages/home.tsx`:
+
+  1. **Delete** the import and JSX for the KPI section that sits directly under `<Hero />`. Do not leave an empty container.
+  2. Insert the **Industry** section **immediately after** `<Hero />`.
+  3. Leave the rest of the page order intact.
+
+Acceptance:
+
+* After the hero, users see the new Industry carousel.
+* No empty spacing where KPIs were.
+
+---
+
+## 2) Replace Industry section with a new “IndustryCarouselPro” (mobile-first)
+
+### Component
+
+* Create `client/src/sections/IndustryCarouselPro.tsx` and use it in `home.tsx` in place of the current industry section.
+* **Mobile-first** behavior:
+
+  * Horizontal **snap** carousel with **momentum scrolling**.
+  * Shows **2.2 cards per view** at `sm`, **3.2** at `md`, **4.2** at `lg`, **6** in desktop grid mode (`xl` and up).
+  * Sticky **Prev/Next** buttons appear only ≥ `md`. Buttons float outside the track, never overlap card content.
+  * Keyboard accessible: arrow keys scroll the track; buttons are tabbable; cards have visible focus rings.
+
+### Look & feel
+
+* Section heading:
+
+  * Title: **“Built for Your Trade”**
+  * Sub: **“Workflows tailored to your industry”**
+* Card design (each industry):
+
+  * **Large, single-color icon** above name. Use lucide/system icon where clear; otherwise use a generic “briefcase/wrench” fallback.
+  * **Prominent trade name** in 16–18px, medium weight.
+  * **Microline** under name: short benefit string (e.g., “Estimate → Schedule → Invoice”). Use a generic placeholder for now.
+  * Visual treatment:
+
+    * Card base: `bg-white` (light sections) or `bg-slate-50` if section background is white.
+    * **Wow factor** border: thin gradient border ring (`from-[#0B5FFF] via-[#0FB36F] to-[#0B5FFF]`) at **2px** that **animates subtly on hover/focus**. Implementation: wrapper with `relative` + `before:` gradient ring + inner card with `rounded-2xl`.
+    * Shadow: soft elevation on hover (`shadow-lg`) and small scale-up (`scale-[1.02]`), animated with `transition-transform`.
+    * **Focus**: thick focus ring `ring-2 ring-[#0B5FFF] ring-offset-2`.
+* Card size:
+
+  * Height ~ `h-32 sm:h-36`, min width `min-w-[200px] sm:min-w-[220px]`.
+  * Icon size `text-3xl sm:text-4xl`.
+
+### Behavior
+
+* Clicking a card navigates to `/industries/:slug`.
+* On hover (desktop) or focus (keyboard), show a small “View workflow →” chevron line at the bottom of the card.
+* Add a **filter/search input** above the carousel on mobile+:
+
+  * Placeholder: “Filter trades…”
+  * Filters cards by name in real time; if none match, show “No trades found”.
+
+### Accessibility
+
+* `<section role="region" aria-label="Industry selection">`
+* Carousel track has `aria-roledescription="carousel"` and `aria-label="Industries"`.
+* Prev/Next buttons: `aria-controls` track ID; include `aria-label="Previous industries"` / `aria-label="Next industries"`.
+* Each card is a **link** with `aria-label="View [Industry] workflows"`.
+
+---
+
+## 3) Data: include **all industries** with slugs + icon hints
+
+* Create `client/src/data/industries.ts` exporting an array:
+
+```ts
+export type Industry = {
+  name: string;
+  slug: string;      // kebab-case for route
+  icon: string;      // lucide icon name or "wrench" fallback
+  benefit?: string;  // short microline e.g., 'Estimate → Schedule → Invoice'
+};
+
+export const INDUSTRIES: Industry[] = [
+  { name: "Appliance Repair", slug: "appliance-repair", icon: "Microwave" },
+  { name: "Auto Detailing", slug: "auto-detailing", icon: "Car" },
+  { name: "Carpentry", slug: "carpentry", icon: "Hammer" },
+  { name: "Carpet Cleaning", slug: "carpet-cleaning", icon: "Broom" },
+  { name: "Chimney Sweep Services", slug: "chimney-sweep", icon: "Flame" },
+  { name: "Cleaning", slug: "cleaning", icon: "Sparkles" },
+  { name: "Concrete", slug: "concrete", icon: "SquareStack" },
+  { name: "Construction", slug: "construction", icon: "Building2" },
+  { name: "Demolition Contractor", slug: "demolition", icon: "Construction" },
+  { name: "Dog Walking", slug: "dog-walking", icon: "PawPrint" },
+  { name: "Drywall", slug: "drywall", icon: "PanelsLeftRight" },
+  { name: "Electrical Contracting", slug: "electrical", icon: "Bolt" },
+  { name: "Elevator Services", slug: "elevator-services", icon: "ArrowUpDown" },
+  { name: "Excavation", slug: "excavation", icon: "Shovel" },
+  { name: "Fence Services", slug: "fence-services", icon: "Fence" },
+  { name: "Flooring", slug: "flooring", icon: "Layers" },
+  { name: "Garage Door Services", slug: "garage-door", icon: "DoorClosed" },
+  { name: "General Contracting", slug: "general-contracting", icon: "HardHat" },
+  { name: "Handyman", slug: "handyman", icon: "Wrench" },
+  { name: "HVAC", slug: "hvac", icon: "Snowflake" },
+  { name: "Installation Services", slug: "installation-services", icon: "Boxes" },
+  { name: "Irrigation Services", slug: "irrigation-services", icon: "Sprout" },
+  { name: "Janitorial Services", slug: "janitorial-services", icon: "Bucket" },
+  { name: "Junk Removal", slug: "junk-removal", icon: "Trash2" },
+  { name: "Landscaping", slug: "landscaping", icon: "Trees" },
+  { name: "Lawn Care", slug: "lawn-care", icon: "Leaf" },
+  { name: "Locksmith Services", slug: "locksmith", icon: "KeyRound" },
+  { name: "Mechanical Contracting", slug: "mechanical", icon: "Cog" },
+  { name: "Painting", slug: "painting", icon: "Paintbrush" },
+  { name: "Paving", slug: "paving", icon: "Road" },
+  { name: "Pest Control", slug: "pest-control", icon: "Bug" },
+  { name: "Plumbing", slug: "plumbing", icon: "Wrench" },
+  { name: "Pool & Spa Services", slug: "pool-spa", icon: "Waves" },
+  { name: "Pooper Scooper", slug: "pooper-scooper", icon: "Poop" },
+  { name: "Pressure Washing", slug: "pressure-washing", icon: "ShowerHead" },
+  { name: "Property Maintenance", slug: "property-maintenance", icon: "Home" },
+  { name: "Remodeling", slug: "remodeling", icon: "Ruler" },
+  { name: "Restoration", slug: "restoration", icon: "Droplets" },
+  { name: "Roofing", slug: "roofing", icon: "Home" },
+  { name: "Snow Removal", slug: "snow-removal", icon: "Snowflake" },
+  { name: "Tiling", slug: "tiling", icon: "Grid" },
+  { name: "Tree Care", slug: "tree-care", icon: "TreePine" },
+  { name: "Well Water Services", slug: "well-water-services", icon: "Droplet" },
+  { name: "Window Cleaning", slug: "window-cleaning", icon: "Window" },
+];
+```
+
+* If any icon name does not exist in `lucide-react`, map to `Wrench`. Create a helper `getIcon(name)` that safely falls back.
+
+---
+
+## 4) Implementation details
+
+### `IndustryCarouselPro.tsx` structure
+
+* Wrapper: `section` with `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16`
+* Heading block centered.
+* **Filter/search** input above track on `sm+`:
+
+  * `placeholder="Filter trades..."`, debounced 150ms.
+* Track:
+
+  * `overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4`
+  * Each card: `snap-start` + min width from spec.
+* Prev/Next buttons (`md+`):
+
+  * Absolutely positioned left/right, vertically centered.
+  * Style: subtle glass `bg-white/80 backdrop-blur`, ring `ring-1 ring-slate-200`, rounded-full, shadow.
+  * On click: animate scroll by card width × 3.
+* Desktop grid (`xl:grid xl:grid-cols-6 xl:gap-5`) with same cards; hide Prev/Next and horizontal scroll at `xl`.
+
+### Animation
+
+* Use Framer Motion for card hover/focus (scale 1.02, shadow) and gradient ring shimmer:
+
+  * CSS-only for ring: `before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-[#0B5FFF] before:via-[#0FB36F] before:to-[#0B5FFF] before:opacity-0 hover:before:opacity-100 focus-within:before:opacity-100 transition-opacity`
+  * Inner card uses `bg-white rounded-[14px] h-full p-4 sm:p-5` with `relative z-10`.
+
+### Linking
+
+* Each card `<Link to={`/industries/${slug}`}>` wraps the entire card area.
+* Add `title` attribute and `aria-label`.
+
+---
+
+## 5) Tests and acceptance
+
+* **Visual**:
+
+  * Mobile shows 2.2 cards per view with snap scrolling.
+  * Prev/Next buttons visible and working ≥ `md`.
+  * Desktop `xl` shows 6 cards per row grid, no horizontal scroll.
+* **Accessibility**:
+
+  * Cards tabbable and have visible focus.
+  * Buttons have `aria-labels`.
+  * Keyboard arrows move focus and scroll track (implement `onKeyDown` on container).
+* **Performance**:
+
+  * No heavy libraries added; pure CSS/JS + existing Framer Motion.
+  * Images are icons only; no large assets.
+  * Lighthouse mobile ≥ 90 performance, ≥ 95 accessibility on this section’s route.
+* **Routing**: clicking a card navigates to `/industries/:slug` (existing or stub pages).
+
+---
+
+## 6) Don’ts
+
+* Do **not** modify the hero section or its carousel.
+* Do **not** add external carousel libraries.
+* Do **not** change global CSS tokens or button variants.
+* Do **not** alter other home sections besides removing KPIs and inserting this new industry section.
+
+---
+
+**Deliverable:**
+
+* Updated `home.tsx` ordering (Hero → IndustryCarouselPro → rest).
+* New `IndustryCarouselPro.tsx` section and `industries.ts` data file with all trades above.
+* Working mobile-first carousel with wow-factor cards, professional look, and accessibility.

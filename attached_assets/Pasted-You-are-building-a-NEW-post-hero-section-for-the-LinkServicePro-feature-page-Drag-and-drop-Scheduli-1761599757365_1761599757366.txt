@@ -1,0 +1,90 @@
+You are building a NEW post-hero section for the LinkServicePro feature page “Drag-and-drop Scheduling.”
+
+Stack: React 18 + TypeScript, Vite, Tailwind CSS, shadcn/ui (Radix), Wouter, TanStack Query. Same repo as the app. Mobile-first. 375px baseline. WCAG AA+. No horizontal scroll.
+
+Design system:
+- “Pro-Blueprint” theme: sharp corners, blueprint grid bg option, rivet-style borders, thick outlines.
+- Colors: navy #0E2A47, accent blue #0B5FFF, conversion green #0FB36F, neutral slates.
+- Hover underline animates right→left.
+- Cards: white, ring-1 slate-200, subtle elev-2 shadow.
+- Motion minimal; respect prefers-reduced-motion.
+
+Goal of this section:
+- WOW + convert directly under hero.
+- Live micro-demo: drag a job card to an open time slot. On drop: remove conflict, update route ETA, show “customer auto-texted.”
+- Include outcome chips and a right-rail lead unit (mini form).
+
+Deliverables (create files and wire into the feature route):
+1) Component: `src/sections/SchedulingInstantDemo.tsx`
+   - Layout:
+     * Mobile one column; ≥640px two columns (demo left, lead unit right).
+   - Demo:
+     * No external DnD lib. Use pointer events + keyboard support (Space/Enter to pick up, ArrowUp/Down to move between slots, Enter to drop).
+     * Timeline list with time slots. One draggable job card initially marked with an overlap badge.
+     * On drop into the 11:45 slot:
+       - Conflict badge disappears.
+       - Toast/aria-live message: “Rescheduled • ETA +6 min • Customer text sent”.
+       - Route delta badge updates (e.g., “Route time −12 min”).
+     * Provide `data-testid` hooks for e2e: `job-card`, `slot-1145`, `conflict-badge`, `toast`.
+     * Provide analytics attributes: `data-analytics="demo-drag"` on container; fire a custom event on successful drop.
+     * All copy from spec below.
+   - Outcome chips below demo: 
+     * “Stops double-booking”, “Reschedule in seconds”, “Instant auto-texts”.
+   - Accessibility:
+     * `role="region"` with `aria-label="Scheduling demo"`.
+     * Focus ring on interactive elements.
+     * `aria-live="polite"` for status.
+     * High contrast colors from tokens.
+
+2) Lead unit: inside same file as a subcomponent.
+   - Card with headline: “See it on your schedule in under 2 minutes”.
+   - Fields: Work email (required), Company (required).
+   - Buttons:
+     * Primary `Start Free` (green #0FB36F).
+     * Secondary `View Pricing` link to `/pricing`.
+   - Inline reassurance: “No credit card. 14-day full product.”
+   - Integrations chips: QuickBooks, Xero, iOS/Android, SMS/Email.
+
+3) Styles:
+   - Use Tailwind. Sharp corners only.
+   - Respect theme colors. Visible focus states using accent blue #0B5FFF.
+   - Provide an optional blueprint grid background class `bg-blueprint` (light grid lines) applied to the demo container. Implement in `src/styles/blueprint.css` and import in `main.tsx`.
+
+4) Behavior details:
+   - Initial state:
+     * Slots: 11:45 (open), 12:30 (Maintenance), 2:30 (Leak repair with overlap).
+   - Drag or keyboard move:
+     * When hovering 11:45, show hint “Drop here to move 2:30 → 11:45”.
+   - On successful drop:
+     * Update job time label to 11:45.
+     * Replace conflict badge with route badge “Route time −12 min”.
+     * Show toast and write to `#demo-status` `aria-live`.
+   - Provide a small reset link “Reset demo”.
+
+5) Copy to use verbatim:
+   - Section H2: “Drag jobs. Fix your day.”
+   - Sub: “Thumb-drag a job to a new time. We clear conflicts, update route ETAs, and auto-text the customer.”
+   - Hint: “Drop here to move 2:30 → 11:45”
+   - Conflict badge: “Overlap: 2:15–2:45”
+   - Toast: “Rescheduled • ETA +6 min • Customer text sent”
+   - Route badge: “Route time −12 min”
+   - Outcome chips: as listed above.
+   - Lead headline: “See it on your schedule in under 2 minutes”
+   - Reassurance: “No credit card. 14-day full product.”
+
+6) Routing & placement:
+   - Export default `SchedulingInstantDemo`.
+   - Import and render directly under the feature page hero in `src/routes/features/scheduling.tsx`.
+
+7) QA gates (add simple tests where reasonable):
+   - No overflow at 375px.
+   - Keyboard-only drag works (Space/Enter pick up, arrows move, Enter drops).
+   - `aria-live` fires on drop.
+   - Buttons have visible focus rings.
+   - Lighthouse: ≥90 Performance, ≥95 Accessibility on the section page.
+   - No external DnD packages.
+
+8) Optional asset:
+   - Add `public/hero-scheduling.jpg` placeholder and lazy-load a small inline <img> inside the demo frame (decorative, `aria-hidden="true"`), but DO NOT show any paper or logos.
+
+After implementing, run dev, screenshot the section at 375px and 1024px, and report any a11y or overflow issues found.

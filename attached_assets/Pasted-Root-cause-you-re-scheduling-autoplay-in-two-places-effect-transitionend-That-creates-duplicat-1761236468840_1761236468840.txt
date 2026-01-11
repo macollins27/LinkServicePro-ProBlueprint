@@ -1,0 +1,168 @@
+Root cause: you’re scheduling autoplay in two places (effect + transitionend). That creates duplicate timers and “skips.”
+
+Apply this exact fix.
+
+1. Replace your component with a single scheduler. No autoplay in useEffect tied to `index`.
+
+```jsx
+// VerticalCarousel.jsx
+import { useEffect, useMemo, useRef, useState } from "react";
+
+export default function VerticalCarousel({
+  items = [],
+  height = 460,
+  autoplayMs = 4000,
+  transitionMs = 450,
+}) {
+  const total = items.length;
+  if (total < 2) return total ? <Slide s={items[0]} h={height} /> : null;
+
+  const slides = useMemo(() => [...items, items[0]], [items]); // clone
+  const [index, setIndex] = useState(0);            // 0..total (clone at end)
+  const [animMs, setAnimMs] = useState(transitionMs);
+  const trackRef = useRef(null);
+  const timerRef = useRef(null);
+  const pausedRef = useRef(false);
+  const lockedRef = useRef(false);
+  const reduced = typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---- helpers ----
+  const clear = () => { if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; } };
+  const schedule = () => {
+    clear();
+    if (reduced || pausedRef.current) return;
+    timerRef.current = setTimeout(() => next(), autoplayMs);
+  };
+
+  const next = () => {
+    if (lockedRef.current) return;
+    lockedRef.current = true;
+    setAnimMs(transitionMs);
+    setIndex((i) => Math.min(i + 1, total)); // allow moving to clone
+  };
+
+  const prev = () => {
+    if (lockedRef.current) return;
+    lockedRef.current = true;
+    setAnimMs(transitionMs);
+    setIndex((i) => (i === 0 ? total - 1 : i - 1));
+  };
+
+  // transitionend handler (single place to resume schedule)
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const onEnd = (e) => {
+      if (e.propertyName !== "transform") return; // ignore others
+      if (index === total) {
+        // snap from clone to real first w/o anim
+        setAnimMs(0);
+        setIndex(0);
+        requestAnimationFrame(() => setAnimMs(transitionMs));
+      }
+      lockedRef.current = false;
+      schedule(); // resume only here
+    };
+    el.addEventListener("transitionend", onEnd);
+    return () => el.removeEventListener("transitionend", onEnd);
+  }, [index, total, transitionMs]);
+
+  // start once on mount and clean on unmount
+  useEffect(() => { schedule(); return clear; }, []); // ← not tied to index
+
+  const setPaused = (v) => { pausedRef.current = v; v ? clear() : schedule(); };
+
+  return (
+    <div
+      className="relative overflow-hidden select-none"
+      style={{ height }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      <div
+        ref={trackRef}
+        className="w-full flex flex-col will-change-transform"  // flex column ensures 100% slide steps
+        style={{
+          transform: `translateY(-${index * 100}%)`,
+          transition: `transform ${animMs}ms ease`,
+          height: height * slides.length, // guarantees consistent math
+        }}
+        aria-live="polite"
+      >
+        {slides.map((s, i) => (
+          <Slide key={i} s={s} h={height} />
+        ))}
+      </div>
+
+      {/* Controls */}
+      <div className="absolute right-2 top-2 flex flex-col gap-2">
+        <button type="button" aria-label="Previous"
+          className="px-2 py-1 bg-white/90 text-slate-900 border border-slate-300 rounded-none"
+          onClick={prev}>↑</button>
+        <button type="button" aria-label="Next"
+          className="px-2 py-1 bg-white/90 text-slate-900 border border-slate-300 rounded-none"
+          onClick={next}>↓</button>
+      </div>
+
+      {/* Dots */}
+      <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-2">
+        {items.map((_, i) => {
+          const active = (index % total) === i;
+          return (
+            <button
+              key={i}
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={active ? "true" : undefined}
+              className={`w-2 h-2 border border-white ${active ? "bg-white" : "bg-transparent"}`}
+              onClick={() => { clear(); setIndex(i); lockedRef.current = false; schedule(); }}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function Slide({ s, h }) {
+  return (
+    <figure className="w-full flex flex-col justify-end bg-slate-100" style={{ height: h }}>
+      <img src={s.src} alt={s.alt || ""} width="640" height={h} loading="lazy"
+           className="w-full h-full object-cover block" />
+      {s.caption ? <figcaption className="px-3 py-2 text-sm bg-black/50 text-white">{s.caption}</figcaption> : null}
+    </figure>
+  );
+}
+```
+
+2. In the parent, memoize slides and avoid remounts. Do not inline arrays in JSX.
+
+```jsx
+// Hero.jsx
+import { useMemo } from "react";
+import VerticalCarousel from "./VerticalCarousel";
+
+export default function Hero(){
+  const slides = useMemo(() => ([
+    { src: "/img/plumbing.jpg", alt: "Plumber onsite", caption: "Plumbing • Same-day approval" },
+    { src: "/img/hvac.jpg", alt: "HVAC tune-up", caption: "HVAC • Maintenance plan" },
+    { src: "/img/roof.jpg", alt: "Roof repair", caption: "Roofing • Emergency dispatch" },
+    { src: "/img/landscaping.jpg", alt: "Landscaping crew", caption: "Landscaping • Route optimized" },
+    { src: "/img/pressure.jpg", alt: "Pressure washing", caption: "Pressure Washing • Recurring job" },
+    { src: "/img/electrical.jpg", alt: "Electrical upgrade", caption: "Electrical • Invoice paid" },
+  ]), []);
+  return <VerticalCarousel items={slides} height={460} autoplayMs={4000} transitionMs={450} />;
+}
+```
+
+3. Remove other animations or timers:
+
+* Ensure no CSS keyframes on the track.
+* Ensure no other `setInterval` elsewhere touching `index`.
+* In dev, React StrictMode double-mount can confuse timers. For testing, temporarily remove `<React.StrictMode>` in `main.jsx`.
+
+4. Image sanity:
+
+* Broken image URLs look like “skips.” Confirm all `src` paths resolve. Use fixed height container and `object-cover`. Confirm images load; broken sources cause “blank” slides that look like skips. 

@@ -1,0 +1,229 @@
+You’re right—let’s give this section a distinctive, premium feel without noise. Here’s a redesigned block that reads fast, contrasts cleanly with the dark hero, and feels “custom”: a **Workflow Rail**—three connected steps with a subtle blue rail running behind the cards. It’s calm, unique, and every card has a CTA.
+
+---
+
+## Create “Workflow Rail” section (unique, high-contrast, premium)
+
+**Scope:** Add this directly under the hero. Do not change the hero or the carousel.
+
+### Visual concept
+
+* **Background:** very light blue-tinted white for hard contrast with the dark hero: `#F7FAFF`.
+* **Motif:** a soft **blue rail line** (SVG) runs behind all cards from left to right, hinting “one connected flow.”
+* **Cards:** white surfaces with crisp borders, subtle shadow, and a **large step number watermark** in the corner (faint, not gimmicky).
+* **Hierarchy:** center card lifted by 4px to draw the eye without flash.
+* **CTAs:** a primary button on each card + a section-level CTA below.
+
+### Colors
+
+* Rail gradient: `#9CC0FF → #2D6BFF`
+* Card border: `#E6EAF2`
+* Headings: `#0A1326`
+* Body text: `#1F2937`
+* Primary button: `#2D6BFF` hover `#255AE0`
+
+### Copy (plain language, no abbreviations)
+
+* Title: **Everything you need in one place**
+* Subtitle: *Plan the day, send estimates, and collect payments without switching tools.*
+* Card 1 — **Schedule and dispatch**
+
+  * Intro: *Assign jobs to the right person in minutes.*
+  * Bullets:
+
+    * *Drag and drop jobs onto the schedule.*
+    * *Match by skills, distance, and priority.*
+    * *Give every technician the plan on their phone.*
+  * CTA: **See scheduling** → `/features/scheduling`
+* Card 2 — **Send estimates and get approval**
+
+  * Intro: *Create clear estimates on site or in the office.*
+  * Bullets:
+
+    * *Use saved items and prices to build fast.*
+    * *Send by email and text with one click.*
+    * *Customers approve online without a call.*
+  * CTA: **See estimates** → `/features/estimates`
+* Card 3 — **Invoice and get paid**
+
+  * Intro: *Create an invoice and collect payment the same day.*
+  * Bullets:
+
+    * *Accept cards and bank payments securely.*
+    * *Send receipts and keep records in one place.*
+    * *Track what is due and what is paid.*
+  * CTA: **See payments** → `/features/payments`
+* Section CTA: **Start your trial** → `/signup`
+
+### Accessibility
+
+* `<section aria-labelledby="workflow-rail-title">`
+* Rail is decorative `aria-hidden="true"`.
+* Buttons have visible focus rings.
+
+---
+
+## Implementation (React + Tailwind)
+
+```tsx
+// components/WorkflowRail.tsx
+import { Link } from "react-router-dom";
+
+type Step = {
+  n: number;
+  title: string;
+  intro: string;
+  bullets: string[];
+  cta: string;
+  href: string;
+};
+
+const steps: Step[] = [
+  {
+    n: 1,
+    title: "Schedule and dispatch",
+    intro: "Assign jobs to the right person in minutes.",
+    bullets: [
+      "Drag and drop jobs onto the schedule.",
+      "Match by skills, distance, and priority.",
+      "Give every technician the plan on their phone."
+    ],
+    cta: "See scheduling",
+    href: "/features/scheduling"
+  },
+  {
+    n: 2,
+    title: "Send estimates and get approval",
+    intro: "Create clear estimates on site or in the office.",
+    bullets: [
+      "Use saved items and prices to build fast.",
+      "Send by email and text with one click.",
+      "Customers approve online without a call."
+    ],
+    cta: "See estimates",
+    href: "/features/estimates"
+  },
+  {
+    n: 3,
+    title: "Invoice and get paid",
+    intro: "Create an invoice and collect payment the same day.",
+    bullets: [
+      "Accept cards and bank payments securely.",
+      "Send receipts and keep records in one place.",
+      "Track what is due and what is paid."
+    ],
+    cta: "See payments",
+    href: "/features/payments"
+  }
+];
+
+export default function WorkflowRail() {
+  return (
+    <section
+      aria-labelledby="workflow-rail-title"
+      className="relative overflow-hidden bg-[#F7FAFF]"
+    >
+      {/* Decorative rail behind cards */}
+      <svg
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-28 mx-auto max-w-7xl w-full"
+        viewBox="0 0 1200 160"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="rail" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#9CC0FF" />
+            <stop offset="100%" stopColor="#2D6BFF" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M 0 120 C 220 60, 480 160, 680 90 S 1000 40, 1200 100"
+          fill="none"
+          stroke="url(#rail)"
+          strokeWidth="3"
+          strokeDasharray="10 8"
+          opacity="0.5"
+        />
+      </svg>
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+        <header className="max-w-2xl">
+          <h2 id="workflow-rail-title" className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#0A1326]">
+            Everything you need in one place
+          </h2>
+          <p className="mt-3 text-lg text-[#1F2937]">
+            Plan the day, send estimates, and collect payments without switching tools.
+          </p>
+        </header>
+
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {steps.map((s, i) => (
+            <article
+              key={s.n}
+              className={[
+                "relative rounded-xl bg-white p-6 sm:p-7 lg:p-8",
+                "border border-[#E6EAF2] shadow-[0_1px_2px_rgba(16,24,40,0.04)]",
+                "hover:shadow-[0_8px_22px_rgba(16,24,40,0.08)] transition",
+                i === 1 ? "lg:-mt-3" : "" // lift the middle card slightly
+              ].join(" ")}
+            >
+              {/* Number watermark */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-3 -left-2 text-[64px] font-semibold leading-none text-[#EAF1FF]"
+              >
+                {s.n}
+              </span>
+
+              <h3 className="text-xl font-semibold text-[#0A1326]">{s.title}</h3>
+              <p className="mt-2 text-[#1F2937]">{s.intro}</p>
+              <ul className="mt-4 space-y-2 text-[#1F2937]">
+                {s.bullets.map((b, idx) => <li key={idx}>• {b}</li>)}
+              </ul>
+
+              <div className="mt-6">
+                <Link
+                  to={s.href}
+                  aria-label={`Learn more about ${s.title.toLowerCase()}`}
+                  className="
+                    inline-flex items-center justify-center rounded-md
+                    bg-[#2D6BFF] px-4 py-2 text-sm font-medium text-white
+                    hover:bg-[#255AE0]
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D6BFF] focus-visible:ring-offset-2
+                  "
+                >
+                  {s.cta}
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Section-level CTA */}
+        <div className="mt-10">
+          <Link
+            to="/signup"
+            className="
+              inline-flex items-center justify-center rounded-md
+              bg-[#2D6BFF] px-5 py-3 text-base font-medium text-white
+              hover:bg-[#255AE0]
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D6BFF] focus-visible:ring-offset-2
+            "
+          >
+            Start your trial
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+### Why this cures the “bare minimum” problem
+
+* **Contrast is automatic:** light band under a dark hero; black-on-white text inside cards.
+* **Distinctive but calm:** the rail and watermark numerals add identity without clutter.
+* **Conversion-first:** CTA on each card plus a bottom CTA.
+* **Professional details:** precise borders, subtle lift, center-card emphasis.
+
+Drop this in and we’ll tune spacing if needed. After this section is approved, we can mirror the rail motif in a compact “Old way vs. LinkServicePro” band to deepen differentiation while keeping the same visual language.

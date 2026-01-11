@@ -1,0 +1,145 @@
+Heard. Replace the current Linkware band. Here’s a single, surgical, no-code prompt to rebuild a mobile-first “Property Linkware Integration” section that converts quickly, uses an email field with an attached button, and stays within the global container. It replaces the existing section entirely.
+
+⸻
+
+Task
+
+Remove the current Property Linkware/Integrations band and create a new Property Linkware Integration section that briefly explains the value of connecting inspection software (Link Inspect Pro) and property organizer software (Property Organizer) into LinkServicePro—and captures leads with an attached email CTA. Keep it lightweight, mobile-first, and accessible.
+
+Placement & scope
+	•	Lives where the existing Linkware section is now (after the comparison band and before pricing).
+	•	Update only this section and its data/config. Do not change routes, global SEO, or other sections.
+
+Objectives (what this section must communicate)
+	•	You get Inspections + Property Organizer data flowing automatically into LinkServicePro projects/jobs.
+	•	Benefits in seconds (no deep dive on the homepage).
+	•	Primary conversion: email field with button attached on the right (“Get Started Free”).
+
+⸻
+
+Structure (mobile → desktop)
+	1.	Header (left-aligned, inside the global container)
+	•	Eyebrow: Integrations (use standard eyebrow style; not blue)
+	•	H2: Property Linkware Integration
+	•	Support (one sentence): Inspections and property records connect to every job—so photos, reports, and asset history live in one place.
+	2.	Two micro-benefit stacks (short, scannable; each with a tiny icon title + three bullets)
+	•	Link Inspect Pro (Inspections)
+	•	✓ Capture checklists, photos, and markups
+	•	✓ Auto-generate summary reports
+	•	✓ Send results to the job in LinkServicePro
+	•	Property Organizer (Assets & Properties)
+	•	✓ Asset files, photos, and notes by site
+	•	✓ Service & inspection history on one timeline
+	•	✓ Owners/tenants can request and track service
+	3.	Optional compact visual (right column on desktop; below header/stacks on mobile)
+	•	One static 16:9 mock (WebP) of a job timeline showing a “Report.pdf attached” pill and an asset panel.
+	•	Intrinsic width/height, loading="lazy", decoding="async".
+	•	Alt: Job timeline with attached inspection report and property asset files.
+	4.	Email lead form (attached control) — the CTA
+	•	Single input + button attached (shared border radius; no gap).
+	•	Placeholder: Enter your email
+	•	Button text: Get Started Free →
+	•	Validation on submit (reasonable regex), inline error under field; success message: You’re in—check your email to get started.
+	•	Submit to existing handler or stub: POST /api/lead with { email, source: "home_linkware" }
+	•	Below the form, a small text link: Learn more about Property Linkware → /integrations/property-linkware
+	•	Legal whisper (muted, xs): By continuing you agree to our Terms and acknowledge our Privacy Policy.
+	5.	Spacing & layout
+	•	Mobile (default): Header → two stacks → image (optional) → email form → link + legal. One column, no horizontal scroll.
+	•	Desktop (lg+): 12-col grid:
+	•	Left (7–8 cols): Header + two micro-stacks.
+	•	Right (4–5 cols): Compact visual card.
+	•	Form spans full width below the grid, centered.
+
+⸻
+
+Visual & motion
+	•	Use existing tokens (rounded-xl cards, low-contrast inner borders, navy canvas).
+	•	Icons monochrome; symbols ✓/–/✕ are text, not color-only.
+	•	Motion only for focus/hover; respect prefers-reduced-motion. No carousels, no auto-scroll.
+
+⸻
+
+Accessibility
+	•	One h2 for the section; stacks use h3 headings.
+	•	Email input has a visible or sr-only label, type="email", autocomplete="email".
+	•	Error/success messages announced via aria-live="polite"; error bound via aria-describedby.
+	•	Buttons/links ≥44px targets; visible focus rings; no tooltips/portals.
+
+⸻
+
+Performance
+	•	Keep payload tiny: 1 image max, WebP, intrinsic size, lazy load.
+	•	No third-party scripts.
+	•	Zero CLS (reserve space for image; consistent paddings).
+
+⸻
+
+Data model (create a tiny constants file)
+
+// linkwareSectionData.ts
+export const LINKWARE_COPY = {
+  eyebrow: "Integrations",
+  title: "Property Linkware Integration",
+  support: "Inspections and property records connect to every job—so photos, reports, and asset history live in one place.",
+  stacks: [
+    {
+      key: "inspect",
+      heading: "Link Inspect Pro (Inspections)",
+      bullets: [
+        "Capture checklists, photos, and markups",
+        "Auto-generate summary reports",
+        "Send results to the job in LinkServicePro"
+      ]
+    },
+    {
+      key: "organizer",
+      heading: "Property Organizer (Assets & Properties)",
+      bullets: [
+        "Asset files, photos, and notes by site",
+        "Service & inspection history on one timeline",
+        "Owners/tenants can request and track service"
+      ]
+    }
+  ],
+  form: {
+    placeholder: "Enter your email",
+    button: "Get Started Free →",
+    endpoint: "/api/lead",
+    source: "home_linkware"
+  },
+  learnMoreHref: "/integrations/property-linkware",
+  legal: "By continuing you agree to our Terms and acknowledge our Privacy Policy.",
+  image: {
+    src: "/img/linkware-preview.webp",
+    alt: "Job timeline with attached inspection report and property asset files.",
+    width: 1200,
+    height: 675
+  }
+};
+
+⸻
+
+Interaction rules
+	•	Enter key submits the attached email control; disable button while submitting.
+	•	On success, clear field and show the success message inline; keep the section in view (no jump).
+	•	Optional: fire a one-time “view” event when ≥35% of the band is in viewport.
+
+Analytics
+	•	linkware.view (once on in-view)
+	•	linkware.lead_submit { email_domain, source: "home_linkware" }
+	•	linkware.learn_more_click
+
+⸻
+
+Acceptance criteria (verify before finishing)
+	1.	Old Linkware band is removed; the new section renders inside the same global container as other bands (no full-bleed).
+	2.	Header copy matches exactly; two micro-benefit stacks render with three ✓ bullets each.
+	3.	Email input + attached button works with validation, error, and success states; accessible labels and aria-live present.
+	4.	Optional image lazy-loads with intrinsic size; no CLS.
+	5.	Learn-more link routes to /integrations/property-linkware; legal whisper present.
+	6.	No tooltips, no portals, no carousels; focus rings visible; mobile has no horizontal scroll.
+	7.	Analytics events fire as specified.
+
+⸻
+
+When this ships, we’ll keep the deep-dive for Linkware on its own route and move on to Pricing, then Blog/Resources, FAQ, and a final CTA banner with the same attached email control.

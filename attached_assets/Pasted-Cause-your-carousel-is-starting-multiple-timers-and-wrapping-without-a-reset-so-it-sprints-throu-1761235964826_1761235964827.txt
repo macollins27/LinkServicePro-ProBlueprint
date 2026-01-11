@@ -1,0 +1,180 @@
+Cause: your carousel is starting multiple timers and “wrapping” without a reset, so it sprints through all slides and lands on nothing.
+
+Fix it by replacing your VerticalCarousel with this self-contained, debounced version. It clones the first slide for a seamless loop, runs one timer only, pauses on hover/focus, and resets state after the transition.
+
+```jsx
+// src/components/VerticalCarousel.jsx
+import { useEffect, useRef, useState } from "react";
+
+export default function VerticalCarousel({
+  items = [],            // [{ src, alt, caption }]
+  height = 420,          // px
+  autoplayMs = 4000,     // time each slide is visible
+  transitionMs = 450,    // slide animation duration
+}) {
+  const [index, setIndex] = useState(0);        // 0..items.length (last is clone)
+  const [animMs, setAnimMs] = useState(transitionMs);
+  const [paused, setPaused] = useState(false);
+  const trackRef = useRef(null);
+  const prefReduced =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const total = items.length;
+  const hasSlides = total > 0;
+  // Build slides with a cloned first slide for smooth wrap
+  const slides = hasSlides ? [...items, items[0]] : [];
+
+  // ---- AUTOPLAY (single interval, cleaned up) ----
+  useEffect(() => {
+    if (!hasSlides || prefReduced || paused) return;
+    const id = setInterval(() => next(), autoplayMs);
+    return () => clearInterval(id);
+  }, [index, paused, hasSlides, prefReduced, autoplayMs]);
+
+  function next() {
+    // normal advance; allow temporary move to cloned slide (index === total)
+    setAnimMs(transitionMs);
+    setIndex((i) => Math.min(i + 1, total)); // cap at clone
+  }
+
+  function prev() {
+    setAnimMs(transitionMs);
+    setIndex((i) => {
+      if (i === 0) {
+        // jump to clone of last, then animate back one frame later
+        setAnimMs(0);
+        return total; // jump without animation
+      }
+      return i - 1;
+    });
+    // allow next tick to animate normally again
+    requestAnimationFrame(() => setAnimMs(transitionMs));
+  }
+
+  // ---- HANDLE WRAP AFTER TRANSITION ----
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const onEnd = () => {
+      if (index === total) {
+        // we’re on cloned first; snap back to real first without animation
+        setAnimMs(0);
+        setIndex(0);
+        requestAnimationFrame(() => setAnimMs(transitionMs));
+      }
+    };
+    el.addEventListener("transitionend", onEnd);
+    return () => el.removeEventListener("transitionend", onEnd);
+  }, [index, total, transitionMs]);
+
+  if (!hasSlides) return null;
+
+  return (
+    <div
+      className="relative overflow-hidden select-none"
+      style={{ height }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      {/* Track */}
+      <div
+        ref={trackRef}
+        className="w-full"
+        style={{
+          transform: `translateY(-${index * 100}%)`,
+          transition: `transform ${animMs}ms ease`,
+        }}
+        aria-live="polite"
+      >
+        {slides.map((s, i) => (
+          <figure
+            key={i}
+            className="w-full h-[inherit] flex flex-col justify-end bg-slate-100"
+            style={{ height }}
+          >
+            <img
+              src={s.src}
+              alt={s.alt || ""}
+              loading="lazy"
+              width="640"
+              height={height}
+              className="w-full h-full object-cover block"
+            />
+            {s.caption ? (
+              <figcaption className="px-3 py-2 text-sm bg-black/50 text-white">
+                {s.caption}
+              </figcaption>
+            ) : null}
+          </figure>
+        ))}
+      </div>
+
+      {/* Controls */}
+      <div className="absolute right-2 top-2 flex flex-col gap-2">
+        <button
+          type="button"
+          aria-label="Previous"
+          className="px-2 py-1 bg-white/90 text-slate-900 border border-slate-300 rounded-none"
+          onClick={prev}
+        >
+          ↑
+        </button>
+        <button
+          type="button"
+          aria-label="Next"
+          className="px-2 py-1 bg-white/90 text-slate-900 border border-slate-300 rounded-none"
+          onClick={next}
+        >
+          ↓
+        </button>
+      </div>
+
+      {/* Dots */}
+      <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-2">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            aria-label={`Go to slide ${i + 1}`}
+            aria-current={index % total === i ? "true" : undefined}
+            className={`w-2 h-2 border border-white ${
+              index % total === i ? "bg-white" : "bg-transparent"
+            }`}
+            onClick={() => {
+              setAnimMs(transitionMs);
+              setIndex(i);
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+Usage in `Hero.jsx`:
+
+```jsx
+import VerticalCarousel from "./VerticalCarousel";
+
+const heroSlides = [
+  { src: "/img/plumbing.jpg", alt: "Plumber onsite", caption: "Plumbing • Same-day approval" },
+  { src: "/img/hvac.jpg", alt: "HVAC tune-up", caption: "HVAC • Maintenance plan" },
+  { src: "/img/roof.jpg", alt: "Roof repair", caption: "Roofing • Emergency dispatch" },
+  { src: "/img/landscaping.jpg", alt: "Landscaping crew", caption: "Landscaping • Route optimized" },
+  { src: "/img/pressure.jpg", alt: "Pressure washing", caption: "Pressure Washing • Recurring job" },
+  { src: "/img/electrical.jpg", alt: "Electrical upgrade", caption: "Electrical • Invoice paid" },
+];
+
+<VerticalCarousel items={heroSlides} height={460} autoplayMs={4000} transitionMs={450} />
+```
+
+Checklist to avoid the fast-skip bug:
+
+* Remove any other `setInterval` or CSS keyframe animations tied to the same track.
+* Ensure the carousel container has a fixed height and `overflow-hidden`.
+* Keep exactly one `useEffect` interval with cleanup.
+* Use the cloned first slide + `transitionend` snapback logic as above.
+* Respect `prefers-reduced-motion`: no autoplay when true.

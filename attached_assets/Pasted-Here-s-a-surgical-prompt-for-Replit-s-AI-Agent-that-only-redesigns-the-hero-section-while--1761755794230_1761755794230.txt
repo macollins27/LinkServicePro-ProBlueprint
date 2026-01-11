@@ -1,0 +1,175 @@
+Here’s a **surgical** prompt for Replit’s AI Agent that **only redesigns the hero section** while **keeping your existing carousel/slider component unchanged**. Paste it as-is.
+
+---
+
+## PROMPT: “Redesign HERO only — keep existing Carousel component intact”
+
+**Do not rebuild the app. Do not touch routing or other sections. Only refactor the Hero section layout, copy, and styles. Keep the existing image slider/carousel component exactly as-is in both code and behavior.**
+
+### Scope
+
+* Update files for the hero only. Likely paths:
+
+  * `client/src/pages/home.tsx` → where `<Hero />` is rendered.
+  * `client/src/components/Hero.tsx` **or** `client/src/sections/Hero.tsx` (whichever exists).
+  * If hero lives inline inside `home.tsx`, extract to `client/src/sections/Hero.tsx` and import.
+* **Do not modify** the Carousel component code (e.g., `HeroCarousel`, `ImageSlider`, etc.). You may only reposition it and wrap it with new layout containers.
+
+### Goals
+
+* Beat competitor above-the-fold clarity and conversion.
+* SEO/AI-optimized headline using “#1” claim.
+* Contractor-first messaging.
+* Mobile-first layout.
+* Consistent CTAs per site-wide button spec.
+* Show key differentiators immediately.
+* Preserve performance and accessibility.
+
+### New hero content and structure
+
+**Background:** dark navy band using existing tokens. Subtle gradient allowed; no busy stock photo.
+
+**Two-column layout on desktop, single-column on mobile:**
+
+* **Left column (content):**
+
+  * **H1 (exact text):**
+    **“The #1 field service management software for contractors.”**
+  * **Subhead:**
+    “Run jobs faster with simple scheduling, estimates, messaging, and payments. Unlimited users on paid plans. Works with Google Calendar and Apple Calendar.”
+  * **Primary CTA:** “Start Free”
+  * **Secondary CTA:** “View Pricing”
+  * **Text link:** “Watch 2-min tour”
+  * **Trust badges row:** gray placeholders for Google Calendar + Apple Calendar + a pill saying “Unlimited users” + a pill saying “Job-based pricing”.
+  * **Micro-KPI chips (inline list, no icons):**
+    “35% faster scheduling” • “2× quicker approvals” • “<24 hr time-to-pay”
+  * **Sales line (mobile-only foot):** phone icon + “Call sales (631) 206-3700”
+* **Right column (visual):**
+
+  * Render the **existing carousel** component unchanged. Keep its props, children, and internal logic. Only place it inside a responsive container that constrains height and prevents CLS.
+
+### Detailed implementation steps
+
+1. **Locate Hero component**
+
+   * Search for `<Hero />` usage in `client/src/pages/home.tsx`.
+   * If hero markup is inline in `home.tsx`, extract it into `client/src/sections/Hero.tsx` and import.
+   * Identify the **carousel component** name (e.g., `HeroCarousel`, `ImageSlider`, etc.). **Do not modify its file**. Only import and render it.
+
+2. **Create new layout in the Hero component**
+
+   * Parent `<section>`: `role="region" aria-label="Hero" className="relative isolate overflow-hidden bg-[#0E2A47] text-white"`
+     Add padding: `px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20`
+   * Grid: `max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center`
+
+     * **Left**: `lg:col-span-6 xl:col-span-5`
+     * **Right**: `lg:col-span-6 xl:col-span-7`
+
+3. **Left column content blocks**
+
+   * **H1**
+
+     ```tsx
+     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+       The #1 field service management software for contractors.
+     </h1>
+     ```
+   * **Subhead**
+
+     ```tsx
+     <p className="mt-4 text-lg sm:text-xl text-slate-200">
+       Run jobs faster with simple scheduling, estimates, messaging, and payments. Unlimited users on paid plans. Works with Google Calendar and Apple Calendar.
+     </p>
+     ```
+   * **CTAs**
+     Use your existing Button variants. Do not redefine styles.
+
+     ```tsx
+     <div className="mt-6 flex flex-col sm:flex-row gap-3">
+       <Button variant="primary">Start Free</Button>
+       <Button variant="secondary">View Pricing</Button>
+       <a href="#tour" className="sm:ml-2 inline-flex items-center text-white/80 hover:text-white underline underline-offset-4">
+         Watch 2-min tour
+       </a>
+     </div>
+     ```
+   * **Trust badges + pills**
+     Use gray placeholders sized by utility classes.
+
+     ```tsx
+     <div className="mt-6 flex flex-wrap items-center gap-3">
+       <div className="h-8 w-28 bg-slate-300/20 rounded-md grid place-content-center text-xs">Google Calendar</div>
+       <div className="h-8 w-28 bg-slate-300/20 rounded-md grid place-content-center text-xs">Apple Calendar</div>
+       <span className="px-3 py-1 rounded-full bg-white/10 text-xs">Unlimited users</span>
+       <span className="px-3 py-1 rounded-full bg-white/10 text-xs">Job-based pricing</span>
+     </div>
+     ```
+   * **KPI chips**
+
+     ```tsx
+     <ul className="mt-5 flex flex-wrap gap-2 text-xs text-white/80">
+       <li className="px-2.5 py-1 rounded-full bg-white/10">35% faster scheduling</li>
+       <li className="px-2.5 py-1 rounded-full bg-white/10">2× quicker approvals</li>
+       <li className="px-2.5 py-1 rounded-full bg-white/10">&lt;24 hr time-to-pay</li>
+     </ul>
+     ```
+   * **Sales line (mobile-only)**
+
+     ```tsx
+     <p className="mt-4 text-sm text-white/70 lg:hidden">Call sales (631) 206-3700</p>
+     ```
+
+4. **Right column with the existing carousel**
+
+   * Wrap the carousel in a responsive aspect box. Example:
+
+     ```tsx
+     <div className="relative lg:ml-auto">
+       <div className="aspect-[16/10] sm:aspect-[5/3] lg:aspect-[16/10] rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-2xl">
+         {/* Keep this component exactly as-is */}
+         <HeroCarousel />
+       </div>
+     </div>
+     ```
+   * If your carousel exports under a different name, import that exact component. **Do not change its code.** Only ensure its parent has a fixed aspect to prevent CLS.
+
+5. **Button variants**
+
+   * Reuse the site’s existing `Button` component and variants (`primary`, `secondary`). **Do not create new button styles.** If variants differ, map “Start Free” to your primary and “View Pricing” to your secondary.
+
+6. **A11y & SEO**
+
+   * Only one `<h1>` on the page; keep all other headings in the hero as paragraphs or visually styled spans.
+   * All controls keyboard-focusable. Ensure visible focus ring inherits your global token.
+   * Add `aria-label="Hero image carousel"` to the wrapping container if not already present.
+   * Keep hero above-the-fold content text-first for LCP.
+
+7. **Responsive rules**
+
+   * Mobile: stack left column first, carousel below; add `order` classes if needed.
+   * Tablet/desktop: two columns with `lg:grid`.
+   * Constrain hero max height on small devices if the carousel is tall. Use `max-h-[520px]` on mobile wrapper if needed to avoid pushing CTAs below first viewport.
+
+8. **Do not remove existing analytics**
+
+   * Preserve any `data-analytics` attributes on buttons/links. If missing, add:
+
+     * Primary: `data-analytics="hero_start_free_click"`
+     * Secondary: `data-analytics="hero_view_pricing_click"`
+     * Tour link: `data-analytics="hero_watch_tour_click"`
+
+9. **Acceptance criteria**
+
+   * Carousel/slider code remains unchanged; only its container/wrapper is new.
+   * New H1 reads exactly: “The #1 field service management software for contractors.”
+   * Subhead, CTAs, trust badges, KPI chips appear as specified.
+   * Lighthouse (mobile) after rebuild: LCP element is the H1/subhead area; CLS 0.00; accessibility ≥ 95.
+   * No TypeScript or ESLint errors. No changes to other sections.
+
+10. **Optional small polish**
+
+* Add a low-opacity radial gradient overlay behind the left column for depth:
+  `before:absolute before:-z-10 before:inset-0 before:bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.08),transparent_60%)]`
+* Add Framer Motion fade-in on the left column and a slight slide-up on the carousel container; respect `prefers-reduced-motion`.
+
+**Deliverable:** Updated hero component(s) only, imported into `home.tsx`, with the existing carousel rendering inside the right column container. No other files altered beyond what is necessary to render this hero.

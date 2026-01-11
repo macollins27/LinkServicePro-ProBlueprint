@@ -1,0 +1,51 @@
+Add a new section directly under SchedulingInstantDemo on the Scheduling feature page.
+
+Stack: React 18 + TypeScript, Vite, Tailwind, shadcn/ui (Radix), Wouter. Mobile-first. WCAG AA+. “Pro-Blueprint” theme.
+
+Create `src/sections/SchedulingPainSolve.tsx` and render it immediately after the previous section in `src/routes/features/scheduling.tsx`.
+
+Requirements:
+- Header
+  * H2: “Kill scheduling chaos”
+  * Sub: “Common field problems paired with the exact fix. Drag, drop, done.”
+
+- Pain → Solve grid
+  * Left column: 6 pains as list items.
+  * Right column: corresponding solves as list items with bolded action then outcome.
+  * Mobile: one column stacked; ≥640px two columns with left pains and right solves aligned by index.
+  * Use sharp corners, ring-1 slate-200, subtle shadow class per theme.
+
+- ROI + CTA row
+  * Three small cards: “Save 2 hrs/tech/week”, “Fewer no-shows”, “Faster cash cycle”.
+  * Buttons: primary Start Free (green #0FB36F), secondary View Pricing (underline with accent #0B5FFF).
+  * Provide `data-testid` on primary CTA `mid-cta-start`.
+
+- Accessibility
+  * `aria-label` on pains and solutions lists.
+  * Ensure focus rings use accent blue #0B5FFF.
+  * Links must be reachable by keyboard and have visible focus.
+
+- Styling
+  * Add optional light blueprint grid background utility `bg-blueprint` already created; allow a prop to toggle it.
+  * No rounded pills. No busy gradients.
+
+- Content (use verbatim):
+  Pains:
+    1) Last-minute cancel at 2:00
+    2) Tech stuck in traffic
+    3) Double-booked crew
+    4) “Can you come earlier?”
+    5) Overlapping routes
+    6) Rain delay
+  Solves:
+    1) Drag to tomorrow 9:00. Customer auto-texted. Slot backfills from waitlist.
+    2) Reassign with one drag. Route recalcs. ETA shared.
+    3) Drop to first open slot. Clash cleared. No double-booking.
+    4) Pull job forward. Parts check runs. New window sent.
+    5) Merge nearby jobs. Drive time drops.
+    6) Bulk move exterior jobs. Batch notifications go out.
+
+- QA gates
+  * No overflow at 375px.
+  * Lighthouse on this route: ≥90 Performance, ≥95 Accessibility.
+  * Tab order: header → pains → solves → ROI cards → Start Free → View Pricing.

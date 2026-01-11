@@ -1,0 +1,382 @@
+Good. I'll generate 8 seed blog posts you can drop into `blogPosts` in `src/data/blog-posts.ts` so your `/blog` page renders with credible, contractor-focused content.
+
+Each post will include:
+
+* `slug`
+* `title`
+* `excerpt` (2–3 sentence hook, practical, not fluff)
+* `category` (Operations, Sales, Product, Finance, People — you can add more)
+* `tags` (used for filters)
+* `author`
+* `publishedAt`, `updatedAt`
+* `readMinutes`
+* `content` (basic longform text you can later convert to HTML or markdown)
+
+All of these are written to sound like someone who's actually run crews, not Silicon Valley nonsense.
+
+You can paste these objects directly into your `blogPosts` array.
+
+---
+
+### 1. Dispatch board past 5 techs
+
+```ts
+{
+  slug: "dispatch-board-scale-beyond-5-techs",
+  title: "How to build a dispatch board that survives past 5 techs",
+  excerpt:
+    "Most shops fall apart after 4–5 techs because the owner is still playing air-traffic control from their phone. Here’s how to structure live dispatch, routing, and job status so you aren’t fielding 'Where’s my guy?' calls all afternoon.",
+  category: "Operations",
+  tags: ["dispatch", "scheduling", "capacity"],
+  author: {
+    name: "Maxwell Collins",
+    role: "Founder, LinkServicePro"
+  },
+  cover: {
+    alt: "Whiteboard dispatch schedule replaced with live map and job status"
+  },
+  publishedAt: "2025-01-03T10:00:00Z",
+  updatedAt: "2025-01-03T10:00:00Z",
+  readMinutes: 8,
+  content: `
+When you’re under 5 field techs, “dispatch” is usually you texting people and praying nothing overlaps.
+After that, the chaos tax hits: double-booked calls, unpaid windshield time, and customers calling every
+20 minutes asking, “Where is he?”
+
+We’ll break down:
+1. How to group jobs by geography, not by first-come-first-serve.
+2. Why you stop promising exact arrival windows and start promising tiers (8-10am, 10-12, etc).
+3. How to stop techs from self-assigning after-hours cash work that never hits your books.
+
+If you can’t see location, status, and work-in-progress at a glance, you’re dispatching blind.
+`
+}
+```
+
+Why this matters: speaks to scaling pain. Strong for HVAC, Plumbing, Electrical, Garage Door, etc.
+
+---
+
+### 2. Faster approvals with e-signs
+
+```ts
+{
+  slug: "get-faster-approvals-with-e-sign-estimates",
+  title: "Get faster approvals using e-sign estimates (without sounding pushy)",
+  excerpt:
+    "Stop waiting three days for 'let me talk to my wife.' If your estimate isn’t easy to approve from a phone, you’re feeding your competitor. Here’s how to structure mobile quotes that close same-day.",
+  category: "Sales",
+  tags: ["estimates", "e-signatures", "close-rate"],
+  author: {
+    name: "Maxwell Collins",
+    role: "Founder, LinkServicePro"
+  },
+  cover: {
+    alt: "Customer signing an estimate on their phone"
+  },
+  publishedAt: "2025-01-05T14:30:00Z",
+  updatedAt: "2025-01-05T14:30:00Z",
+  readMinutes: 7,
+  content: `
+Homeowners ghost because you're giving them homework.
+They have to dig up an email, open a PDF, print it, sign it, scan it, send it back.
+That's friction. Friction kills approval speed.
+
+You fix that by:
+• Sending the quote as a clean mobile link.
+• Showing problem → fix → price in plain language.
+• Giving them a “Approve & Schedule” button instead of “Let us know.”
+
+You're not being aggressive. You're being easy to hire.
+`
+}
+```
+
+Why this matters: conversion. You’ll later interlink this with your “Estimates & Signatures” feature page.
+
+---
+
+### 3. Route optimization basics
+
+```ts
+{
+  slug: "route-optimization-same-day-service",
+  title: "Route optimization basics for same-day service calls",
+  excerpt:
+    "You're losing money every time a tech drives 25 minutes in the wrong direction because 'that job felt urgent.' You can’t kill windshield time completely, but you can stop lighting two hours a day on fire.",
+  category: "Operations",
+  tags: ["routing", "gps", "efficiency"],
+  author: {
+    name: "Operations Desk",
+    role: "Field Success, LinkServicePro"
+  },
+  cover: {
+    alt: "Technician route visualized on a live map"
+  },
+  publishedAt: "2025-01-07T09:00:00Z",
+  updatedAt: "2025-01-07T09:00:00Z",
+  readMinutes: 6,
+  content: `
+Routing mistakes don't just cost gas.
+They cost daylight.
+
+In same-day service (plumbing leak, no-heat call, electrical short),
+routing is triage.
+Here are 3 rules that almost every profitable shop follows:
+1. Cluster geographically whenever possible. Courthouse, not hero.
+2. Always know who’s already rolling and where they’ll land next.
+3. Stop letting “loudest caller” outrank “highest-ticket work”.
+
+You can still be responsive without letting panic run your schedule.
+`
+}
+```
+
+Why this matters: this feeds into “GPS + capacity planning,” which your product claims.
+
+---
+
+### 4. Deposits and partial payments
+
+```ts
+{
+  slug: "take-deposits-and-partial-payments-without-chaos",
+  title: "How to take deposits and partial payments without drama",
+  excerpt:
+    "You’re not a bank. Stop floating material costs on jobs that might reschedule twice. Here’s how to ask for money upfront and still sound professional.",
+  category: "Finance",
+  tags: ["payments", "billing", "cashflow"],
+  author: {
+    name: "Maxwell Collins",
+    role: "Founder, LinkServicePro"
+  },
+  cover: {
+    alt: "Customer making a card deposit from phone"
+  },
+  publishedAt: "2025-01-09T11:15:00Z",
+  updatedAt: "2025-01-09T11:15:00Z",
+  readMinutes: 5,
+  content: `
+Contractors get shy about deposits because they're afraid to sound “money hungry.”
+But here’s reality:
+- You’re buying parts.
+- You’re blocking crew time.
+- You’re saying no to other work.
+
+The fix is scripting.
+“We can lock in your spot for Thursday and secure the parts with a $250 deposit.
+That comes off the final balance.”
+
+Clean. Calm. Professional.
+No apology. No chaos.
+`
+}
+```
+
+This supports your “Deposits / Partial Payments / Batch Invoicing / On-site collection” features.
+
+---
+
+### 5. Recurring maintenance plans
+
+```ts
+{
+  slug: "maintenance-plans-that-people-renew",
+  title: "Maintenance plans people actually renew (not ‘yeah maybe later’)",
+  excerpt:
+    "Most 'maintenance plans' are just a coupon stapled to a fridge magnet. That’s not recurring revenue. Here’s how to pitch repeat service so customers feel protected, not upsold.",
+  category: "Sales",
+  tags: ["recurring", "contracts", "membership"],
+  author: {
+    name: "Field Growth Team",
+    role: "Customer Success, LinkServicePro"
+  },
+  cover: {
+    alt: "Technician explaining a seasonal maintenance plan to a homeowner"
+  },
+  publishedAt: "2025-01-11T16:00:00Z",
+  updatedAt: "2025-01-11T16:00:00Z",
+  readMinutes: 9,
+  content: `
+Recurring work is stability.
+You can't scale crew wages off random emergencies forever.
+
+Make the plan about risk:
+• “This keeps you from losing heat on a holiday weekend.”
+• “This keeps the city from red-tagging your panel.”
+• “This keeps drain backups from becoming drywall damage.”
+
+Customers buy prevention if you translate it into avoided chaos.
+Not just “10% off filters.”
+`
+}
+```
+
+This lines up with: recurring jobs, subscription billing, scheduled visits.
+
+---
+
+### 6. Stop babysitting your techs
+
+```ts
+{
+  slug: "stop-babysitting-your-techs-all-day",
+  title: "How to stop babysitting your techs all day (without losing control)",
+  excerpt:
+    "If you’re still calling every tech 10 times a day, you don’t have a field team. You have errands. Here’s how to hand off responsibility without burning quality.",
+  category: "People",
+  tags: ["techs", "accountability", "roles"],
+  author: {
+    name: "Maxwell Collins",
+    role: "Founder, LinkServicePro"
+  },
+  cover: {
+    alt: "Dispatcher checking a live job status board instead of texting the crew every 15 min"
+  },
+  publishedAt: "2025-01-13T08:45:00Z",
+  updatedAt: "2025-01-13T08:45:00Z",
+  readMinutes: 7,
+  content: `
+There’s a point where the business can't run through your throat anymore.
+Every “status check?” call is telling you the system is missing.
+
+You want:
+- Live job status without needing a text.
+- Role-based access so techs see what they need and nothing else.
+- A clean workflow: “Assigned → On route → Started → Done → Paid”.
+
+That's how you protect quality without being on the radio 12 hours a day.
+`
+}
+```
+
+Supports: live job status, internal messaging, role-based access, unlimited users.
+
+---
+
+### 7. Same-day pay
+
+```ts
+{
+  slug: "how-to-get-paid-same-day",
+  title: "How to get paid the same day you do the work",
+  excerpt:
+    "Waiting 14 days to get paid for a job that already burned fuel, labor, and parts is insane. You can fix this with two tweaks to how you present the invoice and how you collect on site.",
+  category: "Finance",
+  tags: ["invoicing", "collections", "cashflow"],
+  author: {
+    name: "Field Billing Ops",
+    role: "Payments Advisor, LinkServicePro"
+  },
+  cover: {
+    alt: "Field tech taking card payment in the driveway"
+  },
+  publishedAt: "2025-01-15T13:20:00Z",
+  updatedAt: "2025-01-15T13:20:00Z",
+  readMinutes: 6,
+  content: `
+Cash dragging 2+ weeks will quietly kill you.
+
+3 rules for same-day payment:
+1. Show the invoice on site, not 'we'll email you later.'
+2. Give them tap-to-pay or card-on-file, not 'mail a check.'
+3. Get a signature confirming work is complete and satisfaction is met.
+
+You’re not chasing money.
+You’re finishing the job.
+`
+}
+```
+
+Supports: on-site payments, card capture, customer portal.
+
+---
+
+### 8. Profit per crew, without spreadsheets
+
+```ts
+{
+  slug: "track-profit-per-crew-without-spreadsheets",
+  title: "How to track profit per crew without living in spreadsheets",
+  excerpt:
+    "Most owners can’t tell you which crew is actually profitable. They just know who complains the loudest. That’s a problem. Here’s how to track cost vs revenue by technician and stop guessing.",
+  category: "Finance",
+  tags: ["reporting", "profitability", "wages"],
+  author: {
+    name: "Operations Desk",
+    role: "Field Success, LinkServicePro"
+  },
+  cover: {
+    alt: "Simple profitability dashboard by crew"
+  },
+  publishedAt: "2025-01-17T10:10:00Z",
+  updatedAt: "2025-01-17T10:10:00Z",
+  readMinutes: 10,
+  content: `
+You don’t need a CPA to know who’s bleeding you.
+
+You need:
+- Labor cost per job
+- Material cost per job
+- Revenue actually collected (not just invoiced)
+- Time on site vs time driving
+
+When you look at that per crew, two things happen:
+1. You stop rewarding “busy” and start rewarding “profitable.”
+2. You stop underpricing repeat work because “the guys like that customer.”
+
+Data kills guesswork. Guesswork kills margin.
+`
+}
+```
+
+This hooks directly into:
+
+* Job costing
+* Wage tracking
+* Reporting & dashboards
+* Profitability by technician/team
+* Expense/material tracking
+
+---
+
+### How to use these
+
+1. In `src/data/blog-posts.ts`, build the array:
+
+```ts
+import { BlogPost } from "./blog-posts-type-if-you-break-it-out-or-just-inline";
+
+export const blogPosts: BlogPost[] = [
+  { ...dispatch board post... },
+  { ...e-sign approvals post... },
+  { ...route optimization post... },
+  { ...deposits post... },
+  { ...maintenance plans post... },
+  { ...babysitting techs post... },
+  { ...same-day pay post... },
+  { ...profit per crew post... }
+];
+```
+
+You can paste those full objects I wrote above in order.
+
+2. Make sure all `category` and `tags` values are strings. Your filter bar pulls unique categories + tags, so these posts become the initial taxonomy for filters.
+
+3. Replit will use `excerpt` for grid cards, `content` for article body, and `title` for SEO `<Helmet>`.
+
+4. All dates are in ISO so we can run `formatDate()` in the helper.
+
+5. You can update `author.role` later for authority — “15 yrs HVAC ops lead,” etc. That helps conversion. Homeowners don’t care. Contractors do.
+
+---
+
+### Next move
+
+If you want, I can generate:
+
+* the `AuthorBox` bio text for each author,
+* the `related posts` logic, and
+* the JSON-LD Article schema Replit should inject in `<Helmet>` per post.
+
+But for now, you can pass these 8 posts straight to Replit and your `/blog` and `/blog/:slug` pages will render like a real publication, not an empty shell.

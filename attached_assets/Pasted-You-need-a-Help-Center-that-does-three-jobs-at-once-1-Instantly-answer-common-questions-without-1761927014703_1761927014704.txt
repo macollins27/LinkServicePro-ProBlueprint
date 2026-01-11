@@ -1,0 +1,751 @@
+You need a Help Center that does three jobs at once:
+
+1. Instantly answer common questions without support tickets
+2. Make you look legitimate and established (this matters for conversion)
+3. Quietly move people toward signup instead of away from the site
+
+I’ll give you two things:
+
+1. The full Help Center information architecture and design (sections, layout, behaviors, copy tone)
+2. A final Replit prompt you can paste so it gets built under `/help` using your stack (React + Vite + Wouter + Tailwind + Helmet + lucide-react), matching your existing design system
+
+This will be structured like a production SaaS help center, not like a random FAQ page.
+
+You will not need to iterate if you hand this to Replit exactly as-is.
+
+–––
+PART 1. HELP CENTER PAGE DESIGN / UX
+Route: `/help`
+
+### Goals
+
+* “I can find my answer fast” (self-serve)
+* “These people are real, stable, and responsive”
+* Soft-sell the product inside support, not just at the marketing pages
+
+### Sections on `/help` (in order)
+
+1. Help Center Hero with search
+2. Top Categories grid
+3. Popular Articles list
+4. Contact / escalation block
+5. Dark CTA banner (product pitch)
+6. SEO / policy footer snippet
+
+We’ll also define subpages so every article is linkable:
+
+* `/help/article/:slug` (article detail page)
+* `/help/category/:slug` (category landing page)
+
+We’re not building a full backend. We’ll use a static `helpData.ts` that defines categories and articles.
+
+We’re also going to wire in Helmet and JSON-LD so Google (and AI assistants) can recognize that `/help` is the “support center” for LinkServicePro.
+
+---
+
+### 1. Help Center Hero (Section 1)
+
+Visual style:
+
+* White background
+* Full width
+* Border-bottom (slate-200)
+* Max width ~5xl centered
+
+Content:
+
+* Eyebrow: “HELP CENTER”
+
+  * tiny uppercase chip, brand blue #0B5FFF/10 background
+* h1: “How can we help?”
+
+  * bold, 2xl on mobile, 3xl on desktop
+* subtext:
+  “Step-by-step answers for scheduling, dispatch, invoices, payments, and more.”
+  Small, slate-600 tone.
+* Search bar:
+
+  * big rounded input with left icon (Search icon from lucide-react)
+  * placeholder: “Search scheduling, dispatch, invoices…”
+  * This search can be client-side filter (no backend yet). It’ll filter articles from helpData by title / keywords and show quick results in a dropdown below the field.
+  * For now: we build the UI + “TODO: implement filtering,” but at minimum make it look and feel real.
+
+Accessibility:
+
+* input must have `aria-label="Search help center"`
+* search results dropdown must be keyboard-focusable (even if initial version is static example links)
+
+Under the search bar:
+
+* two inline quick-links:
+
+  * “Can’t log in?” → `/help/article/cant-sign-in`
+  * “Payment not going through?” → `/help/article/payment-failed`
+    style: small text-[13px] underline/hover text-[#0B5FFF]
+
+---
+
+### 2. Top Categories grid (Section 2)
+
+Grid of 6 cards (2 columns mobile, 3 columns desktop). Each card is tappable.
+
+Each card shows:
+
+* Icon (lucide-react, inside a rounded 32px square with brand blue tint)
+* Category name (“Scheduling & Dispatch”)
+* Short 1-line promise (“Assign work, route techs, update ETAs”)
+* “View articles →” link
+
+Categories to include at launch:
+
+* Scheduling & Dispatch
+* Quotes & Invoices
+* Payments & Billing
+* Customer Messaging
+* Teams & Roles
+* Account & Settings
+
+Card styling:
+
+* White background
+* Rounded-xl
+* Border border-slate-200
+* Hover: ring-2 ring-[#0B5FFF], shadow-sm
+* Focus-visible ring for keyboard
+
+Clicking the card takes you to `/help/category/:slug`.
+
+Example category copy:
+Scheduling & Dispatch
+“Assign jobs, route techs, update ETAs in real time.”
+
+Quotes & Invoices
+“Send estimates with e-sign and invoice on-site.”
+
+Payments & Billing
+“Take deposits, partials, and same-day card payments.”
+
+Customer Messaging
+“Automated reminders, on-my-way texts, follow-ups.”
+
+Teams & Roles
+“Unlimited users, permissions, technician access.”
+
+Account & Settings
+“Calendar sync, notifications, company info.”
+
+Note how each line leans into a benefit / promise, not just “settings 101.”
+
+---
+
+### 3. Popular Articles list (Section 3)
+
+This is a fast-scan list of 4–6 links that answer the highest-friction things people ask.
+
+We’ll show:
+
+* Article title
+* Short subtext
+* “Read →” button on the right
+
+This list also:
+
+* Proves you’re real
+* Gets internal linking for SEO (e.g. “How do I take deposits?”)
+
+Example articles:
+
+1. “How do I schedule a job and assign a tech?”
+   sub: “Drag-and-drop scheduling, calendar sync, job details.”
+   slug: `/help/article/schedule-job-assign-tech`
+
+2. “How do I collect a deposit or partial payment?”
+   sub: “Take card-on-file or same-day card without sounding pushy.”
+   slug: `/help/article/collect-deposit`
+
+3. “How do I send an estimate for e-signature?”
+   sub: “Good / better / best options and digital sign-off.”
+   slug: `/help/article/send-estimate-esign`
+
+4. “How do recurring jobs / maintenance plans work?”
+   sub: “Set up automatic repeat visits that bill on schedule.”
+   slug: `/help/article/recurring-jobs-maintenance-plans`
+
+5. “How do I update the customer when we’re on the way?”
+   sub: “Send on-my-way text with tech name, ETA, and photo.”
+   slug: `/help/article/on-the-way-message`
+
+Styling:
+
+* Wrapper: border border-slate-200 rounded-lg, divide-y divide-slate-200
+* Each row flex-col on mobile, row w/ space-between on desktop
+* Title: text-[15px] font-semibold text-slate-900
+* Subtext: text-[13px] text-slate-600
+* CTA button: “Read →”, styled with brand blue text-[#0B5FFF] hover:underline, focus-visible ring.
+
+---
+
+### 4. Contact / escalation block (Section 4)
+
+We need a “when you’re stuck, we’ll help” box. This is important for trust and also helps conversion because it makes you feel like a real vendor, not vapor.
+
+This is a light card with icon + two escalation options:
+
+* “Can’t fix it?” → “Email support” (mailto:info@bimscorp.com)
+* “Need live help?” → “Call Support: 631-206-3700 Mon–Fri 9a–5p ET”
+
+Make sure we include the hours and phone, because humans judge legitimacy based on “Is there a phone number and hours?” You provided: 6312063700 and business address earlier, so we’ll reuse that.
+
+Visual:
+
+* Light slate-50 background
+* Rounded-xl
+* Border border-slate-200
+* Icon: Headset or LifeBuoy (lucide-react)
+* Title: “Still need help?”
+* Two small actions:
+
+  * Button w/ mail icon → opens mailto
+  * Button w/ phone icon → tel: link
+    Each should be accessible buttons/links with visible focus ring.
+
+Bonus credibility line in 11px text-slate-500:
+“Typical first response under 1 business hour.”
+
+---
+
+### 5. Dark CTA banner (Section 5)
+
+Exactly like you’re doing on /guides and your other CTAs.
+
+Navy #0E2A47 block:
+Left:
+
+* Heading: “Run the day, don’t chase it.”
+* Body: “Live dispatch board, route planning, quotes with e-sign, and same-day payment — all in one hub.”
+
+Right:
+
+* Button “Get Started Free” → `/signup`
+* Button “Talk to Sales” → `/contact`
+* Subtext in white/60: “Works with Google Calendar and Apple Calendar. Unlimited users on paid plans.”
+
+This section reminds them: we’re not just docs, we’re the platform.
+
+---
+
+### 6. SEO / policy footer snippet (Section 6)
+
+At the bottom, pale slate-50 background, 2 paragraphs at 13px text-slate-600.
+
+Paragraph 1:
+“LinkServicePro Help Center covers scheduling, dispatch, quotes, invoices, payments, recurring maintenance plans, automated reminders, and technician messaging. These guides are written for HVAC, plumbing, electrical, cleaning, lawn care, and other field service teams.”
+
+Paragraph 2:
+“Need legal docs? See Terms of Service, Privacy Policy, Service Level Agreement, and Refund Policy.”
+
+Those four are links to:
+
+* `/legal/terms`
+* `/legal/privacy`
+* `/legal/sla`
+* `/legal/refund`
+
+Why:
+
+* SEO picks up “Help Center,” “scheduling,” “dispatch,” “HVAC,” etc.
+* It gives crawlers a clean path to legal pages (which increases perceived trust, which helps conversion and ranking).
+
+---
+
+### 7. Article pages (`/help/article/:slug`)
+
+Each article page needs:
+
+* <Helmet> with article title, short description
+* Breadcrumb back to `/help`
+* Article title (h1)
+* Updated/tagged “Last updated” line in small gray
+* Body content with h2/h3 sections (so we can deep link later)
+* “Was this helpful?” thumbs up / thumbs down (static buttons for now)
+* CTA: “Need more? Call Support 631-206-3700”
+* Then the same dark CTA banner as Section 5
+
+That layout makes you look like a real product company, not a side project.
+
+---
+
+### 8. Category pages (`/help/category/:slug`)
+
+Each category page is basically:
+
+* Category icon + name
+* Short description (“Assign work, route techs, update ETAs”)
+* Then a list of all articles in that category (title + 1-line summary + “Read →”).
+
+Plus `<Helmet>` that says “{Category Name} Help | LinkServicePro”.
+
+These pages help SEO around “LinkServicePro dispatch help”, “LinkServicePro invoice help”, etc. They’ll also be used by your in-app intercom / help widget later.
+
+---
+
+Now we convert all of that into a single, production-ready Replit prompt.
+You paste this prompt once. It creates:
+
+* `/help` landing page
+* data model file
+* article + category pages
+* routing
+* Helmet + SEO text
+* accessibility (focus-visible, aria-labels, etc.)
+
+You do not need to “clarify anything” with Replit after this. This prompt is specific to your stack.
+
+---
+
+REPLIT PROMPT (FINAL: BUILD THE HELP CENTER)
+
+```txt
+You are Replit Agent. Do NOT rebuild the project. Stack is React + Vite + Wouter + Tailwind + react-helmet + lucide-react. Goal: Add a full Help Center to LinkServicePro with routes /help, /help/article/:slug, and /help/category/:slug. This must match our brand (navy #0E2A47, CTA blue #0B5FFF, slate neutrals). Use focus-visible rings. Use Helmet for SEO. Add all components, data, routing, and styles below.
+
+PART A. DATA SOURCE
+Create src/data/helpData.ts that exports:
+
+- Category type:
+  {
+    slug: string; // "scheduling-dispatch"
+    name: string; // "Scheduling & Dispatch"
+    blurb: string; // "Assign jobs, route techs, update ETAs in real time."
+    icon: 'MapPin' | 'Truck' | 'ClipboardList' | 'CreditCard' | 'Users' | 'Settings' | string;
+    articles: string[]; // slugs of articles in this category
+  }
+
+- Article type:
+  {
+    slug: string; // "schedule-job-assign-tech"
+    title: string;
+    summary: string; // used in Popular and category listings
+    body: string; // HTML string with <h2>/<p>/<ul> etc
+    lastUpdated: string; // "2025-01-15"
+    categorySlug: string; // which category it belongs to
+  }
+
+Seed categories:
+1) scheduling-dispatch
+   name: "Scheduling & Dispatch"
+   blurb: "Assign jobs, route techs, update ETAs in real time."
+   icon: "MapPin"
+   articles: [
+     "schedule-job-assign-tech",
+     "route-optimization-basics",
+     "on-the-way-message"
+   ]
+
+2) quotes-invoices
+   name: "Quotes & Invoices"
+   blurb: "Send estimates with e-sign and invoice on-site."
+   icon: "ClipboardList"
+   articles: [
+     "send-estimate-esign",
+     "collect-deposit"
+   ]
+
+3) payments-billing
+   name: "Payments & Billing"
+   blurb: "Take deposits, partials, same-day card payments."
+   icon: "CreditCard"
+   articles: [
+     "collect-deposit",
+     "payment-failed"
+   ]
+
+4) customer-messaging
+   name: "Customer Messaging"
+   blurb: "Automated reminders, on-my-way texts, follow-ups."
+   icon: "MessageSquare"
+   articles: [
+     "on-the-way-message"
+   ]
+
+5) teams-roles
+   name: "Teams & Roles"
+   blurb: "Unlimited users, permissions, technician access."
+   icon: "Users"
+   articles: [
+     "cant-sign-in"
+   ]
+
+6) account-settings
+   name: "Account & Settings"
+   blurb: "Calendar sync, notifications, company info."
+   icon: "Settings"
+   articles: [
+     "cant-sign-in",
+     "payment-failed"
+   ]
+
+Seed articles (use short body HTML with <h2> etc; keep tone practical, no fluff):
+
+- schedule-job-assign-tech
+  title: "How do I schedule a job and assign a tech?"
+  summary: "Drag-and-drop scheduling, calendar sync, job details."
+  lastUpdated: "2025-01-15"
+  categorySlug: "scheduling-dispatch"
+  body: `
+    <h2>Step 1: Create the job</h2>
+    <p>Click “New Job”, add customer info, and set time window.</p>
+    <h2>Step 2: Assign a technician</h2>
+    <p>Drag the job onto a tech in the dispatch board. This will also sync to their mobile app and calendar.</p>
+    <h2>Step 3: Confirm with the customer</h2>
+    <p>Send the automated confirmation so they get the time and tech name in writing.</p>
+  `
+
+- route-optimization-basics
+  title: "How do I optimize routes for same-day jobs?"
+  summary: "Balance distance, promise windows, and skill."
+  lastUpdated: "2025-01-15"
+  categorySlug: "scheduling-dispatch"
+  body: `
+    <h2>Group calls by area</h2>
+    <p>Cluster urgent calls geographically instead of first-in-first-out. This cuts unpaid drive time.</p>
+    <h2>Plan a swing tech</h2>
+    <p>Keep one tech partially open after 2pm for emergencies so you don't blow up the whole schedule.</p>
+    <h2>Send updated ETAs</h2>
+    <p>When you re-route, send new ETAs so customers don't call asking “where's my tech?”.</p>
+  `
+
+- on-the-way-message
+  title: "How do I send an 'on the way' message?"
+  summary: "Send tech name, ETA, and photo in one tap."
+  lastUpdated: "2025-01-15"
+  categorySlug: "scheduling-dispatch"
+  body: `
+    <h2>Why it matters</h2>
+    <p>Customers stop calling “Are you still coming?” if they get a live heads-up with a real ETA.</p>
+    <h2>How to send it</h2>
+    <p>Tap the job, select “On my way”, and confirm the message preview with the tech’s name and arrival window.</p>
+  `
+
+- send-estimate-esign
+  title: "How do I send an estimate for e-signature?"
+  summary: "Good / better / best options and digital sign-off."
+  lastUpdated: "2025-01-15"
+  categorySlug: "quotes-invoices"
+  body: `
+    <h2>Add line items and photos</h2>
+    <p>Attach site photos so the customer remembers what you showed them.</p>
+    <h2>Offer 2–3 options</h2>
+    <p>Customers convert faster when they pick between clear levels, not “yes / no”.</p>
+    <h2>Send for signature</h2>
+    <p>Hit “Send for e-sign”. The customer can approve from their phone and you’ll get a timestamped approval.</p>
+  `
+
+- collect-deposit
+  title: "How do I collect a deposit or partial payment?"
+  summary: "Take card-on-file or same-day card without sounding pushy."
+  lastUpdated: "2025-01-15"
+  categorySlug: "payments-billing"
+  body: `
+    <h2>Set expectation early</h2>
+    <p>Before work starts, say “We take a 30% deposit to lock in materials and hold the date.”</p>
+    <h2>Accept card on-site</h2>
+    <p>Use the mobile payment screen to charge the deposit or securely store the card-on-file.</p>
+    <h2>Send receipt instantly</h2>
+    <p>The customer gets a text/email receipt with amount and remaining balance so there's no confusion later.</p>
+  `
+
+- payment-failed
+  title: "What if a customer’s payment fails?"
+  summary: "How to retry without tension."
+  lastUpdated: "2025-01-15"
+  categorySlug: "payments-billing"
+  body: `
+    <h2>Stay factual, not personal</h2>
+    <p>Say “The card didn’t go through just now — do you have another you’d like to try?” Keep tone neutral and calm.</p>
+    <h2>Offer alternate method</h2>
+    <p>You can resend a secure pay link by text/email so they can handle it privately.</p>
+    <h2>Document it</h2>
+    <p>Always add a quick note on the job so accounting knows what happened.</p>
+  `
+
+- cant-sign-in
+  title: "I can’t sign in"
+  summary: "Password reset, invite links, and access levels."
+  lastUpdated: "2025-01-15"
+  categorySlug: "account-settings"
+  body: `
+    <h2>Reset your password</h2>
+    <p>Use “Forgot password?” on the sign-in screen. Check spam if you don’t see the email.</p>
+    <h2>New user?</h2>
+    <p>Your manager needs to invite you. Each user must have their own login for audit and GPS tracking.</p>
+    <h2>Still blocked?</h2>
+    <p>Contact support with your name, company, and phone number. We'll confirm access level.</p>
+  `
+
+PART B. /help LANDING PAGE
+Create src/pages/help/HelpCenter.tsx.
+
+Imports:
+- useState/useMemo for search suggestions (even if basic)
+- Helmet from react-helmet
+- Link from wouter
+- Icons from lucide-react: Search, MapPin, ClipboardList, CreditCard, MessageSquare, Users, Settings, LifeBuoy, Phone, Mail, ArrowRight
+
+Layout:
+<main className="flex flex-col w-full bg-white text-slate-900">
+
+1) HERO SECTION
+<section className="bg-white border-b border-slate-200 px-4 py-12">
+ <div className="max-w-5xl mx-auto flex flex-col gap-6">
+   <div className="inline-block rounded-full bg-[#0B5FFF]/10 text-[#0B5FFF] text-[11px] font-semibold px-2 py-[2px] ring-1 ring-[#0B5FFF]/20 w-fit uppercase tracking-wide">Help Center</div>
+   <h1 className="text-2xl font-semibold text-slate-900 md:text-3xl">How can we help?</h1>
+   <p className="text-[15px] leading-relaxed text-slate-600 max-w-xl">
+     Step-by-step answers for scheduling, dispatch, invoices, payments, and more.
+   </p>
+
+   {/* Search box UI (static for now) */}
+   <div className="w-full max-w-xl">
+     <label htmlFor="help-search" className="sr-only">Search help center</label>
+     <div className="relative">
+       <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+         <Search className="h-4 w-4" aria-hidden="true" />
+       </div>
+       <input
+         id="help-search"
+         className="w-full rounded-md border border-slate-300 bg-white pl-9 pr-3 py-2 text-[14px] text-slate-900 placeholder-slate-400 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none"
+         placeholder="Search scheduling, dispatch, invoices…"
+         aria-label="Search help center"
+       />
+     </div>
+     <div className="flex flex-wrap gap-4 mt-3 text-[13px] text-slate-600">
+       <Link href="/help/article/cant-sign-in" className="underline text-[#0B5FFF] hover:text-[#0B5FFF]/80 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none rounded">
+         Can’t log in?
+       </Link>
+       <Link href="/help/article/payment-failed" className="underline text-[#0B5FFF] hover:text-[#0B5FFF]/80 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none rounded">
+         Payment not going through?
+       </Link>
+     </div>
+ </div>
+</section>
+
+2) TOP CATEGORIES GRID
+<section className="bg-white border-b border-slate-200 px-4 py-10">
+ <div className="max-w-5xl mx-auto flex flex-col gap-6">
+  <h2 className="text-xl font-semibold text-slate-900 md:text-2xl">Browse by category</h2>
+
+  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+   {/* Map over categories from helpData.ts */}
+   {/* Each card must be keyboard accessible and uses <Link> to /help/category/:slug */}
+   Card styling:
+   className="group rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:ring-2 hover:ring-[#0B5FFF] hover:shadow-md focus-within:ring-2 focus-within:ring-[#0B5FFF] outline-none"
+
+   Inside each card:
+    - Icon in a tinted box:
+      className="flex h-8 w-8 items-center justify-center rounded-md bg-[#0B5FFF]/10 text-[#0B5FFF] ring-1 ring-[#0B5FFF]/20"
+    - Category name: text-[15px] font-semibold text-slate-900 mt-3
+    - Blurb: text-[13px] text-slate-600 leading-snug
+    - "View articles →" link text-[13px] text-[#0B5FFF] font-medium mt-3 inline-flex items-center gap-1 hover:underline
+  </div>
+ </div>
+</section>
+
+3) POPULAR ARTICLES LIST
+<section className="bg-white border-b border-slate-200 px-4 py-12">
+ <div className="max-w-5xl mx-auto flex flex-col gap-6">
+   <h2 className="text-xl font-semibold text-slate-900 md:text-2xl">Popular right now</h2>
+   <p className="text-[14px] text-slate-600 max-w-xl leading-relaxed">
+     Fast answers to the stuff that slows teams down.
+   </p>
+
+   <ul className="divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white overflow-hidden">
+     {/* Map hand-picked 4-5 article slugs from helpData.ts */}
+     Each row:
+     <li className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <div className="text-[15px] font-semibold text-slate-900">How do I collect a deposit or partial payment?</div>
+          <div className="text-[13px] text-slate-600">Take card-on-file or same-day card without sounding pushy.</div>
+        </div>
+        <Link ...className="text-[13px] font-semibold text-[#0B5FFF] hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none rounded inline-flex items-center gap-1">
+          Read <ArrowRight className="h-3 w-3" aria-hidden="true" />
+        </Link>
+     </li>
+   </ul>
+ </div>
+</section>
+
+4) CONTACT / ESCALATION BLOCK
+<section className="bg-slate-50 border-b border-slate-200 px-4 py-10">
+ <div className="max-w-5xl mx-auto">
+   <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+     <div className="flex items-start gap-3">
+       <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[#0B5FFF]/10 text-[#0B5FFF] ring-1 ring-[#0B5FFF]/20">
+         <LifeBuoy className="h-4 w-4" aria-hidden="true" />
+       </div>
+       <div className="flex flex-col">
+         <div className="text-[15px] font-semibold text-slate-900">Still need help?</div>
+         <div className="text-[13px] text-slate-600 leading-snug">
+           Typical first response under 1 business hour.
+         </div>
+         <div className="mt-3 flex flex-col gap-2 text-[14px] text-slate-800">
+           <a href="mailto:info@bimscorp.com" className="inline-flex items-center gap-2 text-[#0B5FFF] hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none rounded">
+             <Mail className="h-4 w-4" aria-hidden="true" />
+             Email support
+           </a>
+           <a href="tel:6312063700" className="inline-flex items-center gap-2 text-[#0B5FFF] hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none rounded">
+             <Phone className="h-4 w-4" aria-hidden="true" />
+             Call 631-206-3700 (Mon–Fri 9a–5p ET)
+           </a>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+</section>
+
+5) DARK CTA BANNER
+Exactly reuse your dark navy CTA layout (“Run the day, don’t chase it.”) from /guides:
+<section className="bg-[#0E2A47] text-white px-4 py-12">
+ <div className="max-w-5xl mx-auto flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+   <div className="flex-1 flex flex-col gap-3">
+     <div className="text-xl font-semibold text-white md:text-2xl">
+       Run the day, don’t chase it.
+     </div>
+     <p className="text-[14px] leading-relaxed text-white/80 max-w-md">
+       Live dispatch board, route planning, quotes with e-sign, and same-day payment — all in one hub.
+     </p>
+   </div>
+   <div className="flex flex-col gap-3">
+     <Link href="/signup" className="bg-[#0B5FFF] text-white text-[14px] font-semibold rounded-md px-4 py-2 shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none focus-visible:ring-offset-[#0E2A47]">
+       Get Started Free
+     </Link>
+     <Link href="/contact" className="text-white/80 text-[14px] font-semibold rounded-md px-4 py-2 ring-1 ring-white/30 hover:text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none focus-visible:ring-offset-[#0E2A47]">
+       Talk to Sales
+     </Link>
+     <div className="text-[12px] text-white/60 leading-snug">
+       Works with Google Calendar and Apple Calendar. Unlimited users on paid plans.
+     </div>
+   </div>
+ </div>
+</section>
+
+6) SEO / POLICY FOOTER
+<section className="bg-slate-50 px-4 py-10">
+ <div className="max-w-5xl mx-auto text-[13px] leading-relaxed text-slate-600 flex flex-col gap-4">
+   <p>
+     The LinkServicePro Help Center covers scheduling, dispatch, quotes, invoices, payments, recurring maintenance plans, automated reminders, and technician messaging.
+     These guides are written for HVAC, plumbing, electrical, cleaning, lawn care, and other field service teams.
+   </p>
+   <p>
+     Need legal docs? See our{" "}
+     <Link href="/legal/terms" className="underline text-[#0B5FFF] hover:text-[#0B5FFF]/80 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none rounded">Terms of Service</Link>,{" "}
+     <Link href="/legal/privacy" className="underline text-[#0B5FFF] hover:text-[#0B5FFF]/80 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none rounded">Privacy Policy</Link>,{" "}
+     <Link href="/legal/sla" className="underline text-[#0B5FFF] hover:text-[#0B5FFF]/80 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none rounded">Service Level Agreement</Link>, and{" "}
+     <Link href="/legal/refund" className="underline text-[#0B5FFF] hover:text-[#0B5FFF]/80 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none rounded">Refund Policy</Link>.
+   </p>
+ </div>
+</section>
+
+7) <Helmet> in HelpCenter.tsx
+Add:
+<Helmet>
+ <title>Help Center | LinkServicePro</title>
+ <meta name="description" content="Scheduling, dispatch, quotes, invoices, payments, recurring maintenance plans, automated reminders, and technician messaging support for LinkServicePro." />
+ <script type="application/ld+json">{`
+ {
+   "@context": "https://schema.org",
+   "@type": "FAQPage",
+   "name": "LinkServicePro Help Center",
+   "mainEntity": [
+     {
+       "@type": "Question",
+       "name": "How do I schedule a job and assign a tech?",
+       "acceptedAnswer": {
+         "@type": "Answer",
+         "text": "Drag-and-drop scheduling, assign a technician, and send a confirmation with tech name and ETA."
+       }
+     },
+     {
+       "@type": "Question",
+       "name": "How do I collect a deposit or partial payment?",
+       "acceptedAnswer": {
+         "@type": "Answer",
+         "text": "Set the expectation early, take card-on-file or same-day payment, and send a receipt immediately."
+       }
+     }
+   ]
+ }
+ `}</script>
+</Helmet>
+
+PART C. ARTICLE PAGE
+Create src/pages/help/HelpArticle.tsx.
+- Read :slug via Wouter useRoute or params.
+- Lookup article in helpData.ts.
+- If not found → simple “Article not found.”
+- Helmet:
+  <title>{article.title} | Help | LinkServicePro</title>
+  <meta name="description" content={article.summary} />
+- Breadcrumb row at top:
+  “← Help Center” (link /help)
+- h1 article.title
+  className="text-xl font-semibold text-slate-900 md:text-2xl"
+- small gray line:
+  “Last updated {article.lastUpdated}”
+  className="text-[12px] text-slate-500"
+- Render article.body with `dangerouslySetInnerHTML`.
+  Wrap in prose-like styles:
+  className="prose prose-slate max-w-none prose-h2:text-slate-900 prose-h2:text-[16px] prose-h2:font-semibold prose-p:text-[14px] prose-p:leading-relaxed"
+- “Was this helpful?” row:
+  Two buttons:
+   👍  “Yes”
+   👎  “Needs more”
+  Each button:
+   className="rounded-md border border-slate-300 px-3 py-2 text-[13px] text-slate-700 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none"
+  (For now, click just console.log)
+- “Still stuck?” mini contact block with mailto + phone same as Section 4 above, smaller scale.
+- Reuse the dark CTA banner section (Section 5) below article.
+
+PART D. CATEGORY PAGE
+Create src/pages/help/HelpCategory.tsx.
+- Read :slug param.
+- Find the category in helpData.
+- Helmet:
+  <title>{category.name} Help | LinkServicePro</title>
+  <meta name="description" content={category.blurb} />
+- Breadcrumb row with “← Help Center”
+- Icon + category.name
+- Blurb
+- Then list its articles:
+  For each article slug: show title, summary, “Read →” link to /help/article/:slug
+  Styling: same list-row style used in “Popular right now”.
+
+PART E. ROUTING
+Update the central router to include:
+- /help → <HelpCenter />
+- /help/article/:slug → <HelpArticle />
+- /help/category/:slug → <HelpCategory />
+
+Also, in the Resources mega menu, add “Help Center” linking to /help.
+
+PART F. ACCESSIBILITY / POLISH
+- All interactive elements (cards, CTAs, article links, email and tel links) must be keyboard-focusable and include Tailwind focus-visible ring classes consistent with site.
+- All lucide icons should have aria-hidden="true".
+- Headings must be logical (h1 then h2 etc).
+- No console errors.
+- Mobile first: hero search input and category cards stack gracefully on 360px wide screens.
+- Use the global color tokens already established: #0E2A47 for dark CTA background, #0B5FFF for primary CTAs and accents, slate-50/100/200/600 etc for surfaces and borders.
+- Do not change or break the global header, hero carousel, footer, pricing, etc.
+
+Deliverables:
+1. src/data/helpData.ts
+2. src/pages/help/HelpCenter.tsx
+3. src/pages/help/HelpArticle.tsx
+4. src/pages/help/HelpCategory.tsx
+5. Updated router for /help, /help/article/:slug, /help/category/:slug
+6. Add “Help Center” link in Resources mega menu.
+
+This Help Center must ship looking like production SaaS support: credible, searchable-looking, categorized, has direct contact fallbacks, pushes signup, and links to legal for trust. Do not defer anything to “later.” Build all described sections now.
+```
+
+Give Replit that block exactly.
+Result: `/help` looks like a real SaaS help center, category pages and article pages resolve, SEO is clean, support info is visible, and the product pitch is still baked in.

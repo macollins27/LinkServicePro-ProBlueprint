@@ -1,0 +1,191 @@
+Perfect—one step at a time. Here’s a **single, surgical prompt** you can give Replit Agent 3 to update only the **Hero** so the existing images become a **continuous vertical marquee**, sized about **half** the footprint of the BuildOps reference, and fully **mobile-first**. I’ve kept it inside your current stack and a11y/SEO patterns.  
+
+---
+
+Create **Hero image marquee (mobile-first)** using our current images from the hero carousel. Keep all copy/CTAs as-is and **do not touch any other sections/routes**. Maintain React Router DOM links in Hero (no Wouter). 
+
+TECH
+
+* Stack: React 18 + TypeScript, Tailwind, Framer Motion for reduced-motion gating only (no JS timers), react-router-dom for CTAs, Helmet untouched. 
+* File targets:
+
+  * `client/src/components/Hero.tsx` (update markup to use new loop)
+  * `client/src/components/animation/InfiniteVerticalLoop.tsx` (new)
+  * `tailwind.config.ts` (extend keyframes/utilities)
+  * Do **not** modify providers, routes, layout, Helmet, or other pages. 
+
+DESIGN (mobile-first sizing)
+
+* Mobile (default): two skinny vertical columns sit **beside** hero text or stack **below** it depending on small screens—use a **single column on xs** and **two columns from `sm:`** up.
+* Each image card is **half the BuildOps feel**: target **`w-[140px] sm:w-[160px]`** with **`aspect-[4/3]`** and `rounded-md`. Gap `gap-3 sm:gap-4`.
+* Mask edges with a vertical fade so looping looks seamless: CSS mask gradient top/bottom 10–15%.
+* Keep hero height compact: do **not** exceed `min-h-[560px]` on desktop.
+
+FUNCTIONALITY
+
+1. **Continuous vertical loop** (two independent columns)
+
+   * Use **CSS transform animations** for 60fps; **duplicate the list** to create a 200% track so it never “snaps” at the loop seam.
+   * Opposite directions (left column scrolls up, right column scrolls down).
+   * **No timers** / `setInterval` / per-frame JS. Only CSS animations.
+   * Respect `prefers-reduced-motion`: if true, render a static grid of the same images (no movement). 
+
+2. **Keep current images**
+
+   * Reuse the existing hero carousel image array/props; do not swap assets or alt text. If an image was decorative, keep `alt=""`; otherwise preserve existing `alt`.
+
+3. **A11y**
+
+   * Animated columns are `aria-hidden="true"`; provide a hidden SR-only line summarizing “Customer operations in action gallery.”
+   * Maintain visible focus rings on CTAs. 
+
+4. **SEO**
+
+   * No change to Helmet in Hero. Keep current title/description/canonicals. 
+
+CODE — implement exactly
+
+**A) Tailwind keyframes**
+
+```ts
+// tailwind.config.ts (extend, do not remove existing)
+extend: {
+  keyframes: {
+    marqueeUp:   { '0%': { transform: 'translateY(0)' }, '100%': { transform: 'translateY(-50%)' } },
+    marqueeDown: { '0%': { transform: 'translateY(-50%)' }, '100%': { transform: 'translateY(0)' } },
+  },
+  animation: {
+    marqueeUp: 'marqueeUp 28s linear infinite',
+    marqueeDown: 'marqueeDown 28s linear infinite',
+  }
+}
+```
+
+**B) Reusable loop**
+
+```tsx
+// client/src/components/animation/InfiniteVerticalLoop.tsx
+import * as React from "react";
+
+type Item = { src: string; alt?: string; };
+export default function InfiniteVerticalLoop({
+  items,
+  reverse = false,
+  speedSeconds = 28,
+  className = "",
+}: {
+  items: Item[];
+  reverse?: boolean;
+  speedSeconds?: number;
+  className?: string;
+}) {
+  const prefersReduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  if (prefersReduce) {
+    return (
+      <div className={className}>
+        <ul className="grid grid-cols-2 gap-3">
+          {items.slice(0, 6).map((it, i) => (
+            <li key={i}>
+              <img
+                src={it.src}
+                alt={it.alt ?? ""}
+                loading="lazy"
+                decoding="async"
+                className="w-[140px] sm:w-[160px] aspect-[4/3] object-cover rounded-md"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  // duplicate for seamless 200% track
+  const doubled = [...items, ...items];
+
+  return (
+    <div
+      aria-hidden="true"
+      className={`overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)] ${className}`}
+    >
+      <div
+        className={`${reverse ? "animate-marqueeDown" : "animate-marqueeUp"} flex flex-col gap-3`}
+        style={{ animationDuration: `${speedSeconds}s` }}
+      >
+        {doubled.map((it, i) => (
+          <img
+            key={i}
+            src={it.src}
+            alt="" // decorative in motion; descriptive alt retained in reduced-motion path
+            loading="lazy"
+            decoding="async"
+            className="w-[140px] sm:w-[160px] aspect-[4/3] object-cover rounded-md"
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+**C) Hero.tsx (replace only the image carousel area)**
+
+* Keep your current left-side headline, paragraph, and CTAs (ensure `react-router-dom` Links). 
+* Replace the carousel with two columns using the new component:
+
+```tsx
+// client/src/components/Hero.tsx (snippet)
+import InfiniteVerticalLoop from "./animation/InfiniteVerticalLoop";
+// ...existing imports (ensure Link from react-router-dom)
+
+const heroImages = [
+  // reuse your existing carousel sources + alts
+  // { src: "/img/...", alt: "..." }, ...
+];
+
+export function Hero() {
+  return (
+    <section className="relative isolate pt-10 sm:pt-14">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+          {/* Left: copy + CTAs (unchanged) */}
+
+          {/* Right: two narrow columns (half BuildOps footprint) */}
+          <div className="mx-auto flex gap-4 sm:gap-6 lg:justify-end">
+            <InfiniteVerticalLoop
+              items={heroImages.slice(0, Math.ceil(heroImages.length / 2))}
+              reverse={false}
+              className="hidden sm:block"
+            />
+            <InfiniteVerticalLoop
+              items={heroImages.slice(Math.ceil(heroImages.length / 2))}
+              reverse={true}
+              className=""
+            />
+          </div>
+        </div>
+
+        {/* Logo row below hero (leave as-is for now) */}
+      </div>
+    </section>
+  );
+}
+```
+
+NON-NEGOTIABLES (so nothing else breaks)
+
+* **Do not** rename or remove the Hero component; keep exports the same to preserve imports.
+* **Do not** modify Helmet/meta in Hero or global providers.  
+* **Ensure** CTA Links use `react-router-dom` (not Wouter). 
+* **Respect** `prefers-reduced-motion` (static grid path already included). 
+
+QA (for this step)
+
+* Mobile: single column visible, images ~140–160px wide, smooth loop, text not pushed below the fold.
+* Tablet/desktop: two columns, opposite directions, no “snap” at loop seam; FPS solid while scrolling.
+* Keyboard focus remains on hero CTAs; images are `aria-hidden` while animated; alt text present in reduced-motion mode. 
+
+---
+
+When this is merged, we’ll do Step 2: convert the **logo row** into a continuous horizontal marquee—still mobile-first and battery-friendly.

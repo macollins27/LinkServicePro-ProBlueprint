@@ -1,0 +1,124 @@
+Scope of work
+
+
+Router clean-up
+
+
+Search the entire codebase for from "wouter" imports.
+
+
+Replace with react-router-dom (BrowserRouter, Routes, Route, Link).
+
+
+Refactor all <Link> components accordingly.
+
+
+Add Jest test routes.test.tsx that mounts App and asserts every defined route renders without 404.
+
+
+
+
+Broken-link assurance
+
+
+Write a Cypress test links.cy.ts that crawls the built site (/dist) and fails on any 4xx/5xx.
+
+
+
+
+Industry landing pages (dynamic)
+
+
+Create a param-based route /industry/:slug that renders IndustryPage.
+
+
+Data lives in /src/data/industries.ts; seed with HVAC, Plumbing, Electrical (title, hero tagline, feature highlights, testimonial).
+
+
+If slug not found, redirect to /industries.
+
+
+
+
+Case-study template
+
+
+Component CaseStudyPage with MDX support (use @mdx-js/react).
+
+
+Add one example file hvac-time-saved.mdx (load time saved KPI, quote, before/after).
+
+
+
+
+Structured data
+
+
+Add <HowTo> JSON-LD component for blog posts that include <ol> with data-howto-step.
+
+
+Embed <VideoObject> JSON-LD in HeroVideo component (src=/assets/90s-tour.mp4).
+
+
+
+
+Tracking & analytics
+
+
+Install GA4 (REACT_APP_GA_ID env) and PostHog (REACT_APP_PH_KEY).
+
+
+Fire events: StartFree_Click, Signup_Submit, Guide_Download.
+
+
+
+
+Design consistency
+
+
+Create /src/components/BlueprintBackground.tsx and import it into all page layouts.
+
+
+Ensure Primary/Secondary buttons consume centralized Button.tsx props instead of ad-hoc classes.
+
+
+
+
+Performance budget
+
+
+Add bundlewatch with limit 150 kB gzipped for initial JS.
+
+
+Fail CI if limit exceeded.
+
+
+
+
+Deliverables
+
+
+Passing Jest + Cypress + bundlewatch in CI.
+
+
+Feature branches merged, no eslint/stylelint errors.
+
+
+Update README.md with yarn test, yarn cy:run, and analytics env-var setup.
+
+
+Commands & tooling
+# local dev
+yarn && yarn dev
+
+# unit tests
+yarn test
+
+# e2e
+yarn cy:open      # interactive
+yarn cy:run       # headless
+
+# build
+yarn build && npx serve -s dist
+
+Start with the router refactor; once tests are green, continue down the list. Reply in the PR description with any blockers or assumptions that need clarification.

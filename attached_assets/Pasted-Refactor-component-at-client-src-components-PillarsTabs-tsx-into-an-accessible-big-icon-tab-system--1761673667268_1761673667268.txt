@@ -1,0 +1,183 @@
+Refactor component at client/src/components/PillarsTabs.tsx into an accessible, big-icon tab system with concise bullets.
+
+Name: PillarsTabs
+Route position: keep under the home hero
+
+GOALS
+- Large, separate, obviously clickable tabs with icons.
+- Short, scannable bullets instead of long sentences.
+- Each tab links to its relevant feature pages.
+- Keep the same section title/subtitle.
+- Remove review/testimonial content from this section.
+- Standardized CTAs (Start Free / View Pricing) below panels.
+- Mobile-first. WCAG AA+. No horizontal overflow at 375px.
+
+LIBS
+- Use shadcn/ui Tabs (Radix) for a11y.
+  import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+- Icons: lucide-react (48px). Examples below.
+
+LAYOUT
+<section className="px-4 sm:px-6 lg:px-8 py-10 sm:py-14 bg-white">
+  <header>H2 + subtitle</header>
+  <Tabs defaultValue="organized" className="mt-6">
+    <TabsList
+      aria-label="Four ways to grow"
+      className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-transparent p-0"
+    >
+      {/* Four big icon tabs */}
+      <TabsTrigger value="organized" className="group focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded-none ring-1 ring-slate-200 bg-white p-4 flex flex-col items-center gap-3 hover:shadow elev-2 data-[state=active]:ring-2 data-[state=active]:ring-[#0B5FFF]">
+        <ClipboardList className="h-12 w-12 text-[#0B5FFF]" aria-hidden="true"/>
+        <span className="text-sm font-extrabold tracking-tight text-slate-900">Get Organized</span>
+      </TabsTrigger>
+      <TabsTrigger value="smarter"   className="...same classes...">
+        <MapPinned className="h-12 w-12 text-[#0B5FFF]" aria-hidden="true"/>
+        <span className="text-sm font-extrabold text-slate-900">Work Smarter</span>
+      </TabsTrigger>
+      <TabsTrigger value="win"       className="...same classes...">
+        <Trophy className="h-12 w-12 text-[#0B5FFF]" aria-hidden="true"/>
+        <span className="text-sm font-extrabold text-slate-900">Win More Jobs</span>
+      </TabsTrigger>
+      <TabsTrigger value="profit"    className="...same classes...">
+        <TrendingUp className="h-12 w-12 text-[#0B5FFF]" aria-hidden="true"/>
+        <span className="text-sm font-extrabold text-slate-900">Boost Profits</span>
+      </TabsTrigger>
+    </TabsList>
+
+    {/* Panels: compact cards with short bullets and internal links */}
+    <TabsContent value="organized" className="mt-6">
+      <article className="grid gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2 ring-1 ring-slate-200 p-5 elev-2 bg-white">
+          <h3 className="text-xl font-extrabold text-slate-900 mb-3">Get Organized</h3>
+          <ul className="grid gap-2 marker:text-[#0B5FFF] list-disc pl-5 text-slate-800">
+            <li>All jobs, notes, and photos in one place.</li>
+            <li>Search by customer, property, or tag in seconds.</li>
+            <li>Stop double entry; one record updates everywhere.</li>
+            <li>Permissions keep office and techs in sync.</li>
+          </ul>
+          <nav className="mt-4 flex flex-wrap gap-3 text-[#0B5FFF] font-semibold">
+            <a href="/features/crm-leads" className="link-underline">CRM & Leads</a>
+            <a href="/features/work-orders" className="link-underline">Work Orders</a>
+            <a href="/features/customer-portal" className="link-underline">Customer Portal</a>
+          </nav>
+        </div>
+        <div className="ring-1 ring-slate-200 p-5 elev-2 bg-white">
+          <h4 className="font-semibold text-slate-900 mb-2">What you get</h4>
+          <div className="grid grid-cols-2 gap-2 text-sm text-slate-800">
+            <div>Shared calendar</div><div>File hub</div>
+            <div>Job history</div><div>Team roles</div>
+          </div>
+        </div>
+      </article>
+    </TabsContent>
+
+    <TabsContent value="smarter" className="mt-6">
+      <article className="grid gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2 ring-1 ring-slate-200 p-5 elev-2 bg-white">
+          <h3 className="text-xl font-extrabold text-slate-900 mb-3">Work Smarter</h3>
+          <ul className="grid gap-2 list-disc pl-5 text-slate-800">
+            <li>Drag to assign. Conflicts checked automatically.</li>
+            <li>Live map and routes cut drive time.</li>
+            <li>Auto-text ETAs to customers.</li>
+            <li>Recurring jobs managed on autopilot.</li>
+          </ul>
+          <nav className="mt-4 flex flex-wrap gap-3 text-[#0B5FFF] font-semibold">
+            <a href="/features/dispatch-board" className="link-underline">Dispatch Board</a>
+            <a href="/features/route-optimization" className="link-underline">Route Optimization</a>
+            <a href="/features/automated-reminders" className="link-underline">Automated Reminders</a>
+          </nav>
+        </div>
+        <div className="ring-1 ring-slate-200 p-5 elev-2 bg-white">
+          <h4 className="font-semibold text-slate-900 mb-2">Quick wins</h4>
+          <div className="grid grid-cols-2 gap-2 text-sm text-slate-800">
+            <div>Fewer no-shows</div><div>Faster days</div>
+            <div>Clean handoffs</div><div>Happier crews</div>
+          </div>
+        </div>
+      </article>
+    </TabsContent>
+
+    <TabsContent value="win" className="mt-6">
+      <article className="grid gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2 ring-1 ring-slate-200 p-5 elev-2 bg-white">
+          <h3 className="text-xl font-extrabold text-slate-900 mb-3">Win More Jobs</h3>
+          <ul className="grid gap-2 list-disc pl-5 text-slate-800">
+            <li>Send professional quotes with e-sign.</li>
+            <li>Approve → work order in one tap.</li>
+            <li>Follow a simple lead-to-paid pipeline.</li>
+            <li>Ask for reviews automatically after jobs.</li>
+          </ul>
+          <nav className="mt-4 flex flex-wrap gap-3 text-[#0B5FFF] font-semibold">
+            <a href="/features/quote-esign" className="link-underline">Quote + E-Sign</a>
+            <a href="/features/two-way-messaging" className="link-underline">2-Way Messaging</a>
+            <a href="/features/review-requests" className="link-underline">Review Requests</a>
+          </nav>
+        </div>
+        <div className="ring-1 ring-slate-200 p-5 elev-2 bg-white">
+          <h4 className="font-semibold text-slate-900 mb-2">Faster close</h4>
+          <div className="grid grid-cols-2 gap-2 text-sm text-slate-800">
+            <div>No back-and-forth</div><div>Zero paper</div>
+            <div>Same-day approvals</div><div>Fewer lost leads</div>
+          </div>
+        </div>
+      </article>
+    </TabsContent>
+
+    <TabsContent value="profit" className="mt-6">
+      <article className="grid gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2 ring-1 ring-slate-200 p-5 elev-2 bg-white">
+          <h3 className="text-xl font-extrabold text-slate-900 mb-3">Boost Profits</h3>
+          <ul className="grid gap-2 list-disc pl-5 text-slate-800">
+            <li>See labor and materials in real time.</li>
+            <li>Spot low-margin jobs before they repeat.</li>
+            <li>Collect deposits and partials on site.</li>
+            <li>Sync cleanly to QuickBooks or Xero.</li>
+          </ul>
+          <nav className="mt-4 flex flex-wrap gap-3 text-[#0B5FFF] font-semibold">
+            <a href="/features/job-costing" className="link-underline">Job Costing</a>
+            <a href="/features/payments" className="link-underline">Payments</a>
+            <a href="/features/accounting-sync" className="link-underline">QuickBooks/Xero Sync</a>
+          </nav>
+        </div>
+        <div className="ring-1 ring-slate-200 p-5 elev-2 bg-white">
+          <h4 className="font-semibold text-slate-900 mb-2">Cash sooner</h4>
+          <div className="grid grid-cols-2 gap-2 text-sm text-slate-800">
+            <div>Same-day invoicing</div><div>Batch billing</div>
+            <div>Clean AR</div><div>Fewer mistakes</div>
+          </div>
+        </div>
+      </article>
+    </TabsContent>
+  </Tabs>
+
+  {/* Standard CTAs */}
+  <div className="mt-6">
+    <ButtonsRow>
+      <StartFreeButton context="light" />
+      <ViewPricingButton context="light" />
+    </ButtonsRow>
+  </div>
+</section>
+
+TEXT HEADER (same as current):
+<h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">Four Ways to Grow</h2>
+<p className="text-slate-700">Get organized, work smarter, win more jobs, and boost profits.</p>
+
+A11Y & INTERACTION
+- Tabs are true Radix tabs (keyboard: Arrow keys, Home/End, Enter/Space).
+- Each TabsTrigger has aria-controls to its TabsContent.
+- Icons are decorative: aria-hidden="true".
+- Links are visible focus with ring-2 #0B5FFF ring-offset-2.
+
+STYLE NOTES
+- Sharp corners only; ring-1 slate-200 on all cards; elev-2 shadow.
+- Hover on tab: subtle shadow and underline on label via group-hover.
+- On mobile, the TabsList is a 2×2 grid of big buttons.
+
+ACCEPTANCE
+- Tabs look like separate cards with big icons.
+- Bullets are ≤8 words each, easy to scan.
+- Each panel includes 2–3 internal feature links.
+- No testimonials/reviews in this section.
+- Standard CTAs render below panels and pass focus styling.
+- 375px has no overflow; Lighthouse A11y ≥95 on this section.

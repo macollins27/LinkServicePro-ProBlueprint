@@ -1,0 +1,90 @@
+Got it—here’s a **single, surgical, no-code prompt** you can paste into Replit Agent 3 to normalize the section styling and fix the matrix UX issues you flagged. No code; let the agent implement with your existing design system.
+
+---
+
+**Task:** Bring the “Why Teams Switch” comparison matrix in line with the site’s global section styles and improve readability/UX. Do not change other sections or routes.
+
+### 1) Section header & alignment (match global pattern)
+
+* **Alignment:** Left-align the entire section header block (eyebrow, H2, subtitle) to match the rest of the homepage.
+* **Copy (exact):**
+
+  * Eyebrow: `WHY TEAMS SWITCH`
+  * **H2:** `Why Teams Switch`
+  * **Subtitle (support line):** `See it in one table.`
+  * Body/support sentence (keep below subtitle, left-aligned): `Projects with real dollars, hours, assets, and conversations—kept in one place so work flows and cash lands sooner.`
+* **Color/weights:** Use the same color token and typography scale used for other sections:
+
+  * Eyebrow: muted/uppercase tracking (same token as the others).
+  * H2: standard section heading color (not blue).
+  * Subtitle: same muted/support color as elsewhere (remove blue).
+* Spacing: top/bottom paddings and header→content spacing must match the global section rhythm.
+
+### 2) Table row order & first-column width
+
+* **Row order (top to bottom):**
+
+  1. `LinkServicePro`
+  2. `Other FSM software (generic)`  ← **move to be second row**
+  3. `Spreadsheets (Excel/Sheets)`
+  4. `Legacy Desktop System`
+  5. `4-App Patchwork`
+* **First column width:** Increase the **row-title column** so names don’t truncate or wrap awkwardly.
+
+  * Desktop: allocate a wider min width (e.g., ~22–26% of the table or a fixed min-width that prevents squish).
+  * Mobile: keep the first column **sticky** and readable; ensure at least 14–16ch of space before truncation with ellipsis.
+
+### 3) Legend + tooltips for states (✓ / – / ✕)
+
+* Add a **small legend** directly above the table (right side on desktop; full-width row on mobile). Text only—no extra chrome:
+
+  * `✓ Included` (green) `– Partial / workaround` (amber) `✕ Missing` (red)
+* Add an **info tooltip** to the amber hyphen **in the legend and in every amber cell**:
+
+  * Tooltip copy: `Partial or requires workarounds. Some steps may be manual or split across tools.`
+* Ensure every table cell state (✓ / – / ✕) includes **sr-only text**: “Included”, “Partial”, or “Missing”.
+
+### 4) Column header clarity
+
+* Keep the 8 capability columns as currently defined. For each column header:
+
+  * Left-align header labels.
+  * Add a subtle info icon with a one-line tooltip (existing meanings).
+  * Ensure header row stays **sticky** when horizontally scrolling on mobile.
+
+### 5) Mobile usability
+
+* Maintain horizontal scroll with gradient fades at the container edges.
+* Provide the existing **column picker** control; default it to the most important 4 columns on small screens so the table is immediately readable.
+* Ensure the first column (solution names) remains sticky and readable while scrolling horizontally.
+
+### 6) Buttons beneath the table (visibility & hierarchy)
+
+* Two CTAs must be visible, left-aligned under the table with proper spacing:
+
+  * **Primary:** `Get Started Free`
+  * **Secondary:** `Talk to an expert`
+* Fix the overflow/contrast so the secondary button is fully visible and readable on all breakpoints (no clipping, adequate contrast).
+* Maintain existing analytics events on both CTAs.
+
+### 7) A11y & performance
+
+* Semantic table with `<thead>`, `<tbody>`, `<th scope="col">`, `<th scope="row">`.
+* Tooltip triggers are keyboard focusable; ESC closes.
+* No layout shift: fixed column widths; intrinsic icon sizes.
+* Respect `prefers-reduced-motion` (remove any scroll-snap/animations if present).
+
+### 8) Acceptance checklist (verify before finishing)
+
+* Section header is **left-aligned** and uses the same color/scale as all other sections; subtitle is **not blue**.
+* H2 reads “**Why Teams Switch**”; subtitle reads “**See it in one table.**”
+* Row order: LSP → Other FSM → Spreadsheets → Legacy Desktop → 4-App Patchwork.
+* First column is wide enough that row names are **clearly readable** on desktop and mobile.
+* Legend present with ✓ / – / ✕; amber hyphen has the specified tooltip everywhere.
+* Both CTAs render side-by-side (or stacked on small screens) with proper contrast and no clipping.
+* Sticky header and sticky first column work during horizontal scroll; column picker defaults to 4 visible columns on mobile.
+* All a11y requirements pass (sr-only labels for states, focus rings visible, tooltips accessible).
+
+---
+
+Run exactly these changes and keep the rest of the matrix content as is. After that, we can fine-tune column copy or add a tiny “What this means” expander under the generic rows if you want even clearer context.

@@ -1,0 +1,226 @@
+Perfect! Here's a comprehensive prompt you can give to Replit Agent to implement the drag-and-drop scheduling hero section:
+
+---
+
+**PROMPT FOR REPLIT AGENT:**
+
+Create a hero section for the "Drag-and-Drop Scheduling" feature page with the following specifications:
+
+## DESIGN REQUIREMENTS
+
+**Visual Style:**
+- Use the existing Pro-Blueprint theme with sharp angles, rivet-style borders, and blueprint grid backgrounds
+- Primary color: Blue gradient (from-blue-600 via-blue-700 to-blue-900)
+- Accent colors: Cyan-300, Yellow-300, Emerald-300 for highlights
+- Implement subtle parallax effect on blueprint grid background
+- Add animated gradient orbs (cyan and blue, blurred, opacity 20%, pulsing)
+- Border style: 2-3px thick borders with sharp corners to match brand aesthetic
+- Typography: Font-black for headlines, tracking-tight, leading-tight
+
+**Layout:**
+- Two-column grid on desktop (lg:grid-cols-2), single column on mobile
+- Left column: Content (headline, subheadline, value props, CTAs, social proof)
+- Right column: Hero image/visual
+- Min height: 90vh
+- Max width container: 7xl (matching homepage)
+- Padding: Responsive (px-4 sm:px-6 lg:px-8, pt-16 pb-20)
+
+## CONTENT STRUCTURE
+
+**Left Column Content (in order):**
+
+1. **Eyebrow Badge:**
+   - Text: "CORE FEATURE" 
+   - Style: Small, uppercase, semibold, with Zap icon from lucide-react
+   - Design: White/10 background, backdrop-blur, 2px white/20 border, rounded-lg
+
+2. **Main Headline:**
+   ```
+   Drag. Drop.
+   Done.
+   ```
+   - Size: text-5xl lg:text-6xl xl:text-7xl
+   - Style: font-black, text-white, leading-[1.1]
+   - "Done." should have gradient text: from-cyan-300 to-white with bg-clip-text
+
+3. **Subheadline:**
+   ```
+   Schedule your entire week in 12 seconds. Not hours. Not even minutes.
+   ```
+   - Size: text-xl lg:text-2xl
+   - Style: text-blue-100, font-medium
+   - Emphasize "12 seconds" with text-cyan-300 font-bold
+
+4. **Value Props Grid (2 columns on sm+):**
+   Create 4 cards with icons from lucide-react:
+   - Card 1: Clock icon, "90% faster scheduling", cyan accent
+   - Card 2: Users icon, "Zero double-booking", green accent  
+   - Card 3: TrendingUp icon, "41% fewer missed jobs", yellow accent
+   - Card 4: CheckCircle icon, "Live crew updates", emerald accent
+   
+   Card styling:
+   - bg-white/5, backdrop-blur-sm
+   - 2px border-white/10
+   - Hover: bg-white/10, border-white/20
+   - Rounded-lg, p-4, flex items-center gap-3
+   - Icon in colored box with matching accent color background/border
+
+5. **Social Proof Bar:**
+   - Text: "Join 2,400+ field service teams"
+   - Add 5 overlapping avatar circles (use placeholder colored divs: bg-blue-400, bg-cyan-400, bg-emerald-400, bg-yellow-400, bg-orange-400)
+   - Style: flex items-center gap-4, text-blue-100
+
+6. **CTA Buttons (flex row with gap-4):**
+   
+   Primary button:
+   - Text: "Start Free Trial" with ArrowRight icon
+   - Style: bg-cyan-500 hover:bg-cyan-400, text-white, font-bold, px-8 py-4, rounded-lg
+   - Add shadow-xl, shadow-cyan-500/50
+   - Transition-all duration-300
+   - Add scale-105 on hover
+   
+   Secondary button:
+   - Text: "Watch 60-Second Demo"
+   - Style: bg-white/10 hover:bg-white/20, backdrop-blur-sm, text-white, font-semibold, px-8 py-4, rounded-lg
+   - 2px border-white/20, hover:border-white/30
+
+7. **Trust Badge:**
+   - Text: "No credit card • Free forever plan • Cancel anytime"
+   - Style: text-sm, text-blue-200, flex with bullet separators
+
+**Right Column Visual:**
+
+Create a mockup image representation showing:
+- A dispatch board interface with drag-and-drop capability
+- Use a combination of:
+  1. A large rounded-xl container with bg-white/10, backdrop-blur-md, 3px border-white/20
+  2. Inside: Create a visual schedule grid showing:
+     - Time slots on left (8 AM, 10 AM, 12 PM, 2 PM, 4 PM)
+     - 3 crew columns across
+     - Job cards that look draggable (use different colored cards with shadows)
+  3. Add animated elements:
+     - A "card" that appears to be mid-drag (slightly rotated, elevated shadow)
+     - Connecting lines/arrows between jobs
+     - Small pulse indicators for "live updates"
+  4. Overlay stats in small cards on top:
+     - "12 jobs today"
+     - "3 crews dispatched"  
+     - "98% on-time"
+
+Alternative if time-constrained: Use a high-quality photo of a field service worker looking at a tablet/phone with overlaid UI elements showing the schedule board.
+
+## ANIMATIONS & INTERACTIONS
+
+1. **On page load:**
+   - Fade in + slide up content (opacity-0 translate-y-10 → opacity-100 translate-y-0)
+   - Duration: 1000ms
+   - Stagger value prop cards by 100ms each
+
+2. **Mouse parallax:**
+   - Blueprint grid background moves slightly with mouse position
+   - Use transform: translate based on mousePosition * 0.02
+
+3. **Hover states:**
+   - All buttons: scale-105, brightness increase
+   - Value prop cards: background and border opacity increase
+   - Smooth transitions: transition-all duration-300
+
+4. **Continuous animations:**
+   - Gradient orbs: animate-pulse with different delays
+   - Optional: Subtle floating animation on right column visual
+
+## TECHNICAL IMPLEMENTATION
+
+**Component Structure:**
+```typescript
+// Create new file: src/pages/features/DragDropScheduling.tsx
+
+import React, { useState, useEffect } from 'react';
+import { Calendar, Users, Clock, Zap, ArrowRight, CheckCircle, TrendingUp, Play } from 'lucide-react';
+
+export default function DragDropScheduling() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    setIsAnimating(true);
+  }, []);
+
+  return (
+    <section className="relative min-h-[90vh] bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 overflow-hidden">
+      {/* Blueprint grid, gradient orbs, content grid here */}
+    </section>
+  );
+}
+```
+
+**Routing:**
+Add route to router configuration:
+```typescript
+<Route path="/features/drag-drop-scheduling" component={DragDropScheduling} />
+```
+
+**SEO Meta Tags:**
+```typescript
+<Helmet>
+  <title>Drag-and-Drop Scheduling | Visual Dispatch Board for Field Service</title>
+  <meta name="description" content="Schedule your field service crews in seconds with intuitive drag-and-drop scheduling. Eliminate double-booking, optimize routes, and get live updates. 90% faster than spreadsheets." />
+  <meta property="og:title" content="Drag-and-Drop Scheduling - Schedule Crews in 12 Seconds" />
+  <meta property="og:description" content="Visual dispatch board built for HVAC, plumbing, cleaning, and field service teams. Real-time updates, zero conflicts, mobile-optimized." />
+</Helmet>
+```
+
+**Performance Optimization:**
+- Use transform instead of position changes for animations
+- Implement lazy loading for right column visual if using images
+- Use backdrop-blur sparingly, add will-change: transform to animated elements
+- Optimize gradient orbs with CSS instead of JavaScript if possible
+
+**Accessibility:**
+- All buttons must have proper aria-labels
+- Ensure color contrast meets WCAG AA (white text on blue-700+ background is compliant)
+- Keyboard navigation support for all interactive elements
+- Add alt text to any images
+
+**Responsive Breakpoints:**
+- Mobile (< 640px): Stack columns, reduce headline size, smaller buttons
+- Tablet (640px - 1024px): Adjust grid gap, medium headline size
+- Desktop (1024px+): Full two-column layout with parallax effects
+
+## INDUSTRY-SPECIFIC MICRO-COPY
+
+Add this subtle detail below the headline:
+"Built for HVAC, Plumbing, Cleaning, Landscaping & Field Service Teams"
+- Style: text-sm, text-blue-200, italic
+
+## CONVERSION OPTIMIZATION ELEMENTS
+
+1. **Urgency indicator:** Small badge showing "2,847 crews scheduled this week"
+2. **Risk reversal:** "No credit card required" prominently displayed
+3. **Clear value:** Every element should answer "what's in it for me?"
+4. **Action-oriented:** Use active verbs (Start, Watch, Join, Schedule)
+
+## FINAL CHECKLIST
+
+Before completing, ensure:
+- [ ] Mobile responsive (test on 375px, 768px, 1440px viewports)
+- [ ] All animations are smooth (60fps)
+- [ ] Load time < 2 seconds
+- [ ] No console errors
+- [ ] TypeScript types are correct
+- [ ] Matches Pro-Blueprint design system
+- [ ] All lucide-react icons imported correctly
+- [ ] CTAs link to appropriate pages (/signup for trial, /demo for video)
+- [ ] Tailwind classes are valid and optimized
+
+---
+
+**Please implement this hero section and confirm when complete. Let me know if you need any clarification on the design specs or content.**

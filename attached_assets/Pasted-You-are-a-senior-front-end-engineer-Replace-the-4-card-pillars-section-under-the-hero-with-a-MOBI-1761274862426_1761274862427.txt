@@ -1,0 +1,261 @@
+You are a senior front-end engineer. Replace the 4-card “pillars” section under the hero with a MOBILE-FIRST TABBED SHOWCASE that adds depth and social proof. Keep the rest of the homepage unchanged.
+
+SCOPE
+- Create src/components/PillarsTabs.jsx and use it instead of Pillars.jsx.
+- Accessible tabs: role="tablist"/"tab"/"tabpanel", arrow-key navigation, focus-visible styles.
+- Mobile first: horizontal scrollable segmented control on small screens; desktop = centered tabs with animated indicator.
+- Each tab shows: 2–3 sentence explanation + a mini case study with tiny image (48–56px), person name, company, one-line quote, and 2–3 stat chips.
+- Visual style: sharp corners, high contrast, subtle elevation, colored accent per tab, unique indicator bar.
+
+FILES
+- src/components/PillarsTabs.jsx  (new)
+- src/App.jsx or the home route file where <Pillars /> is rendered → replace with <PillarsTabs />.
+
+CODE (create exactly):
+
+// src/components/PillarsTabs.jsx
+import { useEffect, useMemo, useRef, useState } from "react";
+
+const TABS = [
+  {
+    id: "organized",
+    title: "Get Organized",
+    color: "#0B5FFF", // blueprint
+    explainer:
+      "Centralize leads, jobs, documents, and photos so everyone works from the same source of truth. Cut back on apps and manual handoffs.",
+    explainer2:
+      "Search by customer, property, or project and pull up every quote, work order, and invoice in seconds.",
+    caseStudy: {
+      img: "/img/case-cleaning.jpg",
+      name: "Maya Lopez",
+      company: "BrightPath Cleaning",
+      quote: "We stopped losing job info in texts and cut admin time to minutes.",
+      stats: ["-6 hrs/week admin", "100% files in one hub"],
+    },
+    cta: { label: "See features →", href: "/features#organized" },
+  },
+  {
+    id: "smarter",
+    title: "Work Smarter",
+    color: "#00C2A8", // teal
+    explainer:
+      "Schedule with drag-and-drop, see crews on a live map, and auto-optimize routes to shrink windshield time.",
+    explainer2:
+      "Automated reminders keep techs and customers on time without extra calls.",
+    caseStudy: {
+      img: "/img/case-landscaping.jpg",
+      name: "Andre Patel",
+      company: "Greenside Landscaping",
+      quote: "Route optimization let us add a full stop per crew each day.",
+      stats: ["-18% drive time", "+1 job/tech/day"],
+    },
+    cta: { label: "See features →", href: "/features#dispatch" },
+  },
+  {
+    id: "win",
+    title: "Win More Jobs",
+    color: "#F59E0B", // amber
+    explainer:
+      "Send professional quotes with e-sign from your phone or desktop. Convert approvals into work orders in one click.",
+    explainer2:
+      "Follow a clean pipeline from lead to paid so nothing slips through.",
+    caseStudy: {
+      img: "/img/case-plumbing.jpg",
+      name: "Jobe R.",
+      company: "City Line Plumbing",
+      quote: "Signed quotes came back same-day. Our close rate jumped fast.",
+      stats: ["+22% quote win rate", "same-day approvals"],
+    },
+    cta: { label: "See features →", href: "/features#quotes" },
+  },
+  {
+    id: "profit",
+    title: "Boost Profits",
+    color: "#111827", // ink
+    explainer:
+      "Track labor, materials, and overhead in real time. See gross margin by job and fix under-priced work before it repeats.",
+    explainer2:
+      "Collect deposits, partials, and batch invoices. Sync cleanly to QuickBooks/Xero.",
+    caseStudy: {
+      img: "/img/case-roofing.jpg",
+      name: "Samantha K.",
+      company: "Peak Roofing",
+      quote: "Live job costing showed where we were bleeding. Margin climbed.",
+      stats: ["+9 pts margin", "-3 days to paid"],
+    },
+    cta: { label: "See features →", href: "/features#profit" },
+  },
+];
+
+export default function PillarsTabs() {
+  const [active, setActive] = useState(TABS[0].id);
+  const listRef = useRef(null);
+  const reduced = typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const activeIndex = useMemo(
+    () => TABS.findIndex(t => t.id === active),
+    [active]
+  );
+
+  // Keyboard navigation
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    const onKey = (e) => {
+      if (!["ArrowLeft","ArrowRight","Home","End"].includes(e.key)) return;
+      e.preventDefault();
+      let idx = activeIndex;
+      if (e.key === "ArrowRight") idx = (idx + 1) % TABS.length;
+      if (e.key === "ArrowLeft") idx = (idx - 1 + TABS.length) % TABS.length;
+      if (e.key === "Home") idx = 0;
+      if (e.key === "End") idx = TABS.length - 1;
+      setActive(TABS[idx].id);
+      const buttons = el.querySelectorAll('[role="tab"]');
+      buttons[idx]?.focus();
+    };
+    el.addEventListener("keydown", onKey);
+    return () => el.removeEventListener("keydown", onKey);
+  }, [activeIndex]);
+
+  return (
+    <section className="relative px-4 sm:px-6 lg:px-8 py-10 sm:py-14 spot-bg">
+      <div className="mx-auto max-w-6xl">
+        {/* Segmented tabs */}
+        <div
+          ref={listRef}
+          role="tablist"
+          aria-label="Key benefits"
+          className="relative overflow-x-auto no-scrollbar border border-slate-200 bg-white"
+        >
+          <div className="flex min-w-max divide-x divide-slate-200">
+            {TABS.map((t) => {
+              const selected = t.id === active;
+              return (
+                <button
+                  key={t.id}
+                  role="tab"
+                  aria-selected={selected}
+                  aria-controls={`panel-${t.id}`}
+                  id={`tab-${t.id}`}
+                  onClick={() => setActive(t.id)}
+                  className={[
+                    "px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold tracking-tight",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0B5FFF]",
+                    selected ? "text-slate-900" : "text-slate-600 hover:text-slate-900",
+                  ].join(" ")}
+                  style={selected ? { background: "linear-gradient(180deg,#fff, #F8FAFC)" } : {}}
+                >
+                  {t.title}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Animated indicator */}
+          <div
+            aria-hidden="true"
+            className="absolute bottom-0 h-0.5 transition-transform duration-200"
+            style={{
+              width: `calc(100% / ${TABS.length})`,
+              transform: `translateX(${activeIndex * 100}%)`,
+              background: TABS[activeIndex]?.color || "#0B5FFF",
+              transitionDuration: reduced ? "0ms" : "200ms",
+            }}
+          />
+        </div>
+
+        {/* Panels */}
+        {TABS.map((t, idx) => {
+          const selected = t.id === active;
+          return (
+            <div
+              key={t.id}
+              role="tabpanel"
+              id={`panel-${t.id}`}
+              aria-labelledby={`tab-${t.id}`}
+              hidden={!selected}
+              className="mt-6 sm:mt-8"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+                {/* Explainer */}
+                <article className="lg:col-span-2 p-5 sm:p-6 bg-white ring-1 ring-slate-200 elev-2">
+                  <header className="flex items-center gap-3 mb-3">
+                    <div
+                      className="h-5 w-5"
+                      aria-hidden="true"
+                      style={{ background: t.color }}
+                    />
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                      {t.title}
+                    </h3>
+                  </header>
+                  <p className="text-slate-800">{t.explainer}</p>
+                  <p className="mt-2 text-slate-800">{t.explainer2}</p>
+                  <a href={t.cta.href} className="mt-4 inline-flex items-center font-semibold link-underline text-[#0B5FFF]">
+                    {t.cta.label}
+                  </a>
+                </article>
+
+                {/* Mini case study */}
+                <aside className="p-5 sm:p-6 bg-white ring-1 ring-slate-200 elev-2">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={t.caseStudy.img}
+                      alt=""
+                      width="56"
+                      height="56"
+                      className="h-14 w-14 object-cover"
+                      loading="lazy"
+                    />
+                    <div>
+                      <div className="font-semibold text-slate-900">{t.caseStudy.name}</div>
+                      <div className="text-slate-600 text-sm">{t.caseStudy.company}</div>
+                    </div>
+                  </div>
+                  <blockquote className="mt-3 text-slate-800 text-sm">
+                    “{t.caseStudy.quote}”
+                  </blockquote>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {t.caseStudy.stats.map((s, i) => (
+                      <span
+                        key={i}
+                        className="px-2.5 py-1 text-xs border border-slate-300 text-slate-800"
+                        style={{ borderColor: t.color }}
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </aside>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* helper: hide scrollbars purely cosmetic */
+const style = document.createElement("style");
+style.innerHTML = `.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}`;
+document.head.appendChild(style);
+
+INTEGRATION
+- In the home route (where the 4 cards currently render), remove that section and import + render:
+  import PillarsTabs from "@/components/PillarsTabs";
+  ...
+  <PillarsTabs />
+
+VISUAL
+- Cards use sharp corners, ring-1, elev-2 shadow, and colored accents.
+- Indicator bar color matches the active tab color.
+- Case image is “signature size” 56×56; use your real images later.
+
+ACCESSIBILITY
+- Tabs are buttons with role="tab". Arrow keys move focus across tabs.
+- Only the active panel is in the tab order; others are hidden.
+- Respect prefers-reduced-motion: indicator jumps without animation.
+
+Do not modify any other sections.

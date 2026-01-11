@@ -1,0 +1,259 @@
+Locked. Here’s a copy-paste prompt for Replit that rebuilds your “Workflow — From first call to cash” section so it has the same pop on a white background (bold header highlight, crisp cards, blue accents, readable muted copy) without touching any other band.
+
+⸻
+
+Paste this into Replit Agent 3
+
+Task
+
+Replace the current “Workflow — From first call to cash” section with a white-background variant that keeps the strong visual contrast you liked on navy: elevated cards, blue word-highlight, brand-blue links, and muted body text. Mobile-first; 1-column on small screens, 2-column on desktop. Don’t change any other sections or global styles.
+
+Scope guardrails
+	•	Only create/modify files listed below.
+	•	No global background resets, no layout refactors, no library changes.
+	•	Keep copy exactly as provided; keep routes intact.
+
+⸻
+
+1) Add section-local styles
+
+Create (or append) src/styles/workflow-white.css and import it only where this section renders.
+
+/* --- Workflow (white theme) tokens --- */
+:root {
+  --wf-surface: #ffffff;                   /* section background */
+  --wf-text: #0B1220;                      /* body text on light */
+  --wf-muted: #475569;                     /* slate-600 */
+  --wf-border: #E5E7EB;                    /* slate-200 */
+  --wf-card: #ffffff;                      /* card surface */
+  --wf-card-tint: #EDF3FF;                 /* super-light blue fill */
+  --wf-card-shadow: 0 1px 0 rgba(2,6,23,.04), 0 10px 28px rgba(2,6,23,.08);
+  --wf-accent: #2F7CFF;                    /* brand blue */
+  --wf-accent-weak: #E8F1FF;               /* blue-50 */
+}
+
+/* Section wrapper (only for this band) */
+.wf-section {
+  background: var(--wf-surface);
+  color: var(--wf-text);
+}
+
+/* Blue underline/highlight for key words */
+.wf-mark {
+  background: linear-gradient(transparent 64%, rgba(47,124,255,.18) 0);
+  border-radius: 2px;
+}
+
+/* Grid */
+.wf-grid { display: grid; gap: 22px; }
+@media (min-width: 1024px) { .wf-grid { grid-template-columns: 1fr 1fr; } }
+
+/* Card */
+.wf-card {
+  background:
+    linear-gradient(0deg, var(--wf-card) 0%, var(--wf-card) 100%),
+    linear-gradient(0deg, var(--wf-card-tint) 0%, var(--wf-card-tint) 100%);
+  border: 1px solid var(--wf-border);
+  border-radius: 14px;
+  box-shadow: var(--wf-card-shadow);
+  padding: 18px 18px 16px;
+}
+
+/* Title row (icon + h3) */
+.wf-title {
+  display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start;
+}
+.wf-title h3 {
+  font-size: 1.05rem; line-height: 1.35; font-weight: 800;
+}
+
+/* Body text and bullets */
+.wf-lead { color: var(--wf-muted); margin-top: 6px; }
+.wf-bullets { margin: 12px 0 10px 0; padding-left: 20px; color: var(--wf-muted); }
+.wf-bullets li { margin: 6px 0; }
+
+/* Inline link CTA */
+.wf-link {
+  color: var(--wf-accent); font-weight: 800; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.wf-link:hover { text-decoration: underline; }
+
+/* Icon chip */
+.wf-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--wf-accent-weak);
+  display: grid; place-items: center;
+  outline: 1px solid rgba(47,124,255,.22);
+}
+.wf-icon svg { width: 20px; height: 20px; color: var(--wf-accent); }
+
+/* A11y focus */
+.wf-card:focus-within, .wf-link:focus-visible {
+  outline: 3px solid rgba(47,124,255,.35); outline-offset: 2px;
+  border-radius: 12px;
+}
+
+
+⸻
+
+2) Drop-in React section (self-contained)
+
+Create src/sections/WorkflowWhite.tsx:
+
+import * as React from "react";
+import "../styles/workflow-white.css";
+
+/* Simple inline SVGs to avoid extra deps */
+const IconCalendar = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <rect x="3" y="4" width="18" height="17" rx="2"></rect>
+    <line x1="3" y1="9" x2="21" y2="9"></line>
+    <line x1="8" y1="2.5" x2="8" y2="6"></line>
+    <line x1="16" y1="2.5" x2="16" y2="6"></line>
+  </svg>
+);
+const IconDoc = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"></path>
+    <polyline points="14 2 14 8 20 8"></polyline>
+  </svg>
+);
+const IconCredit = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+    <line x1="2" y1="10" x2="22" y2="10"></line>
+  </svg>
+);
+const IconRepeat = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <polyline points="17 1 21 5 17 9"></polyline>
+    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+    <polyline points="7 23 3 19 7 15"></polyline>
+    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+  </svg>
+);
+
+export default function WorkflowWhite() {
+  return (
+    <section className="wf-section">
+      <div className="container mx-auto px-4 py-12">
+        {/* Header */}
+        <p className="uppercase tracking-wide text-[12px] text-slate-500 font-semibold mb-2">
+          WORKFLOW
+        </p>
+        <h2 className="text-[28px] md:text-[34px] font-black leading-tight mb-2">
+          From first call to cash—one <span className="wf-mark">clean flow</span>
+        </h2>
+        <p className="text-[15px] text-slate-600 mb-6 max-w-3xl">
+          LinkServicePro unifies the everyday steps contractors actually run:
+          schedule the job, win the work, get paid, and lock in recurring revenue.
+        </p>
+
+        {/* Cards */}
+        <div className="wf-grid">
+          {/* Schedule & Dispatch */}
+          <article className="wf-card">
+            <div className="wf-title">
+              <div className="wf-icon"><IconCalendar /></div>
+              <h3>Schedule &amp; Dispatch</h3>
+            </div>
+            <p className="wf-lead">
+              Assign jobs in minutes, route crews, and keep the day on track.
+            </p>
+            <ul className="wf-bullets">
+              <li>Visual calendar with drag-and-drop job assignment</li>
+              <li>GPS-optimized routing to reduce drive time</li>
+              <li>Real-time crew notifications and job updates</li>
+            </ul>
+            <a className="wf-link" href="/features/scheduling-dispatch">
+              Explore Scheduling →
+            </a>
+          </article>
+
+          {/* Estimates & Quotes */}
+          <article className="wf-card">
+            <div className="wf-title">
+              <div className="wf-icon"><IconDoc /></div>
+              <h3>Estimates &amp; Quotes</h3>
+            </div>
+            <p className="wf-lead">
+              Create clean, professional estimates and get approvals fast.
+            </p>
+            <ul className="wf-bullets">
+              <li>Pre-built templates for common services</li>
+              <li>Digital signatures and instant customer approval</li>
+              <li>One-click conversion from quote to scheduled job</li>
+            </ul>
+            <a className="wf-link" href="/features/estimates-quotes">
+              Build Better Quotes →
+            </a>
+          </article>
+
+          {/* Invoicing & Payments */}
+          <article className="wf-card">
+            <div className="wf-title">
+              <div className="wf-icon"><IconCredit /></div>
+              <h3>Invoicing &amp; Payments</h3>
+            </div>
+            <p className="wf-lead">
+              Invoice the same day and collect payments without the paper chase.
+            </p>
+            <ul className="wf-bullets">
+              <li>Mobile payment processing at the job site</li>
+              <li>Automated payment reminders and follow-ups</li>
+              <li>Full payment history and accounting integration</li>
+            </ul>
+            <a className="wf-link" href="/features/invoicing-payments">
+              See Invoicing →
+            </a>
+          </article>
+
+          {/* Maintenance Plans */}
+          <article className="wf-card">
+            <div className="wf-title">
+              <div className="wf-icon"><IconRepeat /></div>
+              <h3>Maintenance Plans</h3>
+            </div>
+            <p className="wf-lead">
+              Turn one-offs into predictable revenue with recurring visits.
+            </p>
+            <ul className="wf-bullets">
+              <li>Automated scheduling for recurring service visits</li>
+              <li>Contract management with renewal reminders</li>
+              <li>Recurring billing with automatic payment collection</li>
+            </ul>
+            <a className="wf-link" href="/features/maintenance-plans">
+              Maintenance Plans →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+⸻
+
+3) Mount it (no collateral changes)
+
+In your homepage composition, remove the old/grey “Workflow” band and render the new one in the same place:
+
+import WorkflowWhite from "@/sections/WorkflowWhite";
+
+{/* …where the workflow band lives now… */}
+<WorkflowWhite />
+
+Do not modify any other sections or global wrappers.
+
+⸻
+
+4) Acceptance checklist
+	•	Section background is white, headings/body maintain contrast; the blue mark makes the headline feel energetic.
+	•	Each card has a faint blue tint + border + shadow (pops on white, not dull).
+	•	Bullets use muted color; links are brand blue with underline on hover.
+	•	Mobile = 1 column; desktop ≥1024px = 2 columns; spacing matches the screenshot vibe.
+	•	No global background or typography changed; other bands remain untouched.
+
+This produces the same crisp, high-contrast feel you liked on navy, but on a clean white canvas—without nuking the rest of the page.

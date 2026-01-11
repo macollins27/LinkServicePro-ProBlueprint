@@ -1,0 +1,103 @@
+Replace the current “SchedulingRouteImpact” with a simpler section.
+
+Section name: “SchedulingBeforeAfter”
+File: src/sections/SchedulingBeforeAfter.tsx
+Insert: import and render after SchedulingPainSolve in src/routes/features/scheduling.tsx
+
+GOAL
+Show exactly what changes when a job is dragged. Before vs After, side-by-side on desktop, stacked on mobile. Convert with standardized buttons.
+
+STACK
+React 18 + TypeScript, Vite, Tailwind, shadcn/ui (Radix), Wouter, TanStack Query.
+Theme: Pro-Blueprint. WCAG AA+. Mobile-first.
+
+COPY (use verbatim)
+- H2: “See the schedule settle instantly.”
+- Sub: “Drag a job. Conflicts clear, ETAs update, and customers get the new window.”
+- Scenario selector (as small tabs):
+  1) “Reassign job to Tech 2”
+  2) “Pull 3 PM to 11:30 AM”
+  3) “Rain delay: move exterior jobs”
+- Delta badges (right column After panel):
+  * “Conflict cleared”
+  * “Drive time −12 min”
+  * “On-time window +8%”
+  * “Customer text sent”
+
+LAYOUT
+- Mobile 375–639: stack panels (Before on top, After below). Sticky CTA under panels.
+- ≥640: grid with two equal columns: Before | After. Right side shows delta badges and change log.
+- Card shells: white, ring-1 slate-200, elev-2, sharp corners.
+
+INTERACTION
+- No external DnD libs. Simulate drag with a “Play change” button.
+- BEFORE panel: three tech lanes (T1, T2, T3) as simple vertical lists with timestamps and job cards.
+  * One job shows a red “Overlap: 2:15–2:45” badge.
+- AFTER panel: same lanes with the job moved. Show green badges:
+  * “Rescheduled to 11:30 AM”
+  * “Route time −12 min”
+  * “Customer text sent”
+- When user changes scenario tab:
+  * Update the job positions in both panels and rotate the green badges accordingly.
+  * Write to aria-live region: “Scenario applied: <tab label>. Conflict cleared. Drive time −12 min.”
+- Provide a compact “What changed” list (max 3 items) under the After panel:
+  * “Moved Leak Repair to Tech 2”
+  * “ETA text sent to customer”
+  * “Route resequenced A→B→C”
+
+CTA
+- Use standardized buttons from src/components/Buttons.tsx:
+  import { StartFreeButton, ViewPricingButton, ButtonsRow } from "@/components/Buttons";
+- Place inside ButtonsRow below the panels (mobile stacked, ≥640 row).
+- Use `context="light"`.
+
+ACCESSIBILITY
+- Tabs use role="tablist"/role="tab" with roving tabindex.
+- Panels labelled:
+  * BEFORE: role="region" aria-label="Before schedule"
+  * AFTER: role="region" aria-label="After schedule"
+- aria-live="polite" region id="ba-status" for scenario updates.
+- All interactive elements have visible #0B5FFF focus ring with proper ring-offset (white for light).
+
+CODE REQUIREMENTS
+- Export default function SchedulingBeforeAfter(): JSX.Element
+- State: activeScenario: 0|1|2; beforeJobs[], afterJobs[] derived from scenario
+- Components:
+  * ScenarioTabs
+  * SchedulePanel({ title: "Before" | "After", jobsByTech })
+  * DeltaBadges (uses exact copy above)
+  * ChangeLog
+  * CTA block with ButtonsRow + StartFreeButton + ViewPricingButton
+- data-testid hooks:
+  * data-testid="scenario-tabs"
+  * data-testid="before-panel"
+  * data-testid="after-panel"
+  * data-testid="delta-badges"
+  * data-testid="cta-start-free"
+
+STYLES
+- Tech lane headers: “T1”, “T2”, “T3” in small sharp labels.
+- Job cards: square, bordered, timestamp + title. Red badge for overlaps in Before; green badges in After.
+- Hover underline animation on links right→left per theme.
+- Optional subtle blueprint grid background on panel containers via `bg-blueprint`.
+
+CONTENT (seed the lanes exactly)
+Initial BEFORE:
+- T1: 9:00 Filter change, 10:30 Thermostat, 2:30 Leak repair [Overlap: 2:15–2:45]
+- T2: 11:45 Open, 12:30 Maintenance
+- T3: 3:30 Tune-up
+
+Scenario effects:
+1) Reassign job to Tech 2 → AFTER: move “Leak repair” to T2 at 11:30; show green badges Drive time −12 min, On-time window +8%, Customer text sent.
+2) Pull 3 PM to 11:30 AM → AFTER: move T3 “Tune-up” to 11:30; badges Conflict cleared, On-time window +8%, Customer text sent.
+3) Rain delay: move exterior jobs → AFTER: mark exterior tasks moved to tomorrow; badges Conflict cleared, Customer text sent.
+
+QA GATES
+- No overflow at 375px.
+- Lighthouse: ≥90 Performance, ≥95 Accessibility on this route.
+- Tabs operable by keyboard; Enter/Space activate.
+- aria-live updates on scenario change.
+- Buttons meet standardized specs and pass focus-ring checks.
+
+IMAGE PROMPT (optional hero for this section)
+“Field technician indoors by an air handler, using a smartphone to reschedule a ‘Leak repair’ from 2:30 to 11:30; natural light; candid documentary; shallow depth of field; navy/blue accents; no paper, no visible brand logos; medium close-up.”

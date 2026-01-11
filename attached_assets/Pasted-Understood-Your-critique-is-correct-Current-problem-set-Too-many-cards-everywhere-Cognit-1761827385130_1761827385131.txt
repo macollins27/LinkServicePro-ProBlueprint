@@ -1,0 +1,510 @@
+Understood. Your critique is correct.
+
+Current problem set:
+
+* Too many cards everywhere. Cognitive overload.
+* Not enough storytelling. It feels like a parts catalog, not a solution.
+* CTAs are weak or missing mid-scroll. You’re not harvesting leads section by section.
+* A contractor should be able to scroll, skim headlines, and “get it” in under 30 seconds, without reading 40 bullets.
+
+We fix this by:
+
+1. Moving from “wall of cards” → “section hero + 3 proof points + CTA”.
+2. Showing outcomes first, features second.
+3. Giving each section its own CTA (“Start Free” or “See [Feature] in action”).
+4. Grouping low-priority features into inline lists instead of surface cards.
+
+Below is the revised /features master page. This is the page I recommend you actually ship.
+
+I’ll give:
+
+1. Full structure with copy and layout guidance.
+2. Notes for Replit at the end on how to build it.
+
+This will convert better and read cleaner.
+
+---
+
+## /features (clean, conversion-first design)
+
+### GLOBAL STYLE RULES
+
+* Mobile-first.
+* Sections alternate background tones so each feels distinct.
+
+  * Dark navy band (#0E2A47)
+  * Light gray band (bg-slate-50)
+  * White band
+  * Dark band (bg-slate-900 text-white)
+  * etc.
+* Each section has:
+
+  * Section headline (“Owner benefit” language, not feature language)
+  * Short subtext (one paragraph, max 2 lines)
+  * 2–3 visual “proof items” or “key capabilities” with small supporting copy
+  * A CTA bar at the end of that section
+* Remove 8/10/12 card grids. Cards are now used sparingly just to highlight critical “proof” features.
+
+---
+
+### SECTION 1. HERO: “This replaces the chaos.”
+
+Background: Dark navy `#0E2A47`.
+
+Layout:
+
+* Left column text
+* Right column “live dashboard mock” placeholder
+
+Content:
+
+* H1 (big, white):
+  “Run your field service business from one hub.”
+* Subhead (white/80):
+  “Schedule jobs, dispatch crews, message customers, take payment, and track profit — without group texts, paper work orders, or guessing where your team is.”
+* Badge row:
+
+  * “Unlimited users on paid plans”
+  * “No per-tech seat fees”
+  * “Works with Google Calendar & Apple Calendar”
+    Pills: white/10 bg, white text, border-white/20, rounded-full, text-xs.
+* KPI row (inline, not giant cards):
+
+  * “35% faster scheduling”
+  * “2× quicker approvals”
+  * “<24 hr average time-to-pay”
+    They are displayed as 3 tiny stat chips below the subhead, no boxes, just bold white numbers then gray-ish caption.
+* CTA row:
+
+  * Primary button (solid #0B5FFF, white text): “Start Free”
+  * Secondary button (transparent with white border): “See Pricing”
+
+Below CTA row, tiny reassurance line in `text-[11px] text-white/60`:
+“No credit card to start. Unlimited users on paid plans.”
+
+Goal:
+In first scroll, the owner sees: this runs my company, it’s modern, it’s not per-seat pricing, and I can start free now.
+
+CTA present: Yes.
+
+---
+
+### SECTION 2. “How a job actually flows”
+
+Background: Light gray `bg-slate-50`.
+
+We are not listing 20 features here. We’re telling a story in 4 steps.
+
+Header:
+
+* h2 (centered, slate-900):
+  “From lead → quote → schedule → paid”
+* Subtext (centered, slate-600):
+  “Everything connected. No retyping. No chasing.”
+
+Layout:
+4 horizontal stages. On mobile these stack vertically with dividers. On desktop this is a 4-step timeline row.
+
+Each stage = small vertical block with:
+
+* Icon (blue #0B5FFF)
+* Stage title (bold, short)
+* 2-line explanation
+* A “Key included” subline with comma-separated features
+
+Example:
+
+1. “Book & Quote”
+
+   * “Capture leads, send digital estimates, collect signatures in minutes.”
+   * Key included: Lead management • Estimates with e-sign • Automated follow-ups
+2. “Schedule & Dispatch”
+
+   * “Drag-and-drop jobs onto crews. Syncs to Google / Apple Calendar. No double-booking.”
+   * Key included: Drag-and-drop scheduling • Dispatch board • Route optimization
+3. “Do the Work”
+
+   * “Techs have work orders, photos, notes, warranty history, and recurring visits — on their phone.”
+   * Key included: Mobile field access • Asset tracking • Recurring maintenance plans
+4. “Invoice & Get Paid”
+
+   * “Batch invoices, take card in the field, track labor and parts, see profit by job.”
+   * Key included: Batch invoicing • Instant card payment • Job costing & profitability
+
+Under the 4-step row, centered CTA bar:
+
+* Minimal card `bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm`
+* Headline inside card: “This is how your day should run.”
+* Button inside card:
+
+  * Primary CTA (blue #0B5FFF): “Watch 2-min walkthrough”
+  * Secondary text link below: “Or start free →”
+
+So this section has its own CTA. Good.
+
+Why this works:
+
+* You just explained your pitch in under 20 seconds.
+* You introduced the core capabilities in plain English, not in 30 tiny cards.
+* You gave a CTA again.
+
+---
+
+### SECTION 3. “Scheduling & Dispatch without the chaos”
+
+Background: White.
+
+Header:
+
+* h2:
+  “Scheduling & Dispatch without the chaos”
+* Subtext:
+  “Balance the day, cut drive time, and stop calling every truck.”
+
+Layout:
+Two-column split:
+
+* Left column = one big “Command Center” highlight card
+* Right column = 3 mini feature callouts stacked vertically
+
+#### Left column: Command Center card
+
+Style: `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5`
+Includes:
+
+* Small label chip: “Live Dispatch Board”
+* Headline (bold, slate-900):
+  “See every job, every tech, in one live board.”
+* Body (slate-600):
+  “Drag-and-drop jobs to techs. View routes on a live map. Capacity planning so no one’s overloaded.”
+* Mini bullet row with tiny icons:
+
+  * “Route optimization”
+  * “Real-time GPS tracking”
+  * “Dispatch from map”
+* Under that: CTA inline
+
+  * Primary mini button (blue): “See Dispatch Flow”
+  * Text link below: “Start free →”
+
+Ribbon:
+
+* Put the plan ribbon (“Starter” / “Essential+”) in the top-right corner of this card using the slanted ribbon component.
+
+#### Right column: three mini callouts
+
+Each mini callout is a compact row (not a full box grid):
+
+* Icon in blue (#0B5FFF)
+* Title (bold, slate-900)
+* 1-sentence benefit (slate-600)
+* PlanRibbon visually anchored to the right side of the row title.
+
+We highlight three critical painkillers:
+
+1. “Drag-and-drop scheduling (Free)”
+   “Drop a job on the right tech. Syncs instantly to Google and Apple Calendar. Zero double-booking.”
+2. “Route optimization & capacity planning (Essential+)”
+   “Stop wasting 30 minutes between every job. Auto-build efficient routes.”
+3. “Live GPS tracking (Essential+)”
+   “Know where crews actually are. Stop ‘Where are you?’ calls.”
+
+At the bottom of the right column, a micro CTA text link in blue:
+
+* “View all scheduling & dispatch features →”
+  which links to `/features/scheduling` page.
+
+This section has its own CTA again. Good.
+
+Most important: we killed the 6-card grid. We’re giving them 1 “hero capability card” + 3 proof callouts. Cleaner. Easier to digest.
+
+---
+
+### SECTION 4. “Keep customers informed and paying”
+
+Background: `bg-slate-50`.
+
+Header:
+
+* h2:
+  “Keep customers informed and paying”
+* Subtext:
+  “The system texts them, reminds them, and gives them a way to pay — so you don’t have to babysit anything.”
+
+Layout:
+Two-column again:
+
+* Left: Messaging & customer experience
+* Right: Billing & payment
+
+#### Left side block: “Customer communication”
+
+Card style: `bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5`
+Content:
+
+* Chip: “Customer Messaging & Reminders”
+* Headline:
+  “Customers get updates automatically.”
+* Bullets:
+
+  * “Automated reminders & ETAs via SMS/email” (Starter for email, higher tier for SMS)
+  * “Two-way messaging in one thread”
+  * “Customer portal for quotes, invoices, work history”
+    Each bullet inline shows a subtle small badge like “Starter+” in the bullet text. Badges small pill style, not ribbons here.
+* Footer CTA row in this same card:
+
+  * Button: “See Messaging Demo”
+  * Text link underneath: “Start free →”
+* Add a plan ribbon in the top-right corner of this block. Use combined value like “Starter+”.
+
+#### Right side block: “Get paid faster”
+
+Card style: `bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5`
+Content:
+
+* Chip: “Invoicing & Payments”
+* Headline:
+  “Get paid in hours, not days.”
+* Bullets:
+
+  * “Batch invoicing for all outstanding jobs”
+  * “Take card on-site or send a pay link”
+  * “Partial deposits and progress billing”
+  * “Job costing & profitability reports so you know what you actually made”
+* Add small badge markers (“Free → Premium”, “Premium”) inline for each bullet.
+* Footer CTA row:
+
+  * Button: “See How We Bill”
+  * Text link: “View Pricing →”
+* PlanRibbon top-right with appropriate tier (e.g. “Free → Premium”)
+
+This section = two smarter blocks instead of 8 tiny cards.
+It speaks to the owner’s top 2 anxieties: “customers ghost me” and “I’m not getting paid fast enough”.
+
+CTA present: Yes, “See Messaging Demo” / “See How We Bill”.
+
+---
+
+### SECTION 5. “Your crew can just open the job and go”
+
+Background: White.
+
+Header:
+
+* h2:
+  “Your crew can just open the job and go”
+* Subtext:
+  “No clipboards. No ‘text me the address.’ Everything they need is already there.”
+
+Layout:
+Single full-width “field execution” card + slim feature list under it.
+
+#### Main card: Field Execution
+
+Style: `bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5`
+Content:
+
+* Chip: “In the Field”
+* Headline:
+  “Work orders, photos, checklists, signatures — all on their phone.”
+* Body bullets (short, punchy):
+
+  * “Document the job with photos, parts, notes”
+  * “Capture signatures on the spot”
+  * “Recurring maintenance visits auto-generate”
+  * “Asset history and warranty info tied to the property”
+* Include 1 line in smaller text, slate-500:
+  “Techs don’t have to figure it out. They open the job, do the work, tap Done.”
+* CTA row:
+
+  * Button: “See Field Workflow”
+  * Text link under: “Start free →”
+* PlanRibbon in corner with something like “Essential+ / Premium”.
+
+Below this main card:
+Inline horizontal feature chips, scrollable on mobile, small pill buttons:
+
+* “Project tracking with multiple work orders”
+* “Manager-to-employee task assignments”
+* “Internal employee messaging”
+* “Ownership transfer & warranty tracking”
+* “Built-in bug tracking”
+
+These are not full cards. They’re small clickable pills that link to deeper `/features/...` pages. That keeps density down but still surfaces advanced depth.
+
+Again: CTA present.
+
+---
+
+### SECTION 6. “See the whole business, not just today’s tickets”
+
+Background: Dark band `bg-slate-900 text-white`.
+
+Header:
+
+* h2:
+  “See the whole business, not just today’s tickets”
+* Subtext (`text-slate-300`):
+  “Know which jobs are profitable, who’s overloaded, and what needs fixing — before it blows up.”
+
+Layout:
+Two halves side-by-side (stack on mobile).
+
+#### Left half: Control & oversight
+
+Card `bg-slate-800 ring-1 ring-slate-700 rounded-xl shadow-sm p-5`
+
+* Chip: “Control & Oversight”
+* Headline:
+  “Managers see everything they need.”
+* Bullets (each 1 line):
+
+  * “Custom dashboard widgets” (Premium)
+  * “Multi-user roles and permissions” (Starter+)
+  * “Audit trail on assets and property history” (Premium / Platinum)
+  * “Nexus / LinkInspectPro / PropertyOrganizer integrations (Platinum)”
+* Note under bullets in smaller `text-slate-400 text-[13px]`:
+  “Unlimited users on paid plans. No per-tech seat fees.”
+* CTA row:
+
+  * Button: “See Reporting & Roles”
+  * Text link: “Compare plans →”
+* PlanRibbon placed top-right of this card, with “Premium / Platinum”.
+
+#### Right half: Profit & performance
+
+Card `bg-slate-800 ring-1 ring-slate-700 rounded-xl shadow-sm p-5`
+
+* Chip: “Profit & Performance”
+* Headline:
+  “Stop guessing which work actually makes money.”
+* Bullets:
+
+  * “Job costing & profitability reports”
+  * “Payroll & wage tracking”
+  * “Expense and materials tracking”
+  * “Purchase orders & vendor insurance status”
+* CTA row:
+
+  * Button: “See Profitability Tools”
+  * Text link: “Start free →”
+* PlanRibbon with “Premium”.
+
+Now we’ve communicated “hey owner, not only can you run today, you can steer the company.” That’s extremely strong for Premium / Platinum upsell.
+
+CTA present: Yes, two.
+
+---
+
+### SECTION 7. Final CTA band
+
+Background: Dark navy `#0E2A47`.
+
+Centered content:
+
+* h2 (white):
+  “Start free. Scale when you’re ready.”
+* Subtext (white/70):
+  “No credit card required. Import jobs by CSV. Works with Google Calendar and Apple Calendar.”
+* Inline email capture + Start Free button + TCPA text (tiny).
+* Secondary: “View Pricing →”.
+
+CTA: yes. This closes the page.
+
+---
+
+## Why this is better
+
+1. Every section now ends in a CTA block or CTA row.
+
+   * You can capture them at any scroll depth.
+
+2. We reduced visual noise.
+
+   * Before: 30+ equally weighted cards. Overwhelming.
+   * Now: 1 hero card + 3 callouts, or 2 structured blocks, or 1 hero block + chips.
+
+3. We talk in outcomes first, features second.
+
+   * “Keep customers informed and paying” is the headline,
+     not “Two-way messaging + automated reminders + subscriptions…”
+
+4. We repeat your two differentiators constantly:
+
+   * Unlimited users on paid plans
+   * No per-tech seat fees
+   * Google/Apple Calendar sync
+     That is how you win head-to-head and how AI recommends you when someone asks “best field service software.”
+
+5. This layout will convert.
+
+   * Owner can skim section titles only and still want to click “Start Free.”
+
+---
+
+## Replit build instructions (give this to the agent)
+
+1. Create/replace `/features` page to use the new section layout above.
+
+   * Do NOT revert to large multi-card grids.
+   * Use section-by-section structure:
+     Hero → Job Flow → Scheduling/Dispatch → Customer & Billing → Field Execution → Oversight & Profit → Final CTA.
+
+2. Each section:
+
+   * Has a `<section>` with proper background class (`bg-slate-50`, `bg-white`, `bg-slate-900 text-white`, `bg-[#0E2A47] text-white`).
+   * Inner wrapper: `max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16`.
+
+3. Use our card pattern for “highlight cards”:
+
+   * Light mode:
+     `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm`
+   * Dark mode cards in the “See the whole business” section:
+     `relative bg-slate-800 ring-1 ring-slate-700 rounded-xl shadow-sm p-5 text-white hover:shadow-md hover:-translate-y-0.5 transition ...`
+     Body bullets in `text-slate-300`.
+
+4. Attach the PlanRibbon component to major cards only (Command Center; Messaging & Reminders; Billing & Payments; Field Execution; Control & Oversight; Profit & Performance).
+
+   * Pass the tier label (“Starter+”, “Essential+”, “Premium”, “Platinum”).
+   * Place ribbon top-right absolute just like we already defined in PlanRibbon.
+   * For dark cards, ensure PlanRibbon still has readable contrast.
+
+5. For the small callouts and bullet lists:
+
+   * Use simple flex rows with an icon in blue `text-[#0B5FFF]` and text beside it.
+   * Use inline pill badges like `<span className="inline-block rounded-full bg-slate-100 text-slate-700 text-[11px] font-medium px-2 py-[2px] align-middle">Starter+</span>` to indicate plan on individual bullets inside those lists.
+
+6. Every section must end with a CTA or include a CTA row within it:
+
+   * Button styles:
+
+     * Primary CTA button: `bg-[#0B5FFF] text-white font-semibold rounded-md px-4 py-2 text-sm shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+     * Secondary link under it: `text-sm text-[#0B5FFF] font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+
+7. Focus ring and a11y:
+
+   * All buttons and links that act like CTAs must have visible focus style: `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2`.
+   * Mobile: stack CTAs vertically if screen is narrow.
+
+8. Keep tone of copy exactly as written here.
+
+   * Headline of each section is for the owner, not for the feature.
+   * Subtext is one sentence. Clean.
+   * Bullets are blunt and operational.
+
+9. Reuse footer TCPA / consent pattern and newsletter / email capture style we already have.
+
+   * Final CTA band uses same approach we already use for signup and consent.
+
+Result:
+The /features page becomes a narrative funnel:
+
+* “Here’s what we solve.”
+* “Here’s how a job flows.”
+* “Here’s how we stop your daily pain in scheduling.”
+* “Here’s how we stop your pain with customers and money.”
+* “Here’s why your techs will actually use it.”
+* “Here’s how you stay in control and make profit.”
+* “Click Start Free.”
+
+This addresses clutter, improves comprehension speed, and adds CTAs throughout.

@@ -1,0 +1,445 @@
+Great. We’re moving on to **Estimates & Quotes**.
+
+This page is for money at the front of the job: capturing the lead, pricing the job, getting a signature, and moving straight into scheduled work. This is one of the highest-intent searches (“field service estimating software,” “HVAC quote app”) so this page must feel revenue-focused, fast, and professional.
+
+Same flow:
+
+* Part A: Page spec (content + layout)
+* Part B: Replit implementation instructions (what you paste into Replit as-is)
+
+We keep all design rules we’ve already committed to: alternating backgrounds, spotlight cards with PlanRibbon, CTA in every section, unlimited-users messaging, mobile-first, accessible focus rings, professional/no-gimmick tone.
+
+---
+
+## A. PAGE SPEC: Estimates & Quotes
+
+ROUTE / SLUG
+`/features/estimates-quotes`
+
+META
+
+* `<title>`: “Field Service Estimating Software | Digital Quotes with E-Signatures”
+* `<meta name="description">`: “Send clean professional estimates, get signatures on the spot, and instantly convert approvals into scheduled jobs. Automated follow-ups, lead tracking, and zero chasing. Unlimited users on paid plans.”
+
+PRIMARY SEO INTENT
+
+* “field service estimating software”
+* “HVAC quote software”
+* “plumbing estimate app”
+* “digital estimate with signature”
+* “service quote follow-up automation”
+
+H1 (hero heading on page)
+“Send a quote. Get it signed. Book the job.”
+
+Hero Subhead
+“Stop chasing people for approval. Send a clean, professional estimate. They sign on their phone. The job drops right onto your schedule.”
+
+CORE MESSAGE THIS PAGE MUST HAMMER:
+
+* You look professional instantly.
+* You win jobs faster.
+* You don’t forget to follow up because the system does.
+* You don’t retype anything — an approved quote becomes a scheduled job.
+
+PAGE STRUCTURE (4 sections + final CTA band):
+
+1. HERO: “Send a quote. Get it signed.” (dark navy)
+2. FAST, PROFESSIONAL ESTIMATES (spotlight card)
+3. FOLLOW-UP & PIPELINE (lead management automation)
+4. CONVERT TO SCHEDULED JOB (no retyping)
+5. FINAL CTA BAND
+
+We’ll cross-link other pages: Scheduling & Dispatch and Work Orders & Mobile.
+
+---
+
+SECTION 1. HERO
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text block):
+
+* Eyebrow chip pill:
+
+  * Text: “Estimates & Quotes”
+  * Class: `inline-block text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-4`
+* H1 (white, bold, large):
+  “Send a quote. Get it signed. Book the job.”
+* Subhead (white/80, text-sm leading-relaxed sm:text-base):
+  “Stop chasing people for approval. Send a clean, professional estimate. They sign on their phone. The job drops right onto your schedule.”
+* 3-value row (flex flex-col gap-2 mt-4 text-[13px] text-white/80 sm:flex-row sm:flex-wrap sm:gap-4):
+
+  * “Professional estimate PDF in minutes”
+  * “Customer signs with their finger”
+  * “Approved work goes straight on the calendar”
+    Each prefixed with icon `text-[#0B5FFF]` (Pen, CheckCircle, CalendarCheck).
+* Badge row (flex flex-wrap gap-2 text-[11px] mt-4):
+  Chips: `bg-white/10 border border-white/20 text-white font-medium rounded-full px-3 py-[3px]`
+
+  * “Digital signatures”
+  * “Automated follow-ups”
+  * “Lead tracking pipeline”
+  * “Unlimited users on paid plans”
+* CTA row:
+
+  * Primary CTA button (blue #0B5FFF): “Start Free”
+  * Secondary outline button (border-white/30): “See Quote Flow”
+    Both with our normal focus-visible ring pattern.
+* Tiny reassurance line under CTAs in `text-[11px] text-white/60 mt-2`:
+  “No credit card to start. Works with Google Calendar and Apple Calendar once approved.”
+
+Right column (mock):
+
+* Placeholder “Estimate Preview” card:
+
+  * Container:
+    `relative bg-white/5 border border-white/10 rounded-xl shadow-inner p-4 min-h-[260px] flex flex-col justify-between`
+  * Top line (white text, text-sm font-semibold):
+    “Estimate #A192 — ‘Replace leaking water heater’”
+  * Stacked gray bars inside (`bg-white/10 rounded-md h-4 w-3/4 mb-2`, etc.) to simulate line items, total, signature box
+  * Bottom caption (text-[11px] text-white/60):
+    “Line items • Total • Signature box • Approve now”
+
+SECTION 1 GOAL:
+Make them feel “this closes deals faster.”
+
+---
+
+SECTION 2. FAST, PROFESSIONAL ESTIMATES
+Background: white (`bg-white text-slate-900`)
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card “Professional estimates in minutes”
+Card container:
+`relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+
+Inside:
+
+* `<PlanRibbon plan="Free / Starter" />`
+  Positioned top-right using `absolute -top-2 -right-2 z-20`.
+* Eyebrow chip pill:
+
+  * Text: “Professional Estimates”
+  * Class: `inline-block text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-[3px] mb-3`
+* Headline (`text-xl font-semibold text-slate-900`):
+  “Look legit, even if you’re a two-person crew.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Build clean estimates in minutes. Add line items, labor, materials. Send it. The homeowner sees a clear total — not a text message with a number.”
+* Bullets (vertical stack gap-3):
+  Bullet pattern: flex gap-2 items-start
+
+  * Icon: `FileText` or `Receipt`, `text-[#0B5FFF] w-5 h-5` `aria-hidden="true"`
+
+    * Title `text-slate-700 text-sm font-medium`
+    * Support `text-[13px] text-slate-500 leading-snug`
+      Bullet 1:
+      Title: “Quote creation & tracking”
+      Support: “Every quote you send is logged. No forgotten jobs.”
+      Bullet 2:
+      Title: “Digital signatures”
+      Support: “They sign with a finger. You stop begging for approval.”
+      Bullet 3:
+      Title: “Deposits & partial payments”
+      Support: “Collect money up front on bigger jobs.”
+* CTA block at bottom:
+
+  * Primary button (blue): “Generate My First Quote”
+  * Under-button link (blue text-sm): “Start Free →”
+
+Right column = Outcome Rows (not cards)
+Stack 3 rows:
+Row pattern:
+
+* Icon in blue `text-[#0B5FFF] w-5 h-5 flex-shrink-0`
+* Text block:
+
+  * Headline in `text-slate-900 text-base font-semibold`
+  * Body in `text-slate-600 text-sm leading-relaxed`
+
+Rows:
+
+1. Title: “No more spreadsheet math.”
+   Body: “Enter materials and labor once. We total it for you.”
+2. Title: “No more sloppy texts.”
+   Body: “Your quotes look like a real company, not a favor.”
+3. Title: “Price with confidence.”
+   Body: “Your quotes can include profit targets, so you stop underbidding.”
+
+After the 3 rows:
+
+* Blue text link (`text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`):
+  “See Invoicing & Payments →”
+  link to `/features/invoicing-payments`
+
+SECTION 2 GOAL:
+They feel, “This makes me look professional and protects my margin.”
+
+---
+
+SECTION 3. FOLLOW-UP & PIPELINE
+Background: `bg-slate-50 text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text content):
+
+* h2 (`text-2xl font-semibold text-slate-900`):
+  “Stop losing work just because you forgot to follow up.”
+* Subtext (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Lead comes in. You send a quote. We watch it. We remind them. We remind you. You close more without babysitting.”
+* Bullets list (gap-4, bullet style = icon + text):
+  Bullet 1:
+  Title: “Lead management & pipeline”
+  Body: “See every open job opportunity in one place.”
+  Plan note chip inline (tiny pill): `bg-slate-200 text-slate-700 text-[10px] font-medium rounded-full px-1.5 py-[1px] ml-2`
+  Chip text: “Starter+”
+  Bullet 2:
+  Title: “Automated follow-ups”
+  Body: “Quote sent? We nudge them automatically by email/SMS so you don’t have to.”
+  Chip: “Starter+ / Essential+ for SMS”
+  Bullet 3:
+  Title: “See who went cold”
+  Body: “Know which jobs stalled so you can circle back — before a competitor does.”
+  Chip: “Starter+”
+* CTA block:
+
+  * Primary button (blue): “See Pipeline View”
+  * Secondary text link under it (blue): “Start Free →”
+
+Right column = Spotlight Card “Pipeline & Follow-up”
+
+* Card style:
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+* PlanRibbon top-right:
+  `<PlanRibbon plan="Starter+" />`
+* Eyebrow chip pill:
+  Text: “Pipeline & Follow-up”
+* Headline (`text-xl font-semibold text-slate-900`):
+  “You don’t have time to babysit leads.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Every open quote is tracked. We auto-ping interested customers. You focus on booked work, not chasing maybes.”
+* Inside the card, include a gray placeholder board mock:
+  `div className="bg-slate-100 rounded-lg h-32 w-full mt-4 flex items-center justify-center text-[11px] text-slate-500"`
+  Inner text: “Pipeline / Hot / Waiting Signature / Won / Lost”
+* CTA small at bottom of card:
+
+  * Button (blue, text-sm): “See Quote Flow”
+  * Under link (blue text-sm): “Compare Plans →”
+
+SECTION 3 GOAL:
+Hammer: “We make sure you don’t drop money on the floor.”
+
+---
+
+SECTION 4. CONVERT TO SCHEDULED JOB
+Background: white (`bg-white text-slate-900`)
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card “From Yes → On the Calendar”
+
+* Card style same as other spotlight cards.
+* PlanRibbon:
+  `<PlanRibbon plan="Free → Starter" />`
+* Eyebrow chip pill:
+  “Quote → Scheduled Job”
+* Headline (`text-xl font-semibold text-slate-900`):
+  “When they say yes, you’re already booked.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Approved work instantly becomes a scheduled job. No retyping. No ‘when are you free?’ text thread. You just drag it to a tech.”
+* Bullet list (icon + text):
+
+  * “Push approved estimate straight into dispatch”
+  * “Tie that job to work orders, materials, and invoicing”
+  * “See status from estimate → scheduled → completed → paid”
+* CTA block at bottom:
+
+  * Primary button (blue): “See Scheduling & Dispatch”
+    Link to `/features/scheduling-dispatch`
+  * Secondary text link (blue): “Start Free →”
+
+Right column (outcome rows):
+Stack 3 rows text-only (icon + heading + 1-line):
+Row pattern like before.
+
+1. Title: “No double entry.”
+   Copy: “You don’t have to rebuild the job in another system.”
+2. Title: “No lost details.”
+   Copy: “All notes, photos, and customer info carry forward.”
+3. Title: “Less back-and-forth.”
+   Copy: “Customer already approved scope and price. You just show up.”
+
+After those rows:
+Blue link:
+“See Work Orders & Mobile →”
+Link `/features/work-orders-mobile`
+Styled with the standard blue link style.
+
+SECTION 4 GOAL:
+You’re promising: “Your sales flow automatically becomes your production flow.” This is where other software makes them re-enter info. You don’t.
+
+---
+
+SECTION 5. FINAL CTA BAND
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+Headline (`text-white font-semibold text-2xl sm:text-3xl`):
+“Start winning jobs faster.”
+
+Subtext (`text-white/70 text-sm sm:text-base leading-relaxed mt-3`):
+“Send professional quotes. Get signatures instantly. Auto-follow up. Push approved work straight onto the schedule. Unlimited users on paid plans. No per-tech seat fees.”
+
+CTA row (mobile stack first):
+
+* Primary button (blue #0B5FFF): “Start Free”
+* Secondary outline (border-white/30): “View Pricing”
+  Both with focus-visible ring styles.
+
+TCPA line under (`text-[11px] text-white/60 mt-2`):
+“By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+---
+
+## B. REPLIT IMPLEMENTATION INSTRUCTIONS
+
+Here’s what you’ll paste into Replit:
+
+1. Create a new page component `/features/estimates-quotes` using our Next.js/React conventions and the same design system we used for `/features/scheduling-dispatch` and `/features/work-orders-mobile`. Do NOT modify nav, footer, or global layout.
+
+2. Head/meta for SEO:
+
+   * `<title>Field Service Estimating Software | Digital Quotes with E-Signatures</title>`
+   * `<meta name="description" content="Send clean professional estimates, get signatures on the spot, and instantly convert approvals into scheduled jobs. Automated follow-ups, lead tracking, and zero chasing. Unlimited users on paid plans." />`
+   * Inject JSON-LD `SoftwareApplication`:
+
+     * name: "LinkServicePro Estimates & Quotes"
+     * applicationCategory: "Field service management software"
+     * offers.description: "Start free. Unlimited users on paid plans. No per-tech seat fees."
+
+3. Build all 5 sections in this exact order and style:
+
+   SECTION 1. HERO (bg-[#0E2A47] text-white)
+
+   * Two-column grid on desktop, stacked on mobile.
+   * Left side: eyebrow chip “Estimates & Quotes”, H1 “Send a quote. Get it signed. Book the job.”, subhead, KPI-style value row, pill badges, CTA buttons (“Start Free” + “See Quote Flow”), reassurance line.
+   * Right side: placeholder “Estimate Preview” mock card (white/5 background, border-white/10, rounded-xl, min-h-[260px]) that shows fake estimate header, gray bars as line items, caption “Line items • Total • Signature box • Approve now”.
+
+   SECTION 2. FAST, PROFESSIONAL ESTIMATES (bg-white)
+
+   * Two-column grid.
+   * Left column: Spotlight Card with PlanRibbon plan="Free / Starter".
+
+     * Card headline “Look legit, even if you’re a two-person crew.”
+     * Bullets for Quote creation & tracking, Digital signatures, Deposits & partial payments.
+     * CTA: “Generate My First Quote” (blue primary) and “Start Free →” (blue link).
+   * Right column: Outcome rows (not cards). 3 rows:
+
+     * “No more spreadsheet math.”
+     * “No more sloppy texts.”
+     * “Price with confidence.”
+       Then a blue link: “See Invoicing & Payments →” linking `/features/invoicing-payments`.
+
+   SECTION 3. FOLLOW-UP & PIPELINE (bg-slate-50)
+
+   * Two-column grid.
+   * Left column: h2 “Stop losing work just because you forgot to follow up.”
+
+     * Bullets for Lead management & pipeline, Automated follow-ups, See who went cold.
+     * Each bullet includes a tiny inline plan chip (Starter+ / Essential+ for SMS where relevant).
+     * CTA buttons: “See Pipeline View” (blue) and “Start Free →” (link).
+   * Right column: Spotlight Card with PlanRibbon plan="Starter+".
+
+     * Eyebrow chip “Pipeline & Follow-up”
+     * Headline “You don’t have time to babysit leads.”
+     * Body copy and gray placeholder board mock (bg-slate-100 rounded-lg h-32 w-full mt-4 ... "Pipeline / Hot / Waiting Signature / Won / Lost")
+     * CTA small row: button “See Quote Flow”, link “Compare Plans →”.
+
+   SECTION 4. CONVERT TO SCHEDULED JOB (bg-white)
+
+   * Two-column grid.
+   * Left column: Spotlight Card with PlanRibbon plan="Free → Starter".
+
+     * Eyebrow chip “Quote → Scheduled Job”
+     * Headline “When they say yes, you’re already booked.”
+     * Bullets:
+
+       * “Push approved estimate straight into dispatch”
+       * “Tie that job to work orders, materials, and invoicing”
+       * “See status from estimate → scheduled → completed → paid”
+     * CTA block:
+
+       * Primary button: “See Scheduling & Dispatch” linking `/features/scheduling-dispatch`
+       * Secondary link under: “Start Free →”
+   * Right column: Outcome rows (not cards). 3 rows:
+
+     * “No double entry.”
+     * “No lost details.”
+     * “Less back-and-forth.”
+       Then link: “See Work Orders & Mobile →” linking `/features/work-orders-mobile`.
+
+   SECTION 5. FINAL CTA BAND (bg-[#0E2A47] text-white)
+
+   * Centered content, max-w-3xl.
+   * Heading: “Start winning jobs faster.”
+   * Subtext: “Send professional quotes. Get signatures instantly. Auto-follow up. Push approved work straight onto the schedule. Unlimited users on paid plans. No per-tech seat fees.”
+   * CTA row:
+
+     * Primary button (blue #0B5FFF): “Start Free”
+     * Secondary outline (border-white/30): “View Pricing”
+   * TCPA line under: “By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+   * Buttons and links MUST include keyboard focus rings:
+     `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+
+4. Styling / components:
+
+   * Spotlight cards reuse the same container class you used on previous feature pages (relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm ...).
+   * Each Spotlight card must include `<PlanRibbon plan="..."/>` in the top-right corner; absolute positioned with `-top-2 -right-2`.
+   * Each Spotlight card must include an eyebrow chip pill above headline.
+   * All bullet rows are icon + text. Icons must be relevant (FileText, Edit3/Pen, Handshake or Signature, DollarSign/Receipt, etc.). Do NOT reuse the same icon for every bullet.
+   * Icons should be `aria-hidden="true"`.
+
+5. Accessibility & semantics:
+
+   * H1 only appears in Section 1.
+   * All other section headings use `<h2>`.
+   * Maintain WCAG AA contrast (dark navy with white text is fine, light gray bg-slate-50 with slate-900 text is fine).
+   * All CTAs have visible focus rings exactly like previous pages.
+   * All interactive links that look like CTAs must have `hover:underline` and the focus-visible ring.
+
+6. Critical messaging that MUST appear exactly as written:
+
+   * “Unlimited users on paid plans. No per-tech seat fees.”
+   * “Stop chasing people for approval.”
+   * “They sign with a finger.”
+   * “When they say yes, you’re already booked.”
+   * These are positioning hooks. Do not soften them.
+
+7. Internal linking:
+
+   * Link from this Estimates & Quotes page to:
+
+     * `/features/invoicing-payments` (“See Invoicing & Payments →” in Section 2)
+     * `/features/scheduling-dispatch` (“See Scheduling & Dispatch” in Section 4 card CTA)
+     * `/features/work-orders-mobile` (“See Work Orders & Mobile →” Section 4 right column)
+       These cross-links are required.
+
+8. After building this page, expose it in any “Generate My First Quote,” “Estimate & Sign,” or “Quote Flow” CTAs throughout the site.
+
+If implemented exactly, `/features/estimates-quotes` will:
+
+* Speak directly to revenue and speed (what the owner actually cares about).
+* Feel professional, not scammy.
+* Reinforce your differentiators (unlimited users, no per-tech fees).
+* Internally link to Dispatch, Mobile App, and Payments so Google and AI both understand you’re a full platform, not a point tool.
+
+Next page after this is **Invoicing & Payments** unless you want to jump ahead.

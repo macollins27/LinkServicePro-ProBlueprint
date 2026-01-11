@@ -1,0 +1,290 @@
+Direct answer: your CTAs aren’t navigating because your buttons are plain `<button>` elements or `<a>` tags pointing to `/signup`, but in some places:
+
+1. `/signup` is not actually registered in the router at the top level, or
+2. you're using `<button>` without calling `navigate("/signup")`, or
+3. you're still linking to `/get-started` / `/trial` / `/start` from older sections.
+
+I’ll give you a surgical fix. No redesign. No rebuild. Just make every “Start Free” style CTA actually land on `/signup` using Wouter.
+
+You’re on React + Vite + Wouter. Wouter does not intercept normal `<button>` clicks. You must either:
+
+* Use `<Link href="/signup">…</Link>` or
+* Use `useLocation` and call `navigate("/signup")`.
+
+We’re going to do 3 things:
+
+---
+
+## 1. Confirm `/signup` is actually routed in `App.tsx`
+
+Open `src/App.tsx`. You should already have something like this after the signup work:
+
+```tsx
+import { Route } from "wouter";
+import Signup from "@/pages/Signup";
+import SignupSuccess from "@/pages/SignupSuccess";
+// ...other imports...
+
+export default function App() {
+  return (
+    <>
+      {/* global providers etc */}
+
+      {/* routes */}
+      <Route path="/" component={HomePage} />
+      <Route path="/signup" component={Signup} />
+      <Route path="/signup/success" component={SignupSuccess} />
+      {/* ...other routes... */}
+    </>
+  );
+}
+```
+
+If `/signup` is not there, add it exactly like above. Without this route, navigation will “do nothing.”
+
+If this route is already defined, continue.
+
+---
+
+## 2. Fix CTAs that look like buttons but don’t navigate
+
+You currently have many “Start Free”, “Get Started Free”, “Start Free Trial” buttons across hero sections, industry pages, feature pages, mega menus, pricing tables, etc.
+
+Right now some of them are plain `<button>` with no handler or they’re `<a>` with no valid `href`, or they’re `<a href="#">`.
+
+We’re going to make a small reusable helper component and use it everywhere to guarantee consistent behavior.
+
+### Add this component:
+
+Create `src/components/StartFreeButton.tsx`:
+
+```tsx
+import { useLocation } from "wouter";
+import React from "react";
+
+type Props = {
+  size?: "sm" | "md" | "lg";
+  variant?: "solid" | "outline" | "ghost";
+  className?: string;
+  children?: React.ReactNode; // default label is "Get Started Free"
+};
+
+export default function StartFreeButton({
+  size = "md",
+  variant = "solid",
+  className = "",
+  children,
+}: Props) {
+  const [, navigate] = useLocation();
+
+  // basic sizing
+  const sizeClasses =
+    size === "sm"
+      ? "text-[13px] px-3 py-1.5"
+      : size === "lg"
+      ? "text-[15px] px-4 py-2"
+      : "text-[14px] px-3 py-2";
+
+  // styling variants
+  let styleClasses = "";
+  if (variant === "solid") {
+    styleClasses =
+      "bg-[#0B5FFF] text-white font-semibold hover:opacity-90 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none";
+  } else if (variant === "outline") {
+    styleClasses =
+      "bg-transparent text-white border border-white/30 font-semibold hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none";
+  } else {
+    // ghost
+    styleClasses =
+      "bg-transparent text-white/90 font-semibold hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none";
+  }
+
+  function handleClick() {
+    // fire tracking hook here if needed (window.gtag etc)
+    navigate("/signup");
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      className={`rounded-md shadow-sm ${sizeClasses} ${styleClasses} ${className}`}
+    >
+      {children || "Get Started Free"}
+    </button>
+  );
+}
+```
+
+Why this matters:
+
+* Every “Start Free” CTA becomes the same component.
+* It always calls `navigate("/signup")`.
+* You can reuse variant `solid` (blue button on light bg), `outline` (white-outline on dark bg), etc.
+* It handles focus ring so we stay WCAG-accessible.
+
+---
+
+## 3. Replace all dead CTAs with `<StartFreeButton />`
+
+Now search your codebase for:
+
+* `Start Free`
+* `Get Started Free`
+* `Start Free Trial`
+* `className="...bg-[#0B5FFF]..."`
+* `<button` that matches your CTA styling
+* `<a href="#"` or `<a className="...bg-[#0B5FFF]...">`
+
+We fix them.
+
+### Example A: Hero section on homepage
+
+You probably have something like:
+
+```tsx
+<button
+  className="bg-[#0B5FFF] text-white font-semibold px-3 py-2 rounded-md shadow-sm hover:opacity-90"
+>
+  Start Free
+</button>
+```
+
+Replace with:
+
+```tsx
+import StartFreeButton from "@/components/StartFreeButton";
+
+<div className="flex flex-wrap gap-2">
+  <StartFreeButton variant="solid" size="md">Start Free</StartFreeButton>
+
+  <a
+    href="/pricing"
+    className="text-white bg-white/10 border border-white/20 rounded-md text-[14px] font-semibold px-3 py-2 hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none"
+  >
+    View Pricing
+  </a>
+</div>
+```
+
+Now clicking “Start Free” goes to `/signup`.
+
+### Example B: Pricing table CTA
+
+Wherever you have per-plan CTAs like:
+
+```tsx
+<button className="w-full bg-[#0B5FFF] text-white ...">
+  Get Started Free
+</button>
+```
+
+Replace with:
+
+```tsx
+<StartFreeButton
+  size="md"
+  variant="solid"
+  className="w-full text-center justify-center flex"
+>
+  Get Started Free
+</StartFreeButton>
+```
+
+Same behavior.
+
+### Example C: Dark CTA bars in Resources / Guides / Feature pages
+
+You likely have dark/navy blocks at the bottom of sections with two CTAs, e.g.:
+
+```tsx
+<div className="bg-[#0E2A47] text-white rounded-xl ...">
+  <h2>Need hands-on help?</h2>
+  <div className="flex flex-col sm:flex-row gap-2">
+    <button className="bg-[#0B5FFF] ...">Get Started Free</button>
+    <a className="border border-white/30 ...">Talk to Sales</a>
+  </div>
+</div>
+```
+
+Change first CTA:
+
+```tsx
+import StartFreeButton from "@/components/StartFreeButton";
+
+<div className="flex flex-col sm:flex-row gap-2">
+  <StartFreeButton variant="solid" size="md" className="sm:w-auto w-full">
+    Get Started Free
+  </StartFreeButton>
+
+  <a
+    href="tel:6312063700"
+    className="rounded-md border border-white/30 bg-transparent text-white text-[14px] font-semibold px-3 py-2 text-center hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none sm:w-auto w-full"
+  >
+    Talk to Sales
+  </a>
+</div>
+```
+
+Again: guaranteed navigation.
+
+---
+
+## 4. Edge cases: `<a href="/signup">`
+
+If you have plain `<a href="/signup">` and it still “does nothing,” that means one of two problems:
+
+1. The `<a>` is missing a valid `href` (typo like `/singup` or `/Signup`).
+2. There’s an overlay element blocking click (z-index issue).
+3. That link lives inside a `<button>` or inside another clickable parent that calls `e.preventDefault()`.
+
+You’re safe to leave `<a href="/signup">Start Free</a>` in static text blocks if it already works when you middle-click / open in new tab. If it doesn’t, convert it to `StartFreeButton`.
+
+---
+
+## 5. Make sure `/signup` doesn’t immediately redirect
+
+In your `Signup.tsx` code, confirm you are NOT auto-navigating away in a `useEffect` or checking auth and pushing to dashboard. You only navigate AFTER form submit. The page must stay visible so CTA feels like it worked.
+
+Inside `SignupForm`, `onSubmit` navigates to `/signup/success`. That is correct. The CTA “Start Free” on other pages just needs to get the user to `/signup`, not submit the form.
+
+---
+
+## 6. Quick QA checklist
+
+Do this after you implement `StartFreeButton` and route fixes:
+
+1. Go to homepage. Click every “Start Free,” “Get Started Free,” “Start Free Trial.”
+
+   * You should end up on `/signup`.
+
+2. Go to `/pricing`. Click plan CTA buttons.
+
+   * You should end up on `/signup?v=benefits` or just `/signup`.
+   * If you want specific variant per plan (example: Premium opens `?v=benefits`), call:
+
+     ```tsx
+     function handlePremium() { navigate("/signup?v=benefits"); }
+     ```
+
+     You can extend `StartFreeButton` to accept `variantHref` prop if you want that.
+
+3. Open devtools console. Make sure no error like `navigate is not a function`.
+
+4. Confirm `/signup` renders (no navbar) and form is visible.
+
+5. Fill email + password, click Start Free Trial.
+
+   * You should navigate to `/signup/success`.
+
+If all of that works, you’re done.
+
+---
+
+Summary for you:
+
+* The buttons weren’t wired to navigation.
+* We add a single reusable `StartFreeButton` that always calls `navigate("/signup")`.
+* We replace dead CTAs with that component.
+* We make sure `/signup` route exists in `App.tsx`.
+* After that, every “Start Free” click will actually go somewhere.

@@ -1,0 +1,243 @@
+Love the push for “quietly premium.” Here’s a **unique, conversion-first** replacement for the 3-box block—keeps language simple, adds subtle craft, and puts a **CTA on every card** plus a section-level CTA. It visually ties to your dark hero (blueprint grid + route motif), but remains clean and fast.
+
+---
+
+# Create “Connected Outcomes” section (unique, subtle, high-quality)
+
+**SCOPE:** New section placed directly under the hero. Do not edit the hero or carousel.
+
+## TECH
+
+* React + TypeScript + Tailwind (no new libs).
+* Uses CSS-only gradient borders, soft blueprint grid, and a route line SVG.
+* Buttons use your existing `<Button>`; if not present, use styled `<Link>`.
+
+## DESIGN
+
+* **Band:** Dark navy to match hero (`#0A1326 → #060B18`) with a faint grid (CSS only).
+* **Motif:** A single **dashed “route”** line runs through the cards to imply workflow (Schedule → Estimate → Invoice).
+* **Cards:** “Glass” surfaces with **gradient border** + soft shadow, **number badge** in the corner, and **mini proof chip**.
+* **Grid:** 3 cards, asymmetric layout (center card slightly raised) to break “three equal boxes” fatigue.
+* **CTAs:** Solid primary on each card, plus a section-level CTA at the end.
+
+## COPY (plain, no abbreviations)
+
+* Title: **“Everything you need in one place”**
+* Subtitle: *Plan the day, send estimates, and collect payments without switching tools.*
+
+Cards:
+
+1. **Schedule and dispatch**
+   Intro: *Assign jobs to the right person in minutes.*
+   Bullets:
+
+   * *Drag and drop jobs onto the schedule.*
+   * *Match by skills, distance, and priority.*
+   * *Give every technician the plan on their phone.*
+     CTA: **See scheduling**
+2. **Send estimates and get approval**
+   Intro: *Create clear estimates on site or in the office.*
+   Bullets:
+
+   * *Use saved items and prices to build fast.*
+   * *Send by email and text with one click.*
+   * *Customers approve online without a call.*
+     CTA: **See estimates**
+3. **Invoice and get paid**
+   Intro: *Create an invoice and collect payment the same day.*
+   Bullets:
+
+   * *Accept cards and bank payments securely.*
+   * *Send receipts and keep records in one place.*
+   * *Track what is due and what is paid.*
+     CTA: **See payments**
+
+Section CTA (bottom): **Start your trial**
+
+## ACCESSIBILITY
+
+* `<section aria-labelledby="connected-outcomes">`
+* Icons `aria-hidden="true"`, links use clear labels.
+* High-contrast text; focus-visible rings on buttons and dot controls.
+
+---
+
+## Implementation (drop-in React + Tailwind)
+
+```tsx
+// components/ConnectedOutcomes.tsx
+import { Link } from "react-router-dom";
+
+type Card = {
+  id: number;
+  title: string;
+  intro: string;
+  bullets: string[];
+  cta: string;
+  href: string;
+  proof: string;
+};
+
+const cards: Card[] = [
+  {
+    id: 1,
+    title: "Schedule and dispatch",
+    intro: "Assign jobs to the right person in minutes.",
+    bullets: [
+      "Drag and drop jobs onto the schedule.",
+      "Match by skills, distance, and priority.",
+      "Give every technician the plan on their phone."
+    ],
+    cta: "See scheduling",
+    href: "/features/scheduling",
+    proof: "Used daily by growing service teams"
+  },
+  {
+    id: 2,
+    title: "Send estimates and get approval",
+    intro: "Create clear estimates on site or in the office.",
+    bullets: [
+      "Use saved items and prices to build fast.",
+      "Send by email and text with one click.",
+      "Customers approve online without a call."
+    ],
+    cta: "See estimates",
+    href: "/features/estimates",
+    proof: "Helps win more approved jobs"
+  },
+  {
+    id: 3,
+    title: "Invoice and get paid",
+    intro: "Create an invoice and collect payment the same day.",
+    bullets: [
+      "Accept cards and bank payments securely.",
+      "Send receipts and keep records in one place.",
+      "Track what is due and what is paid."
+    ],
+    cta: "See payments",
+    href: "/features/payments",
+    proof: "Speeds up cash flow for contractors"
+  }
+];
+
+export default function ConnectedOutcomes() {
+  return (
+    <section
+      aria-labelledby="connected-outcomes"
+      className="
+        relative overflow-hidden
+        bg-[linear-gradient(180deg,#0A1326,#060B18)]
+        text-white
+      "
+    >
+      {/* subtle blueprint grid */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
+          maskImage:
+            "radial-gradient(1200px 700px at 20% -10%, black, transparent 70%)"
+        }}
+      />
+
+      {/* route line */}
+      <svg
+        aria-hidden="true"
+        className="absolute left-0 right-0 top-20 mx-auto max-w-7xl w-full opacity-30"
+        viewBox="0 0 1200 180"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M 0 150 C 250 120, 480 180, 600 120 S 950 60, 1200 110"
+          fill="none"
+          stroke="#2D6BFF"
+          strokeOpacity="0.35"
+          strokeWidth="2"
+          strokeDasharray="8 10"
+        />
+      </svg>
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+        <header className="max-w-2xl">
+          <h2 id="connected-outcomes" className="text-3xl sm:text-4xl font-semibold tracking-tight">
+            Everything you need in one place
+          </h2>
+          <p className="mt-3 text-lg text-slate-300">
+            Plan the day, send estimates, and collect payments without switching tools.
+          </p>
+        </header>
+
+        {/* asymmetric grid: center card lifted */}
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {cards.map((c, i) => (
+            <article
+              key={c.id}
+              className={[
+                "relative group rounded-xl p-6 bg-[#0D1A34]/70",
+                "shadow-[0_10px_30px_rgba(0,0,0,0.35)]",
+                "before:absolute before:inset-0 before:rounded-xl before:p-[1px] before:[background:linear-gradient(135deg,rgba(45,107,255,0.7),rgba(255,255,255,0.06))] before:[-webkit-mask:linear-gradient(#000_0_0)_content-box,linear-gradient(#000_0_0)] before:[-webkit-mask-composite:xor] before:mask-composite:exclude",
+                i === 1 ? "lg:-mt-4" : "" // raise the middle card slightly
+              ].join(" ")}
+            >
+              {/* number badge */}
+              <div className="absolute -top-3 -left-3 h-8 w-8 rounded-full bg-[#2D6BFF] text-white grid place-items-center text-sm font-semibold shadow-lg">
+                {String(c.id)}
+              </div>
+
+              {/* content */}
+              <h3 className="text-xl font-semibold">{c.title}</h3>
+              <p className="mt-2 text-slate-300">{c.intro}</p>
+              <ul className="mt-4 space-y-2 text-slate-200">
+                {c.bullets.map((b, idx) => (
+                  <li key={idx}>• {b}</li>
+                ))}
+              </ul>
+
+              {/* proof chip */}
+              <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-slate-200">
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#2D6BFF]" />
+                {c.proof}
+              </div>
+
+              {/* CTA button */}
+              <div className="mt-6">
+                <Link
+                  to={c.href}
+                  aria-label={`Learn more about ${c.title.toLowerCase()}`}
+                  className="inline-flex items-center justify-center rounded-md bg-[#2D6BFF] px-4 py-2 text-sm font-medium text-white hover:bg-[#255AE0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2D6BFF] focus-visible:ring-offset-[#0A1326]"
+                >
+                  {c.cta}
+                </Link>
+              </div>
+
+              {/* subtle hover lift */}
+              <div className="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-white/0 transition group-hover:translate-y-[-2px] group-hover:ring-1 group-hover:ring-white/10" />
+            </article>
+          ))}
+        </div>
+
+        {/* section-level CTA */}
+        <div className="mt-10">
+          <Link
+            to="/signup"
+            className="inline-flex items-center justify-center rounded-md bg-[#2D6BFF] px-5 py-3 text-base font-medium text-white hover:bg-[#255AE0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2D6BFF] focus-visible:ring-offset-[#0A1326]"
+          >
+            Start your trial
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+### Why this converts
+
+* **Workflow story at a glance:** the dashed route visually connects the three outcomes, hinting “one clean flow” without animations or clutter.
+* **Premium micro-details:** gradient borders, raised center card, proof chips. Subtle, not flashy.
+* **Clear actions everywhere:** a CTA on each card and a section CTA to capture intent.
+
+If this hits the vibe, I’ll fold its tokens and patterns into the template so future sections reuse the same gradient borders, route motif, and CTA hierarchy. Next candidates to apply this style: “Old way vs. LinkServicePro” differentiator band or “Industries we serve” grid.

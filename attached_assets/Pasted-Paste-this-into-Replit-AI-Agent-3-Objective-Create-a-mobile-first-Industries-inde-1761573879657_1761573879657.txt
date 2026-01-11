@@ -1,0 +1,238 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+## Objective
+
+Create a **mobile-first Industries index page** that acts as a high-converting, SEO-optimized hub for all trades we serve. It must deliver a clear wow factor, be fast, accessible, and drive clicks into individual industry pages.
+
+Do the work now. Build the page at `/industries`.
+
+---
+
+## Rules
+
+* Mobile first at 375px. No horizontal scroll. Tap targets ≥44px.
+* Sharp corners. High contrast (AA). Bold rectangular buttons. Link underline animates right→left.
+* Every section begins with **Title + Subtitle** at the **top-left**.
+* Sticky bottom CTA across the page. Inline lead form above the fold.
+* **One AI-generated hero image** (no screens/UI; see spec below). Reuse blurred as a subtle backdrop mid-page.
+* Respect `prefers-reduced-motion`. Lazy-load non-hero assets.
+
+---
+
+## Page structure (exact order)
+
+1. **Hero band**
+
+   * **Title:** “Industry Solutions”
+   * **Subtitle:** “Purpose-built workflows for every trade—scheduling, dispatch, and payments in one place.”
+   * **KPI tiles (3):** `+24% Win rate`, `−18% Drive time`, `+37% Same-day pay`
+   * Primary CTA: **Start Free**. Secondary: **View Pricing**.
+   * **Single AI image** full-bleed (see Image spec).
+
+2. **Find your trade (search + smart filters)**
+
+   * Search input filters card titles in real time.
+   * Filter pills for three clusters:
+
+     * **Exterior & Grounds**: Lawn Care, Landscaping, Tree Care, Snow Removal, Pressure Washing, Window Cleaning
+     * **Home & Building Services**: Cleaning, Janitorial Cleaning, Handyman, Painting, General Contracting
+     * **Mechanical & Electrical**: HVAC, Plumbing, Electrical, Roofing
+   * Show “All” by default. Active pill has bold state.
+
+3. **Industries grid (cards)**
+
+   * Mobile: 1-column. ≥768px: 2-column. ≥1024px: 3-column.
+   * Card content:
+
+     * Industry name
+     * One-line hook in plain language (see list below)
+     * 3 quick benefits (short bullets)
+     * **CTA:** “See {Industry} page →”
+   * Card visuals: **pictogram badge** (AI-generated line icon, no screens) + small background texture. Keep contrast high.
+
+4. **What you get (platform value)**
+
+   * 6 icon cards linking to Features: Scheduling, Dispatch + Live Map, Route Optimization, Work Orders, Quote + E-Sign, Invoicing & Payments.
+   * Copy pattern: Action → Outcome in 6–10 words.
+
+5. **How it works for any trade (3 steps)**
+
+   * Step 1: Intake & Quote → *Capture requests and build estimates.*
+   * Step 2: Schedule & Dispatch → *Drag-drop jobs and assign crews.*
+   * Step 3: Do the work & Get paid → *Photo proof, invoice, and tap-to-pay.*
+
+6. **Proof from the field**
+
+   * 3 short testimonials (HVAC, Landscaping, Cleaning). Name + role + one sentence.
+
+7. **Mini demo + lead capture**
+
+   * Left: poster image placeholder (reuse hero blur); 3 captions listing what the viewer will see.
+   * Right: compact lead form (email + company) titled “See it with your jobs.” One-line success.
+
+8. **FAQ (accordion, 5 items)**
+
+   * Short answers. Contractor language.
+
+9. **Bottom CTA band**
+
+   * “Ready to try it?”  → **View Pricing** and **Start Free**.
+
+10. **Sticky bottom CTA**
+
+* Always visible. Same buttons.
+
+---
+
+## Industries, hooks, bullets (use verbatim)
+
+* **Cleaning** — “Schedule crews and get paid same day.”
+
+  * Nightly routes that don’t slip
+  * Supply checklists per site
+  * Photo proof for clients
+
+* **Janitorial Cleaning** — “Nightly routes that run like clockwork.”
+
+  * Multi-building routes
+  * Scope by area
+  * Supply restock logs
+
+* **Pressure Washing** — “Fast quotes, smart routes, clean results.”
+
+  * Time windows respected
+  * Water access notes
+  * Before/after photos
+
+* **Window Cleaning** — “Ladder-safe scheduling with repeat plans.”
+
+  * Weather buffers
+  * Crew pairing
+  * Recurring visits
+
+* **Lawn Care** — “Seasonal routes without spreadsheets.”
+
+  * Weekly patterns
+  * Rain delays handled
+  * Gate notes
+
+* **Tree Care** — “Safer jobs and tighter estimates.”
+
+  * Hazard notes
+  * Permit checklist
+  * Debris tracking
+
+* **Landscaping** — “Design to maintenance on one calendar.”
+
+  * Crew assignments
+  * Materials POs
+  * Punch lists
+
+* **Snow Removal** — “Storm nights coordinated without chaos.”
+
+  * Plow routes
+  * Capacity by truck
+  * Incident logs
+
+* **General Contracting** — “Projects, subs, and change orders in sync.”
+
+  * Master project folder
+  * Linked docs
+  * Deposits/partials
+
+* **Plumbing** — “Same-day calls without double-booking.”
+
+  * Arrival windows
+  * Parts POs
+  * Emergency shuffle
+
+* **Handyman** — “Small jobs, big throughput.”
+
+  * Checklist templates
+  * Parts notes
+  * Batch invoicing
+
+* **HVAC** — “Tighter routes, fewer callbacks.”
+
+  * PM contracts
+  * Rooftop access notes
+  * Photo proof
+
+* **Electrical** — “Clean work orders, safer panels.”
+
+  * Panel labels
+  * Inspection docs
+  * Parts tracking
+
+* **Painting** — “Prep right, hit the window, bill cleanly.”
+
+  * Weather rules
+  * Color fields
+  * Punch lists
+
+* **Roofing** — “Storm workload without the chaos.”
+
+  * Weather buffers
+  * Safety checklists
+  * Warranty tracking
+
+---
+
+## AI imagery (one image total for this page)
+
+**Goal:** Authentic, documentary, **no screens**. Use it as the Hero image and as a subtle backdrop in “How it works.”
+
+**Prompt:**
+“Crew huddle at dawn beside service vans, foreman holding **printed route sheets**, mixed trades gear visible (ladders, hose reels, tool cases), reflective vests and gloves, natural light, shallow depth, moderate contrast, OSHA-safe, tight crop on hands and gear, 35mm composition, **no screens visible**, no third-party logos.”
+
+**Output:** AVIF + WebP + JPEG at **1600 / 1200 / 768 / 480** widths + **LQIP 20px blur**.
+**Alt:** Field crews reviewing printed route sheets by the vans.
+**Caption:** Ready before the first stop.
+
+Place at `/public/images/industries/index/hero.*` and return a manifest.
+
+---
+
+## SEO + schema
+
+* `<title>`: “Industry Solutions • Field Service Management”
+* Meta description (≤160): “Workflows for HVAC, Plumbing, Landscaping, Cleaning, Roofing, and more. Schedule, dispatch, and get paid in one place.”
+* Canonical, Open Graph, Twitter tags.
+* JSON-LD:
+
+  * `CollectionPage` for Industries
+  * `ItemList` of industries with `url` to each page
+  * `FAQPage` for the page FAQ
+  * `SoftwareApplication` (site-wide app info)
+
+Breadcrumbs: Home → Industries.
+
+---
+
+## Accessibility
+
+* Landmarks: `header`, `main`, `section`, `nav`, `footer`.
+* Visible `:focus-visible` rings.
+* Accordion buttons with `aria-expanded` + `aria-controls`.
+* Search input labeled. Filter pills have `aria-pressed`.
+
+---
+
+## Performance
+
+* CLS < 0.05 with intrinsic image sizing.
+* Lazy-load all non-hero media.
+* Lighthouse: Performance ≥90, A11y ≥95, Best Practices ≥95.
+
+---
+
+## Acceptance criteria
+
+* `/industries` renders all sections in the order above.
+* Search + filter pills work on mobile with zero horizontal scroll.
+* Each card links to the correct `/industries/{slug}` page.
+* Hero image delivered in AVIF/WebP/JPEG with LQIP and **no screens**.
+* Sticky CTA and above-the-fold lead form present.
+* Schema present and valid.

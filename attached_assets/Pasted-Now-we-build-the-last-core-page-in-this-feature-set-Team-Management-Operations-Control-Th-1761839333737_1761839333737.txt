@@ -1,0 +1,521 @@
+Now we build the last core page in this feature set: **Team Management & Operations Control**.
+
+This page is for owners, ops managers, and dispatchers who are juggling multiple techs/crews/crews+subs. The pain we’re solving: “I’m doing everyone’s job for them,” “no one is accountable,” “I can’t trust the team without being on-site,” “I’m the bottleneck.”
+
+Search intent to capture:
+
+* “field service team management software”
+* “assign jobs to technicians”
+* “track technician performance”
+* “role-based permissions field service”
+* “field service task assignments”
+* “crew management app”
+
+We’re going to frame it as: control, visibility, accountability, without micromanaging every move.
+
+Same structure style:
+
+* Dark hero
+* Spotlight cards with PlanRibbon
+* Light/dark alternation
+* CTA every section
+* Strong internal links to Scheduling & Dispatch, Work Orders & Mobile, and Job Costing & Reporting
+
+---
+
+## A. PAGE SPEC: Team Management & Operations Control
+
+ROUTE / SLUG
+`/features/team-management`
+
+META
+
+* `<title>`: “Team Management & Operations Control | Assign, Track, and Hold Techs Accountable”
+* `<meta name="description">`: “Assign work, set expectations, track task completion, and control permissions without babysitting. Dispatch board, messaging, wage tracking, and job history — all in one system.”
+
+PRIMARY SEO INTENT
+
+* “field service team management”
+* “assign work orders to technicians”
+* “track technician performance”
+* “manager to tech task assignment”
+* “field service role-based permissions”
+
+H1 (hero heading)
+“Your team is accountable — without you standing over them.”
+
+Hero Subhead
+“Assign work. Give instructions. See what got done. Track performance and profitability by tech. All with clear roles and permissions so the wrong people can’t touch the wrong things.”
+
+CORE MESSAGE TO HAMMER:
+
+* You stop being the single point of control.
+* Techs know exactly what to do.
+* Managers can manage.
+* You get a record of who did what and how well.
+
+PAGE STRUCTURE (4 sections + final CTA band)
+
+1. HERO (dark navy brand)
+2. ASSIGN & HOLD ACCOUNTABLE (tasking / roles / internal messaging)
+3. DISPATCH & FIELD EXECUTION (tech sees job, captures proof)
+4. PERFORMANCE & CONTROL (visibility, permissions, wage tracking, audit trail)
+5. FINAL CTA BAND
+
+We’re going to pull features from:
+
+* Multi-user support with manager roles
+* Task management system
+* Manager-to-employee task assignments
+* Internal employee messaging
+* Dispatch board for technicians
+* Project tracking with multiple work orders
+* Payroll & wage tracking
+* Advanced role-based permissions
+* Audit logs
+* SLA policies / priority queues / escalations (enterprise-tier hooks)
+
+We'll also make sure we tie back to profitability and field execution so AI and Google understand how the feature ecosystem connects.
+
+---
+
+SECTION 1. HERO
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text):
+
+* Eyebrow chip pill:
+
+  * Text: “Team Management & Operations Control”
+  * Class: `inline-block text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-4`
+* H1 (`text-white font-semibold text-3xl sm:text-4xl leading-tight`):
+  “Your team is accountable — without you standing over them.”
+* Subhead (`text-white/80 text-sm leading-relaxed sm:text-base`):
+  “Assign work. Give instructions. See what got done. Track performance and profitability by tech. All with clear roles and permissions so the wrong people can’t touch the wrong things.”
+* Value row (`flex flex-col gap-2 mt-4 text-[13px] text-white/80 sm:flex-row sm:flex-wrap sm:gap-4`):
+
+  * “Assign work in seconds”
+  * “See what was actually done”
+  * “Protect sensitive data with permissions”
+    Icons each in `text-[#0B5FFF]`.
+* Badge row (`flex flex-wrap gap-2 text-[11px] mt-4`):
+  Chips: `bg-white/10 border border-white/20 text-white font-medium rounded-full px-3 py-[3px]`
+
+  * “Unlimited users on paid plans”
+  * “Manager / tech roles”
+  * “Task assignments”
+  * “Audit trail”
+* CTA row:
+
+  * Primary CTA button:
+
+    * `bg-[#0B5FFF] text-white font-semibold rounded-md px-4 py-2 text-sm shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+    * Text: “Start Free”
+  * Secondary outline CTA:
+
+    * `border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+    * Text: “See Team Workflow”
+* Tiny reassurance under CTAs in `text-[11px] text-white/60 mt-2`:
+  “Unlimited users on paid plans. No per-tech seat fees.”
+
+Right column (mock):
+
+* Card placeholder: “Team Dashboard”
+
+  * Container:
+    `relative bg-white/5 border border-white/10 rounded-xl shadow-inner p-4 min-h-[260px] flex flex-col justify-between`
+  * Top row (white text-sm font-semibold):
+    “Today’s Crew Status”
+  * Gray bars inside (`bg-white/10 rounded-md h-4 w-3/4 mb-2`) labeled visually like “Shawn — 3 jobs / 1 overdue task”
+  * Bottom caption (`text-[11px] text-white/60`):
+    “Open jobs • overdue tasks • who’s free • who’s behind”
+
+SECTION 1 GOAL:
+Owner feels: “This stops me from being dispatcher, babysitter, and collections all at once.”
+
+---
+
+SECTION 2. ASSIGN & HOLD ACCOUNTABLE
+Background: `bg-white text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card “Assignments & Accountability”
+Card container:
+`relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+
+Inside:
+
+* `<PlanRibbon plan="Starter+" />` positioned `absolute -top-2 -right-2 z-20`
+* Eyebrow chip pill:
+
+  * Text: “Assignments & Accountability”
+  * Class: `inline-block text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-[3px] mb-3`
+* Headline (`text-xl font-semibold text-slate-900`):
+  “Tell them exactly what to do today.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Managers assign tasks. Techs get clear instructions. You can see what’s done, what’s late, and who’s holding things up — without calling.”
+* Bullets (icon + text):
+  Bullet 1:
+  Title: “Task management system”
+  Support: “Every task is tied to a job, a property, or a customer — not lost in a group chat.”
+  Chip inline: `bg-slate-200 text-slate-700 text-[10px] font-medium rounded-full px-1.5 py-[1px] ml-2`
+  Chip text: “Starter+”
+  Bullet 2:
+  Title: “Manager-to-employee task assignments”
+  Support: “Send ‘Do this today’ instructions and track if it’s actually done.”
+  Chip: “Starter+”
+  Bullet 3:
+  Title: “Internal employee messaging”
+  Support: “Your crew can ask each other questions without blowing up your phone.”
+  Chip: “Starter+”
+* CTA block:
+
+  * Primary button (blue #0B5FFF): “See Team Workflow”
+  * Blue link under: “Start Free →”
+
+Right column = Outcome Rows (not cards)
+Three stacked:
+
+1. Title: “Less babysitting.”
+   Body: “You don’t have to call every tech to make sure they’re doing the thing you told them to do.”
+2. Title: “Nothing ‘falls through the cracks.’”
+   Body: “Overdue tasks are visible on the dashboard, not a surprise at 7PM.”
+3. Title: “People know what ‘done’ means.”
+   Body: “Tasks can include notes, photos, or checklists so there’s no guessing.”
+   After rows:
+   Blue link:
+
+* “See Work Orders & Mobile →”
+* href `/features/work-orders-mobile`
+* Style: `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+
+SECTION 2 GOAL:
+This shows how you remove chaos and memory-dependence. It answers “How do I keep them on task without nagging?”
+
+---
+
+SECTION 3. DISPATCH & FIELD EXECUTION
+Background: `bg-slate-50 text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text content):
+
+* h2 (`text-2xl font-semibold text-slate-900`):
+  “Everyone knows where to be and what to do.”
+* Subtext (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “The dispatch board shows who’s booked, who’s free, and what’s next. Techs see the work order on their phone with address, steps, photos to take, and signature capture. No ‘text me the address.’”
+* Bullets list with icons (each bullet may have inline chip for plan tier):
+  Bullet 1:
+  Title: “Dispatch board for technicians”
+  Support: “Live view of today’s jobs and who’s assigned.”
+  Chip: `Starter+`
+  Bullet 2:
+  Title: “Project tracking with multiple work orders”
+  Support: “Bigger jobs broken into clear steps and visits.”
+  Chip: `Premium`
+  Bullet 3:
+  Title: “Field work orders with photos & signatures”
+  Support: “Proof of work lives in the system, not on someone’s phone.”
+  Chip: `Free → Essential+`
+* CTA block:
+
+  * Primary button (blue #0B5FFF): “See Scheduling & Dispatch”
+
+    * href `/features/scheduling-dispatch`
+  * Blue link under: “See Work Orders & Mobile →”
+
+    * href `/features/work-orders-mobile`
+
+Right column = Spotlight Card “Field Execution”
+
+* Card container:
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+* `<PlanRibbon plan="Starter+ / Premium" />` top-right
+* Eyebrow chip pill:
+  Text: “Field Execution”
+* Headline (`text-xl font-semibold text-slate-900`):
+  “Fewer ‘what next?’ phone calls.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “Tech opens the job on their phone, sees instructions, takes required photos, gets signature. You see status update automatically.”
+* Gray placeholder mock:
+  `div className="bg-slate-100 rounded-lg h-32 w-full mt-4 flex items-center justify-center text-[11px] text-slate-500"`
+  Inner text: “Job Ticket / Steps / Photos / Signature Collected”
+* CTA small row in card footer:
+
+  * Blue button text-sm: “See Work Orders & Mobile”
+
+    * href `/features/work-orders-mobile`
+  * Blue link under: “Compare Plans →”
+
+SECTION 3 GOAL:
+The value here is clarity and self-sufficiency. You’re saying: “Your guys don’t need to call you for every next step.”
+
+---
+
+SECTION 4. PERFORMANCE & CONTROL
+Background: `bg-white text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column = Spotlight Card “Control & Visibility”
+
+* Card container:
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+* `<PlanRibbon plan="Premium / Platinum" />` top-right
+* Eyebrow chip pill:
+  Text: “Control & Visibility”
+* Headline (`text-xl font-semibold text-slate-900`):
+  “See who’s profitable — and protect what matters.”
+* Body (`text-slate-600 text-sm leading-relaxed mb-6`):
+  “You’ll know which techs are making money, who’s generating callbacks, and who’s ignoring process. You can also lock down access so nobody edits pricing, deletes evidence, or touches things they shouldn’t.”
+* Bullets (icon + text):
+
+  * “Payroll & wage tracking”
+    Support: “Tie labor cost and time-on-site to each tech.”
+  * “Advanced role-based permissions”
+    Support: “Managers manage. Techs can’t change pricing or delete notes.”
+  * “Audit logs, SLAs, escalations”
+    Support: “See who touched what, enforce deadlines, and escalate priority tickets.”
+* CTA block:
+
+  * Primary button (blue #0B5FFF): “See Profit Reporting”
+
+    * href `/features/job-costing-reporting`
+  * Blue link under: “Compare Plans →”
+
+Right column = Dark trust block
+
+* Wrapper:
+  `bg-slate-900 text-white rounded-xl p-5 ring-1 ring-slate-800 flex flex-col justify-between`
+* Headline (`text-white font-semibold text-lg`):
+  “You stop being the bottleneck.”
+* Body (`text-white/70 text-sm leading-relaxed mb-6`):
+  “Your leads stop calling you for every detail. Your techs stop calling you for what to do next. And you stop giving everyone admin access just so they can function.”
+* CTA block:
+
+  * Outline button:
+
+    * `border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+    * Text: “Start Free”
+  * Blue link under:
+
+    * `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+    * Text: “View Pricing”
+    * href pricing route
+
+SECTION 4 GOAL:
+We’re telling them: “You get leverage. You’re not handholding every hour. You’re running an operation.”
+
+---
+
+SECTION 5. FINAL CTA BAND
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+Headline (`text-white font-semibold text-2xl sm:text-3xl`):
+“Give your team clarity. Keep your control.”
+
+Subtext (`text-white/70 text-sm sm:text-base leading-relaxed mt-3`):
+“Assign work, set expectations, collect proof, track performance, and lock down what matters. Unlimited users on paid plans. No per-tech seat fees.”
+
+CTA row (mobile stack first):
+
+* Primary button (blue #0B5FFF): “Start Free”
+* Secondary outline (border-white/30): “View Pricing”
+  Both with focus-visible rings.
+
+TCPA line under (`text-[11px] text-white/60 mt-2`):
+“By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+---
+
+## B. REPLIT IMPLEMENTATION BLOCK
+
+Paste this block directly into Replit. Do not paraphrase:
+
+1. Create a new page component at `/features/team-management` using the exact same Next.js / Tailwind / shadcn/ui conventions as previous feature pages. Keep global header/footer untouched.
+
+2. Add `<Head>` with:
+
+   ```html
+   <title>Team Management & Operations Control | Assign, Track, and Hold Techs Accountable</title>
+   <meta name="description" content="Assign work, set expectations, track task completion, and control permissions without babysitting. Dispatch board, messaging, wage tracking, and job history — all in one system." />
+   ```
+
+   Add JSON-LD structured data of type `SoftwareApplication`:
+
+   * name: "LinkServicePro Team Management & Operations Control"
+   * applicationCategory: "Field service management software"
+   * offers.description: "Start free. Unlimited users on paid plans. No per-tech seat fees."
+
+3. Render the following 5 sections in EXACT order and copy:
+
+   SECTION 1. HERO (bg-[#0E2A47] text-white)
+
+   * Two-column grid.
+   * Left: eyebrow chip “Team Management & Operations Control”; H1 “Your team is accountable — without you standing over them.”; subhead; value row; badge row; CTA buttons (“Start Free”, “See Team Workflow”); reassurance “Unlimited users on paid plans. No per-tech seat fees.”
+   * Right: mock “Today’s Crew Status” card (bg-white/5 border-white/10 min-h-[260px]) with gray bars and caption “Open jobs • overdue tasks • who’s free • who’s behind”.
+
+   SECTION 2. ASSIGN & HOLD ACCOUNTABLE (bg-white)
+
+   * Two-column grid.
+   * LEFT COLUMN = Spotlight Card
+
+     * Wrapper:
+       `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+     * `<PlanRibbon plan="Starter+" />` `absolute -top-2 -right-2 z-20`
+     * Eyebrow chip pill “Assignments & Accountability”
+     * Headline “Tell them exactly what to do today.”
+     * Body about “Managers assign tasks…”
+     * Bullets with plan chips:
+
+       * Task management system (Starter+)
+       * Manager-to-employee task assignments (Starter+)
+       * Internal employee messaging (Starter+)
+     * CTA block:
+
+       * Primary button (blue #0B5FFF): “See Team Workflow”
+       * Blue link: “Start Free →”
+   * RIGHT COLUMN = Outcome Rows (NOT cards)
+
+     * “Less babysitting.”
+     * “Nothing ‘falls through the cracks.’”
+     * “People know what ‘done’ means.”
+     * Blue link: “See Work Orders & Mobile →” `/features/work-orders-mobile`
+
+   SECTION 3. DISPATCH & FIELD EXECUTION (bg-slate-50)
+
+   * Two-column grid.
+   * LEFT COLUMN text:
+
+     * h2 “Everyone knows where to be and what to do.”
+     * Subtext: dispatch board → tech phone → proof captured
+     * Bullets with inline plan chips:
+
+       * Dispatch board for technicians (Starter+)
+       * Project tracking with multiple work orders (Premium)
+       * Field work orders with photos & signatures (Free → Essential+)
+     * CTA block:
+
+       * Primary button: “See Scheduling & Dispatch” → `/features/scheduling-dispatch`
+       * Blue link: “See Work Orders & Mobile →” → `/features/work-orders-mobile`
+   * RIGHT COLUMN = Spotlight Card “Field Execution”
+
+     * Wrapper: spotlight card
+     * `<PlanRibbon plan="Starter+ / Premium" />`
+     * Eyebrow chip pill “Field Execution”
+     * Headline “Fewer ‘what next?’ phone calls.”
+     * Body + gray placeholder mock “Job Ticket / Steps / Photos / Signature Collected”
+     * CTA small row:
+
+       * Blue button text-sm: “See Work Orders & Mobile” → `/features/work-orders-mobile`
+       * Blue link: “Compare Plans →”
+
+   SECTION 4. PERFORMANCE & CONTROL (bg-white)
+
+   * Two-column grid.
+   * LEFT COLUMN = Spotlight Card “Control & Visibility”
+
+     * Wrapper: spotlight card
+     * `<PlanRibbon plan="Premium / Platinum" />`
+     * Eyebrow chip pill “Control & Visibility”
+     * Headline “See who’s profitable — and protect what matters.”
+     * Body: “You’ll know which techs are making money… lock down access…”
+     * Bullets:
+
+       * Payroll & wage tracking
+       * Advanced role-based permissions
+       * Audit logs, SLAs, escalations
+     * CTA block:
+
+       * Primary button (blue #0B5FFF): “See Profit Reporting” → `/features/job-costing-reporting`
+       * Blue link: “Compare Plans →”
+   * RIGHT COLUMN = Dark trust block
+
+     * Wrapper:
+       `bg-slate-900 text-white rounded-xl p-5 ring-1 ring-slate-800 flex flex-col justify-between`
+     * Headline “You stop being the bottleneck.”
+     * Body: “Your leads stop calling you… You stop giving everyone admin access…”
+     * CTA block:
+
+       * Outline button:
+
+         * `border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+         * Text: “Start Free”
+       * Blue link under:
+
+         * `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`
+         * Text: “View Pricing”
+         * href pricing route
+
+   SECTION 5. FINAL CTA BAND (bg-[#0E2A47] text-white)
+
+   * Centered `max-w-3xl mx-auto`
+   * Heading: “Give your team clarity. Keep your control.”
+   * Subtext: “Assign work, set expectations, collect proof, track performance, and lock down what matters. Unlimited users on paid plans. No per-tech seat fees.”
+   * CTA row:
+
+     * Primary button (blue #0B5FFF): “Start Free”
+     * Secondary outline (border-white/30): “View Pricing”
+   * TCPA line:
+     “By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+4. Component / accessibility requirements (MUST follow same rules as all previous feature pages):
+
+   * Spotlight card wrapper class:
+     `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+   * `<PlanRibbon plan="..."/>` positioned `absolute -top-2 -right-2 z-20`
+   * Eyebrow chip pill above each spotlight card headline
+   * Bullet rows = icon `text-[#0B5FFF] w-5 h-5 flex-shrink-0 aria-hidden="true"` + text block:
+
+     * Title: `text-sm font-medium text-slate-700`
+     * Support: `text-[13px] text-slate-500 leading-snug`
+   * Inline plan chips for feature tier:
+     `inline-block bg-slate-200 text-slate-700 text-[10px] font-medium rounded-full px-1.5 py-[1px] ml-2`
+   * Outcome Rows (right columns where specified) are NOT cards.
+   * All interactive elements (`button`, link-like CTAs) MUST include:
+     `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+   * Only the hero headline is `<h1>`. All subsequent major section headlines are `<h2>`.
+   * Maintain WCAG AA contrast. Dark trust blocks use `bg-slate-900 text-white`, etc.
+
+5. Mandatory internal links:
+
+   * “See Work Orders & Mobile →” → `/features/work-orders-mobile`
+   * “See Scheduling & Dispatch” → `/features/scheduling-dispatch`
+   * “See Profit Reporting” → `/features/job-costing-reporting`
+   * “View Pricing” → pricing route
+     These links must exist with exactly those labels.
+
+6. The following phrases MUST appear exactly on the page:
+
+   * “Your team is accountable — without you standing over them.”
+   * “Tell them exactly what to do today.”
+   * “Everyone knows where to be and what to do.”
+   * “Fewer ‘what next?’ phone calls.”
+   * “See who’s profitable — and protect what matters.”
+   * “You stop being the bottleneck.”
+   * “Unlimited users on paid plans. No per-tech seat fees.”
+
+When you ship this page, you’ve now covered every core buying objection:
+
+* “Can I dispatch?” (Scheduling & Dispatch)
+* “Will my guys actually use it?” (Work Orders & Mobile)
+* “Will it help me sell?” (Estimates & Quotes)
+* “Will it help me get paid?” (Invoicing & Payments)
+* “Can I build recurring revenue?” (Maintenance Plans)
+* “Will I know my real profit?” (Job Costing & Reporting)
+* “Can I control my team without losing my mind?” (Team Management & Operations Control)
+
+At this point, you have a fully mapped feature library that is internally linked, SEO-structured, conversion-driven, and consistent with your brand voice: professional, no fluff, honest about pain.
+
+Your next step after this is pricing page and comparison page, unless you want me to help you with Terms / Privacy / SLA / TCPA copy.

@@ -1,0 +1,142 @@
+Replace the current post-hero “Results you can feel in 30 days” section with a simpler, more professional version.
+
+SECTION
+Name: HomeResults30
+File: src/sections/HomeResults30.tsx
+Insert: render directly under the home hero in src/routes/home.tsx (or equivalent)
+
+GOALS
+- Plain language. No abbreviations.
+- Bullet alignment fixed with grid-based list.
+- Simple savings estimator (not a slider game).
+- 5/5 ratings with clear social proof.
+- Standardized CTAs (Start Free, View Pricing).
+- Mobile-first, WCAG AA+, Pro-Blueprint theme.
+
+LAYOUT (mobile first)
+- One column stack at 375–639.
+- ≥640: image spans full width above cards; three white cards in a 3-column grid below.
+- Cards: white, ring-1 slate-200, shadow (elev-2), square corners.
+
+COPY (use verbatim)
+Header H2: “Results you can feel in 30 days.”
+Sub: “Save time, win more jobs, and get paid sooner — without changing how your team works in the field.”
+
+Left card title: “Quick wins”
+Left bullets:
+  1) “Save 6–10 hours per week” — “Drag-and-drop scheduling with automated reminders.”
+  2) “Increase quote win rate by 22%” — “E-sign quotes that convert into work orders.”
+  3) “Cut time to payment by 3 days” — “Deposits, partials, and batch invoicing with accounting sync.”
+
+Middle card title: “Savings estimator”
+Middle labels and helper text:
+  - “Number of technicians” (input)
+  - “Average jobs per technician per week” (input)
+  - “Minutes saved per job” (input)
+  - Helper line below inputs: “Use your team’s normal week. Change any value.”
+  - Presets row label: “Common scenarios”
+    * Buttons: “Small crew (3 techs)”, “Growing team (8 techs)”, “Multi-crew (15 techs)”
+  - Results block labels:
+    * “Hours saved per month”
+    * “Estimated monthly savings”
+    * Fine print: “Uses a blended labor rate of $35/hour. Edit if needed.”
+  - Labor rate control label: “Blended labor rate ($/hour)”
+  - Status line aria-live: write “Estimator updated.”
+
+Right card title: “Proven in the field”
+Right quote: “Scheduling takes under five minutes and invoices go out the same day. Customers love the portal.”
+Right byline: “— Maya Lopez, Owner, BrightPath Cleaning”
+Rating row (use text, not images):
+  - “★★★★★ 5.0/5 App Store”
+  - “★★★★★ 5.0/5 Google”
+  - “SOC 2 Security”
+Trust chips under quote:
+  - “No long-term contract”
+  - “iOS & Android”
+  - “QuickBooks / Xero”
+
+CTA row under cards:
+- Use standardized components:
+  import { StartFreeButton, ViewPricingButton, ButtonsRow } from "@/components/Buttons";
+- Render:
+  <ButtonsRow className="mt-4">
+    <StartFreeButton context="light" />
+    <ViewPricingButton context="light" />
+  </ButtonsRow>
+
+DESIGN + ALIGNMENT
+- Left bullets must align: implement as a two-column grid list:
+  <ul className="grid grid-cols-[20px_1fr] gap-x-3 gap-y-3">
+    <li><span className="h-3 w-3 bg-[#0B5FFF]" aria-hidden="true"></span><div>…</div></li>
+  </ul>
+  Use colored square markers (no emoji). Title line bold, description line normal.
+- Typography:
+  - Card titles: text-lg font-semibold text-slate-900
+  - Body: text-slate-700
+- Image:
+  - Keep existing documentary image (no paper, no logos). If not available, use /images/home-results.jpg with alt="Two technicians standing by a service van before heading to jobs."
+  - Place image above cards; full-width, rounded-none; loading="eager" only if LCP.
+- Colors: navy #0E2A47, blue #0B5FFF, green #0FB36F. Maintain AA contrast.
+
+ESTIMATOR LOGIC (simple, explicit)
+- Inputs:
+  technicians: number (min 1, max 200, default 3)
+  jobsPerTechPerWeek: number (min 1, max 100, default 20)
+  minutesSavedPerJob: number (min 1, max 60, default 6)
+  blendedRate: number (min 10, max 150, default 35)
+- Derived:
+  weeklyMinutesSaved = technicians * jobsPerTechPerWeek * minutesSavedPerJob
+  monthlyHoursSaved = Math.round((weeklyMinutesSaved * 4.33) / 60)
+  monthlySavings = Math.round(monthlyHoursSaved * blendedRate)
+- Display monthlyHoursSaved as “X hours” and monthlySavings as “$X,XXX per month”.
+- Presets:
+  - Small crew: technicians=3, jobs=18, minutes=6
+  - Growing team: technicians=8, jobs=20, minutes=6
+  - Multi-crew: technicians=15, jobs=22, minutes=6
+- Update results on input change and on preset click; write to aria-live status region once.
+- No sliders. Use number inputs with step buttons. Validate and clamp values.
+
+ACCESSIBILITY
+- Section: role="region" aria-labelledby="home-results-h2"
+- Each card has role="group" with aria-label (“Quick wins”, “Savings estimator”, “Proven in the field”).
+- Inputs have associated <label>, aria-describedby for helper texts, and aria-invalid on error.
+- Status div id="estimator-status" aria-live="polite".
+- Buttons have visible focus ring (#0B5FFF) with ring-offset-2 (white background).
+
+CODE SCAFFOLD
+Export default function HomeResults30(): JSX.Element
+Structure:
+<section data-testid="home-results-30">
+  <header>H2 + sub</header>
+  <figure>image</figure>
+  <div className="grid gap-4 sm:grid-cols-3">
+    {/* Left card: bullets with grid markers */}
+    {/* Middle card: estimator form + results */}
+    {/* Right card: testimonial + ratings + chips */}
+  </div>
+  <ButtonsRow>…</ButtonsRow>
+</section>
+
+TEST IDS
+- data-testid="results-bullets"
+- data-testid="estimator-form"
+- data-testid="estimator-results-hours"
+- data-testid="estimator-results-savings"
+- data-testid="testimonial-quote"
+- data-testid="cta-start-free"
+
+VALIDATION & EDGE CASES
+- Enforce min/max; on invalid, show inline helper: “Enter a value between X and Y.”
+- Respect prefers-reduced-motion (no animated counters).
+- Ensure no horizontal overflow at 375px.
+
+PERF
+- Lazy-load the section image if not LCP. Use width/srcSet and WebP if available.
+
+ACCEPTANCE
+- Bullets align perfectly with titles/desc lines on all breakpoints.
+- No abbreviations (“hours”, “minutes” spelled out).
+- Estimator is understandable in 5 seconds; no sliders; presets available.
+- Ratings show 5.0/5 across sources with clear text.
+- CTAs use standardized components and pass focus-ring checks.
+- Lighthouse on home route: ≥90 Performance, ≥95 Accessibility.

@@ -1,0 +1,170 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+## Task
+
+Redesign the **Drag-and-drop Scheduling** feature page as a high-converting landing page for searches like “HVAC company scheduling software.” Mobile-first, sharp corners, high contrast, no horizontal scroll at 375px. Every section starts with **Title + Subtitle** at top-left. Use rectangle buttons with bold labels. Add sticky bottom CTA and an inline lead form. Keep tone practical for contractors.
+
+---
+
+## Page structure (exact order)
+
+1. **Hero band**
+2. **What it does**
+3. **Why teams switch (Pain → Solve)**
+4. **How it works (3 steps)**
+5. **In the field (testimonial)**
+6. **Works with (integrations)**
+7. **Mini demo + lead capture**
+8. **Related features**
+9. **FAQ (accordion)**
+10. **Bottom CTA band**
+11. **Sticky bottom CTA**
+
+---
+
+## Visual + interaction rules
+
+* Grid: mobile 1-col, ≥768px two-col where specified, ≥1024px three-col for tiles.
+* Cards: white bg, 1px slate-200 ring, `.elev-2` shadow, 16–24px padding.
+* Links animate underline **right→left**. Respect `prefers-reduced-motion`.
+* KPI tiles: value big, label small. Use neutral gray except success green up, info blue neutral.
+* Forms validate email client-side. Show one-line success.
+
+---
+
+## SEO + schema
+
+* `<title>`: “Drag-and-drop Scheduling • Field Service Software”
+* Meta description (≤160): “Move jobs on a live calendar, auto-notify crews, and cut drive time. Built for HVAC, plumbing, electrical, and more.”
+* Canonical to this URL. OG tags. JSON-LD `SoftwareApplication`.
+* Add `FAQPage` schema for the FAQ items below.
+
+---
+
+## Copy to render (use verbatim)
+
+### 1) Hero band
+
+* **Title:** Drag-and-drop Scheduling
+* **Subtitle:** Schedule faster and keep crews in sync.
+* **KPIs (show 3 tiles):**
+
+  * `−18%` — Drive time
+  * `+1.3` — Jobs per tech per day
+  * `96%` — On-time arrival
+* **Primary CTA buttons:** Start Free (primary), View Pricing (secondary)
+
+### 2) What it does
+
+* **Bullets (action → outcome):**
+
+  * Drag jobs on a live calendar → crews and customers auto-notified.
+  * Assign crews and vehicles → no double-booking.
+  * See day, week, and route capacity → prevent overtime.
+
+### 3) Why teams switch (Pain → Solve)
+
+* **Pain list (left):**
+
+  * Spreadsheets break when multiple people edit.
+  * Office can’t see who’s free across all crews.
+  * Techs get double-booked or sent to wrong locations.
+  * Overtime surprises on Fridays.
+* **Solve list (right):**
+
+  * Real-time calendar with conflict warnings.
+  * Color-coded availability by crew and vehicle.
+  * Drag once → everyone gets notified (SMS/email).
+  * Capacity view with hour caps and overtime alerts.
+
+### 4) How it works (3 steps)
+
+* **Step 1:** Create job — add photos, line items, and service window.
+* **Step 2:** Place on calendar — drag to day; assign crew and truck.
+* **Step 3:** Notify — customers and techs get the updated time automatically.
+
+### 5) In the field (testimonial)
+
+* Quote: “We reshuffle routes in minutes and cut callbacks.”
+* Attribution: Mike R., Owner, HVAC
+
+### 6) Works with (integrations chips)
+
+* Show: QuickBooks, Xero, LinkInspectPro, PropertyLinkWare, SMS/Email
+
+### 7) Mini demo + lead capture
+
+* Left: “See it in 60 seconds” mock (image/video placeholder 16:9) with 3 captions:
+
+  * Live calendar with conflict flags
+  * Drag to assign crew and vehicle
+  * Auto text to customer
+* Right: **Lead form** (email + company) titled “See it with your jobs.” Button: **Book a demo**. One-line success: “Thanks — we’ll reach out within one business day.”
+
+### 8) Related features (3 cards)
+
+* Dispatch Board + Live Map — See every crew on screen.
+* Route Optimization — Shortest routes, more jobs per tech.
+* Capacity Planning — Balance workload and prevent overtime.
+
+### 9) FAQ (accordion, max 6)
+
+* **How long does setup take?** Most teams import in under a day.
+* **Can I reschedule from my phone?** Yes. iOS and Android supported.
+* **Will crews get alerts?** Yes. Techs and customers receive SMS/email.
+* **What if I double-book?** You’ll see a conflict flag before saving.
+* **Does it handle recurring jobs?** Yes. Daily, weekly, monthly patterns.
+* **Does it work offline?** The mobile app queues updates and syncs later.
+
+### 10) Bottom CTA band
+
+* Headline: Ready to try it?
+* Subcopy: Simple pricing. No contracts.
+* Buttons: View Pricing (secondary), Start Free (primary)
+
+### 11) Sticky bottom CTA (always visible on scroll)
+
+* Left text: “Ready to try it?”
+* Right buttons: View Pricing, Start Free
+
+---
+
+## Mobile-first layout details
+
+* Hero: title, subtitle, KPIs stack; CTAs below. No side images on mobile.
+* Pain→Solve: 1 column stacked (Pain card, then Solve card). At ≥1024px become 2 columns.
+* How it works: 1×3 stacked; at ≥768px 3 columns.
+* Demo+Lead: demo above form on mobile; side-by-side at ≥1024px.
+* Related: 1 card per row; 2 at ≥768px; 3 at ≥1024px.
+* FAQ: single-column accordion; expand/collapse with keyboard support.
+
+---
+
+## Accessibility
+
+* `role="tablist"` avoided unless needed; use simple buttons for accordion with `aria-expanded` and `aria-controls`.
+* Focus rings visible on all interactive elements.
+* Alt text on all media; form labels explicit.
+
+---
+
+## Analytics events (custom)
+
+* `lp_view` on page load `{feature:"scheduling"}`
+* `cta_click` on Start Free / View Pricing `{placement:"hero"|"sticky"|"bottom"}`
+* `lead_capture` on form submit `{feature:"scheduling",source:"demo-form"}`
+
+---
+
+## Acceptance criteria (must meet)
+
+* All sections render in the exact order above with the provided copy.
+* Page has sticky CTA and an inline demo lead form.
+* CLS < 0.05; Lighthouse ≥90 Performance, ≥95 Accessibility.
+* No horizontal scrolling at 375px width.
+* FAQ schema present in page source.
+* Visual delta obvious vs current: gradient hero band, KPI tiles, Pain→Solve two-column on desktop, mini-demo + form, sticky bar.
+
+Implement now and replace the current Scheduling feature page with this layout and copy.

@@ -1,0 +1,237 @@
+Locked and loaded. Here’s a **single, surgical prompt** you can paste into Replit Agent 3 that does all three Hero updates at once:
+
+* Reposition the marquee **inside the container/grid** (no drifting to the viewport edge).
+* Add **industry captions** on each image.
+* Ensure the marquee has **12 total images**—**6 unique on the left** and **6 unique on the right**—so everything on screen is unique while scrolling. The loop duplicates **internally** for smoothness, but the source sets must be unique and stay on their side.
+
+---
+
+Create **Hero marquee: alignment + captions + 12 unique images (6L/6R)**. Do not change copy, CTAs, routes, Helmet, or other sections.
+
+TECH
+
+* React 18 + TypeScript + Tailwind.
+* Only touch these files:
+
+  * `client/src/components/Hero.tsx` (layout + SR-only list + wiring)
+  * `client/src/components/animation/InfiniteVerticalLoop.tsx` (captions support; no layout changes elsewhere)
+  * `client/src/data/heroImages.ts` (NEW: explicit left/right image sets)
+* Do not modify providers, routing, or global SEO.
+
+DESIGN (mobile-first)
+
+* Right column lives **inside** the site container.
+* Grid at `lg:`: `lg:grid-cols-[minmax(0,1fr)_minmax(260px,400px)]`.
+* Right column width cap: `lg:max-w-[360px] xl:max-w-[400px]` + `justify-self-end`.
+* Image cards: `w-[140px] sm:w-[160px]`, `aspect-[4/3]`, `rounded-md`, `object-cover`.
+* Caption pill bottom-left: `bg-black/70 text-white text-[11px] sm:text-xs font-medium rounded px-2 py-1 ring-1 ring-white/20`.
+
+FUNCTIONALITY
+
+* Two **independent** vertical marquees (left and right).
+* **Continuous, fluid** CSS transform animation; no timers. Component internally duplicates its list for the seamless 200% track.
+* **No slicing** at render time—left and right columns receive **separate arrays** so each side shows 6 unique items that never cross.
+* Reduced motion: static grid with visible `figcaption`.
+
+ACCESSIBILITY
+
+* Animated figures are `aria-hidden="true"`.
+* Add an SR-only list of **unique industry labels** beneath the marquee.
+* Reduced-motion path: use descriptive `alt` and visible `figcaption`.
+
+IMAGE CONTENT (very important)
+
+* Create `client/src/data/heroImages.ts` with two arrays: `leftImages` and `rightImages`, each **length ≥ 6**, all **unique** per side.
+* Use our existing hero carousel assets first. If we don’t have enough, add **new images that match our existing style** (same resolution/aspect, similar lighting/subjects). File names should follow:
+
+  * `/img/hero/hvac-02.jpg`, `/img/hero/electrical-02.jpg`, `/img/hero/plumbing-02.jpg`, etc.
+* Each item must include `{ src, alt, label }` where **label** is the industry (e.g., “HVAC”, “Electrical”, “Plumbing”, “Facilities”, “Landscaping”, “Construction”).
+* Do **not** reuse the same file path across both arrays.
+
+### EXACT CODE
+
+1. **New data file** – create `client/src/data/heroImages.ts`
+
+```ts
+// client/src/data/heroImages.ts
+export type HeroImage = { src: string; alt: string; label: string };
+
+// LEFT COLUMN — 6 unique images minimum (populate with real paths)
+export const leftImages: HeroImage[] = [
+  { src: "/img/hero/hvac-01.jpg", alt: "Technician servicing rooftop unit", label: "HVAC" },
+  { src: "/img/hero/electrical-01.jpg", alt: "Electrician inspecting breaker panel", label: "Electrical" },
+  { src: "/img/hero/plumbing-01.jpg", alt: "Plumber connecting PEX lines", label: "Plumbing" },
+  { src: "/img/hero/landscaping-01.jpg", alt: "Crew operating commercial mower", label: "Landscaping" },
+  { src: "/img/hero/facilities-01.jpg", alt: "Facility maintenance team in plant room", label: "Facilities" },
+  { src: "/img/hero/construction-01.jpg", alt: "Foreman reviewing site plans", label: "Construction" },
+];
+
+// RIGHT COLUMN — 6 unique images minimum (no duplicates of LEFT)
+export const rightImages: HeroImage[] = [
+  { src: "/img/hero/hvac-02.jpg", alt: "HVAC tech replacing condenser fan", label: "HVAC" },
+  { src: "/img/hero/electrical-02.jpg", alt: "Crew wiring rooftop equipment", label: "Electrical" },
+  { src: "/img/hero/plumbing-02.jpg", alt: "Commercial plumber testing valves", label: "Plumbing" },
+  { src: "/img/hero/landscaping-02.jpg", alt: "Team trimming hedges on site", label: "Landscaping" },
+  { src: "/img/hero/facilities-02.jpg", alt: "Facility engineer logging maintenance", label: "Facilities" },
+  { src: "/img/hero/construction-02.jpg", alt: "Project manager with tablet on jobsite", label: "Construction" },
+];
+
+// Export a deduped list of labels for the SR-only list
+export const uniqueLabels = Array.from(new Set([...leftImages, ...rightImages].map(i => i.label)));
+```
+
+> Replace the `src` values with your actual assets. If any are missing, add new files with matching look/feel and the same 4:3 aspect.
+
+2. **Update marquee component** – captions + reduced-motion grid
+
+```tsx
+// client/src/components/animation/InfiniteVerticalLoop.tsx
+import * as React from "react";
+
+type Item = { src: string; alt?: string; label?: string };
+
+export default function InfiniteVerticalLoop({
+  items,
+  reverse = false,
+  speedSeconds = 28,
+  className = "",
+}: {
+  items: Item[];
+  reverse?: boolean;
+  speedSeconds?: number;
+  className?: string;
+}) {
+  const prefersReduce =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  if (prefersReduce) {
+    // Static grid with semantic captions
+    return (
+      <div className={className}>
+        <ul className="grid grid-cols-2 gap-3">
+          {items.map((it, i) => (
+            <li key={i}>
+              <figure className="relative">
+                <img
+                  src={it.src}
+                  alt={it.alt ?? ""}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-[140px] sm:w-[160px] aspect-[4/3] object-cover rounded-md"
+                />
+                {it.label && (
+                  <figcaption className="mt-1 text-[11px] sm:text-xs text-white/90">
+                    {it.label}
+                  </figcaption>
+                )}
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  // Animated track — duplicate for seamless loop; hide from AT
+  const doubled = [...items, ...items];
+
+  return (
+    <div
+      aria-hidden="true"
+      className={`overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)] ${className}`}
+    >
+      <div
+        className={`${reverse ? "animate-marqueeDown" : "animate-marqueeUp"} flex flex-col gap-3 will-change-transform`}
+        style={{ animationDuration: `${speedSeconds}s` }}
+      >
+        {doubled.map((it, i) => (
+          <figure key={i} className="relative">
+            <img
+              src={it.src}
+              alt="" // decorative while animated
+              loading="lazy"
+              decoding="async"
+              className="w-[140px] sm:w-[160px] aspect-[4/3] object-cover rounded-md"
+            />
+            {it.label && (
+              <figcaption
+                className="
+                  absolute left-2 bottom-2 z-10
+                  rounded px-2 py-1
+                  text-[11px] sm:text-xs font-medium
+                  text-white bg-black/70 ring-1 ring-white/20
+                  pointer-events-none
+                "
+              >
+                {it.label}
+              </figcaption>
+            )}
+          </figure>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+> Assumes Tailwind `marqueeUp`/`marqueeDown` keyframes already exist. If not, add them under `theme.extend` with 28–30s durations.
+
+3. **Fix Hero alignment and wire left/right arrays**
+
+```tsx
+// client/src/components/Hero.tsx (relevant snippet)
+import InfiniteVerticalLoop from "./animation/InfiniteVerticalLoop";
+import { leftImages, rightImages, uniqueLabels } from "../data/heroImages";
+
+export function Hero() {
+  return (
+    <section className="relative isolate pt-10 sm:pt-14">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(260px,400px)]">
+          {/* LEFT: your existing headline/paragraph/bullets/CTAs (UNCHANGED) */}
+          <div>{/* ... */}</div>
+
+          {/* RIGHT: marquee columns inside container, aligned to grid */}
+          <div className="justify-self-end w-full lg:max-w-[360px] xl:max-w-[400px]">
+            <div className="mx-auto flex justify-center gap-4 sm:gap-6">
+              <div className="hidden sm:block">
+                <InfiniteVerticalLoop items={leftImages} reverse={false} />
+              </div>
+              <div>
+                <InfiniteVerticalLoop items={rightImages} reverse={true} />
+              </div>
+            </div>
+
+            {/* SR-only list of industries for AT */}
+            <ul className="sr-only" aria-label="Industries represented in hero gallery">
+              {uniqueLabels.map((label, i) => (
+                <li key={i}>{label}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+RULES / WHAT NOT TO DO
+
+* Do not slice or mix arrays in `Hero.tsx`. Left stays left; right stays right.
+* Do not duplicate items manually in the arrays; the component handles duplication internally for the loop.
+* Do not position the marquee absolutely or with negative margins.
+* Do not alter Helmet, providers, or routes.
+
+QA (acceptance)
+
+* At mobile widths: one visible column (right column content), centered under the text; no horizontal scroll.
+* At `lg+`: two columns inside container; right edge aligns with container padding; max width respected.
+* **Count**: at least 6 images on left and 6 on right, all unique; no file path repeats between arrays.
+* Captions appear as subtle pills; readable on light/dark images.
+* Animations are smooth; with `prefers-reduced-motion` enabled, a static grid with real `alt` + captions shows.
+
+---
+
+Run this update. Once you confirm it looks good, we’ll do the next micro-step (logo row marquee).

@@ -1,0 +1,137 @@
+Perfect—let’s reshape the matrix to spotlight **your true differentiators** (no calendar), and add a generic “Other FSM software” row. Here’s a **single, surgical, no-code prompt** you can paste into Replit Agent 3. It tells the agent exactly what to change, what columns/rows to use, what each cell should mean, and how to present it—without prescribing code.
+
+---
+
+**Task:** Redefine the “Why Teams Switch to LinkServicePro” comparison section as a **feature differentiation matrix** centered on LinkServicePro’s unique capabilities. Remove calendar. Replace generic columns with the concrete features below. Keep it mobile-first, accessible, and legally careful. No changes outside this band.
+
+### 0) Replace the table’s columns with these 8 capabilities (left-to-right)
+
+1. **Project Management (multi–work orders)**
+   *Meaning:* Create a job **project** containing multiple work orders, estimates, invoices, schedules, and documents under one umbrella.
+2. **Estimates & Invoices tied to Projects**
+   *Meaning:* Estimates live on the project; approved estimates convert; invoices roll up by project or work order.
+3. **Employee Labor & Payroll**
+   *Meaning:* Track who worked the project, their **wages/pay rules**, overtime, and export/payroll readiness.
+4. **GPS-Verified Timesheets**
+   *Meaning:* Time entries with **geo verification** (in/out) and hours **summed at the project**.
+5. **Task Management**
+   *Meaning:* Assign tasks/subtasks/checklists to crews; due dates and completion tracked at project.
+6. **Internal Messaging (company + job/project)**
+   *Meaning:* Built-in messaging threads with all users; project/job channels; file/photo drops live on the timeline.
+7. **Asset Tracking & Inspection Integrations**
+   *Meaning:* Integration with **Property Organizer** and **Link Inspect Pro** for assets, inspections, and reports; data attached to projects/jobs.
+8. **Pricing model: Unlimited users / job-based**
+   *Meaning:* Paid plans allow **unlimited users**; pricing aligned to **jobs**, not seats.
+
+> Keep column labels short but clear; include an info icon with a one-line tooltip for each column using the “Meaning” text above.
+
+### 1) Rows to include (top-to-bottom)
+
+* **LinkServicePro** (highlighted row)
+* **Spreadsheets (Excel/Sheets)**
+* **Legacy Desktop (generic)**
+* **4-App Patchwork (generic stack)**
+* **Other FSM software (generic)**
+
+> Do **not** name specific vendors. Keep the generic row; add a footnote that availability varies by vendor/version.
+
+### 2) Cell states & guidance (what to mark and say)
+
+Use three states with icons and color + sr-only text:
+
+* **✓ (green)** = included/strong
+* **~ (amber)** = partial/workaround
+* **✕ (red)** = missing
+
+**LinkServicePro** — mark **✓** across **all eight columns**.
+Use benefit-oriented tooltips (one line each), e.g.:
+
+* Project Management: “One project → many work orders, estimates, invoices—all linked.”
+* Estimates & Invoices: “Estimates convert; invoices roll up by project or ticket.”
+* Labor & Payroll: “Wages + rules tied to time; export ready for payroll.”
+* GPS Timesheets: “Geo-verified time; project hours totaled automatically.”
+* Task Management: “Assign tasks/checklists; track completion per project.”
+* Messaging: “Company + project threads; photos/docs live on the timeline.”
+* Asset/Inspections: “Property Organizer + Link Inspect Pro linked to jobs/projects.”
+* Pricing: “Unlimited users on paid plans; job-based pricing.”
+
+**Spreadsheets** — typical states:
+
+* Project Management: **~** — “Tabs approximate projects; no linkage.”
+* Est/Inv tied to Projects: **✕** — “Manual copy/paste between tabs.”
+* Labor & Payroll: **~** — “Formulas possible; no pay rules or export.”
+* GPS Timesheets: **✕** — “No geo verification.”
+* Task Management: **~** — “Lists only; no assignments/completion tracking.”
+* Messaging: **✕** — “Lives in email/text, not on the job.”
+* Asset/Inspections: **✕** — “No structured assets or inspection data.”
+* Pricing: **N/A** (treat as **~**) — “Not an FSM; collaboration complexity instead of per-seat cost.”
+
+**Legacy Desktop (generic)** — typical states:
+
+* Project Management: **~** — “Jobs exist; multi-work-order projects vary.”
+* Est/Inv tied to Projects: **~** — “Some linkage; manual steps common.”
+* Labor & Payroll: **~** — “Time captured; wages/OT/payroll export vary.”
+* GPS Timesheets: **✕** — “No geo verification (office entry).”
+* Task Management: **~** — “Basic tasks/checklists in modules.”
+* Messaging: **✕** — “No built-in messaging.”
+* Asset/Inspections: **~** — “Assets/inspections in add-ons or separate tools.”
+* Pricing: **✕** — “Seat-based licensing.”
+
+**4-App Patchwork (generic stack)** — typical states:
+
+* Project Management: **~** — “Projects spread across tools.”
+* Est/Inv tied to Projects: **~** — “Integrations attempt linkage; drift happens.”
+* Labor & Payroll: **~** — “Time in one app; payroll in another.”
+* GPS Timesheets: **~** — “Geo in field app only; not project-summed.”
+* Task Management: **~** — “Tasks in PM app; not on the job record.”
+* Messaging: **~** — “Chat in separate tool; context split.”
+* Asset/Inspections: **~** — “External systems; weak attachment to jobs.”
+* Pricing: **✕** — “Multiple subscriptions; seat-based.”
+
+**Other FSM software (generic)** — typical states:
+
+* Project Management: **~** — “Tickets focus; true multi-work-order projects vary.”
+* Est/Inv tied to Projects: **~** — “Often possible; not cohesive.”
+* Labor & Payroll: **~** — “Basic time → payroll bridges vary by plan.”
+* GPS Timesheets: **~** — “Geo present; project accumulation varies.”
+* Task Management: **~** — “Checklists exist; tasking depth varies.”
+* Messaging: **✕** — “Rarely built-in; relies on external chat.”
+* Asset/Inspections: **~** — “Integrations limited; asset linkage inconsistent.”
+* Pricing: **✕** — “Typically seat-based; user caps/tier gates.”
+
+### 3) Presentation rules
+
+* **Header & copy:** keep the existing section eyebrow/headline; update support line to:
+  “Projects with real dollars, hours, assets, and conversations—kept in one place so work flows and cash lands sooner.”
+* **Table visuals:**
+
+  * Sticky header and sticky first column on overflow; gradient fades to indicate scroll.
+  * LinkServicePro row subtly highlighted; no loud color blocks.
+  * Column count stays at **8**; on mobile, provide a **column picker** (defaults to ~4 columns) to reduce overload.
+* **Tooltips:** lightweight, focusable; ESC closes; `aria-describedby` wiring; mirror meanings in sr-only text.
+* **Expander per non-LSP row (optional):** “What this means” → 2 concise bullets pulled from the guidance above.
+
+### 4) A11y, legal, performance
+
+* Real `<table>` semantics with `<thead>`, `<tbody>`, `<th scope="col|row">`.
+* Each ✓ / ~ / ✕ includes sr-only labels: “Included”, “Partial”, “Missing”.
+* Footnote under table: **“Generic rows reflect common patterns; availability varies by vendor/version.”**
+* No third-party scripts. Fixed column widths; icons with intrinsic size. No CLS.
+
+### 5) Analytics
+
+* `comparison.column_toggle` (column key array)
+* `comparison.row_expand` (row key)
+* `comparison.cta_primary` / `comparison.cta_secondary`
+
+### 6) Acceptance criteria
+
+1. Table shows the **eight columns** above and the **five rows** listed.
+2. **LinkServicePro** row is ✓ for all; tooltips use the benefit phrasing provided.
+3. Other rows reflect **~ / ✕** states as guided; tooltips explain why succinctly.
+4. Mobile is usable (sticky first column + column picker); desktop is scannable.
+5. A11y, legal note, and performance requirements pass.
+
+---
+
+If you want, I can also draft **exact, final tooltip sentences** (one per cell) so Replit plugs them in verbatim without improvisation.

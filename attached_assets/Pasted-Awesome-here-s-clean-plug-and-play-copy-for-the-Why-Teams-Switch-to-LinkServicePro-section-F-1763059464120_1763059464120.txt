@@ -1,0 +1,184 @@
+Awesome—here’s clean, plug-and-play copy for the **“Why Teams Switch to LinkServicePro”** section. First are the **core cards** (competitor-agnostic), then **industry-specific variants** you can rotate in or A/B.
+
+# Section header
+
+* **Eyebrow:** Why Teams Switch
+* **H2:** Trade chaos for one clean flow
+* **Support line:** Dispatch, quotes, invoices, and maintenance—finally living in the same place so crews move faster and cash lands sooner.
+
+---
+
+# Core “Breakup Stories” cards (3–5 options)
+
+## 1) Spreadsheet Workarounds
+
+* **Before**
+
+  * Typing the same details three times in three tabs
+  * Job status lives in someone’s head, not on the screen
+* **After with LinkServicePro**
+
+  * One job record feeds scheduling → quote → invoice
+  * Live crew status without asking the group chat
+* **Proof hint:** Same-day invoicing becomes the default, not the exception.
+* **CTA:** See how we replace spreadsheets → `/solutions/spreadsheets`
+
+## 2) Legacy Desktop System
+
+* **Before**
+
+  * Tied to the office PC; field photos arrive days later
+  * Updates require IT, not dispatch
+* **After with LinkServicePro**
+
+  * Field app pushes photos, notes, and signatures in real time
+  * Updates ship quietly without downtime
+* **Proof hint:** Office hears “job done” the moment the tech wraps up.
+* **CTA:** See modern field ops → `/solutions/legacy`
+
+## 3) 4-App Patchwork
+
+* **Before**
+
+  * Logins everywhere; exports and imports between apps
+  * Quotes and invoices start from scratch every time
+* **After with LinkServicePro**
+
+  * One login, one flow, no retyping
+  * Quotes convert to invoices in a click
+* **Proof hint:** Handoffs become seconds, not hours.
+* **CTA:** Simplify your stack → `/solutions/patchwork`
+
+## 4) Email & Text Chaos (optional)
+
+* **Before**
+
+  * Work orders buried in threads; lost photos, missed notes
+  * “Did anyone invoice that?” (silence)
+* **After with LinkServicePro**
+
+  * Jobs tracked end-to-end with required fields
+  * Nothing leaves the day without an invoice
+* **Proof hint:** Callback rate drops because details don’t slip.
+* **CTA:** Bring jobs out of the inbox → `/solutions/email-text`
+
+## 5) Paper Trails (optional)
+
+* **Before**
+
+  * Crumpled time sheets and missing signatures
+  * Month-end billing panic
+* **After with LinkServicePro**
+
+  * Digital time, parts, and signatures—captured on site
+  * Invoices fly the same day
+* **Proof hint:** Collections speed up when invoices go out on time.
+* **CTA:** Ditch paper for good → `/solutions/paper`
+
+---
+
+# Industry-specific switch variants
+
+Use one per industry (or rotate). Keep the structure: **Title → Before → After → Proof hint → CTA**.
+
+## HVAC
+
+* **Title:** HVAC crews leaving spreadsheets behind
+* **Before**
+
+  * PM visits tracked in a tab that’s always out of date
+  * Rooftop photos and readings arrive days after the job
+* **After with LinkServicePro**
+
+  * Seasonal PMs scheduled and visible at a glance
+  * Photos, pressures, and notes sync from the roof in real time
+* **Proof hint:** Dispatch windows shrink; callbacks drop on PM routes.
+* **CTA:** HVAC on LinkServicePro → `/industries/hvac`
+
+## Electrical
+
+* **Title:** Electrical teams replacing the 4-app patchwork
+* **Before**
+
+  * Panel schedules in one app, quotes in another, invoices in a third
+  * Change orders lost between email and PDFs
+* **After with LinkServicePro**
+
+  * One job timeline from dispatch to payment
+  * Approved change orders flow straight into billing
+* **Proof hint:** More billable hours, fewer “forgot to invoice” moments.
+* **CTA:** Electrical on LinkServicePro → `/industries/electrical`
+
+## Plumbing
+
+* **Title:** Plumbing shops moving off legacy desktops
+* **Before**
+
+  * Office creates estimates; techs can’t access them on site
+  * Photos and parts lists show up days later
+* **After with LinkServicePro**
+
+  * Techs build and send estimates from the truck
+  * Parts, photos, and signatures attach to the job instantly
+* **Proof hint:** Emergency calls convert to revenue before the truck is parked.
+* **CTA:** Plumbing on LinkServicePro → `/industries/plumbing`
+
+## Facilities Maintenance
+
+* **Title:** Facilities teams unifying work orders and history
+* **Before**
+
+  * Asset history scattered across spreadsheets and binders
+  * Repeating PM tasks slip through the cracks
+* **After with LinkServicePro**
+
+  * Asset files, notes, and photos live on the job and the asset
+  * Recurring plans guarantee visits and documentation
+* **Proof hint:** Audits get easier when everything’s in one timeline.
+* **CTA:** Facilities on LinkServicePro → `/industries/facilities`
+
+## Landscaping
+
+* **Title:** Landscaping routes getting out of the inbox
+* **Before**
+
+  * Daily routes texted out each morning; no proof of service
+  * Weather changes break the schedule
+* **After with LinkServicePro**
+
+  * Route boards update live; crews log before/after photos
+  * Weather pivots happen once, not crew by crew
+* **Proof hint:** Route density improves; office stops chasing crews.
+* **CTA:** Landscaping on LinkServicePro → `/industries/landscaping`
+
+## Construction/GC Service
+
+* **Title:** Service divisions escaping paper trails
+* **Before**
+
+  * Work orders hand-written; time and parts added later
+  * Month-end billing catches half the work
+* **After with LinkServicePro**
+
+  * Digital work orders with required fields on site
+  * Same-day invoices with photo proof
+* **Proof hint:** Fewer write-offs; fewer disputes.
+* **CTA:** Service on LinkServicePro → `/industries/construction`
+
+---
+
+# “Switch in 3 Steps” strip (to pair under the cards)
+
+* **Import:** Bring over customers, items, and open jobs from spreadsheets or other tools—guided, safe, and reversible.
+* **Train:** Quickstart for dispatch and the field app; everyone knows what to tap on day one.
+* **Go live:** Schedule, quote, and invoice within the first week—no IT lift.
+
+# Assurances row (compact badges)
+
+* **Unlimited users on paid plans** — grow crews without per-seat math
+* **Calendar sync (Google & Apple)** — crews see the day where they already look
+* **Secure payments** — invoice the same day, collect faster
+
+---
+
+If you want, I can tailor each industry card’s **two bullets** to your exact feature names and link them to the precise pages in your sitemap so the CTAs perfectly match your routes.

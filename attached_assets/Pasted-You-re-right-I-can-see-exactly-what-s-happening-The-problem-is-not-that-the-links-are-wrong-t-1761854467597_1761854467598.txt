@@ -1,0 +1,222 @@
+You’re right. I can see exactly what’s happening.
+
+The problem is not that the links are wrong — they’re updating the URL hash — it’s that nothing is actually scrolling the content container when the hash changes.
+
+In a plain static HTML page, clicking `<a href="#section-id">` would jump the browser to that element. But in your setup:
+
+* You’re using React + Wouter.
+* The blog post content is likely inside a scrollable wrapper and not at `document.body` level.
+* The TOC links are probably rendered with `<Link>` (Wouter), which does not trigger native hash scrolling.
+* Even if you switch those links to `<a href="#id">`, React routing can block default behavior unless you explicitly let it run.
+
+We’re going to fix this the right way:
+
+1. Make sure each heading in the article body has a stable `id` that matches the TOC link target.
+2. Make each TOC item call `scrollIntoView({ behavior: 'smooth' })` manually on click instead of relying on default browser hash jump.
+3. Also listen for `hashchange` so that if the user pastes a deep link like `/blog/how-to-get-paid-same-day#psychology-of-on-site-collection`, the page still scrolls them on first load.
+
+Below is a focused Replit prompt. Paste this. It will fix the behavior without rewriting the whole blog.
+
+---
+
+### PROMPT FOR REPLIT
+
+````txt
+You are Replit Agent. Do NOT rebuild the project. We’re fixing the blog post sidebar Table of Contents scroll behavior.
+
+Context:
+- Stack: React + Vite + Wouter + Tailwind + react-helmet.
+- We already have:
+  - BlogPostPage component at /blog/:slug
+  - A sticky sidebar TOC ("Table of Contents")
+  - The TOC links update the URL hash (#some-section) but the page does NOT actually scroll down to that section in the article.
+
+Goal:
+1. When a user clicks a TOC entry, the main article should smoothly scroll to that heading.
+2. On first load with a hash in the URL, we should auto-scroll to that section.
+3. On subsequent hash changes (user manually changes hash or clicks a TOC item again), we should scroll again.
+4. All headings in the post body must get predictable IDs that match what the TOC is pointing to.
+
+Implementation details:
+
+A) ENSURE ARTICLE HEADINGS HAVE IDS
+We already build a TOC array via buildTocFromHtml(html). That TOC includes { id, text, level }. The 'id' is what we're linking to (#id). We need to ensure that in the rendered article HTML, each <h2>, <h3>, etc. has that same id attribute.
+
+Right now you probably render post.html via 'dangerouslySetInnerHTML'. Before rendering, run a transform that:
+- Parses the post.html string (temporary DOM via DOMParser or a small helper)
+- For each heading we included in the TOC (usually h2/h3), inject `id="..."` using the slug/id that TOC expects.
+- Return the updated HTML string with those ids set.
+
+Create a utility in src/utils/injectHeadingIds.ts:
+```ts
+export function injectHeadingIds(html: string, toc: { id: string; text: string; level: number }[]): string {
+  if (!html) return html;
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    toc.forEach(item => {
+      // match headings by text content and level (h2/h3/etc.)
+      const tagName = item.level === 2 ? "H2" :
+                      item.level === 3 ? "H3" :
+                      item.level === 4 ? "H4" : "H2";
+
+      // Find the first heading of that level whose innerText matches item.text (trimmed)
+      const candidates = Array.from(doc.getElementsByTagName(tagName));
+      const match = candidates.find(el => el.textContent && el.textContent.trim() === item.text.trim());
+      if (match) {
+        match.setAttribute("id", item.id);
+      }
+    });
+
+    return doc.body.innerHTML;
+  } catch (err) {
+    console.warn("injectHeadingIds failed", err);
+    return html;
+  }
+}
+````
+
+In BlogPostPage, after building `toc = buildTocFromHtml(post.html ?? "")`, call:
+
+```ts
+const processedHtml = useMemo(() => {
+  return injectHeadingIds(post.html ?? "", toc);
+}, [post.html, toc]);
+```
+
+Use `processedHtml` for `dangerouslySetInnerHTML`.
+
+This guarantees article headings have correct id attributes.
+
+B) MAKE THE TOC LINKS CALL scrollIntoView
+In the TOC sidebar component (whatever component renders the TOC list), replace the current <Link> or <a> behavior with a custom onClick that does both:
+
+* Update hash in the URL for shareability
+* Smooth scroll to the heading
+
+Example TOC item rendering (pseudo-code; update your actual code):
+
+```tsx
+import { useLocation } from "wouter";
+
+function TocItem({ id, text }) {
+  const [, setLocation] = useLocation();
+
+  function handleClick(e) {
+    e.preventDefault();
+
+    // Update the URL hash without full navigation
+    // We'll do setLocation with same pathname + '#' + id
+    // NOTE: useLocation() gives you current location path (no hash).
+    const currentPath = window.location.pathname + window.location.search;
+    setLocation(currentPath + "#" + id);
+
+    // Smooth scroll
+    const targetEl = document.getElementById(id);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  return (
+    <button
+      onClick={handleClick}
+      className="text-left w-full text-[13px] leading-snug text-slate-700 hover:text-slate-900 hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded outline-none"
+    >
+      {text}
+    </button>
+  );
+}
+```
+
+Important:
+
+* We are using <button> instead of <Link> for TOC entries to prevent Wouter from intercepting normal navigation and to guarantee onClick.
+* The button still updates the hash via setLocation() so the address bar updates.
+* We keep our focus-visible ring classes for accessibility.
+
+Update your TOC component to map over toc[] and render <TocItem id={item.id} text={item.text} /> with proper indentation or styling for level (h2 vs h3 etc.). For subhead levels (like h3) we can add left padding like `pl-4 text-[12px] text-slate-500`.
+
+C) SMOOTH-SCROLL ON HASH LOAD / HASH CHANGE
+In BlogPostPage, add an effect that:
+
+* On mount, if window.location.hash is present, scroll to it.
+* Listen for `hashchange` events too.
+
+Inside BlogPostPage component:
+
+```tsx
+useEffect(() => {
+  function scrollToHash() {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  // Run on mount
+  scrollToHash();
+
+  // Listen for future hash changes
+  window.addEventListener("hashchange", scrollToHash);
+  return () => {
+    window.removeEventListener("hashchange", scrollToHash);
+  };
+}, []);
+```
+
+This covers:
+
+* User loads /blog/some-post#psychology-of-on-site-collection → auto-scroll fires after mount.
+* User clicks TOC item → setLocation(...) updates hash → the event listener also scrolls (even though we also scroll manually in handleClick; duplication is fine and harmless).
+
+D) ENSURE THE MAIN ARTICLE CONTAINER IS SCROLLABLE IN PAGE CONTEXT
+We assume the page scrolls at document level (body/html). Do NOT wrap the article in an overflow-auto container that has its own scroll, unless you absolutely must. If you already do (like `max-h-screen overflow-y-auto` on the content panel), then scrollIntoView will scroll that element only if the target is inside it and the target is not `position: fixed`. That’s okay.
+
+If you *are* using a custom scroll container for the article body, update `scrollToHash()` and `handleClick()` to scroll that container instead of `window`:
+
+```ts
+const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+
+// pass scrollContainerRef to the element wrapping the article body
+
+function smoothScrollToId(id: string) {
+  const container = scrollContainerRef.current;
+  if (!container) return;
+  const el = container.querySelector(`#${id}`) as HTMLElement | null;
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+```
+
+Then call `smoothScrollToId(id)` instead of `document.getElementById(...)`.
+
+ACTION SUMMARY
+
+1. Add injectHeadingIds() and apply it so headings in the article HTML actually have those ids from the TOC.
+2. Replace TOC links with buttons that call a custom handleClick:
+
+   * setLocation(currentPath + "#" + id)
+   * scrollIntoView({ behavior: "smooth" })
+3. Add a useEffect in BlogPostPage to read the hash on mount and on hashchange and scroll to that element.
+4. Keep all buttons focus-visible accessible and keep current sticky TOC layout.
+
+Do all of the above now without altering unrelated blog layout, typography, or nav components.
+
+```
+
+---
+
+What this fixes:
+
+- Clicking TOC no longer just mutates the URL. It scrolls.
+- Deep links to subheadings now work on load.
+- You aren’t relying on native anchor jump, which React/Wouter tends to block.
+- You keep accessibility and keyboard focus, since each entry is now a `<button>` with proper focus-visible ring.
+
+After Replit applies that prompt and you test one of the TOC links, it should scroll smoothly to the correct `<h2>`/`<h3>` in the body.
+::contentReference[oaicite:0]{index=0}
+```

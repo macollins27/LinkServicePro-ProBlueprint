@@ -1,0 +1,257 @@
+Dialed. Let’s make this section feel designed, not assembled:
+
+* The **background rail aligns exactly to the cards** (with node dots centered over each card).
+* **Step numbers** become bold, circular badges that overlap the card edge.
+* Per-card CTAs switch from heavy buttons to **light “Learn more →” pills**, so the layout breathes.
+* Keep a single **primary section CTA** at the bottom to convert.
+
+Below is a drop-in replacement for the section only. It does not touch your hero or carousel.
+
+---
+
+## Replace the current “Workflow” section with **Workflow Rail — Aligned Nodes**
+
+### Visual
+
+* Background: very light blue `#F7FAFF`.
+* Rail: a dashed blue line that passes through **three fixed nodes** aligned to the card centers at desktop, and adapts to 2-up / 1-up on smaller screens.
+* Step badges: large circular blue badges (`48px`) with white numbers, overlapping the card’s top-left corner.
+* Card CTAs: subtle pill links (ghost style) with arrow; section uses the only solid button.
+
+### Copy (unchanged, clear language)
+
+* Title: Everything you need in one place
+* Subtitle: Plan the day, send estimates, and collect payments without switching tools.
+* Cards: Schedule and dispatch • Send estimates and get approval • Invoice and get paid.
+
+---
+
+### Implementation (React + Tailwind)
+
+```tsx
+// components/WorkflowRailAligned.tsx
+import { Link } from "react-router-dom";
+
+type Step = {
+  n: number;
+  title: string;
+  intro: string;
+  bullets: string[];
+  href: string;
+  cta: string;
+};
+
+const steps: Step[] = [
+  {
+    n: 1,
+    title: "Schedule and dispatch",
+    intro: "Assign jobs to the right person in minutes.",
+    bullets: [
+      "Drag and drop jobs onto the schedule.",
+      "Match by skills, distance, and priority.",
+      "Give every technician the plan on their phone."
+    ],
+    href: "/features/scheduling",
+    cta: "Learn more"
+  },
+  {
+    n: 2,
+    title: "Send estimates and get approval",
+    intro: "Create clear estimates on site or in the office.",
+    bullets: [
+      "Use saved items and prices to build fast.",
+      "Send by email and text with one click.",
+      "Customers approve online without a call."
+    ],
+    href: "/features/estimates",
+    cta: "Learn more"
+  },
+  {
+    n: 3,
+    title: "Invoice and get paid",
+    intro: "Create an invoice and collect payment the same day.",
+    bullets: [
+      "Accept cards and bank payments securely.",
+      "Send receipts and keep records in one place.",
+      "Track what is due and what is paid."
+    ],
+    href: "/features/payments",
+    cta: "Learn more"
+  }
+];
+
+export default function WorkflowRailAligned() {
+  return (
+    <section
+      aria-labelledby="workflow-rail-title"
+      className="relative overflow-hidden bg-[#F7FAFF]"
+    >
+      {/* Rail background aligned to card centers */}
+      <RailBG />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+        <header className="max-w-2xl">
+          <h2 id="workflow-rail-title" className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#0A1326]">
+            Everything you need in one place
+          </h2>
+          <p className="mt-3 text-lg text-[#1F2937]">
+            Plan the day, send estimates, and collect payments without switching tools.
+          </p>
+        </header>
+
+        {/* Cards */}
+        <div
+          className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {steps.map((s, i) => (
+            <article
+              key={s.n}
+              className={[
+                "relative rounded-xl bg-white p-6 sm:p-7 lg:p-8",
+                "border border-[#E6EAF2] shadow-[0_1px_2px_rgba(16,24,40,0.04)]",
+                "hover:shadow-[0_8px_22px_rgba(16,24,40,0.08)] transition"
+              ].join(" ")}
+            >
+              {/* Prominent step badge */}
+              <span
+                className="absolute -top-4 -left-4 h-12 w-12 rounded-full bg-[#2D6BFF] text-white grid place-items-center text-lg font-semibold shadow-lg"
+                aria-hidden="true"
+              >
+                {s.n}
+              </span>
+
+              <h3 className="text-xl font-semibold text-[#0A1326]">{s.title}</h3>
+              <p className="mt-2 text-[#1F2937]">{s.intro}</p>
+              <ul className="mt-4 space-y-2 text-[#1F2937]">
+                {s.bullets.map((b, idx) => <li key={idx}>• {b}</li>)}
+              </ul>
+
+              {/* Light CTA pill (not a heavy button) */}
+              <div className="mt-6">
+                <Link
+                  to={s.href}
+                  aria-label={`${s.cta} about ${s.title.toLowerCase()}`}
+                  className="
+                    inline-flex items-center gap-1 rounded-full
+                    border border-[#D6E2FF] bg-[#F0F5FF]
+                    px-3 py-1.5 text-sm font-medium text-[#1F3A93]
+                    hover:bg-white hover:border-[#9CB9FF]
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D6BFF] focus-visible:ring-offset-2
+                  "
+                >
+                  {s.cta} <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Single primary section CTA */}
+        <div className="mt-10">
+          <Link
+            to="/signup"
+            className="
+              inline-flex items-center justify-center rounded-md
+              bg-[#2D6BFF] px-5 py-3 text-base font-medium text-white
+              hover:bg-[#255AE0]
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D6BFF] focus-visible:ring-offset-2
+            "
+          >
+            Start your trial
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Background rail that aligns nodes to card centers at each breakpoint. */
+function RailBG() {
+  // We place three rails for different breakpoints and let CSS hide/show them.
+  return (
+    <>
+      {/* Desktop: 3 columns — nodes at 16.66%, 50%, 83.33% */}
+      <svg
+        aria-hidden="true"
+        className="hidden lg:block pointer-events-none absolute inset-x-0 top-28 mx-auto max-w-7xl w-full"
+        viewBox="0 0 1200 180"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="rail3" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#9CC0FF" />
+            <stop offset="1" stopColor="#2D6BFF" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M 0 120 C 240 70, 480 150, 600 110 S 960 60, 1200 100"
+          fill="none"
+          stroke="url(#rail3)"
+          strokeWidth="3"
+          strokeDasharray="10 8"
+          opacity="0.55"
+        />
+        {/* Node dots aligned to card centers */}
+        {[200, 600, 1000].map((x, i) => (
+          <circle key={i} cx={x} cy={110} r="8" fill="#2D6BFF" opacity="0.9" />
+        ))}
+      </svg>
+
+      {/* Tablet: 2 columns — nodes at 25%, 75%; third node below for row 2 */}
+      <svg
+        aria-hidden="true"
+        className="hidden sm:block lg:hidden pointer-events-none absolute inset-x-0 top-24 mx-auto max-w-7xl w-full"
+        viewBox="0 0 1200 240"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="rail2" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#9CC0FF" />
+            <stop offset="1" stopColor="#2D6BFF" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M 0 90 C 240 40, 600 140, 1200 90"
+          fill="none"
+          stroke="url(#rail2)"
+          strokeWidth="3"
+          strokeDasharray="10 8"
+          opacity="0.55"
+        />
+        <circle cx="300" cy="90" r="8" fill="#2D6BFF" opacity="0.9" />
+        <circle cx="900" cy="90" r="8" fill="#2D6BFF" opacity="0.9" />
+        {/* third node for the second-row card */}
+        <circle cx="600" cy="200" r="8" fill="#2D6BFF" opacity="0.9" />
+      </svg>
+
+      {/* Mobile: 1 column — a vertical rail with 3 nodes */}
+      <svg
+        aria-hidden="true"
+        className="sm:hidden pointer-events-none absolute left-1/2 -translate-x-1/2 top-20 h-[520px] w-[14px]"
+        viewBox="0 0 14 520"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="rail1" x1="0" y1="0" x2="0" y2="520" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#9CC0FF" />
+            <stop offset="1" stopColor="#2D6BFF" />
+          </linearGradient>
+        </defs>
+        <path d="M7 0 L7 520" stroke="url(#rail1)" strokeWidth="3" strokeDasharray="8 6" opacity="0.55" />
+        {[90, 260, 430].map((y, i) => <circle key={i} cx="7" cy={y} r="6" fill="#2D6BFF" opacity="0.9" />)}
+      </svg>
+    </>
+  );
+}
+```
+
+---
+
+### Why this should land
+
+* **Aligned rail**: the line and node dots now correspond to the cards at each breakpoint, so it reads as a real three-step flow.
+* **Numbers have presence**: bold circular badges overlap the card and anchor the eye.
+* **Less button clutter**: soft pill links on cards + one strong section CTA keeps focus on conversion.
+* **Legible and calm**: hard contrast text, white cards, and a purposeful motif.
+
+Ship this version. If the alignment looks a hair off on your 7xl width, we can nudge the desktop node `cx` values (200 • 600 • 1000) a few pixels to perfectly match your card centers.

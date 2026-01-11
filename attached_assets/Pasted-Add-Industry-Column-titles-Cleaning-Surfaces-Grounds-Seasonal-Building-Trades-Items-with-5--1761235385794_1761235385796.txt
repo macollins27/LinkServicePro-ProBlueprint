@@ -1,0 +1,75 @@
+Add Industry Column titles
+
+Cleaning & Surfaces
+Grounds & Seasonal
+Building & Trades
+
+Items (with 5-word max blurbs)
+
+Cleaning & Surfaces
+Cleaning — One-time or recurring cleans
+Janitorial Cleaning — Commercial facilities, schedules
+Pressure Washing — Driveways, siding, decks
+Window Cleaning — Interior/exterior, routes
+
+Grounds & Seasonal
+Lawn Care — Mowing, edging, fertilizing
+Tree Care — Trim, remove, stump grind
+Landscaping — Design, install, maintenance
+Snow Removal — Plow, salt, routes
+
+Building & Trades
+General Contracting — Multi-trade project control
+Handyman — Small jobs, punch lists
+Plumbing — Service, installs, emergencies
+HVAC — Tune-ups, installs, PM plans
+Electrical — Service calls, upgrades
+Painting — Interior/exterior, estimates
+Roofing — Repairs, re-roofs, inspections
+
+Slugs
+cleaning, janitorial-cleaning, pressure-washing, window-cleaning,
+lawn-care, tree-care, landscaping, snow-removal,
+general-contracting, handyman, plumbing, hvac, electrical, painting, roofing
+
+Menu data (drop-in)
+export const INDUSTRY_GROUPS = [
+  {
+    title: "Cleaning & Surfaces",
+    items: [
+      { label: "Cleaning", slug: "cleaning" },
+      { label: "Janitorial Cleaning", slug: "janitorial-cleaning" },
+      { label: "Pressure Washing", slug: "pressure-washing" },
+      { label: "Window Cleaning", slug: "window-cleaning" },
+    ],
+  },
+  {
+    title: "Grounds & Seasonal",
+    items: [
+      { label: "Lawn Care", slug: "lawn-care" },
+      { label: "Tree Care", slug: "tree-care" },
+      { label: "Landscaping", slug: "landscaping" },
+      { label: "Snow Removal", slug: "snow-removal" },
+    ],
+  },
+  {
+    title: "Building & Trades",
+    items: [
+      { label: "General Contracting", slug: "general-contracting" },
+      { label: "Handyman", slug: "handyman" },
+      { label: "Plumbing", slug: "plumbing" },
+      { label: "HVAC", slug: "hvac" },
+      { label: "Electrical", slug: "electrical" },
+      { label: "Painting", slug: "painting" },
+      { label: "Roofing", slug: "roofing" },
+    ],
+  },
+];
+
+UX notes
+
+Two-line max per item.
+
+Column titles clickable to overview pages: /industries/cleaning, /industries/grounds, /industries/trades.
+
+Keep equal column widths; allow vertical scrolling on mobile.

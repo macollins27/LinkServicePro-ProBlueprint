@@ -1,0 +1,352 @@
+Good. We’re going to build a proper “Resources” dropdown (mega menu style) that matches the aesthetic of your existing mega menus for Features and Industries — clean navy accents, subtle borders, cards with icons, right-hand promo block, mobile-friendly first.
+
+We’ll do 2 parts:
+
+1. What it should look like / behave like
+2. The exact Replit prompt to implement it (add to header nav under “Resources”)
+
+You can hand Replit the prompt directly. It will not require a rebuild — just add one more dropdown config component.
+
+–––
+PART 1. DESIGN / BEHAVIOR
+
+### Trigger
+
+* Top nav item: “Resources”
+* On hover (desktop) or tap (mobile), opens a wide dropdown panel.
+* Panel is roughly the same width / shadow style / rounded-xl / border as the other mega menus you had me tune.
+* It should not feel like a sad little list. It needs to feel like: “We train serious operators.”
+
+### Layout inside the dropdown
+
+We’re going with a **3-column layout** on desktop, stacked on mobile:
+
+**Column 1: Learn the business**
+This column links to the high-authority / evergreen stuff (blog + guides).
+These are the things that position you as “the one who teaches the trades how to win.”
+
+**Column 2: Get help**
+This column links to Help Center and other support content (Help, Category pages, Contact support).
+This is: “You’re not alone” energy.
+
+**Column 3 (Right-side promo tile): Get started**
+Mini callout card in a darker/navy background or light-slate background that pitches the product and drives to signup / talk to sales.
+
+This matches what we did in Features and Industries: left/middle = navigation; right = trust + CTA.
+
+### Column 1 content (Learn the business)
+
+Heading:
+
+* Small label text-[11px] uppercase font-semibold text-slate-500 tracking-wide
+  “LEARN THE BUSINESS”
+
+Items (each is a row with icon, title, 1-line subtext):
+
+1. Blog & Updates
+   Icon: Newspaper
+   Title: “Blog & Updates”
+   Subtext: “Field-tested tactics, product updates, honest advice.”
+   Link: `/blog`
+
+2. Free Guides & Playbooks
+   Icon: BookOpen
+   Title: “Free Guides & Playbooks”
+   Subtext: “Dispatch, pricing, recurring revenue, same-day payment.”
+   Link: `/guides`
+
+3. Webinars & Training
+   Icon: Video
+   Title: “Webinars & Training”
+   Subtext: “Live / on-demand sessions for owners and ops.”
+   Link: `/webinars` (route stub is fine for now)
+
+Visual style for each row:
+
+* `flex gap-3 p-3 rounded-lg hover:bg-slate-50 hover:shadow-sm hover:ring-1 hover:ring-[#0B5FFF] focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none`
+* Icon wrapper:
+  `flex h-9 w-9 items-center justify-center rounded-md bg-[#0B5FFF]/10 text-[#0B5FFF] ring-1 ring-[#0B5FFF]/20`
+* Title: `text-[14px] font-semibold text-slate-900 leading-tight`
+* Subtext: `text-[12px] text-slate-600 leading-snug`
+
+Spacing:
+
+* Stack these in a column with `gap-1`.
+
+### Column 2 content (Get help)
+
+Heading:
+
+* “GET HELP” (same heading style as above, small gray uppercase)
+
+Items:
+
+1. Help Center
+   Icon: LifeBuoy
+   Title: “Help Center”
+   Subtext: “Step-by-step answers for scheduling, dispatch, invoices, and more.”
+   Link: `/help`
+
+2. Popular Articles
+   Icon: ClipboardList
+   Title: “Popular Articles”
+   Subtext: “How to schedule jobs, take deposits, and send e-sign estimates.”
+   Link: `/help` (anchor to Popular section or just `/help`)
+
+3. Contact Support
+   Icon: Headset / Phone / Mail (lucide Phone or Mail or Headphones)
+   Title: “Contact Support”
+   Subtext: “Email or call 631-206-3700 Mon–Fri 9a–5p ET.”
+   Link: `mailto:info@bimscorp.com` or `/help` if you’d rather drive them there first.
+   We’ll point it to `/help` for now because that page already shows phone + email.
+
+Same row styling pattern as Column 1.
+
+### Column 3 content (Right promo tile)
+
+This is the credibility / CTA block. It should visually stand out.
+
+Card style:
+
+* Rounded-xl
+* Navy background `#0E2A47`
+* White text
+* Ring-1 ring-slate-800
+* Shadow-inner subtle
+
+Content:
+
+* Small chip:
+  className: `inline-block rounded-full bg-white/10 border border-white/20 text-white/80 text-[11px] font-semibold px-2 py-[2px] mb-2`
+  Text: “Built for the field”
+* Headline (white):
+  “Stop duct-taping 4 apps”
+  className: `text-[15px] font-semibold text-white leading-snug`
+* Subtext (white/70):
+  “Live dispatch board, route planning, quotes with e-sign, and same-day payment — all in one hub.”
+  className: `text-[12px] leading-snug text-white/70 mt-1`
+* CTA buttons stacked vertically:
+
+  * Primary “Get Started Free” → `/signup`
+    className =
+    `bg-[#0B5FFF] text-white text-[13px] font-semibold rounded-md px-3 py-2 shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E2A47] outline-none`
+  * Secondary “Talk to Sales” → `/contact`
+    className =
+    `text-white/80 text-[13px] font-semibold rounded-md px-3 py-2 ring-1 ring-white/30 hover:text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E2A47] outline-none`
+* Fine print under buttons:
+  text-[11px] text-white/60 leading-snug:
+  “Works with Google Calendar and Apple Calendar. Unlimited users on paid plans.”
+
+This right-side card lowers fear. It quietly re-sells your product even while they’re exploring “Resources.”
+
+### Mobile behavior
+
+On mobile:
+
+* The dropdown should not try to render 3 columns side-by-side.
+* It should stack:
+
+  * Learn the Business (all rows)
+  * Get Help (all rows)
+  * Then the navy promo tile last
+* Full width, no horizontal scrolling.
+* All tap targets must be at least 44px tall.
+
+Use `sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]` desktop, but on mobile `grid-cols-1`. Column 3 can just drop below as its own row.
+
+### Accessibility
+
+* The whole dropdown panel should appear on focus as well as hover.
+* Every row must have proper `focus-visible:ring-2` etc.
+* Icons should be `aria-hidden="true"`.
+* The `Resources` nav item should have `aria-haspopup="true"` and `aria-expanded={isOpen}`.
+
+Now we turn that into an implementation prompt Replit can execute.
+
+–––
+PART 2. REPLIT PROMPT (PASTE THIS)
+
+```txt
+You are Replit Agent. Do NOT rebuild the project. Stack: React + Vite + Wouter + Tailwind + react-helmet + lucide-react. We already have top nav with mega menus for Features and Industries. We’re adding a new mega dropdown for "Resources" that matches our site theme.
+
+GOAL
+Add a “Resources” mega menu dropdown to the main header nav. The dropdown panel has 3 columns on desktop (Learn / Get Help / CTA card) and stacks vertically on mobile.
+
+REQUIREMENTS
+- Use same trigger behavior / animation style / container width / border / shadow / rounded-xl used by our existing mega menus so it visually fits.
+- Keep colors consistent: navy #0E2A47 for the right-side CTA tile, CTA blue #0B5FFF for accents.
+- All links use <Link> from wouter.
+- All interactive elements must have focus-visible ring classes the same way we’ve been doing.
+- Mobile-first responsive.
+
+STEP 1: COMPONENT
+Create a new component `ResourcesMegaMenu.tsx` in `src/components/nav/ResourcesMegaMenu.tsx`.
+
+This component should expose:
+- A trigger button/Link labeled "Resources"
+- A panel that opens on hover (desktop) or tap/focus (mobile), similar to how we’re doing it for Features/Industries.
+- Accepts close/open state from parent OR self-manages with internal state consistent with how the other mega menus are done. Follow the pattern we already used for FeaturesMegaMenu / IndustriesMegaMenu.
+
+Inside the panel, render:
+
+WRAPPER
+<div className="w-full max-w-5xl bg-white rounded-xl shadow-xl ring-1 ring-slate-200 p-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
+  <!-- Column 1 -->
+  <!-- Column 2 -->
+  <!-- Column 3 (CTA card) -->
+</div>
+
+COLUMN 1: "LEARN THE BUSINESS"
+<div className="flex flex-col">
+  <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-2">LEARN THE BUSINESS</div>
+
+  <Link ...> Blog & Updates </Link>
+  <Link ...> Free Guides & Playbooks </Link>
+  <Link ...> Webinars & Training </Link>
+</div>
+
+Each row under this heading is a card-style row:
+- Wrapper:
+  className="group flex gap-3 p-3 rounded-lg hover:bg-slate-50 hover:shadow-sm hover:ring-1 hover:ring-[#0B5FFF] focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none"
+  tabindex="0"
+- Left icon box:
+  className="flex h-9 w-9 items-center justify-center rounded-md bg-[#0B5FFF]/10 text-[#0B5FFF] ring-1 ring-[#0B5FFF]/20 flex-shrink-0"
+  Use lucide-react icons:
+    - Newspaper for Blog
+    - BookOpen for Guides
+    - Video for Webinars
+  Give each icon `aria-hidden="true"`.
+
+- Text block:
+  <div className="flex flex-col">
+    <div className="text-[14px] font-semibold text-slate-900 leading-tight">TITLE HERE</div>
+    <div className="text-[12px] text-slate-600 leading-snug">SUBTEXT HERE</div>
+  </div>
+
+Links + copy:
+1. Blog & Updates
+   href="/blog"
+   subtext="Field-tested tactics, product updates, honest advice."
+
+2. Free Guides & Playbooks
+   href="/guides"
+   subtext="Dispatch, pricing, recurring revenue, same-day payment."
+
+3. Webinars & Training
+   href="/webinars"
+   subtext="Live / on-demand sessions for owners and ops."
+
+COLUMN 2: "GET HELP"
+<div className="flex flex-col">
+  <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-2">GET HELP</div>
+
+  Repeat same row pattern (icon box + text block) for each:
+
+  A) Help Center
+     href="/help"
+     Icon: LifeBuoy
+     Title: "Help Center"
+     Subtext: "Step-by-step answers for scheduling, dispatch, invoices, and more."
+
+  B) Popular Articles
+     href="/help"
+     Icon: ClipboardList
+     Title: "Popular Articles"
+     Subtext: "Scheduling jobs, taking deposits, sending e-sign estimates."
+
+  C) Contact Support
+     href="/help"
+     Icon: Phone (or Headphones/Mail if that matches our icon set)
+     Title: "Contact Support"
+     Subtext: "Email or call 631-206-3700 Mon–Fri 9a–5p ET."
+
+Make sure each row has:
+className="group flex gap-3 p-3 rounded-lg hover:bg-slate-50 hover:shadow-sm hover:ring-1 hover:ring-[#0B5FFF] focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none"
+tabIndex={0}
+and each <Link> wraps the whole row so it’s a single tap target (minimum ~44px height).
+
+COLUMN 3: CTA CARD
+Right column is a promo tile to drive leads.
+
+<div className="flex flex-col justify-between rounded-xl bg-[#0E2A47] text-white ring-1 ring-slate-800 shadow-inner p-4 w-full max-w-[260px]">
+  <div className="flex flex-col gap-2">
+    <div className="inline-block rounded-full bg-white/10 border border-white/20 text-white/80 text-[11px] font-semibold px-2 py-[2px] w-fit">
+      Built for the field
+    </div>
+    <div className="text-[15px] font-semibold text-white leading-snug">
+      Stop duct-taping 4 apps
+    </div>
+    <div className="text-[12px] leading-snug text-white/70">
+      Live dispatch board, route planning, quotes with e-sign, and same-day payment — all in one hub.
+    </div>
+  </div>
+
+  <div className="flex flex-col gap-2 mt-4">
+    <Link
+      href="/signup"
+      className="bg-[#0B5FFF] text-white text-[13px] font-semibold rounded-md px-3 py-2 shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none focus-visible:ring-offset-[#0E2A47]"
+    >
+      Get Started Free
+    </Link>
+    <Link
+      href="/contact"
+      className="text-white/80 text-[13px] font-semibold rounded-md px-3 py-2 ring-1 ring-white/30 hover:text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:outline-none focus-visible:ring-offset-[#0E2A47]"
+    >
+      Talk to Sales
+    </Link>
+    <div className="text-[11px] text-white/60 leading-snug">
+      Works with Google Calendar and Apple Calendar.
+      Unlimited users on paid plans.
+    </div>
+  </div>
+</div>
+
+STEP 2: RESPONSIVE BEHAVIOR
+- On mobile / small screens: the panel layout should stack vertically instead of side-by-side.
+  - Use `grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]`.
+  - At <lg, let column 3 (CTA card) just drop under columns 1 and 2 so it’s still visible.
+- Ensure tap targets are full width on mobile and have at least 44px height.
+
+STEP 3: ACCESSIBILITY
+- The “Resources” nav trigger must include aria-haspopup="true" and aria-expanded={true/false} depending on open state, following exactly how our other mega menus handle this.
+- Every interactive row inside columns 1 and 2 must be reachable by keyboard tab.
+- Icons should include aria-hidden="true".
+- Maintain focus-visible ring classes (focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 outline-none). This is the same accessibility style we’re using across the site.
+
+STEP 4: INTEGRATE INTO NAV
+- Import this new `ResourcesMegaMenu` component into whatever header/nav component currently renders FeaturesMegaMenu and IndustriesMegaMenu.
+- Place it in the same horizontal nav row, labeled "Resources".
+- Ensure the Resources tab both:
+  - opens this dropdown,
+  - and direct-click of the word “Resources” (or a “View all resources →” row at the bottom of Column 1) links to `/resources`.
+
+We already have `/resources`, `/blog`, `/guides`, `/help`, etc. So all links must match those exact routes. Do not rename routes.
+
+STEP 5: NO REGRESSIONS
+- Do not break the existing Features or Industries mega menus.
+- Do not alter the hero carousel or pricing components.
+- Do not change button styles globally.
+
+The output of this task should be:
+1. New component: src/components/nav/ResourcesMegaMenu.tsx with the full 3-column dropdown as described.
+2. Updated header/nav to include this Resources menu item using the same hover/focus/toggle logic as Features/Industries.
+3. All <Link> targets wired:
+   - /resources
+   - /blog
+   - /guides
+   - /webinars  (placeholder route is okay)
+   - /help
+   - /contact
+   - /signup
+4. All accessibility / focus-visible rings present.
+5. Mobile layout collapses to single-column stacks with full-width tap targets.
+```
+
+–––
+What this gives you:
+
+* The Resources dropdown now feels as “real” and mature as your Features and Industries dropdowns.
+* On desktop it looks like you run an actual platform with training, support, onboarding, and sales enablement.
+* On mobile it’s still usable with thumbs.
+
+After Replit adds this, you’ll have a fully consistent nav story: Product, Industries, Resources all feel first-class.

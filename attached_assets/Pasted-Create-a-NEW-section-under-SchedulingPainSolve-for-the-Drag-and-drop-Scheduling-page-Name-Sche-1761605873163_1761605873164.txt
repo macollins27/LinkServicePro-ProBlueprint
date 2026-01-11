@@ -1,0 +1,98 @@
+Create a NEW section under SchedulingPainSolve for the Drag-and-drop Scheduling page.
+
+Name: “SchedulingOneMove”
+File: src/sections/SchedulingOneMove.tsx
+Insert: import and render right after SchedulingPainSolve in src/routes/features/scheduling.tsx
+
+STACK
+React 18 + TypeScript, Vite, Tailwind, shadcn/ui (Radix), Wouter, TanStack Query.
+Theme: Pro-Blueprint (sharp corners, rivet borders, optional blueprint grid).
+A11y: WCAG AA+. Mobile-first.
+
+GOAL
+Make the value obvious in 5 seconds. One drag. Three automatic results. No maps. No complex charts.
+
+SECTION CONTENT
+Header
+- H2: “One drag. Everything updates.”
+- Sub: “Move a job and we handle the rest—conflicts, ETAs, and customer messages.”
+
+Center Demo (single gesture)
+- A simple two-row “Today” timeline (11:30, 12:30, 2:30).
+- One job card: “2:30 — Leak repair [Overlap]”.
+- Primary control: “Play demo”.
+- On click:
+  * Animate the card from 2:30 to 11:30 (respect prefers-reduced-motion).
+  * Replace red “[Overlap]” badge with green “Conflict cleared”.
+  * Show a small status line under the timeline: “Rescheduled • ETA +6 min • Customer text sent”.
+  * Write the same text to aria-live="polite".
+
+Three Outcome Tiles (row)
+- Always visible labels with icons (no numbers):
+  * “Stops double-booking”
+  * “Reschedule in seconds”
+  * “Instant auto-texts”
+
+CTA Block (standardized)
+- Use: import { StartFreeButton, ViewPricingButton, ButtonsRow } from "@/components/Buttons";
+- Place inside <ButtonsRow> with context="light" for both buttons.
+
+COPY (use verbatim)
+- H2: “One drag. Everything updates.”
+- Sub: “Move a job and we handle the rest—conflicts, ETAs, and customer messages.”
+- Play button text: “Play demo”
+- Badges:
+  * Before: “[Overlap: 2:15–2:45]” (red style)
+  * After: “Conflict cleared” (green style)
+- Status text after animation: “Rescheduled • ETA +6 min • Customer text sent”
+- Outcome tiles:
+  * “Stops double-booking”
+  * “Reschedule in seconds”
+  * “Instant auto-texts”
+
+LAYOUT
+- Mobile 375–639: vertical stack (header → demo → outcomes → CTA).
+- ≥640: demo centered; outcomes in a 3-column row; CTA below.
+- Card shells: white, ring-1 slate-200, elev-2, square corners.
+- Optional background: `bg-blueprint` on the demo container.
+
+ACCESSIBILITY
+- Demo region: role="region" aria-label="Scheduling demo — drag job earlier"
+- Play control: <button> with visible #0B5FFF focus ring, ring-offset white.
+- Status div id="one-move-status" aria-live="polite".
+- Ensure all text meets AA contrast.
+
+INTERACTION DETAILS
+- No external DnD libs. Simulate with a CSS translate or x/y tween; if prefers-reduced-motion, jump instantly and still update badges/status.
+- Provide a “Reset” text link to restore the Before state.
+- analytics: data-analytics="one-move-demo" on demo container; fire a custom event on play.
+
+CODE REQUIREMENTS
+- Export default function SchedulingOneMove(): JSX.Element
+- State: { played: boolean }
+- Data-testids:
+  * data-testid="demo-play"
+  * data-testid="job-card"
+  * data-testid="badge-conflict"
+  * data-testid="badge-cleared"
+  * data-testid="status-line"
+  * data-testid="cta-start-free"
+
+STYLES
+- Job card: square corners, border slate-300, bold time label.
+- Red badge (before): bg-red-50 text-red-700.
+- Green badge (after): bg-emerald-50 text-emerald-700.
+- Outcome tiles: icon square + label, ring-1 slate-200.
+
+CTA IMPLEMENTATION
+<ButtonsRow className="mt-4">
+  <StartFreeButton context="light" />
+  <ViewPricingButton context="light" />
+</ButtonsRow>
+
+QA GATES
+- No horizontal overflow at 375px.
+- Keyboard: Play and Reset operable by Enter/Space.
+- aria-live updates exactly once on Play.
+- Lighthouse on the feature route: ≥90 Performance, ≥95 Accessibility.
+- Buttons meet standardized styles and focus behavior.

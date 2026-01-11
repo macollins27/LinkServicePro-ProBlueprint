@@ -1,0 +1,144 @@
+Paste this into Replit AI Agent 3:
+
+---
+
+## Objective
+
+Finish the homepage as a mobile-first, conversion-optimized site with a consistent “wow” aesthetic. Keep sharp corners, high contrast, one primary action per section, and reduced-motion safety.
+
+## Non-negotiables
+
+* **Do not modify** the **Projects & Job Costing** section. Leave code and layout exactly as is.
+* **Every section** on the page must start with a **Title + Subtitle** block at the **top-left** (same hierarchy and spacing as “From Quote to Payment / Turn estimates into work orders and get paid faster.”).
+* Keep prior redesign patterns you already implemented for the hero, Immediate Value, Feature Clusters, Scheduling & Dispatch, From Quote to Payment, Keep Customers in the Loop, Built for Your Trade.
+* No carousels. No horizontal scrolling on mobile.
+* No new libraries.
+
+## Global System
+
+* Mobile first at 375px. No horizontal scroll anywhere.
+* Typography: Body 16px mobile / 18px desktop. H2 24/32. Max line length 28–36 chars mobile, 48–64 desktop.
+* Color discipline: primary blue for CTAs/links/active; teal for ops; green for profit; amber for alerts; neutrals for everything else.
+* Spacing rhythm: 16px unit. Section vertical padding 24–32 mobile, 48 desktop.
+* Buttons: rectangle, sharp, bold type; link hover underline animates right→left.
+* Accessibility: semantic headings, tab order, focus-visible rings, proper `tablist/tab/tabpanel` where used, `prefers-reduced-motion` honored.
+
+## Section-by-Section Requirements
+
+For each section below, **prepend** the standard **Title + Subtitle** block at top-left, then implement the content as specified. Use the same card style, elevation, paddings, and link patterns used in the previously redesigned sections.
+
+### 1) Hero (confirm)
+
+* Title: “Run every job from one hub.”
+* Subtitle: “Schedule crews, send quotes, and get paid—without extra apps.”
+* Primary CTA: **Start free**. Secondary link: **See a 60-sec demo**.
+* Trust line: “5.0★ from hundreds of pros.” 
+
+### 2) Immediate Value (confirm)
+
+* Title: “What you get in 30 days”
+* Subtitle: “Immediate wins, simple setup, results in weeks.”
+* Three win cards + mini ROI calc + one social-proof stripe. Keep large tap targets.
+
+### 3) Feature Clusters (confirm)
+
+* Title: “Get organized. Work smarter. Win jobs. Get paid.”
+* Subtitle: “Four essentials your team uses every day.”
+* Mobile: one active tab + Previous/Next pills. Include 2–3 bullets + small case study per tab.
+
+### 4) Scheduling & Dispatch (confirm)
+
+* Title: “See crews live. Cut windshield time.”
+* Subtitle: “Drag-drop schedule, live GPS routes, and automated reminders.”
+* Command-center visual + 3 KPIs + one secondary link.
+
+### 5) From Quote to Payment (confirm)
+
+* Title: “From Quote to Payment”
+* Subtitle: “Turn estimates into work orders and get paid faster.”
+* Keep the 3-step process nav, per-step stat, and mock cards.
+
+### 6) Keep Customers in the Loop (confirm)
+
+* Title: “Customers stay informed without calling”
+* Subtitle: “Two-way texting/email, portal access, reminders, and reviews.”
+* Lead with one live conversation thread mock; 3 concise ticks beneath.
+
+### 7) **Projects & Job Costing (DO NOT TOUCH)**
+
+* No code or visual changes. Leave exactly as implemented.
+
+### 8) Built for Your Trade (confirm + fix mobile tabs)
+
+* Title: “Built for Your Trade”
+* Subtitle: “Field service teams across 15+ industries trust LinkServicePro.”
+* Mobile group nav = **3 equal-width buttons** (no horizontal scroll). Industry cards as previously redesigned.
+
+### 9) **Integrations** (needs redesign)
+
+* Title: “Integrations”
+* Subtitle: “Connect the tools you already use.”
+* Two rows max on homepage:
+
+  * Row 1: Accounting (QuickBooks, Xero) with tiny “Sync invoices & payments”.
+  * Row 2: Ecosystem apps with short labels.
+* One link: “View all integrations →”.
+
+### 10) **Simple, transparent pricing** (needs redesign)
+
+* Title: “Simple, transparent pricing”
+* Subtitle: “No contracts. Cancel anytime. No setup fees.”
+* CTA band style (light background strip) with two buttons centered:
+
+  * Primary: **View Pricing**
+  * Secondary: **Start Free**
+* Below band (desktop only): 3 tiny reassurance bullets: “Keep your data”, “Unlimited quotes”, “Support included”.
+
+### 11) **Trust & Security** (needs redesign)
+
+* Title: “Trust & Security”
+* Subtitle: “Your data is protected by default.”
+* Four equal cards: **99.9% uptime**, **SOC 2**, **Data encryption**, **Role-based access**.
+* One sentence under cards: “Data encrypted at rest and in transit. Regular third-party audits.”
+
+### 12) **FAQ** (needs redesign)
+
+* Title: “Frequently Asked Questions”
+* Subtitle: “Short answers to help you decide fast.”
+* Five accordion items. Keep answers to 1–2 sentences each. Ensure only one open at a time on mobile.
+
+### 13) **Stay Updated** (needs redesign)
+
+* Title: “Stay Updated”
+* Subtitle: “Get product tips and updates.”
+* Single email input + **Subscribe** button. Include success/error states and GDPR-friendly microcopy: “No spam. Unsubscribe anytime.”
+
+### 14) **Footer** (needs redesign)
+
+* Title block not shown, but follow the same spacing.
+* Compact, four columns on desktop; stacked on mobile. Include:
+
+  * Product, Industries, Resources, Company links.
+  * Address/legal line. Social icons.
+  * Language selector if present.
+* Keep visual style consistent with the redesigned sections.
+
+## Copy to Use Verbatim (where applicable)
+
+* Get Organized: “Jobs, crews, and docs in one place.”
+* Work Smarter: “Drag-drop schedule. Live routes. Reminders.”
+* Win More Jobs: “Quotes with e-sign. Turn into work orders.”
+* Get Paid Faster: “Invoices auto-build from the job.”
+* Comms: “Customers stay informed without calling.”
+* Costing: “Know your margin on every job.”
+* Pricing band: “Simple pricing. No contracts. Start free.”
+
+## Acceptance Criteria
+
+* **Every section** begins with a **Title + Subtitle** at the **top-left** with consistent margins.
+* **Projects & Job Costing** unchanged.
+* No horizontal scroll at 375px. All navigations visible without swiping.
+* One clear primary action per section.
+* Readable end-to-end in under 90 seconds.
+* Lighthouse targets: Performance ≥90, Accessibility ≥95, Best Practices ≥95.
+* Visual parity: cards, shadows, paddings, link styles match previously redesigned sections.

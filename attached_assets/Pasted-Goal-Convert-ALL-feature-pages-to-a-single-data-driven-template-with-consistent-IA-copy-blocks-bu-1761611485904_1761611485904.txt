@@ -1,0 +1,102 @@
+Goal: Convert ALL feature pages to a single data-driven template with consistent IA, copy blocks, buttons, SEO, a11y, and sticky CTA. Replace per-page bespoke code with a shared FeatureLayout + content config. Keep Pro-Blueprint theme and standardized buttons.
+
+Scope:
+- Routes under /features: drag-and-drop-scheduling, dispatch-board, route-optimization, real-time-gps, capacity-planning, automated-reminders, recurring-jobs, crm-leads, quote-esign, work-orders, project-tracking, customer-portal, two-way-messaging, review-requests, invoicing, payments, deposits, job-costing, payroll, vendors-pos, accounting-sync.
+- If a slug doesn’t exist yet, scaffold it.
+
+Do:
+1) Create shared layout + sections
+   Files:
+   - src/features/FeatureLayout.tsx
+     Renders in order (all optional via flags):
+       Hero
+       InstantDemo (optional)
+       PainSolve
+       HowItWorks3
+       ProofFAQ
+       MiniDemoLead
+       IntegrationsStrip
+       RelatedFeatures3
+       BottomCTABand
+       StickyBottomCTA
+     Accepts a `FeatureSpec` object (see below). Import standardized buttons from src/components/Buttons.tsx. Mobile-first. WCAG AA+. Sharp corners only.
+
+   - src/features/sections/{Hero.tsx, InstantDemo.tsx, PainSolve.tsx, HowItWorks3.tsx, ProofFAQ.tsx, MiniDemoLead.tsx, IntegrationsStrip.tsx, RelatedFeatures3.tsx, BottomCTABand.tsx, StickyBottomCTA.tsx}
+     Reuse the working Scheduling versions as baselines. Parameterize all copy via props. Remove hard-coded strings. Keep analytics hooks. Keep JSON-LD emission inside Hero (SoftwareApplication) and ProofFAQ (FAQPage) when provided.
+
+2) Define typed content config
+   - src/features/spec.ts
+     ```ts
+     export type FeatureSpec = {
+       slug: string;
+       title: string;                 // H1/Hero
+       subtitle: string;              // hero sub
+       heroImage?: string;            // documentary image path
+       outcomes: string[];            // 2–3 plain-language benefits
+       showInstantDemo?: boolean;
+       pains?: string[];              // up to 6
+       solves?: string[];             // up to 6, aligned by index
+       steps?: {title:string;desc:string}[]; // 3 steps
+       testimonial?: { quote:string; by:string; chips:string[] };
+       faq?: { q:string; a:string }[];
+       related?: { slug:string; title:string }[];
+       seo: { title:string; description:string; canonical?:string };
+       schemaFeatureList?: string[];
+       ctas?: { primaryText?: "Start Free"; secondaryText?: "View Pricing" };
+     }
+     ```
+
+   - src/features/content.ts
+     Export a `FEATURES: Record<string, FeatureSpec>` containing an entry for each slug. Seed “drag-and-drop-scheduling” using the current approved copy. For other features, provide placeholder documentary-safe copy following Global Content Rules:
+       outcomes: ["Stops double-booking","Reschedule in seconds","Instant auto-texts"] for scheduling; vary appropriately for others.
+       steps pattern: “Add job” → “Assign” → “Customer gets ETA” or relevant variant.
+       testimonial + faq: reuse scheduling patterns with wording adjusted to the feature.
+       seo.title format: “<Feature> • Field Service Software”
+       seo.description ≤160 chars, benefit-first.
+
+3) Generate routes
+   - Modify src/routes/features/[slug].tsx (or create per-route files) to:
+     ```tsx
+     import { FeatureLayout } from "@/features/FeatureLayout";
+     import { FEATURES } from "@/features/content";
+     export default function FeatureRoute(){ const spec = FEATURES["<slug>"]; return <FeatureLayout spec={spec}/> }
+     ```
+   - Add a small router factory `src/routes/features/index.tsx` that reads the `FEATURES` map and exports a mapping for Wouter. Ensure canonical paths `/features/<slug>` exist.
+
+4) Standardize buttons site-wide
+   - Confirm all feature sections call:
+     import { StartFreeButton, ViewPricingButton, ButtonsRow } from "@/components/Buttons";
+     Use `context="dark"` in dark hero, `context="light"` elsewhere. Remove any ad-hoc buttons.
+
+5) Remove duplication
+   - Delete bespoke per-page copies of PainSolve/FAQ/etc. Move any experimental sections to `src/sections/labs/` and exclude from routes.
+
+6) Analytics + SEO
+   - In FeatureLayout:
+     * Fire `page_view` with `{ page: spec.slug }`.
+     * Normalize CTA events with `placement` including slug.
+   - Inject JSON-LD SoftwareApplication on feature pages using `schemaFeatureList` and a free Offer price=0. Inject FAQPage when `spec.faq` exists.
+
+7) A11y + QA gates (enforce)
+   - 375px: no horizontal overflow.
+   - Visible focus ring #0B5FFF with 2px offset (white on light, #0F2033 on dark).
+   - Accordion roles correct. aria-live regions announce once.
+   - Lighthouse thresholds: ≥90 Performance, ≥95 Accessibility for one exemplar page per group; fix regressions globally.
+
+8) Build helpers
+   - Add `scripts/check-features.ts` that:
+     * Ensures each slug in FEATURES has a route file and is linked from /features hub.
+     * Prints missing images.
+   - Add basic tests with data-testid on each section root: feature-hero, instant-demo, pain-solve, how-steps, proof-faq, mini-demo-lead, integrations-strip, related-features, bottom-cta, sticky-cta.
+
+9) Migrate current scheduling page to the template
+   - Create a `FeatureSpec` for “drag-and-drop-scheduling” using the already approved copy and images.
+   - Render it through FeatureLayout. Remove old one-off route composition.
+
+Acceptance:
+- All feature pages render through FeatureLayout with data from FEATURES.
+- Buttons follow the standardized spec.
+- JSON-LD present where applicable.
+- No duplicate bespoke sections remain.
+- 375px has no overflow. Keyboard nav clean.
+- Lighthouse meets thresholds on /features/drag-and-drop-scheduling and two other feature pages.

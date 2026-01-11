@@ -1,0 +1,471 @@
+I'll give you four full policies you can paste into separate pages:
+
+* Terms of Service
+* Privacy Policy
+* Service Level Agreement (SLA)
+* Refund Policy
+
+These are drafted for LinkServicePro, a SaaS field service management platform with subscription pricing, job caps, and usage-based overages. They assume you operate out of Bay Shore, NY and serve U.S. customers. They also reference standard SaaS terms (license not sale, acceptable use, payment + taxes, liability caps) and modern privacy requirements like GDPR/CCPA (you’re expected to explain what data you collect, how you use it, retention, security, and user rights). ([TermsFeed][1])
+
+These are not a substitute for a licensed attorney. You should have real counsel review especially the liability cap and jurisdiction. SaaS agreements typically include these clauses because they control risk, outline responsibilities, and clarify subscription/payment terms. ([LegalZoom][2])
+
+I’ll write each policy with clear headings so you can drop them into `/terms`, `/privacy`, `/sla`, `/refunds` in Next.js.
+
+---
+
+## 1. Terms of Service
+
+**Last Updated:** October 30, 2025
+**Company:** LinkServicePro (“LinkServicePro,” "we," "us," or "our")
+**Address:** 2280 Union Blvd, Bay Shore, NY 11706
+**Support Email:** [info@bimscorp.com](mailto:info@bimscorp.com)
+**Phone:** (631) 206-3700
+
+### 1. Acceptance of These Terms
+
+By creating an account, starting a free trial, or using LinkServicePro (the “Service”), you agree to these Terms of Service (the “Terms”). If you are using the Service on behalf of a company or other legal entity, you represent that you have authority to bind that entity and “you” refers to that entity.
+
+If you do not agree to these Terms, do not access or use the Service. Terms like these act as a binding contract between a SaaS provider and its customers. ([LegalZoom][2])
+
+### 2. The Service
+
+LinkServicePro is a hosted, subscription-based field service management platform. We provide scheduling, dispatch, work orders, customer communication, job costing, recurring service plans, reporting, and related workflow tools. You access the Service via browser or mobile.
+
+We may update, enhance, or modify features at any time. We may label certain features “beta,” “preview,” or “coming soon.” Those features are provided “as is,” may change or end, and are not guaranteed.
+
+### 3. License, Not Sale
+
+We are licensing you access; we are not selling you the software.
+
+Subject to these Terms and timely payment, we grant you a limited, non-exclusive, non-transferable, revocable right to access and use the Service for your internal business operations. You may not resell, sublicense, or provide the Service to third parties as a hosted service without our written consent.
+
+All intellectual property in the Service (software, UI, design systems, branding, documentation, etc.) remains our property or our licensors’ property.
+
+### 4. Your Account
+
+You are responsible for:
+
+* Maintaining accurate account info (company name, billing email, phone).
+* Controlling access to your login credentials.
+* All actions under your account, including actions by employees, contractors, admins, or anyone you allow in.
+
+If you believe someone has accessed your account without permission, notify us immediately at [info@bimscorp.com](mailto:info@bimscorp.com).
+
+### 5. Acceptable Use
+
+You agree you will NOT:
+
+* Violate any law while using the Service.
+* Harass, threaten, or abuse staff, customers, or other users through in-app messaging.
+* Upload malicious code, attempt to probe, scan, or test security or load, or try to bypass technical controls.
+* Misrepresent your identity or your services to your own customers using our messaging tools.
+* Use the Service to send spam, illegal SMS, or unlawful robocalls.
+
+We may suspend or terminate access if we reasonably believe you are violating these Terms or creating security, legal, or reputational risk.
+
+### 6. Payment, Billing, Taxes
+
+6.1 **Plan structure**
+You subscribe to a plan (Free, Starter, Essential, Premium, Platinum) that includes a monthly job cap and features. Paid plans include unlimited users. Overages are billed per job above plan cap. You may also pay pass-through costs for SMS messages and card processing. You agree to pay any applicable taxes (for example, a 4% tax/VAT line item if required).
+This matches typical SaaS agreements where subscription level and fees are clearly defined. ([LegalZoom][2])
+
+6.2 **Billing cycle**
+Unless otherwise stated:
+
+* Monthly plans bill in advance each month.
+* Annual plans bill in advance for 12 months and include an annual discount (20% off the equivalent monthly price).
+* Overage charges, add-ons, usage-based fees, and taxes are billed in arrears.
+
+6.3 **Payment method**
+You authorize us (and our payment processor/merchant of record, e.g. Stripe) to automatically charge your card, bank account, or other payment method on file for all fees due. You agree to keep a valid payment method on file.
+
+6.4 **Late payment**
+If we cannot collect payment, we may:
+
+* Suspend access until payment is made;
+* Charge interest on overdue amounts to the maximum allowed by law;
+* Recover fees and costs of collection.
+
+### 7. Plan Changes, Overage, Downgrades
+
+You can upgrade your plan at any time. Upgrades take effect immediately, and we bill/charge the prorated difference.
+
+You can downgrade at the next renewal (monthly or annual). Downgrading may immediately limit or disable certain features (for example, advanced reporting, GPS vehicle tracking limits, advanced role-based permissions, maintenance plan automation).
+
+If you exceed your plan’s job cap, overage charges automatically apply instead of hard-cutting access. This keeps your operation running but bills you for above-cap usage.
+
+### 8. Term and Termination
+
+These Terms start when you first access the Service and continue until terminated.
+
+You may terminate at the end of your current billing period by following in-app cancellation instructions or contacting [info@bimscorp.com](mailto:info@bimscorp.com). For annual plans, you are committed through the paid annual term, subject to the Refund Policy below.
+
+We may terminate or suspend your access immediately if:
+
+* You materially breach these Terms and fail to cure.
+* You fail to pay undisputed fees.
+* We reasonably believe continued access would violate law or create security risk.
+
+After termination, we may (but are not obligated to) provide you with a limited export window to download your data (work orders, invoices, etc.) in a reasonable format.
+
+### 9. Service Availability / SLA
+
+We aim to provide reliable, production-grade uptime and timely support. Our formal uptime commitments, response targets, and maintenance windows are described in our Service Level Agreement (“SLA”). The SLA is incorporated into these Terms by reference.
+
+### 10. Privacy and Data Protection
+
+Our Privacy Policy describes:
+
+* What personal data we collect (like contact details, messages, location/GPS data tied to dispatch, payment info),
+* How we use it (to provide and improve the Service),
+* How long we keep it,
+* Your rights (access, correction, deletion where legally required).
+
+SaaS providers are legally required to clearly explain collection, use, sharing, retention, and user rights, including GDPR- and CCPA-style rights where applicable. ([TermsFeed][1])
+
+By using the Service, you also agree to that Privacy Policy.
+
+### 11. Confidentiality
+
+Certain information you upload (customer lists, job notes, pricing, photos, task assignments, etc.) is confidential to you. We will not disclose your confidential info except:
+
+* To operate and support the Service,
+* To comply with law or valid legal process,
+* To enforce these Terms or protect our rights,
+* With your consent.
+
+Aggregated, anonymized operational metrics (for example, “average arrival-to-completion time across HVAC companies in Florida”) are ours to create and use, provided they cannot reasonably identify you or your customers.
+
+### 12. Disclaimer of Warranties
+
+EXCEPT FOR EXPRESS OBLIGATIONS IN THE SLA, THE SERVICE IS PROVIDED “AS IS” AND “AS AVAILABLE.”
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.
+
+We do not guarantee:
+
+* That the Service will be uninterrupted, error-free, or 100% secure,
+* That it will meet your specific regulatory obligations,
+* That your customers will pay you, leave reviews, or comply with appointments.
+
+These disclaimers are standard in SaaS terms to limit exposure. ([LegalZoom][2])
+
+### 13. Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW:
+
+* WE ARE NOT LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES (INCLUDING LOST PROFITS, LOST REVENUE, LOST DATA, OR BUSINESS INTERRUPTION), EVEN IF ADVISED SUCH DAMAGES WERE POSSIBLE.
+* OUR TOTAL LIABILITY UNDER THESE TERMS FOR ALL CLAIMS IN THE AGGREGATE WILL NOT EXCEED THE AMOUNT YOU PAID US IN THE 12 MONTHS BEFORE THE EVENT GIVING RISE TO THE CLAIM.
+  If you are on the Free plan, our total liability is capped at $100 USD.
+
+Some jurisdictions do not allow certain limitations — in those locations, we limit our liability to the fullest extent allowed by law.
+
+### 14. Indemnification
+
+You agree to defend, indemnify, and hold us harmless from any claim, loss, liability, and expense (including attorneys’ fees) arising out of:
+
+* Your misuse of the Service,
+* Your violation of law,
+* Your misuse of personal data,
+* Your disputes with your customers, employees, subs, vendors, or insurers.
+
+### 15. Governing Law; Disputes
+
+These Terms are governed by the laws of the State of New York, excluding conflict-of-law rules.
+
+Any dispute will be resolved in the state or federal courts located in Suffolk County, New York, and you and we both consent to personal jurisdiction there.
+
+You agree that you will not bring any class, collective, or representative action against us; disputes must be brought individually.
+
+### 16. Changes to These Terms
+
+We may update these Terms from time to time. If we make material changes, we will notify you (for example via dashboard notice, email, or in-app message). Continued use after the effective date means you accept the updated Terms. SaaS providers are generally expected to notify users of major changes. ([TermsFeed][3])
+
+---
+
+## 2. Privacy Policy
+
+**Last Updated:** October 30, 2025
+**Company:** LinkServicePro (“LinkServicePro,” "we," "us," or "our")
+**Address:** 2280 Union Blvd, Bay Shore, NY 11706
+**Support Email for Privacy Requests:** [info@bimscorp.com](mailto:info@bimscorp.com)
+**Phone:** (631) 206-3700
+
+We take privacy seriously. This Privacy Policy explains what data we collect, why we collect it, how we use it, and your rights. SaaS providers are expected to clearly disclose data collection, usage, sharing, retention, and user rights to comply with laws like GDPR and CCPA. ([TermsFeed][1])
+
+Using LinkServicePro means you agree to this Privacy Policy.
+
+### 1. What This Covers
+
+This Policy covers:
+
+* Our website(s), including linkservicepro.com and related marketing pages.
+* Our web and mobile applications (the “Service”).
+* Our communications with you (email, SMS, in-app messaging).
+
+This Policy does not cover content you send directly to your own customers outside the Service.
+
+### 2. Information We Collect
+
+We may collect:
+
+**Account & business info**
+Name, email, phone number, company name, company address, service category/industry, number of jobs, crew size.
+
+**Usage & activity**
+Logins, pages viewed, buttons clicked, features used, device info, browser type, approximate location. This is typical SaaS telemetry for improving performance. ([TermsFeed][1])
+
+**Operational data you enter**
+Customer names, addresses, phone numbers, work orders, photos taken on site, job notes, invoices, quotes, signatures, recurring service schedules, task assignments, GPS/dispatch data.
+
+**Billing & payment data**
+Billing contact, subscription plan, transactions, last4 of card, and related Stripe/processor info. We do not store full card numbers; payment processors handle that under their PCI requirements.
+
+**Communications**
+Messages sent via the Service (for example, “tech on the way” text, job reminders, internal crew chat). We store and transmit these so you and your team have a record.
+
+**Cookies and tracking tech**
+We use cookies / similar tech for login sessions, analytics, fraud/security monitoring, and remembering preferences. Many SaaS privacy policies describe cookies because cookies are considered “online identifiers” under laws like GDPR. ([TermsFeed][1])
+
+### 3. How We Use Information
+
+We process your data to:
+
+* Provide and maintain the Service.
+* Schedule jobs, assign work, dispatch technicians.
+* Send automated appointment reminders, “tech en route” alerts, invoices, review requests, and other customer-facing communications on your behalf.
+* Process payments and calculate plan usage, overage, and taxes.
+* Show dashboards, job costing reports, maintenance plan schedules, task completion status, payroll/wage tracking, and profitability.
+* Improve, troubleshoot, and secure the platform.
+* Communicate with you about updates, service notices, and support.
+
+Under privacy best practices, SaaS providers should separate “required to deliver the service” vs. “optional marketing.” ([PayPro Global][4])
+We do both:
+
+* **Service/operational messages** (required): system alerts, invoices, task assignments. You cannot opt out of these without leaving the platform.
+* **Marketing messages** (optional): product tips, new features, promotions. You can opt out.
+
+### 4. Legal Bases (GDPR-style)
+
+If GDPR or similar laws apply to you or your customer:
+
+* We process data to perform the contract (deliver the Service).
+* We process certain data for our legitimate interests (fraud prevention, product improvement).
+* We process certain data to comply with law (tax records, invoices).
+* We rely on consent where required (marketing emails/SMS, certain cookies). GDPR requires explicit consent for some data uses, especially tracking and marketing. ([CookieScript][5])
+
+### 5. How We Share Information
+
+We may share data with:
+
+* **Service providers / subprocessors** who help us run LinkServicePro (hosting, analytics, payment processing, SMS delivery).
+  These providers are under contractual obligations to protect data. This is standard in SaaS. ([TermsFeed][1])
+* **Authorities / legal requests** if required by law, subpoena, court order, or to protect rights, safety, fraud, or security.
+* **Business transfers** if we merge, acquire, sell assets, or undergo financing; your data may be part of the transferred assets. SaaS privacy templates typically include a “business transfer” clause. ([TermsFeed][1])
+
+We do not sell your personal information for money.
+
+We do not share your customers’ job history, addresses, or invoices with other LinkServicePro customers.
+
+We may compile de-identified, aggregated stats (for example, “average arrival window in HVAC is 42 minutes”) and use or publish those, but they will not identify you or your customers.
+
+### 6. Data Retention
+
+We store data as long as:
+
+* Your account is active,
+* We need it to provide the Service,
+* We are required by law to keep it (e.g. tax records, invoices).
+
+After account closure, we may retain limited records (billing, invoices, audit logs) for legal/accounting reasons. Retention expectations are part of a compliant SaaS policy. ([TermsFeed][1])
+
+You can request deletion of specific personal data that’s not legally required to keep. We will honor within a reasonable time unless retention is required (for example, for fraud prevention or legal defense).
+
+### 7. Security
+
+We use reasonable administrative, technical, and physical safeguards designed to protect personal data. That includes access controls, encrypted transport (HTTPS/TLS), and separation of production systems. SaaS policies are expected to state how data is protected and that no system is 100% secure. ([TermsFeed][1])
+
+No system is perfectly secure. You are responsible for:
+
+* Keeping login credentials secret,
+* Limiting internal access to trusted staff,
+* Using role/permission controls we provide.
+
+### 8. Your Rights
+
+Depending on where you live (for example, EU/EEA under GDPR, certain U.S. states with privacy laws like CCPA equivalents):
+
+* You may request access to the personal data we hold about you.
+* You may request correction/update if it’s inaccurate.
+* You may request deletion/erasure of certain data.
+* You may object to certain processing or request we limit it.
+* You may request a copy of your data in a portable format.
+
+To exercise these rights, email [info@bimscorp.com](mailto:info@bimscorp.com) with the subject “Privacy Request.” We may need to verify your identity (to prevent unauthorized access to another user’s account).
+
+### 9. Children
+
+Our Service is not directed to children under 13, and we do not knowingly collect personal data from children under 13. If you believe a child under 13 has provided us personal data, contact [info@bimscorp.com](mailto:info@bimscorp.com) and we will delete it where required by law.
+
+### 10. International Transfers
+
+We are U.S.-based. If you access the Service from outside the U.S., you understand that your information may be transferred to, stored in, and processed in the United States. SaaS privacy policies typically disclose cross-border transfer because of GDPR and similar regimes. ([TermsFeed][1])
+
+### 11. Changes to This Privacy Policy
+
+We may update this Privacy Policy from time to time. If we make material changes, we’ll notify you (for example, in-app notice or email). Continued use after the effective date means you accept the updated Policy. SaaS providers are expected to notify users when data practices change. ([TermsFeed][1])
+
+### 12. Contact Us
+
+For privacy questions, data requests, or complaints:
+
+* Email: [info@bimscorp.com](mailto:info@bimscorp.com)
+* Mail: Privacy, LinkServicePro, 2280 Union Blvd, Bay Shore, NY 11706
+* Phone: (631) 206-3700
+
+---
+
+## 3. Service Level Agreement (SLA)
+
+**Last Updated:** October 30, 2025
+This Service Level Agreement (“SLA”) is part of the Terms of Service. It defines uptime targets, support response expectations, and what credits (if any) apply.
+
+Clear SLAs (uptime, response times, maintenance windows) are commonly embedded or attached to SaaS agreements so customers know what “reliability” means. ([LegalZoom][2])
+
+### 1. Definitions
+
+* **“Service”** means the LinkServicePro hosted platform.
+* **“Downtime”** means a period where the production Service is unavailable to all customers due to an issue within our control (not including scheduled maintenance, internet provider failures between you and our edge, force majeure, or your own configuration/firewall/VPN failures).
+* **“Monthly Uptime %”** = (Total minutes in calendar month – Downtime minutes) ÷ (Total minutes in calendar month) × 100.
+
+### 2. Uptime Commitment
+
+We target a Monthly Uptime % of **99.5% or higher**.
+
+This means we aim for no more than ~3.6 hours of unplanned outage in a 30-day month. This is a standard small-business SaaS uptime target and usually acceptable for field service operations software. ([Lawpath][6])
+
+### 3. Exclusions
+
+Downtime does NOT include:
+
+* Scheduled maintenance (see Section 4),
+* Network or device issues on your side,
+* Third-party service failures we do not control (e.g. carrier SMS outages, card processor outages, Google/Apple calendar outages),
+* Force majeure events (power grid failures, large-scale internet outages, natural disasters, strikes, acts of government, war, etc.).
+
+### 4. Scheduled Maintenance
+
+We may perform routine maintenance, upgrades, security patches, and database work during low-traffic windows. We will make reasonable efforts to notify you in advance if maintenance is expected to significantly impact availability.
+
+### 5. Support & Response Targets
+
+**Standard support hours:**
+
+* Monday–Friday, 9am–6pm Eastern Time (U.S.), excluding major U.S. holidays.
+
+**Contact methods:**
+
+* Email: [info@bimscorp.com](mailto:info@bimscorp.com)
+* In-app support form (coming soon)
+
+**Target initial response times (not guaranteed):**
+
+* Service Unavailable / Critical Outage: 2 business hours
+* Major Function Broken (scheduling, dispatch, invoicing not working for many users): 4 business hours
+* Standard Issue / “How do I…?”: 1 business day
+
+These are targets, not guarantees. They’re typical in SaaS SLAs to set expectation but avoid creating pure liability. ([LegalZoom][2])
+
+### 6. Service Credits
+
+If Monthly Uptime % for your paid plan (Starter and above) drops below 99.5%, you may request a service credit.
+
+* **Credit amount:** 5% of that month’s subscription fee (excluding overages, taxes, pass-through fees) for each full 1% below 99.5%, capped at 20% total credit for that month.
+* Credits do not apply to Free plan accounts.
+* Credits are applied to future invoices; they are not cash refunds.
+
+To receive a credit, you must email [info@bimscorp.com](mailto:info@bimscorp.com) within 15 days after the month ends, include “SLA Credit Request” in the subject, and provide timestamps of the outage you observed.
+
+Credits are your sole and exclusive remedy for SLA-related availability issues.
+
+### 7. Changes
+
+We may update this SLA to reflect new infrastructure, support hours, or availability targets. We will post updated terms in-app or on our site. Continued use after an update means you accept the revised SLA.
+
+---
+
+## 4. Refund Policy
+
+**Last Updated:** October 30, 2025
+This Refund Policy applies to all LinkServicePro subscriptions, add-ons, overages, and usage-based fees.
+
+### 1. Free Plan
+
+The Free plan costs $0/month, limited to 1 user and a capped number of jobs. You can stop using it at any time.
+
+### 2. Monthly Subscriptions
+
+Monthly subscriptions are billed in advance and are **non-refundable** once the billing period begins.
+
+If you cancel during the month, you keep access through the end of the paid billing period, and the subscription will not renew next month. We do not pro-rate or partially refund unused time in the current month.
+
+This is standard for SaaS billed monthly in advance. ([LegalZoom][2])
+
+### 3. Annual Subscriptions
+
+Annual subscriptions are billed up front at a discounted rate (20% off monthly equivalent). Annual fees are **non-refundable** once charged, except as described under “Service Credits / SLA Exception” below.
+
+If you downgrade or cancel mid-term, you will retain access at the downgraded level (or lose features of higher tiers) for the remainder of the paid annual term. The downgrade will apply for the next renewal.
+
+We do not offer partial refunds for unused months of an annual plan because the discount assumes a one-year commitment.
+
+### 4. Add-ons, Overage, Usage-Based Fees
+
+Overage charges (extra jobs beyond your plan cap), outbound SMS fees, card processing pass-through, and similar usage-based charges are **non-refundable** once incurred.
+
+These reflect real usage, carrier/processor costs, and taxes that are already paid out or accrued on your behalf.
+
+### 5. Taxes and Regulatory Fees
+
+Any required taxes, surcharges, regulatory fees, or VAT-style charges (for example, a 4% line item if applicable) are passed through and are **non-refundable**, unless we collected them in error.
+
+### 6. SLA Exception (Paid Plans)
+
+If you are on a paid plan (Starter or higher) and we fail to meet our SLA uptime target for a given calendar month, you may request a service credit as described in the SLA. Credits apply to future invoices only and are not cash refunds. This SLA credit is your exclusive remedy for downtime, availability, or support delays.
+
+### 7. Chargebacks / Disputes
+
+You agree to contact us first at [info@bimscorp.com](mailto:info@bimscorp.com) to resolve any billing concern. If you dispute a charge with your bank or card issuer without giving us a reasonable opportunity to address it, we may suspend or terminate access to the account linked to that payment method.
+
+### 8. How to Request Review
+
+If you believe you qualify for a credit or there was a billing error:
+
+* Email [info@bimscorp.com](mailto:info@bimscorp.com)
+* Subject line: “Billing Review Request”
+* Include company name, plan, invoice ID, and explanation.
+
+We’ll investigate in good faith. If we determine a correction is appropriate, we’ll apply a credit to the next invoice or issue an adjusted invoice.
+
+### 9. Changes
+
+We may update this Refund Policy from time to time (for example, if plan structures, tax rules, or SLA terms change). We will post the updated policy with a new “Last Updated” date. Continued use after an update means you accept the revised Refund Policy.
+
+---
+
+How to ship these:
+
+* `/terms` → Terms of Service
+* `/privacy` → Privacy Policy
+* `/sla` → Service Level Agreement
+* `/refunds` → Refund Policy
+
+Each page should also be linked in your global footer (“Terms,” “Privacy,” “SLA,” “Refunds”).
+Also: on sign-up forms and checkout, include required checkboxes for “I agree to the Terms of Service and Privacy Policy” and “I consent to receive service-related SMS messages,” because SaaS companies are generally expected to capture affirmative consent for data use and messaging under privacy and communications laws. ([TermsFeed][1])
+
+[1]: https://www.termsfeed.com/blog/sample-saas-privacy-policy-template/?utm_source=chatgpt.com "SaaS Privacy Policy Template"
+[2]: https://www.legalzoom.com/templates/t/master-saas-agreement?utm_source=chatgpt.com "Master SaaS Agreement Template"
+[3]: https://www.termsfeed.com/blog/sample-saas-terms-conditions-template/?utm_source=chatgpt.com "SaaS Terms & Conditions Template"
+[4]: https://payproglobal.com/how-to/create-saas-privacy-policy/?utm_source=chatgpt.com "How to Create a SaaS Privacy Policy: Steps and Template"
+[5]: https://cookie-script.com/guides/saas-privacy-policy?utm_source=chatgpt.com "SaaS Privacy Policy Explained: A Complete Guide for 2025"
+[6]: https://lawpath.com.au/legal-documents/saas-agreement-software-as-a-service?utm_source=chatgpt.com "SaaS Agreement (Software as a Service) - Free Template"

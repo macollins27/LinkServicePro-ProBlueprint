@@ -1,0 +1,119 @@
+Build a NEW section directly under SchedulingPainSolve on the Drag-and-drop Scheduling feature page.
+
+Section name: “SchedulingRouteImpact”
+File: src/sections/SchedulingRouteImpact.tsx
+Insert: import and render immediately after SchedulingPainSolve in src/routes/features/scheduling.tsx
+
+Stack: React 18 + TypeScript, Vite, Tailwind, shadcn/ui (Radix), Wouter, TanStack Query.
+Theme: “Pro-Blueprint” (sharp corners, rivet borders, optional blueprint grid).
+A11y: WCAG AA+, keyboard-friendly, aria-live where needed.
+Mobile-first: 375px one column; ≥640px two columns.
+
+GOAL
+Show the WOW of drag-and-drop by visualizing the route and time impact in real time. Convert with standardized buttons.
+
+SECTION CONTENT
+Header
+- H2: “Route smart. Not hard.”
+- Sub: “See drive time, ETAs, and crew load adjust the moment you drag.”
+
+Left: Mini Map + Route Delta
+- A simple stylized map panel (no external map SDK) with:
+  * Polyline route
+  * 3 tech pins (T1, T2, T3) and today’s stops as numbered dots
+  * On scenario change, animate line length and ETA badges (respect prefers-reduced-motion)
+- Scenario selector (3 buttons as small tabs):
+  1) “Reassign job to Tech 2”
+  2) “Pull 3 PM to 11:30 AM”
+  3) “Cluster nearby stops”
+- When a scenario is selected, update the right-side metrics and this map:
+  * Shorter or longer polyline
+  * Badge near end point: “ETA 2:10 PM → 1:58 PM (−12m)”
+  * Floating badges on pins: T1/T2 utilization %
+
+Right: Impact Cards + CTA
+- Three impact cards update per scenario (use the exact strings):
+  * “Drive time −12 min”
+  * “On-time window +8%”
+  * “Crew load balanced”
+- A compact change log list (max 3 items):
+  * Example entries:
+    - “Moved Leak Repair to Tech 2”
+    - “ETA text sent to customer”
+    - “Route resequenced A→B→C”
+- CTA block uses standardized buttons from src/components/Buttons.tsx:
+  * Primary: <StartFreeButton context="light" />
+  * Secondary: <ViewPricingButton context="light" />
+  * Place inside a responsive ButtonsRow with 12px gap; column on mobile, row on ≥640px.
+
+COPY (use verbatim)
+- H2: “Route smart. Not hard.”
+- Sub: “See drive time, ETAs, and crew load adjust the moment you drag.”
+- Scenario tabs:
+  1) “Reassign job to Tech 2”
+  2) “Pull 3 PM to 11:30 AM”
+  3) “Cluster nearby stops”
+- Impact cards (always three):
+  * “Drive time −12 min”
+  * “On-time window +8%”
+  * “Crew load balanced”
+- Change log sample lines (rotate based on scenario):
+  * “Moved Leak Repair to Tech 2”
+  * “ETA text sent to customer”
+  * “Route resequenced A→B→C”
+
+ACCESSIBILITY
+- Map container: role="img" aria-label="Route illustration updating with scheduling changes"
+- Tabs: proper role="tablist" with roving tab index
+- Announce metric changes via aria-live="polite" region (#impact-status)
+- All focusable elements have visible focus ring using #0B5FFF
+
+INTERACTION DETAILS
+- No external map packages. Render a simple SVG:
+  * Background grid or light streets (two-toned shapes)
+  * Route polyline
+  * Pins as sharp-cornered markers with “T1/T2/T3”
+- On tab select:
+  * Update a small state model for drive time delta, on-time %, crew load labels, and change log items
+  * Update SVG path length (use stroke-dasharray trick if animating; guard with prefers-reduced-motion)
+  * Write a short string to #impact-status: e.g., “Scenario applied: Reassign job to Tech 2. Drive time −12 min.”
+
+STYLES
+- Card shells: white, ring-1 slate-200, elev-2 shadow, square corners
+- Accent colors: navy #0E2A47, blue #0B5FFF, green #0FB36F
+- Optional blueprint background utility `bg-blueprint` allowed on map wrapper
+- No rounded pills. No floating UI collages.
+
+CODE REQUIREMENTS
+- Export default function SchedulingRouteImpact(): JSX.Element
+- Provide data-testid:
+  * data-testid="scenario-tabs"
+  * data-testid="map-svg"
+  * data-testid="impact-drive"
+  * data-testid="impact-ontime"
+  * data-testid="impact-crew"
+  * data-testid="cta-start-free"
+- Import standardized buttons:
+  import { StartFreeButton, ViewPricingButton, ButtonsRow } from "@/components/Buttons";
+- Keep all strings and labels exactly as provided for copy consistency.
+
+FILE SCAFFOLD (guide)
+- src/sections/SchedulingRouteImpact.tsx
+  * Local state: activeScenario: 0|1|2
+  * Computed impact for each scenario (object array)
+  * SVG map component with props from state
+  * ImpactCards component
+  * ChangeLog component
+  * CTA block using ButtonsRow + StartFreeButton + ViewPricingButton
+  * aria-live div id="impact-status"
+
+QA GATES
+- No horizontal overflow at 375px
+- Lighthouse: ≥90 Performance, ≥95 Accessibility on this route section
+- Tabs operable by keyboard (Left/Right to switch, Enter/Space to activate)
+- Focus rings visible on tabs and buttons
+- aria-live messages fire on scenario change
+- Works with prefers-reduced-motion
+
+OPTIONAL ASSET
+- public/map-texture.svg lightweight pattern for the map background; ensure decorative (aria-hidden="true")

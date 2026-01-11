@@ -1,0 +1,109 @@
+Perfect—here’s a single, surgical, no-code prompt to create one tight, conversion-first band that introduces the Property Linkware integration (Link Inspect Pro + Property Organizer) without going deep. It’s mobile-first, uses your global container, and includes the email field with attached button.
+
+⸻
+
+Task
+
+Add a new homepage section titled “Property Linkware Integration” (one band) placed after the comparison section and before pricing. This band quickly explains the benefits of integrating inspection software and real-estate organizer software and drives email capture. Do not alter any other sections or routes.
+
+0) Goals
+	•	Educate in seconds: “You get inspection + property organizer data flowing into LinkServicePro.”
+	•	Convert: single email input + attached ‘Get Started Free’ button.
+	•	Provide one “Learn more” link to a future details page /integrations/property-linkware.
+
+⸻
+
+1) Content (install exactly)
+
+Eyebrow: Integrations
+H2: Property Linkware Integration
+Support (1 sentence): Inspections and property records connect to every job—so photos, reports, and asset history live in one place.
+
+Two micro-benefit stacks (keep short):
+
+A) Link Inspect Pro (Inspections)
+	•	✓ Capture checklists, photos, and markups
+	•	✓ Auto-generate summary reports
+	•	✓ Send results to the job in LinkServicePro
+
+B) Property Organizer (Assets & Properties)
+	•	✓ Asset files, photos, and notes by site
+	•	✓ Service & inspection history on one timeline
+	•	✓ Owners/tenants can request and track service
+
+Lead form (attached field+button):
+	•	Input placeholder: Enter your email
+	•	Button text: Get Started Free →
+	•	Small link under form: Learn more about Property Linkware → /integrations/property-linkware
+	•	Legal whisper under link, muted: By continuing you agree to our Terms and acknowledge our Privacy Policy.
+
+No other copy in this band.
+
+⸻
+
+2) Layout (mobile → desktop)
+	•	Mobile (default): single column inside the same global container width as other bands.
+	1.	Eyebrow → H2 → Support
+	2.	Two micro-benefit stacks (each with a tiny icon heading)
+	3.	Email form (input + attached button)
+	4.	Learn-more link + legal whisper
+	•	Desktop (lg+): 12-col grid, two columns:
+	•	Left: Eyebrow/H2/Support + the two micro-benefit stacks.
+	•	Right: Compact visual card (static image or SVG mock) of a job timeline showing “Inspection report attached” and “Property asset files” badges. Rounded corners, subtle shadow.
+	•	Form spans full width below the two columns (centered on desktop).
+
+Spacing & style: match section rhythm; no heavy images. Use existing tokens; same heading colors as the rest of the page (no blue subtitles).
+
+⸻
+
+3) Visual guidance (single image, optional)
+	•	One light mock (WebP, ~1200×800, loading="lazy", decoding="async", intrinsic sizes) showing:
+	•	A job timeline card with a “Report.pdf” pill and a camera/photo strip
+	•	A property/asset panel on the side with files
+	•	Alt text: Job timeline with attached inspection report and property asset files.
+
+⸻
+
+4) Email form (attached control spec)
+	•	Input type="email", label is visually hidden, placeholder as above, autocomplete="email".
+	•	Button attached to the right (shared border radius; no gap).
+	•	Validation: if invalid, show inline error under field; add aria-describedby and error state.
+	•	Submit: POST to existing endpoint or stub /api/lead with { email, source: "home_linkware" }.
+	•	On success: clear field and show inline confirmation: You’re in—check your email to get started.
+	•	A11y: Enter submits; focus ring visible; 44px+ targets; aria-live="polite" for messages.
+
+⸻
+
+5) Accessibility
+	•	One h2 for the band; each stack uses an h3 like “Link Inspect Pro” and “Property Organizer”.
+	•	Icons aria-hidden="true"; never convey meaning by color alone (include ✓ symbol in text).
+	•	Links and buttons have clear focus states.
+
+⸻
+
+6) Performance
+	•	No tooltips, no modals, no carousels, no third-party scripts.
+	•	Intrinsic image dimensions; zero CLS.
+	•	Keep payload tiny.
+
+⸻
+
+7) Analytics
+	•	linkware.lead_submit { email_domain, source: “home_linkware” }
+	•	linkware.learn_more_click
+	•	Optionally linkware.view on section in-view once.
+
+⸻
+
+8) Acceptance checklist
+	1.	Band renders inside the global container, matching widths of other sections.
+	2.	Copy matches exactly; only the items listed appear.
+	3.	Two micro-benefit stacks are concise and readable on mobile; no horizontal scroll.
+	4.	Email input + attached button works with validation and success state; accessible.
+	5.	Optional image lazy-loads with intrinsic size; no layout shift.
+	6.	Learn-more link routes to /integrations/property-linkware.
+	7.	Analytics events fire; Lighthouse mobile has no CLS and passes contrast.
+
+⸻
+
+When this ships, we’ll mirror the pattern for Link Inspect Pro and Property Organizer on their own dedicated pages, where we can go deeper with screenshots, flows, and FAQs—keeping the homepage lean and conversion-focused.

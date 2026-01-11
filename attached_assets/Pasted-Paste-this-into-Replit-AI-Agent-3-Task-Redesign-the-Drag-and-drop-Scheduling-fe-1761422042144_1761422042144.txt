@@ -1,0 +1,275 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+## Task
+
+Redesign the **Drag-and-drop Scheduling** feature page as a high-converting landing page for searches like “HVAC company scheduling software.” Mobile-first, sharp corners, high contrast, no horizontal scroll at 375px. Every section starts with **Title + Subtitle** top-left. Use rectangular buttons with bold labels. Add sticky bottom CTA and an inline lead form. Tone: practical for contractors.
+
+In addition, **AI-generate all page imagery** to create a “that’s me at work” reaction. Use the **Image Generation Specs** and **Asset Manifest** below. Place each image exactly where specified.
+
+---
+
+## Page structure (exact order)
+
+1. **Hero band**
+2. **What it does**
+3. **Why teams switch (Pain → Solve)**
+4. **How it works (3 steps)**
+5. **In the field (testimonial)**
+6. **Works with (integrations)**
+7. **Mini demo + lead capture**
+8. **Related features**
+9. **FAQ (accordion)**
+10. **Bottom CTA band**
+11. **Sticky bottom CTA**
+
+---
+
+## Visual + interaction rules
+
+* Grid: mobile 1-col; ≥768px two-col where noted; ≥1024px three-col for tiles.
+* Cards: white bg, 1px slate-200 ring, `.elev-2` shadow, 16–24px padding.
+* Links animate underline **right→left**. Respect `prefers-reduced-motion`.
+* KPI tiles: large value, small label. Neutral gray; success = green, info = blue.
+* Forms validate email client-side. One-line success.
+
+---
+
+## SEO + schema
+
+* `<title>`: “Drag-and-drop Scheduling • Field Service Software”
+* Meta description (≤160): “Move jobs on a live calendar, auto-notify crews, and cut drive time. Built for HVAC, plumbing, electrical, and more.”
+* Canonical, OG tags, JSON-LD `SoftwareApplication`.
+* Add `FAQPage` schema for the FAQ items below.
+
+---
+
+## Copy to render (use verbatim)
+
+### 1) Hero band
+
+* **Title:** Drag-and-drop Scheduling
+* **Subtitle:** Schedule faster and keep crews in sync.
+* **KPIs:**
+  `−18%` — Drive time
+  `+1.3` — Jobs per tech per day
+  `96%` — On-time arrival
+* **CTAs:** Start Free (primary), View Pricing (secondary)
+
+### 2) What it does
+
+* Drag jobs on a live calendar → crews and customers auto-notified.
+* Assign crews and vehicles → no double-booking.
+* See day, week, and route capacity → prevent overtime.
+
+### 3) Why teams switch (Pain → Solve)
+
+* **Pain:** Spreadsheets break when multiple people edit. Office can’t see who’s free across all crews. Techs get double-booked or sent to wrong locations. Overtime surprises on Fridays.
+* **Solve:** Real-time calendar with conflict warnings. Color-coded availability by crew and vehicle. Drag once → everyone gets notified (SMS/email). Capacity view with hour caps and overtime alerts.
+
+### 4) How it works (3 steps)
+
+* **Step 1:** Create job — add photos, line items, and service window.
+* **Step 2:** Place on calendar — drag to day; assign crew and truck.
+* **Step 3:** Notify — customers and techs get the updated time automatically.
+
+### 5) In the field (testimonial)
+
+* “We reshuffle routes in minutes and cut callbacks.” — Mike R., Owner, HVAC
+
+### 6) Works with (integrations chips)
+
+* QuickBooks, Xero, LinkInspectPro, PropertyLinkWare, SMS/Email
+
+### 7) Mini demo + lead capture
+
+* **Left:** “See it in 60 seconds” mock (16:9) with captions: Live calendar with conflict flags; Drag to assign crew and vehicle; Auto text to customer.
+* **Right:** Lead form (email + company) titled “See it with your jobs.” Button: Book a demo. Success: “Thanks — we’ll reach out within one business day.”
+
+### 8) Related features
+
+* Dispatch Board + Live Map — See every crew on screen.
+* Route Optimization — Shortest routes, more jobs per tech.
+* Capacity Planning — Balance workload and prevent overtime.
+
+### 9) FAQ (accordion, max 6)
+
+* How long does setup take? Most teams import in under a day.
+* Can I reschedule from my phone? Yes. iOS and Android supported.
+* Will crews get alerts? Yes. Techs and customers receive SMS/email.
+* What if I double-book? You’ll see a conflict flag before saving.
+* Does it handle recurring jobs? Yes. Daily, weekly, monthly patterns.
+* Does it work offline? The mobile app queues updates and syncs later.
+
+### 10) Bottom CTA band
+
+* **Headline:** Ready to try it?
+* **Subcopy:** Simple pricing. No contracts.
+* **Buttons:** View Pricing, Start Free
+
+### 11) Sticky bottom CTA
+
+* **Text:** Ready to try it?
+* **Buttons:** View Pricing, Start Free
+
+---
+
+## Mobile-first layout details
+
+* Hero: title, subtitle, KPIs stack; CTAs below; hero image above copy on mobile.
+* Pain→Solve: stacked cards on mobile; two columns at ≥1024px.
+* How it works: stacked 1×3; three columns at ≥768px.
+* Demo+Lead: demo above form on mobile; side-by-side at ≥1024px.
+* Related: 1 card; 2 at ≥768px; 3 at ≥1024px.
+* FAQ: single-column accordion; keyboard accessible.
+
+---
+
+## Accessibility
+
+* Use buttons for accordion with `aria-expanded` + `aria-controls`.
+* Visible focus rings.
+* Alt text on all media; descriptive, not decorative.
+
+---
+
+## Analytics events
+
+* `lp_view` on load `{feature:"scheduling"}`
+* `cta_click` on Start Free / View Pricing `{placement:"hero"|"sticky"|"bottom"}`
+* `lead_capture` on form submit `{feature:"scheduling",source:"demo-form"}`
+
+---
+
+## **Image Generation Specs**  🔧
+
+**Goal:** Authentic, documentary-style jobsite photos that make a contractor think, “that’s me at work.” No staged stock vibes.
+
+**Global style**
+
+* Real people on real jobs. OSHA-safe PPE. Natural light or on-site LEDs.
+* Lens: 24–70mm equivalent, shallow depth for subject isolation.
+* Color: true-to-life; slightly warm. Moderate contrast.
+* Crop tight on hands, tools, vans, ladders, rooftops, crawlspaces, tablets/phones.
+* Diverse crews by age, gender, ethnicity. Uniforms without visible third-party logos.
+* Output formats per image: **AVIF** and **WebP** + JPEG fallback in sizes **1600, 1200, 768, 480px** widths. Provide LQIP 20px blur (base64).
+* Provide **alt** and **caption** per asset.
+* No gore, no unsafe acts, no smoking.
+
+---
+
+## **Asset Manifest**  📸
+
+Generate these images and save with the exact filenames. Place them in `/public/images/scheduling/` and return a table with alt text, caption, and srcsets.
+
+### A. Hero vertical carousel (4 images, 4:5 ratio on mobile, 16:10 on desktop)
+
+1. `hero-van-tablet`
+   **Prompt:** “HVAC technician seated in service van at dawn, reviewing route map on a tablet, clipboard and tool bags visible, reflective vest, natural light through windshield, documentary photo, 35mm, shallow depth.”
+   **Alt:** HVAC technician reviewing route on tablet inside service van.
+   **Caption:** Morning dispatch: today’s route on the tablet.
+
+2. `hero-rooftop-condenser`
+   **Prompt:** “Rooftop HVAC unit, tech kneeling, multimeter probes on contactor, city skyline soft blur, wind jacket and gloves, golden hour, cinematic documentary.”
+   **Alt:** HVAC tech checking voltage at rooftop condenser.
+   **Caption:** Verify before you roll.
+
+3. `hero-electrical-panel`
+   **Prompt:** “Electrician at open service panel, insulated screwdriver torqueing lug, label sheet taped nearby, headlamp illumination, gritty workshop realism.”
+   **Alt:** Electrician tightening lug in service panel.
+   **Caption:** Panel updates sync to the schedule.
+
+4. `hero-crawlspace-pex`
+   **Prompt:** “Plumber in crawlspace with headlamp, crimping PEX fitting, vapor barrier, compact composition on hands and tool, authentic jobsite.”
+   **Alt:** Plumber crimping PEX in a crawlspace.
+   **Caption:** Tight space, clear checklist.
+
+### B. “What it does” side image (1 image, 16:9)
+
+5. `what-live-calendar-phone`
+   **Prompt:** “Close-up of gloved hand dragging appointment on a smartphone calendar app, work boots visible, contractor jeans, natural light.”
+   **Alt:** Dragging a job on a live schedule from a phone.
+   **Caption:** Move it once—everyone’s updated.
+
+### C. Pain → Solve supporting photos (2 images, 3:2)
+
+6. `pain-whiteboard-chaos`
+   **Prompt:** “Messy shop whiteboard with crowded schedules, sticky notes, phone ringing in foreground blur, stressed dispatcher silhouette—documentary.”
+   **Alt:** Overloaded whiteboard causing scheduling confusion.
+   **Caption:** Spreadsheets and whiteboards don’t scale.
+
+7. `solve-color-capacity`
+   **Prompt:** “Clean wall-mounted tablet showing color-coded crew availability blocks, calm dispatcher hand pointing, soft daylight.”
+   **Alt:** Color-coded crew capacity view on tablet.
+   **Caption:** See who’s free at a glance.
+
+### D. How it works (3 steps, 4:3 each)
+
+8. `step-create-job-photos`
+   **Prompt:** “Office desk with laptop adding a new work order, attaching before-photo, line items on screen, coffee mug, practical realism.”
+   **Alt:** Creating a job with photos and items.
+
+9. `step-drag-assign-crew`
+   **Prompt:** “Hands dragging a job card on a desktop calendar to a new day, assigning two-person crew, clear UI card shapes, shallow depth.”
+   **Alt:** Dragging a job to assign crew and day.
+
+10. `step-notify-sms-customer`
+    **Prompt:** “Customer phone receiving text: ‘Your technician will arrive 2:15–3:00 PM’, porch background, natural light, thumbs visible.”
+    **Alt:** Customer receiving automated appointment text.
+
+### E. Testimonial portrait (1 image, 3:4)
+
+11. `testimonial-mike-hvac-portrait`
+    **Prompt:** “Owner-operator HVAC pro standing by service van, arms relaxed, friendly confident expression, company-neutral polo, wrench in pocket, late afternoon light.”
+    **Alt:** Mike R., HVAC owner by his service van.
+    **Caption:** “We reshuffle routes in minutes and cut callbacks.”
+
+### F. Mini-demo poster (1 image, 16:9)
+
+12. `demo-schedule-conflicts`
+    **Prompt:** “Laptop on shop counter showing schedule with conflict flags and route view, tape measure and multimeter nearby, cinematic natural light.”
+    **Alt:** Schedule with conflict flags and route view.
+    **Caption:** See problems before they cost you.
+
+### G. Related feature thumbnails (3 images, 1:1)
+
+13. `thumb-dispatch-map` — “Technician avatars moving on live map on tablet held in cab.”
+14. `thumb-route-optimization` — “Windshield view, route line across multiple stops on phone mount.”
+15. `thumb-capacity-planning` — “Calendar heatmap of crew hours on wall-mounted display.”
+    Alt text and short captions reflecting each feature.
+
+---
+
+## Placement map
+
+* **Hero band:** Use **Hero vertical carousel** (A1–A4) left/top; KPIs + CTAs on the side on desktop, stacked on mobile.
+* **What it does:** Place image B right of bullets (desktop) and above bullets (mobile).
+* **Pain → Solve:** Place image C6 above Pain card and image C7 above Solve card on desktop; stack both above text on mobile.
+* **How it works:** Place D8, D9, D10 above each step card respectively.
+* **In the field:** Place E11 beside quote on desktop; above quote on mobile.
+* **Mini demo + lead capture:** Place F12 as the demo poster left; lead form right on desktop; poster above form on mobile.
+* **Related features:** Use G13–G15 as card thumbs.
+* All images load with AVIF/WebP first, JPEG fallback, and LQIP blur.
+
+---
+
+## Performance & A11y requirements
+
+* Pre-generate srcsets for **1600/1200/768/480** widths; include intrinsic sizes to prevent CLS (<0.05).
+* `loading="lazy"` on non-hero images; hero above the fold should not be lazy.
+* Every image includes **alt** and optional **caption**.
+* Respect user motion preferences in the hero carousel; pause on hover/focus; swipe on touch.
+
+---
+
+## Acceptance criteria
+
+* Sections render in the specified order with the provided copy.
+* Sticky CTA and inline demo lead form present.
+* Generated images feel **authentic field-service** and create a strong “that’s me at work” connection.
+* Lighthouse: ≥90 Performance, ≥95 Accessibility.
+* No horizontal scroll at 375px.
+* FAQ schema visible in page source.
+
+Generate the images per the **Asset Manifest**, wire them in per the **Placement map**, and deliver the page.

@@ -1,0 +1,240 @@
+Understood. We’ll keep the left columns as-is and **pack the right columns** with high-value content so they feel intentional, not empty. Below is a **surgical prompt** for Replit that:
+
+* Touches only the **right column** of both mega menus
+* Keeps your stack (React + Vite + Wouter + Tailwind, lucide-react)
+* Preserves current height, adds **stats grid + mini-checklist + preview thumbnail + dual CTAs**
+* Stays accessible and keyboard friendly
+* Leaves mobile accordions unchanged
+
+Paste this to Replit.
+
+---
+
+## PROMPT: Enrich right columns of both mega menus
+
+```txt
+You are Replit Agent. Do NOT rebuild anything. Only update the existing desktop mega menu components you created earlier. We are on React + Vite + Wouter + Tailwind + lucide-react. Keep mobile accordions unchanged.
+
+GOAL
+Fill the right column of BOTH mega menus (Features, Industries) with richer content: a small chip header + headline + subtext (existing), plus:
+1) a compact 2x2 stats grid,
+2) a short “includes/benefits” checklist,
+3) a small product preview thumbnail (gray placeholder),
+4) dual CTAs (primary + secondary).
+This must keep the same navy / slate styling and remain fully keyboard accessible.
+
+GENERAL STYLE TOKENS
+- Navy: #0E2A47
+- Accent blue: #0B5FFF
+- Text on dark cards: text-white / text-white/70
+- Focus rings on all interactive: focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded
+- Icons: lucide-react, size 16–20, color #0B5FFF on light, white/90 on dark
+
+A) FEATURES MEGA MENU — RIGHT COLUMN CONTENT
+Find the existing right-column navy card in the Features flyout. Replace its inner content with the stack below (keeping the same outer wrapper container styles that you already implemented):
+
+OUTER (unchanged):
+<div className="bg-[#0E2A47] text-white rounded-xl p-4 flex flex-col justify-between ring-1 ring-slate-800 shadow-inner min-h-[220px]">
+
+TOP BLOCK:
+1) Chip (keep):
+<div className="text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] inline-block mb-3">
+  Unlimited users
+</div>
+
+2) Headline (keep copy):
+<div className="text-white font-semibold text-base leading-snug">
+  Stop paying per tech.
+</div>
+
+3) Subtext (keep copy):
+<div className="text-white/70 text-[12px] leading-snug mt-2">
+  Pick a job cap, not a seat cap. Add as many users as you want on paid plans.
+</div>
+
+4) **Stats grid (NEW)** — 2x2 compact pills. Use lucide icons: Timer, CheckCircle2, DollarSign, TrendingUp.
+<div className="grid grid-cols-2 gap-2 mt-3">
+  <div className="bg-white/5 rounded-md px-2 py-2">
+    <div className="flex items-center gap-1 text-[11px]">
+      <svg className="lucide lucide-timer w-3.5 h-3.5 text-white/90" />
+      <span className="text-white/90">Faster dispatch</span>
+    </div>
+    <div className="text-[11px] text-white/60" data-metric="stat-dispatch">35%*</div>
+  </div>
+  <div className="bg-white/5 rounded-md px-2 py-2">
+    <div className="flex items-center gap-1 text-[11px]">
+      <svg className="lucide lucide-check-circle-2 w-3.5 h-3.5 text-white/90" />
+      <span className="text-white/90">Quicker approvals</span>
+    </div>
+    <div className="text-[11px] text-white/60" data-metric="stat-approvals">2×*</div>
+  </div>
+  <div className="bg-white/5 rounded-md px-2 py-2">
+    <div className="flex items-center gap-1 text-[11px]">
+      <svg className="lucide lucide-dollar-sign w-3.5 h-3.5 text-white/90" />
+      <span className="text-white/90">Time-to-pay</span>
+    </div>
+    <div className="text-[11px] text-white/60" data-metric="stat-pay">&lt;24h*</div>
+  </div>
+  <div className="bg-white/5 rounded-md px-2 py-2">
+    <div className="flex items-center gap-1 text-[11px]">
+      <svg className="lucide lucide-trending-up w-3.5 h-3.5 text-white/90" />
+      <span className="text-white/90">Seat-free</span>
+    </div>
+    <div className="text-[11px] text-white/60">Unlimited users</div>
+  </div>
+</div>
+
+5) **Mini-checklist (NEW)** — 3 bullets, compact, semantic list, icons: Check.
+<ul className="mt-3 space-y-1">
+  <li className="flex items-start gap-2 text-[12px]">
+    <svg className="lucide lucide-check w-3.5 h-3.5 text-white/80 mt-0.5" />
+    <span className="text-white/80">Calendar sync (Google & Apple)</span>
+  </li>
+  <li className="flex items-start gap-2 text-[12px]">
+    <svg className="lucide lucide-check w-3.5 h-3.5 text-white/80 mt-0.5" />
+    <span className="text-white/80">E-sign estimates & invoices</span>
+  </li>
+  <li className="flex items-start gap-2 text-[12px]">
+    <svg className="lucide lucide-check w-3.5 h-3.5 text-white/80 mt-0.5" />
+    <span className="text-white/80">Customer portal for payments</span>
+  </li>
+</ul>
+
+6) **Preview thumbnail (NEW)** — gray placeholder image, full width, rounded, decorative.
+<div className="mt-3">
+  <div
+    aria-hidden="true"
+    className="w-full h-[90px] rounded-md bg-white/10 ring-1 ring-white/15"
+    title="Product preview"
+  />
+</div>
+
+BOTTOM CTA STACK (keep but move to bottom as a stack):
+<div className="mt-3 flex flex-col gap-2">
+  <Link
+    href="/pricing"
+    className="bg-[#0B5FFF] text-white text-[12px] font-semibold rounded-md px-3 py-2 text-center shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+  >
+    View Pricing
+  </Link>
+  <Link
+    href="/compare"
+    className="text-white/80 text-[12px] font-semibold text-center hover:text-white hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+  >
+    Compare vs seat-based →
+  </Link>
+</div>
+
+B) INDUSTRIES MEGA MENU — RIGHT COLUMN CONTENT
+Find the existing dark right-column card in the Industries flyout. Replace its inner content with:
+
+OUTER (unchanged):
+<div className="bg-slate-900 text-white rounded-xl p-4 flex flex-col justify-between ring-1 ring-slate-800 shadow-inner min-h-[220px]">
+
+TOP BLOCK:
+1) Chip (keep):
+<div className="text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] inline-block mb-3">
+  Built for the field
+</div>
+
+2) Headline (keep):
+<div className="text-white font-semibold text-base leading-snug">
+  “Where’s my tech?” stops being your job.
+</div>
+
+3) Subtext (keep):
+<div className="text-white/70 text-[12px] leading-snug mt-2">
+  Live dispatch board, route planning, and job status — even if you’re running 5 calls at once.
+</div>
+
+4) **Stats grid (NEW)** — 2x2, icons: Route, Smartphone, Bell, Shield.
+<div className="grid grid-cols-2 gap-2 mt-3">
+  <div className="bg-white/5 rounded-md px-2 py-2">
+    <div className="flex items-center gap-1 text-[11px]">
+      <svg className="lucide lucide-route w-3.5 h-3.5 text-white/90" />
+      <span className="text-white/90">Optimized routes</span>
+    </div>
+    <div className="text-[11px] text-white/60">Save drive time</div>
+  </div>
+  <div className="bg-white/5 rounded-md px-2 py-2">
+    <div className="flex items-center gap-1 text-[11px]">
+      <svg className="lucide lucide-smartphone w-3.5 h-3.5 text-white/90" />
+      <span className="text-white/90">Mobile-first</span>
+    </div>
+    <div className="text-[11px] text-white/60">Tech-ready UI</div>
+  </div>
+  <div className="bg-white/5 rounded-md px-2 py-2">
+    <div className="flex items-center gap-1 text-[11px]">
+      <svg className="lucide lucide-bell w-3.5 h-3.5 text-white/90" />
+      <span className="text-white/90">Reminders</span>
+    </div>
+    <div className="text-[11px] text-white/60">Reduce no-shows</div>
+  </div>
+  <div className="bg-white/5 rounded-md px-2 py-2">
+    <div className="flex items-center gap-1 text-[11px]">
+      <svg className="lucide lucide-shield w-3.5 h-3.5 text-white/90" />
+      <span className="text-white/90">Permissions</span>
+    </div>
+    <div className="text-[11px] text-white/60">Role-based access</div>
+  </div>
+</div>
+
+5) **Mini-checklist (NEW)** — icons: Check.
+<ul className="mt-3 space-y-1">
+  <li className="flex items-start gap-2 text-[12px]">
+    <svg className="lucide lucide-check w-3.5 h-3.5 text-white/80 mt-0.5" />
+    <span className="text-white/80">Trade-specific workflows</span>
+  </li>
+  <li className="flex items-start gap-2 text-[12px]">
+    <svg className="lucide lucide-check w-3.5 h-3.5 text-white/80 mt-0.5" />
+    <span className="text-white/80">Recurring contracts & visits</span>
+  </li>
+  <li className="flex items-start gap-2 text-[12px]">
+    <svg className="lucide lucide-check w-3.5 h-3.5 text-white/80 mt-0.5" />
+    <span className="text-white/80">Quotes → jobs → invoices</span>
+  </li>
+</ul>
+
+6) **Preview thumbnail (NEW)** — gray placeholder:
+<div className="mt-3">
+  <div
+    aria-hidden="true"
+    className="w-full h-[90px] rounded-md bg-white/10 ring-1 ring-white/15"
+    title="Workflow preview"
+  />
+</div>
+
+BOTTOM CTA STACK (keep, same classes):
+<div className="mt-3 flex flex-col gap-2">
+  <Link
+    href="/features/scheduling-dispatch"
+    className="bg-[#0B5FFF] text-white text-[12px] font-semibold rounded-md px-3 py-2 text-center shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+  >
+    See Scheduling & Dispatch
+  </Link>
+  <Link
+    href="/pricing"
+    className="text-white/80 text-[12px] font-semibold text-center hover:text-white hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+  >
+    View Pricing →
+  </Link>
+</div>
+
+C) ACCESSIBILITY & INTERACTION
+- Keep the same outer card containers and flyout positioning.
+- All newly added <Link> and any clickable container must have the focus-visible ring classes above.
+- The right column must not change flyout open/close behavior (hover/focus/ESC/outside click all still work).
+- No changes to mobile drawer.
+
+D) CONTENT NOTES
+- The metric values in the Features stats grid use data attributes (data-metric) so we can update later; keep the example text you see above for now.
+- The gray thumbnails are placeholders; keep them as non-interactive decorative blocks with aria-hidden="true".
+
+Make these edits now to both right-column cards only and stop.
+```
+
+**Result**
+
+* Both right columns become **dense, useful, and balanced**: stats → checklist → visual → CTAs.
+* No dead space. No change to mobile.
+* Fully aligned with your theme and a11y.

@@ -1,0 +1,177 @@
+Use this exact prompt in Replit AI Agent. It **only** rebuilds the homepage and **keeps your existing hero carousel**. It matches your current stack, file paths, and component names documented in your project. 
+
+---
+
+## PROMPT: “Homepage refactor only — keep Hero, improve everything else”
+
+**Do not start a new app. Do not change routing, build, or server. Only update the homepage and its section components. Preserve the existing Hero carousel exactly as-is.**
+
+### Context (current repo facts you must follow)
+
+* SPA with React 18 + TypeScript, Vite, React Router, Tailwind, shadcn/ui, Framer Motion, lucide, RHF+Zod, Helmet.
+* Frontend root: `client/src/`
+* Homepage file: `client/src/pages/home.tsx`
+* Sections live in `client/src/sections/`
+* Shared components in `client/src/components/`
+* Buttons in `client/src/components/Buttons.tsx`
+* Data in `client/src/data/`
+* We already have these sections:
+  `HomeResults30.tsx`, `SchedulingInstantDemo.tsx`, plus several showcase sections.
+
+### Objectives
+
+1. Keep the **Hero** component and its carousel untouched.
+2. Replace the rest of the homepage with a tighter, higher-converting structure using our existing stack and design tokens.
+3. No breaking changes to nav, routing, pricing page, or feature template system.
+
+### Visual + content spec to implement
+
+**Overall rules**
+
+* Mobile-first. Section vertical padding: `py-12 sm:py-16 lg:py-20`.
+* Use our existing color tokens and button styles. Primary CTA = “Start Free”; Secondary CTA = “View Pricing”.
+* Use gray placeholder images where new visuals are needed. Size with responsive containers, not fixed px.
+
+**New homepage section order (after Hero)**
+
+1. **KPI Row** — three tiles.
+
+   * “35% faster scheduling”
+   * “2× quicker estimate approvals”
+   * “<24 hr average time-to-pay”
+   * Each tile: icon, headline, 1-line subtext, “How we measured” link → `/resources/customer-stories` (exists or create stub route if missing).
+2. **Industry Carousel** — swipeable on mobile, arrows on desktop.
+
+   * Trades: HVAC, Plumbing, Electrical, Handyman, Cleaning, Pest, Appliances, Garage Door, Roofing.
+   * Each links to `/industries/:slug` using existing dynamic industry routing. Use our `client/src/data/industries.ts` for slugs or extend it if needed.
+3. **Interactive Product Tour (Tabs)** — no auth, no backend.
+
+   * Tabs:
+     a) **Scheduling & Dispatch** — drag-and-drop board + color glossary bullets; link “Try the calendar demo” → scroll to `SchedulingInstantDemo`.
+     b) **Estimates → E-Sign → Invoice** — one large gray UI placeholder; 3 bullets; “Convert to invoice in one tap, collect deposits, accept partials”.
+     c) **Messaging & Reminders** — two-way SMS/email, templates, automated reminders.
+     d) **Payments & Customer Portal** — pay link, card on file, portal to view quotes/invoices/pay.
+   * Accessible shadcn Tabs: keyboard focus, `aria-controls`, Framer Motion fade-in.
+4. **Differentiator Band (dark)** — one-liner + three bullets.
+
+   * Headline: “Simple stack. Lower cost. Faster roll-out.”
+   * Bullets: “Fewer clicks than legacy suites • Unlimited users on paid plans • Job-based pricing with fair overages”
+   * Right-aligned CTA: “Compare to legacy tools” → `/compare/legacy-tools` (create page if missing with simple pros/cons table).
+5. **Feature Grid (with plan badges)** — 8 cards max.
+
+   * Cards and minimum plan:
+
+     * Drag-and-drop scheduling (Free)
+     * Work orders, photos, files (Free)
+     * Estimates & digital signatures (Free)
+     * Invoicing & online card payments (Stripe) (Free)
+     * Two-way messaging + automated reminders (Starter=Email only, Essential=SMS+Email)
+     * Task management & roles (Starter)
+     * Reporting & dashboards (Free basic → Premium advanced)
+     * GPS & routing & capacity planning (Essential+)
+   * Each card: icon, 1-line value, “Learn more” → appropriate feature route (use your Feature Template system).
+6. **Social Proof (tight)** — one video card + three short quotes.
+
+   * Video = gray image with play icon; modal opens with placeholder `<video>` or poster only.
+   * Quote examples: “Saved 8 hrs/week on dispatch”, “Cut no-shows by 35%”, “Got paid in 12 hours.”
+7. **Pricing Preview (compact)** — do not replace the full Pricing page.
+
+   * Show a 5-column teaser with plan name, jobs cap, price, and “Start Free” button linking to `/pricing`.
+   * Add button “Open Pricing Calculator” → opens modal (see next).
+8. **Pricing Calculator Modal** — entirely client-side.
+
+   * Inputs: expected jobs/month, plan selection, monthly vs annual (20% off annual), SMS msgs/month, payment volume/month ($).
+   * Compute: base fee (respect plan caps), overage (Starter $0.60/job; Essential $0.45/job; Premium $0.30/job), SMS estimate ($0.015 each placeholder), processing estimate (2.9% + $0.30), tax 4%, monthly total, annual total, annual savings.
+   * Show clear line-item breakdown and hint text: “Unlimited users on all paid plans • SMS and processing billed at pass-through rates”.
+9. **Integrations Strip** — focus on calendars.
+
+   * Badges: Google Calendar, Apple Calendar.
+   * Small note: “Accounting integrations: coming soon.”
+   * Platinum ecosystem placeholders: Nexus, LinkInspectPro, PropertyOrganizer (gray logos).
+10. **Resources Strip** — five tiles linking to existing routes or stubs:
+
+* Templates & Calculators, 10-min walkthrough, Webinar, Customer Stories, Help Center.
+
+11. **Final CTA (dark)** — left reassurance bullets (“No credit card to start • Import jobs via CSV • Cancel anytime”), right inline email field + “Start Free” and “View Pricing”. Include a TCPA consent checkbox text and dummy reCAPTCHA placeholder.
+12. Existing **Footer** unchanged except ensure sales phone, support email, and address appear.
+
+### Exactly where to edit
+
+* `client/src/pages/home.tsx`
+  Replace everything **after** `<Hero />` with imports and render of the new sections in the order above. Do not modify `<Hero />`.
+* `client/src/sections/`
+  Create new files:
+
+  * `KpiRow.tsx`
+  * `IndustryCarousel.tsx`
+  * `ProductTourTabs.tsx`
+  * `DifferentiatorBand.tsx`
+  * `FeatureGridWithPlans.tsx`
+  * `SocialProofCompact.tsx`
+  * `PricingPreview.tsx`
+  * `PricingCalculatorModal.tsx`
+  * `IntegrationsCalendars.tsx`
+  * `ResourcesStrip.tsx`
+  * `FinalCtaBand.tsx`
+* Reuse existing `SchedulingInstantDemo.tsx` (for the tour’s “Try the calendar demo” link).
+* Keep `HomeResults30.tsx` for future use but do **not** render it on the homepage now.
+
+### Data and helpers
+
+* Create `client/src/data/plans.ts` if not present. Export plan metadata and helper functions used by the calculator:
+
+  * Plans:
+    Free — 1 user, 30 jobs — $0
+    Starter — unlimited users, 50 jobs — $29
+    Essential — unlimited users, 150 jobs — $79
+    Premium — unlimited users, 500 jobs — $179
+    Platinum — unlimited users, unlimited jobs — $399
+  * Overages: Starter $0.60/job; Essential $0.45/job; Premium $0.30/job
+  * Annual discount: 20%
+  * Tax: 4%
+  * Helpers: `planForJobs`, `calcBase`, `calcOverage`, `calcSms(0.015)`, `calcProcessing(2.9, 0.3)`, `calcTax(0.04)`, `calcTotals`.
+
+### Accessibility requirements
+
+* All interactive controls keyboard accessible.
+* Visible focus rings.
+* Tabs and carousel have appropriate `aria-` attributes.
+* Tooltips and modals respect `aria-describedby`, `role="dialog"`, `aria-modal="true"`.
+* Respect `prefers-reduced-motion`.
+
+### Performance constraints
+
+* Use responsive images with `loading="lazy"` below the fold.
+* No large libraries beyond what we already use.
+* Avoid layout shift; reserve image sizes via aspect boxes.
+
+### Analytics events (wire as `data-analytics` attributes)
+
+* `hero_start_free_click`, `hero_view_pricing_click` (already present—leave).
+* `tour_tab_view:{tab}`
+* `pricing_calculator_open`, `pricing_calculator_submit`
+* `pricing_plan_cta_click:{plan}`
+
+### Acceptance criteria (must all pass)
+
+* Hero carousel unchanged in DOM and behavior.
+* New sections render in the exact order above.
+* Industry carousel scrolls on mobile and has arrow controls on desktop.
+* Product tour tabs switch via keyboard and click.
+* Pricing calculator modal computes correct totals for test inputs:
+
+  * 40 jobs/mo Starter → no overage;
+  * 120 jobs/mo Essential → 0 overage;
+  * 520 jobs/mo Premium → 20 overage × $0.30.
+* Integrations strip shows only Google Calendar + Apple Calendar with “coming soon” note for accounting.
+* Final CTA includes email field, TCPA checkbox text, and reCAPTCHA placeholder.
+* Lighthouse mobile: performance ≥ 85, accessibility ≥ 95, best practices ≥ 90, SEO ≥ 90 on homepage build.
+
+### Do not do
+
+* Do **not** modify `Hero.tsx` or its assets/logic.
+* Do **not** change routes or the server.
+* Do **not** rewrite the nav, pricing page, or feature template system.
+* Do **not** add new external dependencies.
+
+When done, run: `npm run build` then preview the homepage. Ensure zero TypeScript errors and that all acceptance tests above pass.

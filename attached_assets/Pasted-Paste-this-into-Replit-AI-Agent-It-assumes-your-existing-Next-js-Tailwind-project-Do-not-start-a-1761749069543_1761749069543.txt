@@ -1,0 +1,225 @@
+Paste this into Replit AI Agent. It assumes your existing Next.js + Tailwind project. Do not start a new app; refactor in place.
+
+---
+
+## OBJECTIVE
+
+Refactor the existing **Link Service Pro** marketing site in-place. Keep routing and deployment. Ship a clean, fast, accessible, mobile-first homepage and shared components per the spec below. Replace generic sections with an interactive product tour, industry carousel, differentiated hero, transparent pricing with a calculator modal, and a tight integrations band. Use gray placeholder images where needed.
+
+## BRAND + GLOBAL TOKENS
+
+* **Brand:** Link Service Pro | linkservicepro.com | text logo
+* **Phone (sales):** (631) 206-3700
+* **Support:** [info@bimscorp.com](mailto:info@bimscorp.com)
+* **Address:** 2280 Union Blvd, Bay Shore, NY 11706
+* **Colors**
+
+  * `--navy:#0E2A47` (dark backgrounds, headings)
+  * `--green:#0FB36F` (accents, success)
+  * `--cta:#0B5FFF` (primary CTA)
+  * `--bg-dark:#0F2033` (dark sections)
+  * `--surface:#FFFFFF`, `--muted:#F8FAFC`, `--divider:#E2E8F0`
+* **Fonts (Google):** Poppins 700 for headings; Inter 400–500 for body/UI
+* **Spacing:** 8-pt system; section Y padding = 48 (mobile) / 80 (desktop)
+* **Buttons (site-wide and consistent)**
+
+  * Primary “Start Free”: bg `#0B5FFF`, text white, extra-bold, px-12 py-5, sharp corners, standard shadow, inline-flex center, hover opacity .95, focus ring-2 `#0B5FFF` with ring-offset-2 (`#0F2033` on dark, white on light)
+  * Secondary “View Pricing”: transparent; 2px border (white on dark, `#CBD5E1` on light); text white on dark, `#0F172A` on light; same padding + focus behavior
+* **Imagery placeholders** (generate SVG or WebP gray blocks with centered labels; responsive)
+
+  * Hero mockup: desktop 1280×720, tablet 1024×640, mobile 360×240
+  * Device/UI shots: 1000×640
+  * Thumbnails/logos: 640×400
+
+## TECH BASELINE
+
+* Keep Next.js (App Router) + TypeScript + Tailwind.
+* Use shadcn/ui (Button, Card, Tabs, Dialog, Accordion, Sheet, Input, Select, Badge).
+* Use lucide-react icons and Framer Motion for subtle reveals only.
+* Forms: Zod validation. API routes for submit handlers.
+* Newsletter: Mailchimp (env placeholders).
+* reCAPTCHA: site/secret placeholders. Add client + server checks.
+* Stripe is **mentioned** as the payments provider; no checkout.
+
+## FILES TO ADD/UPDATE
+
+### 1) Tailwind + Theme
+
+* **`tailwind.config.ts`**: add color tokens, focus rings, container settings, `fontFamily` for Poppins/Inter.
+* **`app/globals.css`**: define CSS variables for colors and focus ring; base styles for headings and paragraphs.
+
+### 2) Shared Components (`components/`)
+
+* `Header.tsx` (sticky): top utility bar (left “Call sales (631) 206-3700”; right Login + Primary “Start Free”). Main nav: Product, Industries, Pricing, Resources, Company. Mobile drawer with bottom-pinned “Start Free” + “Call sales”.
+* `Hero.tsx` (dark): H1 + subhead + CTAs + calendar badges + single gray device mockup. Replace current heavy gradient/photo.
+
+  * **H1:** “Field service software that’s fast, simple, and built for crews.”
+  * **Subhead:** “Schedule jobs, send estimates, take payments, and keep teams aligned—without complex stacks. Works with Google Calendar and Apple Calendar.”
+* `KpiRow.tsx`: three tiles with tooltips + links (“How we measured”).
+
+  * 35% faster scheduling • 2× quicker estimate approvals • <24 hr average time-to-pay
+* `IndustryCarousel.tsx`: swipeable on mobile, arrows on desktop. Tiles: HVAC, Plumbing, Electrical, Handyman, Cleaning, Pest, Appliances, Garage Door, Roofing → link to `/industries/[slug]`.
+* `ProductTour.tsx`: **Tabs** with one large placeholder image and 3 bullets each. Tabs:
+
+  1. Scheduling & Dispatch (drag-and-drop, color glossary, tech filters) + “Try the calendar demo” link
+  2. Estimates → E-Sign → Invoice (1-tap convert, deposits, partials)
+  3. Messaging & Reminders (2-way SMS/email, templates, automated reminders)
+  4. Payments & Customer Portal (pay link, card on file, portal to view quotes/invoices/pay)
+* `DifferentiatorBand.tsx` (dark): “Simple stack. Lower cost. Faster roll-out.” Bullets: Fewer clicks • Unlimited users on paid plans • Job-based pricing with fair overages. CTA: “Compare to legacy tools”.
+* `FeatureGrid.tsx`: 8 cards max with **plan badges** (minimum plan needed):
+
+  * Drag-and-drop scheduling (Calendar sync) — Free
+  * Work orders, photos, files — Free
+  * Estimates & digital signatures — Free
+  * Invoicing & online card payments (Stripe) — Free
+  * Two-way messaging + automated reminders — Starter (automation email) / Essential (SMS+email)
+  * Task management & roles — Starter
+  * Reporting & dashboards — Free (basic) → Premium (advanced)
+  * GPS, routing, capacity planning — Essential+ (with plan notes)
+* `SocialProof.tsx`: 1 video card placeholder + 3 rotating short quotes.
+* `PricingTable.tsx`: plans + annual toggle (20% off). Buttons per column. Below: notes (“Unlimited users on all paid plans • SMS and processing at pass-through rates • 4% tax where applicable”). Add a “Launch Pricing Calculator” button.
+* `PricingCalculatorDialog.tsx` (modal): inputs: expected jobs/month, plan selection, monthly/annual toggle, SMS messages/month, payment volume/month ($). Outputs: base fee by plan respecting caps, overage cost, estimated SMS @ $0.015 ea placeholder, processing @ 2.9% + $0.30, tax 4%, monthly total, annual total, annual savings. Use functions from `data/plans.ts`.
+* `Integrations.tsx`: badges for Google Calendar + Apple Calendar; small note: “Accounting integrations: coming soon.” Platinum ecosystem logos as gray placeholders (Nexus, LinkInspectPro, PropertyOrganizer).
+* `GpsRoutingExplainer.tsx`: 2 placeholders + bullets: GPS vehicle limits per plan, static vs live-traffic routing, capacity planning. CTA: “See routing in the tour”.
+* `WhySwitch.tsx`: 4 cards (Fewer clicks; Onboard in a day; Unlimited users, job-based pricing; Calendars your team already uses) + “Migration guide” link.
+* `ResourcesStrip.tsx`: tiles — Templates & Calculators; 10-minute product walk-through; Webinar; Customer Stories; Help Center.
+* `FinalCta.tsx` (dark): reassurance bullets (No card to start; Import jobs via CSV; Cancel anytime) + email field + Primary “Start Free” + Secondary “View Pricing” + reCAPTCHA + TCPA checkbox.
+* `Footer.tsx` (mega): Product/Industries/Resources/Company/Legal columns; address, support email, phone; social; newsletter (Mailchimp); legal links; current year auto.
+
+### 3) Data (`data/`)
+
+* `plans.ts` — **single source of truth**
+
+  * Plans:
+
+    * Free — 1 user, 30 jobs — $0
+    * Starter — unlimited users, 50 jobs — $29
+    * Essential — unlimited users, 150 jobs — $79
+    * Premium — unlimited users, 500 jobs — $179
+    * Platinum — unlimited users, unlimited jobs — $399
+  * Overages: Starter $0.60/job, Essential $0.45/job, Premium $0.30/job
+  * Annual discount: 20%
+  * Tax: 4%
+  * GPS limits: Essential (2 vehicles, read-only map), Premium (10 vehicles), Platinum (unlimited)
+  * Helpers: `planForJobs`, `calcBase`, `calcOverage`, `calcProcessing`, `calcSms`, `calcTax`, `calcTotals`
+* `features.ts` — label, description, minPlan, icon, link slug
+* `industries.ts` — list of 9 trades with slugs, 1-line benefit
+* `faq.ts` — 6 common questions/answers for accordion and FAQ schema
+
+### 4) API routes (`app/api/`)
+
+* `/trial/route.ts` — 2-step trial submit; Zod validation; recaptcha check; send mail to SALES_ALERT_EMAIL (env) and respond 200.
+* `/contact/route.ts` — contact sales submit; same safeguards.
+* `/newsletter/route.ts` — Mailchimp subscribe with env placeholders.
+
+### 5) SEO + Schema
+
+* `app/robots.txt`, `app/sitemap.ts`
+* Use `generateMetadata` per route with:
+
+  * **Title:** “Field Service Software for Contractors | Link Service Pro”
+  * **Description:** “Run jobs faster with simple scheduling, estimates, messaging, and payments. Unlimited users on paid plans. Works with Google Calendar and Apple Calendar.”
+* JSON-LD on homepage:
+
+  * `Organization`, `SoftwareApplication`, `Product`, `FAQPage`, `VideoObject`, `BreadcrumbList`, `Review` (placeholders safe).
+* Add FAQ accordion content to schema.
+
+### 6) Accessibility
+
+* Enforce WCAG AA contrast.
+* All interactive components keyboard-navigable (Tabs, Carousels, Dialog).
+* Visible focus rings per token spec.
+* `aria-label`/`aria-controls` on carousel and tabs; `role="dialog"` on modal.
+
+### 7) Performance
+
+* `next/image` with `priority` for hero; lazy for others; `sizes` attributes set.
+* Preconnect to Mailchimp and Stripe.
+* Use WebP/AVIF for placeholders.
+* Defer non-critical scripts; tree-shake shadcn imports.
+
+## HOMEPAGE LAYOUT (replace existing sections with this order)
+
+1. `Header`
+2. `Hero` (dark)
+3. `KpiRow`
+4. `IndustryCarousel`
+5. `ProductTour`
+6. `DifferentiatorBand` (dark)
+7. `FeatureGrid`
+8. `SocialProof`
+9. `PricingTable` + `PricingCalculatorDialog`
+10. `Integrations`
+11. `GpsRoutingExplainer`
+12. `WhySwitch`
+13. `ResourcesStrip`
+14. `FinalCta` (dark)
+15. `Footer`
+
+## COPY (use verbatim unless layout requires tiny edits)
+
+* **Hero H1:** Field service software that’s fast, simple, and built for crews.
+* **Hero subhead:** Schedule jobs, send estimates, take payments, and keep teams aligned—without complex stacks. Works with Google Calendar and Apple Calendar.
+* **Differentiator bullets:** Fewer clicks than legacy suites • Unlimited users on every paid plan • Job-based pricing with fair overages
+* **Final CTA reassurance:** No credit card to start • Import jobs via CSV • Cancel anytime
+* **Integrations note:** Accounting integrations: coming soon.
+
+## ANALYTICS EVENTS
+
+* `hero_start_free_click`, `hero_view_pricing_click`
+* `tour_tab_view:{tab}`
+* `pricing_plan_cta_click:{plan}`
+* `pricing_calculator_open`, `pricing_calculator_submit`
+* `trial_signup_success`
+
+## ENV VARS (`.env.example`)
+
+```
+NEXT_PUBLIC_GA4_ID=
+NEXT_PUBLIC_HOTJAR_ID=
+NEXT_PUBLIC_CLARITY_ID=
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=RECAPTCHA_SITE_KEY
+RECAPTCHA_SECRET_KEY=RECAPTCHA_SECRET
+MAILCHIMP_API_KEY=
+MAILCHIMP_AUDIENCE_ID=
+MAILCHIMP_SERVER_PREFIX=
+SALES_ALERT_EMAIL=info@bimscorp.com
+```
+
+## ACCEPTANCE CRITERIA (must pass before completion)
+
+* Header is sticky; mobile drawer has bottom-pinned “Start Free” + “Call sales”.
+* Hero uses dark band, correct copy, correct button styles, calendar badges, and a single gray mockup.
+* KPIs render as three tiles with tooltips; link to resources stub.
+* Industry carousel swipes on mobile; links to 9 industry stub pages.
+* Product tour tabs are keyboard accessible and show large placeholders + bullets.
+* Differentiator band present with CTA to `/compare/legacy-tools`.
+* Feature grid shows plan badges that match `data/plans.ts` gates.
+* Pricing table shows 5 plans, annual toggle (20% off), overage notes, and opens a working calculator modal.
+* Integrations shows Google + Apple; “Accounting integrations: coming soon.”
+* GPS explainer shows plan-based limits from data source.
+* Final CTA section includes email field, reCAPTCHA, and TCPA checkbox.
+* Mailchimp newsletter API route success with env placeholders.
+* Legal pages exist: Terms, Privacy, SLA, Refund; footer shows address, phone, email.
+* SEO: `sitemap`, `robots`, metadata populated; FAQ schema present.
+* Accessibility: tabs, carousels, dialogs are keyboard navigable; visible focus rings.
+* Performance: hero LCP element is text or a single optimized image; all below-fold images lazy-load.
+
+## QA CHECKS (automate simple tests)
+
+* Add Playwright tests for:
+
+  * Navigation renders on mobile/desktop
+  * Hero CTAs are focusable and clickable
+  * Tabs can be switched via keyboard
+  * Pricing calculator computes totals for: 40, 120, 520 jobs/mo and matches plan+overage rules
+  * Forms validate and submit to API routes (mocked)
+
+**Important constraints**
+
+* **Do not** rebuild from scratch. **Refactor existing pages and components in-place.**
+* **Do not** mention lack of accounting integrations anywhere; only show “Accounting integrations: coming soon.”
+* Use gray placeholders for all imagery until assets arrive.
+* Keep copy contractor-focused and concise; no clipboards/paper in visuals.
+
+Deliver the modified codebase with all components, data, routes, styles, and tests updated to match this spec.

@@ -1,0 +1,182 @@
+Got it. Here’s a **surgical prompt** that replaces the current industry section with a **two-row slider** showing **4 cards per row** (8 visible at once on desktop), with responsive behavior on small screens. It keeps the rest of the page intact.
+
+---
+
+## PROMPT: “Industry slider — 2 rows × 4 cards per page (mobile-first), paged carousel”
+
+**Scope**
+
+* Only modify the industry section. Do not touch the hero or other sections.
+* Replace the existing Industry component with a new section named `IndustryGridSlider.tsx`, then import it in `home.tsx` exactly where the Industry section sits now.
+* Reuse the current `industries.ts` data array. No new libraries.
+
+---
+
+## 1) Layout and responsive behavior
+
+**Section container**
+
+* `section` with `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16`
+* Centered heading:
+
+  * Title: **Built for Your Trade**
+  * Sub: **Workflows tailored to your industry**
+
+**Paged carousel made of “pages”**
+
+* The slider consists of horizontal **pages**. Each page is a **grid** with **2 rows × N columns**.
+* Columns per breakpoint:
+
+  * `base` (≤640px): **2 columns**, so **2×2 = 4 cards per page**
+  * `sm` (≥640px and <768): **3 columns**, so **2×3 = 6 cards per page**
+  * `md+` (≥768px): **4 columns**, so **2×4 = 8 cards per page**
+* Pages are laid out horizontally inside a scroll container with **CSS scroll-snap**.
+
+**Controls**
+
+* **Prev/Next** buttons (`md+` only) float at the left/right edges of the container, vertically centered.
+* **Pagination dots** below the slider on all breakpoints. Active dot reflects the current page.
+
+**Looping**
+
+* Implement infinite loop by **cloning the first and last page**. When the user scrolls into a clone, jump instantly to the equivalent real page (no visual flash).
+
+---
+
+## 2) Card design (compact, no clipping)
+
+**Card**
+
+* Outer wrapper: `group relative rounded-2xl bg-white shadow-sm p-4 sm:p-5 h-full flex flex-col items-start justify-between`
+* **Icon** (lucide): `text-3xl sm:text-4xl text-[#0B5FFF]`
+* **Title**: `mt-3 text-[clamp(0.95rem,2vw,1.05rem)] font-medium leading-tight line-clamp-1` (no wrap beyond one line)
+* **Subline**: `mt-1 text-xs text-slate-500 line-clamp-1` (use generic: “Estimate → Schedule → Invoice”)
+* Gradient “wow” ring on hover/focus only:
+
+  * Wrap card with a `relative before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-[#0B5FFF] before:via-[#0FB36F] before:to-[#0B5FFF] before:opacity-0 group-hover:before:opacity-100 focus-within:before:opacity-100 transition-opacity`
+* Link wraps the whole card: `<Link to={`/industries/${slug}`}>` with `aria-label="View [name] workflows"` and focus ring `ring-2 ring-[#0B5FFF] ring-offset-2`.
+
+**Grid sizing**
+
+* Page grid container classes:
+
+  * `grid grid-rows-2 gap-3 sm:gap-4`
+  * Columns per breakpoint:
+
+    * `grid-cols-2 sm:grid-cols-3 md:grid-cols-4`
+* Ensure equal heights: cards inside `h-full`. No text overflow due to `line-clamp-1`.
+
+---
+
+## 3) Slider implementation (no new libs)
+
+**DOM structure**
+
+```tsx
+<section aria-label="Industry selection">
+  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    <div className="text-center mb-6 sm:mb-8">
+      <h2 className="text-2xl sm:text-3xl font-semibold">Built for Your Trade</h2>
+      <p className="text-slate-500 mt-2">Workflows tailored to your industry</p>
+    </div>
+
+    <div className="relative">
+      {/* Prev button md+ */}
+      {/* Scroll container */}
+      <div
+        id="industry-slider"
+        className="overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth -mx-4 px-4"
+        aria-roledescription="carousel"
+        aria-label="Industries"
+      >
+        <div className="flex items-stretch gap-4">
+          {/* CLONED last page */}
+          {/* REAL pages ... */}
+          {/* CLONED first page */}
+        </div>
+      </div>
+      {/* Next button md+ */}
+    </div>
+
+    {/* Dots */}
+  </div>
+</section>
+```
+
+**Page width**
+
+* Each **page** is `min-w-full snap-start` so one page fills the viewport width.
+* Compute **itemsPerPage** from breakpoint:
+  `base=4`, `sm=6`, `md+=8`.
+
+**Paging logic**
+
+* Split `INDUSTRIES` into arrays of length `itemsPerPage`.
+* Create `pages = [ ...chunks ]`.
+* Add `clonedHead = pages[0]`, `clonedTail = pages[pages.length-1]`.
+* Render order: `[clonedTail, ...pages, clonedHead]`.
+
+**State + effects**
+
+* `const [pageIndex, setPageIndex] = useState(0); // 0..pages.length-1`
+* On mount and on resize, recompute `itemsPerPage` and re-chunk pages.
+* `onScroll` of slider container: compute current index by `Math.round(scrollLeft / container.clientWidth)`; translate to real page index ignoring clones.
+* **Loop jump**: if index === 0 → jump to last real page; if index === pages.length+1 → jump to first real page (set `scrollLeft` immediately without smooth behavior).
+
+**Prev/Next handlers**
+
+* `scrollBy({ left: dir * container.clientWidth, behavior: 'smooth' })`
+* Buttons visible with `className="hidden md:flex ..."`; include `aria-controls="industry-slider"` and `aria-label="Previous industries"` / `"Next industries"`.
+
+**Dots**
+
+* Count = `pages.length`.
+* Clicking a dot scrolls to `container.clientWidth * (realIndex + 1)` (because of leading clone).
+
+**Keyboard**
+
+* Add `onKeyDown` to the scroll container: Left/Right arrow scroll by one page.
+
+---
+
+## 4) Accessibility
+
+* Region: `role="region" aria-label="Industry selection"`
+* Carousel: `aria-roledescription="carousel"`
+* Buttons and dots have explicit `aria-label`s; active dot uses `aria-current="true"`.
+* Card links are tabbable with visible focus ring. No keyboard trap.
+
+---
+
+## 5) Performance and constraints
+
+* No external carousel packages. Pure React + CSS scroll-snap.
+* Icons from `lucide-react`; unknown icons map to `Wrench`.
+* Section vertical height stays compact. Each page shows exactly **2 rows** with row heights around `h-40 sm:h-44`.
+* No large images. Cards are icon + text.
+
+---
+
+## 6) Acceptance criteria
+
+* **Mobile (base):** 2 columns × 2 rows → **4 cards per page** with dots; prev/next hidden.
+* **Tablet (sm):** 3 columns × 2 rows → **6 cards per page**.
+* **Desktop (md+):** 4 columns × 2 rows → **8 cards per page**, prev/next buttons appear.
+* Smooth page swipe/scroll; prev/next scroll by exactly one full page; dots jump to the selected page.
+* Infinite loop works via page clones; no white gaps at ends.
+* No text clipping on any card; titles and sublines are single-line clamped.
+* Lighthouse mobile for this section: perf ≥ 90, a11y ≥ 95.
+
+---
+
+## 7) Don’ts
+
+* Do not change hero or other sections.
+* Do not dump all industries in one view; always page.
+* Do not add dependencies.
+* Do not exceed two text lines per card; keep single-line clamped.
+
+---
+
+**Deliverable:**
+`IndustryGridSlider.tsx` implementing the 2-row slider with the behavior above, imported into `home.tsx` directly under the hero.

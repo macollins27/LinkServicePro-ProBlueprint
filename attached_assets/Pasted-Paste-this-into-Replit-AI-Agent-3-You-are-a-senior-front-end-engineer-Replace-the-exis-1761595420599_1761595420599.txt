@@ -1,0 +1,202 @@
+Paste this into Replit AI Agent 3.
+
+---
+
+You are a senior front-end engineer. **Replace the existing HERO on the “Drag-and-drop Scheduling” feature page** with a new, clearer version. Mobile-first, accessible, sharp corners, dark gradient band, underline animation, and elevated cards to match the homepage aesthetic. **New content + new KPIs** that a field pro instantly understands. **All imagery must show real field work with phones/tablets or manual labor—no clipboards, no paper, no printed run sheets.**
+
+# Scope
+
+* Create `src/components/FeatureHeroScheduling.jsx` and render it at the top of the Scheduling page.
+* Include a single documentary photo (desktop right, mobile stacked) that **never** shows paper; subject uses a **phone or tablet** or is actively working on equipment with the device visible in pocket/holster.
+* Replace the old KPI set with plain-language metrics.
+* Keep two CTAs: **Start Free** (primary) and **View Pricing** (secondary).
+* No other sections changed.
+
+---
+
+# Code (add exactly)
+
+/* src/components/FeatureHeroScheduling.jsx */
+import React from "react";
+
+export default function FeatureHeroScheduling() {
+const kpis = [
+{
+value: "12s",
+label: "Create → assigned",
+help: "Median time to add a job and assign a crew.",
+tone: "info",
+},
+{
+value: "−41%",
+label: "Missed appointments",
+help: "Fewer no-shows with automatic ETAs and reminders.",
+tone: "success",
+},
+{
+value: "100%",
+label: "Customers auto-notified",
+help: "Every schedule change sends an SMS/email automatically.",
+tone: "ok",
+},
+];
+
+return ( <section className="relative overflow-hidden" aria-labelledby="sched-hero-title">
+{/* gradient band */}
+<div
+className="absolute inset-0 -z-10"
+aria-hidden="true"
+style={{
+background:
+"radial-gradient(90% 70% at 15% 10%, rgba(11,95,255,.25) 0%, transparent 60%), linear-gradient(180deg,#0F2033 0%, #0B1626 100%)",
+}}
+/>
+
+```
+  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.15fr,1fr] items-center gap-8 lg:gap-12">
+      {/* LEFT: copy + KPIs + CTAs */}
+      <div className="text-white">
+        <h1 id="sched-hero-title" className="text-4xl sm:text-5xl font-extrabold leading-tight">
+          Drag-and-drop Scheduling
+        </h1>
+        <p className="mt-3 text-lg sm:text-xl text-slate-200">
+          Add a job, pick a crew, send an ETA. All in seconds.
+        </p>
+
+        {/* “What you do in 30 seconds” bullets */}
+        <ul className="mt-5 space-y-2 text-slate-200">
+          <li>• Type the job and window</li>
+          <li>• Drag to assign a crew or truck</li>
+          <li>• Customer gets an instant text with the ETA</li>
+        </ul>
+
+        {/* KPIs */}
+        <ul className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+          {kpis.map((k) => (
+            <li
+              key={k.label}
+              className="bg-white/10 backdrop-blur ring-1 ring-white/15 elev-2 px-4 py-3 sm:px-5 sm:py-4 rounded-none"
+              aria-label={`${k.label}: ${k.value}. ${k.help}`}
+              title={k.help}
+            >
+              <div
+                className={[
+                  "text-2xl sm:text-3xl font-extrabold",
+                  k.tone === "success"
+                    ? "text-emerald-300"
+                    : k.tone === "info"
+                    ? "text-sky-300"
+                    : "text-slate-200",
+                ].join(" ")}
+              >
+                {k.value}
+              </div>
+              <div className="text-slate-300 text-sm">{k.label}</div>
+            </li>
+          ))}
+        </ul>
+
+        {/* CTAs */}
+        <div className="mt-6 flex flex-col sm:flex-row gap-3">
+          <a
+            href="/signup"
+            className="inline-flex justify-center px-5 py-3 bg-[#0B5FFF] text-white font-extrabold rounded-none shadow hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-slate-900"
+          >
+            Start Free
+          </a>
+          <a
+            href="/pricing"
+            className="inline-flex justify-center px-5 py-3 bg-transparent text-white font-extrabold rounded-none ring-2 ring-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white link-underline"
+          >
+            View Pricing
+          </a>
+        </div>
+
+        {/* trust note */}
+        <p className="mt-3 text-xs text-slate-400">
+          No contracts. iOS & Android apps included.
+        </p>
+      </div>
+
+      {/* RIGHT: documentary photo + caption (no paper) */}
+      <figure className="relative bg-white ring-1 ring-slate-200 elev-2 p-2 md:p-3">
+        <img
+          src="/images/feature-scheduling-hero.jpg"
+          alt="Tech updates today’s job on a phone beside the condenser; crew heads-up is sent automatically."
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          className="w-full h-auto object-cover"
+          sizes="(max-width: 1024px) 100vw, 560px"
+        />
+        <figcaption className="mt-1 text-xs text-slate-600">
+          Real work. Real-time updates—no paperwork.
+        </figcaption>
+
+        {/* decorative halo */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-6 -z-10 opacity-30 blur-2xl"
+          style={{
+            background:
+              "radial-gradient(closest-side, rgba(11,95,255,.25), transparent)",
+          }}
+        />
+      </figure>
+    </div>
+  </div>
+</section>
+```
+
+);
+}
+
+/* underline helper — ensure exists in global CSS
+.link-underline{position:relative}
+.link-underline::after{content:"";position:absolute;left:100%;right:0;bottom:-2px;height:2px;background:currentColor;transition:left .22s ease}
+.link-underline:hover::after,.link-underline:focus-visible::after{left:0}
+*/
+
+---
+
+# Image generation (Replit, generate and save to `/public/images/feature-scheduling-hero.jpg`)
+
+Produce **one** high-quality, documentary-style photo (1920×1280, natural light). Subject: field technician (HVAC, plumbing, electrical, or landscaping) **holding and using a smartphone or tablet** to update a job at the work site. Acceptable scenes:
+
+* By an outdoor HVAC condenser
+* In a mechanical room next to an air handler
+* Beside a service van with doors open and tools visible
+
+Strict rules:
+
+* **No paper, no clipboards, no printed forms, no pens.**
+* Device screen can be visible but not legible; avoid any brand logos or UI text.
+* Wardrobe practical PPE; neutral branding. Color palette should harmonize with navy `#0E2A47` and blue `#0B5FFF`.
+* Candid, mid-action feel. Depth of field shallow, subject sharp.
+
+---
+
+# Integration
+
+```jsx
+import FeatureHeroScheduling from "@/components/FeatureHeroScheduling";
+<FeatureHeroScheduling />
+```
+
+---
+
+# Accessibility & Performance
+
+* AA contrast. Keyboard focus on both CTAs.
+* LCP = hero image; `loading="eager"` + `fetchpriority="high"` + `sizes` to avoid CLS.
+* No motion required beyond short opacity/position transitions; respect `prefers-reduced-motion`.
+
+---
+
+# Acceptance
+
+* Old hero fully replaced.
+* KPIs are plain-language: **“12s Create → assigned,” “−41% Missed appointments,” “100% Customers auto-notified.”**
+* Photo shows **phone/tablet or manual labor** with **no paper**.
+* Matches homepage aesthetic. No horizontal scroll at 375px.

@@ -1,0 +1,324 @@
+Good. We will build `/features/scheduling-dispatch` first.
+
+You’re going to give this to Replit as an implementation prompt. The goal is to ship a production-quality, conversion-focused feature landing page that matches the visual language we’ve already established (Pro-Blueprint system, dark/light alternation, CTAs in every section, PlanRibbon badges, WCAG AA, mobile-first). The content below is the exact copy and section structure. Replit should not improvise or reword.
+
+I’ll do two things:
+
+1. Give you the final page structure and copy (the spec).
+2. Give you the exact Replit instructions to build it.
+
+You paste the Replit instructions (Section B) into Replit. Replit should create `/features/scheduling-dispatch.tsx` or similar, following your routing setup.
+
+---
+
+## A. PAGE SPEC: “Scheduling & Dispatch”
+
+ROUTE / SLUG:
+`/features/scheduling-dispatch`
+
+META:
+
+* `<title>`: “Scheduling & Dispatch Software | Drag-and-Drop, Route Optimization, GPS Tracking”
+* `<meta name="description">`: “Assign jobs in seconds, balance routes, sync to Google and Apple Calendar, and see every tech live on the map. Unlimited users on paid plans. No per-tech seat fees.”
+
+ACCESSIBILITY / STYLE NOTES:
+
+* This page must use the same Tailwind design system as the rest of the app (blue #0B5FFF CTA, dark navy #0E2A47 sections, bg-slate-50 alternation, ring-1 ring-slate-200 cards, etc).
+* All CTA buttons must have proper `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2` so keyboard users can see focus.
+* All ribbons must use the PlanRibbon component we already specced, positioned top-right of spotlight cards.
+* All icons per bullet must use lucide-react icons (or whatever icon set you’re already using), sized ~20-24px, color `text-[#0B5FFF]`, and must NOT be all identical.
+
+PAGE LAYOUT (4 major sections + final CTA band)
+
+SECTION 1. HERO (dark navy)
+Background: `bg-[#0E2A47] text-white`
+
+Container utility:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column (text block):
+
+* Eyebrow chip (small pill):
+  text: “Scheduling & Dispatch”
+  classes example: `inline-block text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-4`
+* H1 (white, bold, large):
+  “Drag-and-drop scheduling and live dispatch — without the chaos.”
+* Subhead (white/80):
+  “Assign jobs in seconds, balance workloads, sync every tech’s calendar, and cut wasted drive time. Unlimited users on paid plans. No per-tech seat fees.”
+* KPI row under subhead (flex wrap gap-3 mt-4 text-[13px] text-white/80):
+
+  * “35% faster scheduling”
+  * “2× quicker approvals”
+  * “<24 hr average time-to-pay”
+    Each KPI prefixed by a small check or trending-up icon in `text-[#0B5FFF]`.
+* Badge row under KPIs (flex wrap gap-2 text-[11px] mt-4):
+  Use pill chips `bg-white/10 border border-white/20 text-white font-medium rounded-full px-3 py-[3px]`:
+
+  * “Works with Google Calendar”
+  * “Works with Apple Calendar”
+  * “No per-tech seat fees”
+* CTA row:
+
+  * Primary CTA button (blue bg #0B5FFF, white text, rounded-md, px-4 py-2 text-sm font-semibold shadow-sm; includes focus-visible ring):
+    text: “Start Free”
+  * Secondary CTA as bordered button (transparent bg, border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10):
+    text: “View Live Dispatch Demo”
+    Underneath in `text-[11px] text-white/60 mt-2`:
+    “No credit card to start.”
+
+Right column:
+
+* A “Command Board Preview” card mock. This is NOT final product screenshots. It’s a styled placeholder so the layout looks complete.
+
+  * Card styles: `relative bg-white/5 border border-white/10 rounded-xl shadow-inner p-4 min-h-[220px] flex flex-col justify-between`
+  * Title row inside placeholder (white text, text-sm font-semibold):
+    “Today’s Dispatch Board”
+  * Gray boxes representing tech rows / route cards (simple divs `bg-white/10 rounded-md h-4 w-full mb-2` etc.)
+  * Bottom caption in `text-[11px] text-white/60`:
+    “Live map • Crew availability • Route load per tech”
+
+There must be no carousel here. This hero stands alone.
+
+SECTION 2. “The Command Board”
+Background: white (`bg-white text-slate-900`)
+
+Container utility:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column: Spotlight Card
+
+* Outer card:
+  `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm p-5`
+* Insert `<PlanRibbon plan="Starter+" />` in top-right corner of this card. It must overlap the border per our PlanRibbon spec (absolute -top-2 -right-2).
+* Card eyebrow chip:
+  text: “Live Dispatch Board”
+  style: small pill `inline-block text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-[3px] mb-3`
+* Card headline (text-xl font-semibold text-slate-900):
+  “See every job and every tech in one live board.”
+* Card body text (text-slate-600 text-sm leading-relaxed):
+  “Drag-and-drop jobs to techs. Color-coded job status. Capacity planning so nobody’s overloaded. You’re never guessing who’s free.”
+* Feature bullets (vertical stack, gap-2, each row is flex items-start gap-2):
+
+  * Icon (ClipboardList or LayoutDashboard) `text-[#0B5FFF] w-5 h-5`
+  * Text (text-sm text-slate-700 font-medium first line; optional supporting second line text-slate-500 text-[13px]):
+
+    1. “Drag-and-drop scheduling”
+       “Assign or reassign work in seconds.”
+    2. “Dispatch board for technicians”
+       “See who’s on what job, what’s next, and who’s available.”
+    3. “Color-coded job status”
+       “Everyone understands the board without asking you.”
+* CTA block at bottom of card:
+
+  * Primary button (blue): “See Dispatch Flow”
+  * Secondary text link under it (blue text-sm font-medium hover:underline): “Start Free →”
+
+Right column: 3 Key Outcomes (not cards, just stacked proof)
+Each “outcome row” is:
+
+* Small icon in blue #0B5FFF
+* Bold outcome title
+* One-line explanation in slate-600
+
+We want three:
+
+Outcome 1:
+Title: “Stop the radio calls.”
+Copy: “Everyone already knows where they’re going. No more ‘Where do you want me next?’ calls.”
+
+Outcome 2:
+Title: “Balance the whole day.”
+Copy: “You can see who’s slammed and who’s idle, then drag jobs to rebalance.”
+
+Outcome 3:
+Title: “Faster response time.”
+Copy: “When an urgent job comes in, drop it on the closest tech from the live map.”
+
+Below these 3 outcomes, include a mini-CTA text link in blue:
+“View all scheduling tools →”
+This should route to `/features/scheduling-dispatch` (self), or `/features/work-orders-mobile` if you’re cross-linking. You can link to `/features/work-orders-mobile` with label “See what techs see in the field →”.
+
+SECTION 3. Route Optimization & GPS
+Background: `bg-slate-50 text-slate-900`
+
+Container utility:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column:
+Headline (text-2xl font-semibold text-slate-900):
+“Stop burning 45 minutes between every job.”
+
+Subhead (text-slate-600 text-sm leading-relaxed mb-6):
+“Auto-build efficient routes, keep drive time tight, and prove where your crews actually were.”
+
+Then a short bulleted list (vertical stack, gap-4):
+Each bullet = icon in blue #0B5FFF w-5 h-5 + text block.
+
+* “Route optimization & capacity planning”
+  “Stop cramming one tech while two others drive around half-empty.”
+* “Dispatch via live map”
+  “Drop urgent work on the closest tech. Send them with one tap.”
+* “Real-time GPS tracking”
+  “Know where the truck actually is. Deliver accurate ETAs without calling.”
+
+Add below bullets a trust line (text-[12px] text-slate-500 leading-snug):
+“Unlimited users on paid plans. No per-tech seat fees. You’re not playing license police.”
+
+CTA block under that list:
+
+* Primary button (blue): “See Routing Tools”
+* Under-button text link (blue): “Start Free →”
+
+Right column:
+A “Route Preview” spotlight card with PlanRibbon.
+
+* Card style same pattern as before (`relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm ... p-5`)
+* `<PlanRibbon plan="Essential+" />` top-right absolute.
+* Card eyebrow chip:
+  “Route Optimization & GPS”
+* Card headline:
+  “Shorter drive time. Happier customers.”
+* Card body in text-slate-600 text-sm:
+  “Build efficient daily routes automatically and get a live view of who’s where. Promise real ETAs and actually hit them.”
+* You can render a simple gray map placeholder (div with `bg-slate-100 rounded-lg h-32 w-full mt-4`) labeled “Live Map / Nearest Tech”.
+
+SECTION 4. Calendar Sync (light) + Final CTA band (dark navy)
+This section is split: top half is calendar sync messaging on white, bottom half is dark navy call to action.
+
+4A. Calendar Sync
+Background: white.
+
+Container:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16`
+
+Headline (text-2xl font-semibold text-slate-900):
+“Your techs already live in their phone’s calendar. Now you do too.”
+
+Subtext (text-slate-600 text-sm leading-relaxed max-w-2xl):
+“Jobs sync to Google Calendar and Apple Calendar automatically. Techs see where to go and when. You stop getting ‘text me the address.’”
+
+Mini bullet row as inline chips:
+
+* Chip style: `inline-block bg-slate-100 text-slate-700 text-[11px] font-medium rounded-full border border-slate-200 px-2 py-[3px] mr-2 mb-2`
+
+  * “Drag-and-drop scheduling (Free)”
+  * “Calendar sync (Free)”
+  * “Dispatch board (Starter+)”
+  * “Route optimization & GPS (Essential+)”
+
+CTA row:
+
+* Primary button (blue): “Start Free”
+* Secondary text link in blue small font: “Compare Plans →”
+
+4B. Final CTA Band
+Background: dark navy `bg-[#0E2A47] text-white`.
+
+Container:
+`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+Headline (text-white font-semibold text-2xl sm:text-3xl):
+“Get control of your day in under 10 minutes.”
+
+Subtext (text-white/70 text-sm sm:text-base leading-relaxed mt-3):
+“Start free. No credit card required. Works with Google Calendar and Apple Calendar. Unlimited users on paid plans. No per-tech seat fees.”
+
+Inline CTA form or stacked buttons (mobile-first):
+
+* Primary CTA button (blue #0B5FFF): “Start Free”
+* Secondary outline button (border border-white/30 text-white hover:bg-white/10): “View Pricing”
+  Underneath in tiny `text-[11px] text-white/60 mt-2`:
+  “By starting, you agree to receive service updates and onboarding guidance. Standard rates apply for SMS usage.”
+
+This is your final conversion hit.
+
+---
+
+## B. REPLIT IMPLEMENTATION INSTRUCTIONS
+
+Give this to Replit verbatim:
+
+1. Create a new page component for `/features/scheduling-dispatch` in our Next.js/React structure. Use the same conventions we’re already using for feature pages, including shared layout wrappers, typography classes, and PlanRibbon. Do NOT rebuild the global header/nav/footer.
+
+2. Page-level requirements:
+
+   * Set `<Head>` tags:
+
+     * `<title>Scheduling & Dispatch Software | Drag-and-Drop, Route Optimization, GPS Tracking</title>`
+     * `<meta name="description" content="Assign jobs in seconds, balance routes, sync to Google and Apple Calendar, and see every tech live on the map. Unlimited users on paid plans. No per-tech seat fees." />`
+   * Add JSON-LD structured data of type `SoftwareApplication` with:
+
+     * name: "LinkServicePro Scheduling & Dispatch"
+     * applicationCategory: "Field service management software"
+     * offers.description: "Start free. Unlimited users on paid plans. No per-tech seat fees."
+       (Match what we already do for structured data.)
+
+3. Build four main sections in this exact order and style:
+   SECTION 1 HERO (dark navy #0E2A47),
+   SECTION 2 COMMAND BOARD (white),
+   SECTION 3 ROUTE OPTIMIZATION & GPS (bg-slate-50),
+   SECTION 4 CALENDAR SYNC + FINAL CTA (white + dark navy band back-to-back).
+
+   Follow layout, text, and CTA copy exactly from Section A above. Do not rephrase.
+
+4. Accessibility:
+
+   * All CTA buttons must have `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`.
+   * All text links that look like CTAs must have `hover:underline` and similar focus-visible ring where appropriate.
+   * Icons must include `aria-hidden="true"` so they do not become noise for screen readers.
+   * Headings must be semantic: H1 only in Section 1. Subsequent section headings are `<h2>`.
+
+5. Spotlight cards:
+
+   * Use `relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition duration-150 ease-out motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm`.
+   * Immediately inside a spotlight card, render `<PlanRibbon plan="Starter+" />` or `"Essential+"` based on the plan callout for that card. Position with `absolute -top-2 -right-2 z-20`.
+   * Add the eyebrow chip (tiny pill) above the headline inside each spotlight card.
+   * Include bulleted feature points with lucide icons in `text-[#0B5FFF] w-5 h-5 flex-shrink-0` and bullet text in `text-sm text-slate-700` (or `text-slate-600` for body lines).
+   * Ribbon and chips must look like they belong to our Pro-Blueprint system.
+
+6. Outcome rows (the right column in Section 2) are just simple flex rows, not cards:
+
+   * Icon in blue #0B5FFF.
+   * Title bold `text-slate-900`.
+   * One-line copy in `text-slate-600 text-sm`.
+
+7. The “Route Optimization & GPS” section:
+
+   * Left column is descriptive text and CTA.
+   * Right column is a spotlight card with PlanRibbon "Essential+".
+   * Inside that card, include a `div` placeholder for a map preview: `bg-slate-100 rounded-lg h-32 w-full mt-4 flex items-center justify-center text-[11px] text-slate-500`. Text inside: “Live Map / Nearest Tech”.
+
+8. The Calendar Sync + Final CTA section is actually two consecutive blocks:
+   4A. Calendar Sync block (white bg).
+   4B. Final CTA band (dark navy #0E2A47).
+
+   * Calendar Sync block must include the four inline chips:
+     “Drag-and-drop scheduling (Free)”, “Calendar sync (Free)”, “Dispatch board (Starter+)”, “Route optimization & GPS (Essential+)”
+     Chips styling: `inline-block bg-slate-100 text-slate-700 text-[11px] font-medium rounded-full border border-slate-200 px-2 py-[3px] mr-2 mb-2`.
+   * Final CTA band must be full-width `bg-[#0E2A47] text-white`, centered text, plus the two-button CTA (“Start Free” primary blue button  #0B5FFF  and “View Pricing” outline button).
+   * Under these buttons, include TCPA-style tiny line in `text-[11px] text-white/60`.
+
+9. Absolutely include the “Unlimited users on paid plans. No per-tech seat fees.” line in Section 1 hero AND again in Section 3 trust line under the bullet list (“Unlimited users on paid plans…”). This message must repeat on this page.
+
+10. Internal linking:
+
+* In Section 2 (Command Board), at the bottom of the right column after the 3 “Outcome” rows, include a text link:
+  “See what techs see in the field →”
+  Link to `/features/work-orders-mobile`.
+  Style this link `text-[#0B5FFF] text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 rounded`.
+
+11. Do not show mock screenshots with real data. Use simple gray / slate placeholders as described. Label them clearly (e.g. “Today’s Dispatch Board”, “Live Map / Nearest Tech”) so later we can drop in screenshots.
+
+12. Do not remove global header/nav/footer.
+
+13. After implementing, ensure mobile:
+
+* All sections stack vertically.
+* The two-column grids become single column via `grid grid-cols-1 lg:grid-cols-2`.
+* CTA buttons stack vertical on small screens with `flex flex-col gap-3`.
+
+14. After building `/features/scheduling-dispatch`, expose it in any “See Dispatch Flow” or “Scheduling & Dispatch” internal links across the site.
+
+If the agent follows the spec exactly, we get a production-quality, conversion-grade Scheduling & Dispatch feature page with correct brand, CTA density, SEO language, internal linking, and accessibility.
+
+This page is now ready to ship and crawl.

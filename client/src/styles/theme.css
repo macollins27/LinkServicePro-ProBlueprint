@@ -1,0 +1,614 @@
+/* LinkServicePro Visual Uplift Theme */
+
+:root {
+  /* Color Tokens */
+  --color-ink: #0F172A;
+  --color-slate: #1F2937;
+  --color-border: #E5E7EB;
+  --color-blueprint: #0B5FFF;
+  --color-teal: #00C2A8;
+  --color-amber: #F59E0B;
+}
+
+/* ============================================
+   ELEVATION SHADOWS
+   ============================================ */
+
+.elev-1 {
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 1px rgba(15, 23, 42, 0.04);
+}
+
+.elev-2 {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+
+.elev-glow {
+  filter: drop-shadow(0 6px 16px rgba(11, 95, 255, 0.35));
+}
+
+/* ============================================
+   SECTION BACKGROUNDS
+   ============================================ */
+
+.spot-bg {
+  background: 
+    radial-gradient(120% 140% at 0% 0%, rgba(11, 95, 255, 0.08), transparent 60%),
+    radial-gradient(120% 140% at 100% 0%, rgba(0, 194, 168, 0.06), transparent 60%);
+}
+
+.hero-grid {
+  background: 
+    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+}
+
+/* ============================================
+   MEGAMENU FIXED OVERLAY
+   ============================================ */
+
+.mega-fixed {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: var(--header-bottom, 64px);
+  width: 100%;
+  max-width: 1100px;
+  max-height: min(74vh, 720px);
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.08);
+  z-index: 50;
+}
+
+@media (max-width: 1024px) {
+  .mega-fixed {
+    left: 0;
+    transform: none;
+    max-width: 100%;
+  }
+}
+
+/* ============================================
+   BUTTON UTILITIES
+   ============================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  border-radius: 0;
+  transition-property: all;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:focus-visible {
+  outline: 2px solid #0B5FFF;
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  color: white;
+  background-color: #0B5FFF;
+}
+
+.btn-primary:hover {
+  background-color: #0949C6;
+}
+
+.btn-primary-glow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  border-radius: 0;
+  transition-property: all;
+  transition-duration: 150ms;
+  color: white;
+  background-color: #0B5FFF;
+}
+
+.btn-primary-glow:hover {
+  background-color: #0949C6;
+  filter: drop-shadow(0 8px 20px rgba(11, 95, 255, 0.45));
+  transform: translateY(-1px);
+}
+
+.btn-primary-glow:active {
+  transform: translateY(0);
+}
+
+.btn-primary-glow:focus-visible {
+  outline: 2px solid #0B5FFF;
+  outline-offset: 2px;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  border-radius: 0;
+  transition-property: all;
+  transition-duration: 150ms;
+  color: #0B5FFF;
+  border: 1px solid #0B5FFF;
+  background-color: white;
+}
+
+.btn-outline:hover {
+  background-color: #EFF6FF;
+}
+
+.btn-outline:focus-visible {
+  outline: 2px solid #0B5FFF;
+  outline-offset: 2px;
+}
+
+.btn-ghost {
+  color: #475569;
+}
+
+.btn-ghost:hover {
+  color: #1e293b;
+}
+
+/* ============================================
+   LINK UTILITIES
+   ============================================ */
+
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0.125rem;
+  background-color: #0B5FFF;
+  transition-property: width;
+  transition-duration: 200ms;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* ============================================
+   GRADIENT TEXT
+   ============================================ */
+
+.gradient-text {
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image: linear-gradient(to right, #0B5FFF, #00C2A8, #0B5FFF);
+}
+
+/* ============================================
+   METRIC CHIPS
+   ============================================ */
+
+.metric-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  transition-property: all;
+  transition-duration: 150ms;
+}
+
+.metric-chip:hover {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+/* ============================================
+   CARD INTERACTIONS
+   ============================================ */
+
+.card-interactive {
+  transition-property: transform, box-shadow;
+  transition-duration: 150ms;
+}
+
+.card-interactive:hover {
+  transform: translateY(-2px);
+}
+
+.card-interactive:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   ACCENT BORDERS
+   ============================================ */
+
+.accent-border-blueprint {
+  border-left: 3px solid var(--color-blueprint);
+}
+
+.accent-border-teal {
+  border-left: 3px solid var(--color-teal);
+}
+
+.accent-border-amber {
+  border-left: 3px solid var(--color-amber);
+}
+
+.accent-border-ink {
+  border-left: 3px solid var(--color-ink);
+}
+
+/* ============================================
+   FOCUS RINGS
+   ============================================ */
+
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #0B5FFF;
+}
+
+/* ============================================
+   GRADIENT FLOW LINE
+   ============================================ */
+
+.flow-gradient-line {
+  background: linear-gradient(to right, #0B5FFF, #00C2A8, #0B5FFF);
+  height: 2px;
+  width: 100%;
+  border-radius: 1px;
+}
+
+/* ============================================
+   BACKDROP BLUR
+   ============================================ */
+
+.navbar-blur {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .btn-primary-glow:hover {
+    filter: none;
+    transform: none;
+  }
+  
+  .card-interactive:hover {
+    transform: none;
+  }
+  
+  .link-underline::after {
+    transition: none;
+  }
+}
+
+/* ============================================
+   HOVER RING STATES
+   ============================================ */
+
+.hover-ring-blueprint {
+  transition: all 150ms;
+}
+
+.hover-ring-blueprint:hover {
+  box-shadow: 0 0 0 1px #0B5FFF, 0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+
+/* ============================================
+   GRADIENT RIBBON
+   ============================================ */
+
+.gradient-ribbon {
+  position: relative;
+}
+
+.gradient-ribbon::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 50%;
+  z-index: 0;
+  background: linear-gradient(to right, rgba(11, 95, 255, 0.1), rgba(0, 194, 168, 0.1), transparent);
+}
+
+/* ============================================
+   STICKY MOBILE CTA
+   ============================================ */
+
+.sticky-mobile-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid #e2e8f0;
+  padding: 0.75rem 1rem;
+  display: flex;
+  gap: 0.75rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@media (min-width: 641px) {
+  .sticky-mobile-cta {
+    display: none;
+  }
+}
+
+/* ============================================
+   LOGO TILE EFFECTS
+   ============================================ */
+
+.logo-tile {
+  background-color: white;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 1px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 0 0 1px #e2e8f0;
+  transition: all 150ms;
+}
+
+.logo-tile img {
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: all 150ms;
+}
+
+.logo-tile:hover {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+
+.logo-tile:hover img {
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+/* ============================================
+   SPARKLINE PLACEHOLDER
+   ============================================ */
+
+.sparkline {
+  display: inline-block;
+  width: 3rem;
+  height: 1.5rem;
+}
+
+/* ============================================
+   HALO EFFECT
+   ============================================ */
+
+.halo-blueprint {
+  position: absolute;
+  top: -1.5rem;
+  left: -1.5rem;
+  right: -1.5rem;
+  bottom: -1.5rem;
+  z-index: -10;
+  border-radius: 0;
+  filter: blur(2rem);
+  opacity: 0.3;
+  background: radial-gradient(closest-side, rgba(11, 95, 255, 0.35), transparent);
+}
+
+/* ============================================
+   NO SCROLLBAR (for tabbed showcase)
+   ============================================ */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+   DISPATCH COMMAND CENTER
+   ============================================ */
+
+/* overlay card */
+.overlay-card {
+  background-color: white;
+  box-shadow: 0 0 0 1px rgb(226 232 240), 0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.08);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+/* route animation */
+@media (prefers-reduced-motion: no-preference) {
+  .dash-route {
+    stroke-dasharray: 8 6;
+    animation: dash 8s linear infinite;
+  }
+  
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -280;
+    }
+  }
+  
+  .pulse-dot {
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+}
+
+/* ============================================
+   CUSTOMER LOOP SHOWCASE
+   ============================================ */
+
+.review-toast {
+  border: 1px solid #E5E7EB;
+  background: #FFFFFF;
+  padding: 12px 14px;
+  position: relative;
+}
+
+/* ============================================
+   PROJECTS COSTING SHOWCASE
+   ============================================ */
+
+/* Donut gauge animation; respects reduced motion */
+@media (prefers-reduced-motion: no-preference){
+  .gauge-anim { animation: gauge 900ms ease-out both; }
+  @keyframes gauge { from { stroke-dashoffset: 339.292; } }
+}
+
+/* ============================================
+   QUOTE TO PAYMENT FLOW
+   ============================================ */
+
+.process-rail {
+  overflow: hidden;
+}
+
+.process-rail button {
+  outline-offset: 2px;
+}
+
+.stamp-paid {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  border: 3px solid currentColor;
+  padding: 6px 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  transform: rotate(-8deg) scale(0.9);
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .chat-pop-left {
+    animation: popL 0.18s ease-out;
+  }
+  
+  .chat-pop-right {
+    animation: popR 0.18s ease-out;
+  }
+  
+  @keyframes popL {
+    from {
+      transform: translateX(-6px);
+      opacity: 0;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+  
+  @keyframes popR {
+    from {
+      transform: translateX(6px);
+      opacity: 0;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+  
+  .review-toast {
+    animation: toastIn 0.28s ease-out 0.2s both;
+  }
+  
+  @keyframes toastIn {
+    from {
+      transform: translateY(6px);
+      opacity: 0;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+  
+  .process-rail .h-0\.5 {
+    transition: background-color 0.18s ease;
+  }
+  
+  .scribble path {
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+    animation: draw 1.6s ease forwards;
+  }
+  
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  .stamp-paid {
+    animation: stamp 0.5s ease 0.4s forwards;
+  }
+  
+  @keyframes stamp {
+    to {
+      opacity: 1;
+      transform: rotate(-8deg) scale(1);
+    }
+  }
+}
+
+/* ============================================
+   INDUSTRIES SHOWCASE
+   ============================================ */
+
+/* rail is fixed-width, no horizontal scrolling on mobile */
+.seg-rail { 
+  border-radius: 0; 
+  overflow: hidden; 
+}
+
+/* card hover - industries */
+@media (prefers-reduced-motion: no-preference){
+  .elev-2 { 
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  li.group:hover { 
+    transform: translateY(-2px); 
+  }
+}

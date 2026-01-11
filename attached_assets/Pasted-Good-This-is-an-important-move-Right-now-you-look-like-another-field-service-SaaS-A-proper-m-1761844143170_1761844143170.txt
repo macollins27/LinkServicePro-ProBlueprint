@@ -1,0 +1,600 @@
+Good. This is an important move.
+
+Right now you look like “another field service SaaS.” A proper mega menu instantly communicates depth, authority, and credibility — especially to buyers who are just hovering and scanning. It also feeds SEO (internal linking) and helps AI understand your product surface.
+
+We’re going to design **two separate desktop mega menus**:
+
+* **Features**
+* **Industries**
+
+Both:
+
+* Respect your current theme (navy #0E2A47, accent #0B5FFF, slate neutrals, rounded-xl surfaces, focus-visible rings)
+* Mobile-first: On mobile they should collapse into a standard slide-in or accordion nav (not a full mega flyout filling the screen)
+* Desktop: Full-width or large flyout, layered card aesthetic, not cheap dropdowns
+
+You’ll give Replit a single prompt after this. First I’ll describe what each should look like and what must be inside. Then I’ll write the prompt Replit needs.
+
+---
+
+## PART 1. DESIGN RULES (APPLY TO BOTH MEGA MENUS)
+
+**Trigger behavior**
+
+* On desktop: When user hovers (or focuses via keyboard) on “Features” or “Industries” in the top nav, a large flyout panel appears below the header.
+* On mobile: Don’t show a huge flyout. Instead, “Features” and “Industries” just expand accordion sections in the mobile nav drawer. (Replit should not break your existing mobile menu. We’re just adding structure there.)
+
+**Positioning + container**
+
+* The flyout panel is positioned under the nav bar, aligned with the left edge of the header container (not the full browser width).
+* Panel container:
+
+  ```text
+  bg-white
+  text-slate-900
+  shadow-[0_24px_64px_rgba(0,0,0,0.4)]
+  ring-1 ring-slate-200
+  rounded-2xl
+  p-6
+  w-[min(800px,90vw)]
+  grid gap-6
+  ```
+* On desktop, ESC closes it. On tabbing out, it closes. Click outside closes. We’re not doing weird animation yet — Replit can optionally add a subtle Framer Motion fade/translate-y-[4px] in 150ms for polish.
+
+**Inside the panel**
+
+* We’re not dumping 40 links. We’re using **visual hierarchy**, which does 3 things:
+
+  1. Shows the most important actions immediately (top-left).
+  2. Gives credibility (card with “highlighted” feature or industry).
+  3. Gives routes for deeper browsing: “View all features →” / “See all industries →”.
+
+**Focus & a11y**
+
+* Each link in the mega menu must be keyboard-focusable, with:
+  `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded`
+* Each link is a Wouter `<Link href="...">`, not a `<a>`.
+
+**Icon style**
+
+* Every item row has a leading icon:
+
+  * `w-5 h-5 text-[#0B5FFF] flex-shrink-0`
+  * Use lucide icons that actually make sense for that item (wrench for dispatch/scheduling, receipt for invoicing, etc.).
+* Icons are not all identical. That was one of your complaints.
+
+**Microcopy style**
+
+* Each row in the mega menu is a 2-line description, not just a label. That’s the wow: you’re selling, not just linking.
+* Label line: bold-ish, `text-[14px] font-semibold text-slate-900`
+* Support line: `text-[12px] text-slate-500 leading-snug max-w-[240px]`
+* Whole row is clickable, has hover bg-slate-50 rounded-lg p-2 transition.
+
+Now let’s do each menu.
+
+---
+
+## PART 2. FEATURES MEGA MENU (DESKTOP)
+
+### Goal
+
+Immediately show: “This software runs your business end to end — schedule → job → invoice → get paid → recurring revenue → reporting.”
+
+We’re going to group features into logical buckets:
+
+1. Run the work
+2. Get paid
+3. Grow and control
+
+We will also include a promo tile on the right with a navy background showing social proof / differentiator (unlimited users, seat-free).
+
+### Layout (desktop)
+
+The flyout is a 2-column grid on desktop:
+
+**Left column (main links)**
+
+* Column uses a 3-section vertical stack. Each section has a tiny heading and then 2–3 feature rows.
+
+Section “Scheduling & Field Work”
+
+* Scheduling & Dispatch
+
+  * Link: `/features/scheduling-dispatch`
+  * Icon: calendar / route icon
+  * Subtext: “Drag-and-drop scheduling, live dispatch board, route planning.”
+* Work Orders & Mobile
+
+  * Link: `/features/work-orders-mobile`
+  * Icon: clipboard-check / mobile-device icon
+  * Subtext: “Every job step on the tech’s phone, with photos and signatures.”
+* Team Management & Operations Control
+
+  * Link: `/features/team-management`
+  * Icon: users icon
+  * Subtext: “Assign tasks, track completion, control permissions.”
+
+Section “Quotes, Invoices & Payments”
+
+* Estimates & Quotes
+
+  * Link: `/features/estimates-quotes`
+  * Icon: file-signature
+  * Subtext: “On-site estimates with e-sign, no paper, no chasing.”
+* Invoicing & Payments
+
+  * Link: `/features/invoicing-payments`
+  * Icon: credit-card
+  * Subtext: “Invoice instantly, take deposits, collect card payments in the field.”
+
+Section “Recurring Work & Profit”
+
+* Maintenance Plans & Recurring Jobs
+
+  * Link: `/features/maintenance-plans`
+  * Icon: repeat / refresh-cw
+  * Subtext: “Lock in repeat revenue with automated service schedules.”
+* Job Costing & Reporting
+
+  * Link: `/features/job-costing-reporting`
+  * Icon: bar-chart
+  * Subtext: “Track profitability by job, crew, or tech in plain English.”
+
+Below these sections, add a small link row:
+
+* “View all features →”
+
+  * Link: `/features`
+  * Style: `text-[12px] font-semibold text-[#0B5FFF] hover:underline flex items-center gap-1`
+  * This is to drive them to the full Features overview page you already built.
+
+**Right column (highlight tile)**
+Card with navy background to sell the differentiator:
+
+```html
+<div className="bg-[#0E2A47] text-white rounded-xl p-4 flex flex-col justify-between ring-1 ring-slate-800 shadow-inner min-h-[180px]">
+  <div>
+    <div className="text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] inline-block mb-3">
+      Unlimited users
+    </div>
+    <div className="text-white font-semibold text-base leading-snug">
+      Stop paying per tech.
+    </div>
+    <div className="text-white/70 text-[12px] leading-snug mt-2">
+      Pick a job cap, not a seat cap. Add as many users as you want on paid plans.
+    </div>
+  </div>
+
+  <div className="mt-4 flex flex-col gap-2">
+    <Link
+      href="/pricing"
+      className="bg-[#0B5FFF] text-white text-[12px] font-semibold rounded-md px-3 py-2 text-center shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+    >
+      View Pricing
+    </Link>
+    <Link
+      href="/compare"
+      className="text-white/80 text-[12px] font-semibold text-center hover:text-white hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+    >
+      Compare vs seat-based →
+    </Link>
+  </div>
+</div>
+```
+
+This tile is what makes the menu feel like a landing page, not just a list. It screams “we’re different.”
+
+---
+
+## PART 3. INDUSTRIES MEGA MENU (DESKTOP)
+
+We are not going to vomit 40 trades in a wall. That was the problem.
+
+We’ll do:
+
+* A “Popular trades” grid for instant credibility
+* A “More industries” compact list
+* A proof tile (right column) talking about credibility and speed
+
+And we will still group them in a way where HVAC guy or plumber instantly sees himself.
+
+### Layout (desktop)
+
+Also a 2-column layout.
+
+**Left column**
+Top mini-heading: “Who we’re built for”
+Style for mini-heading:
+`text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-2`
+
+Then a 2x2 card grid showing four high-value industries (the most common and highest $$$ work orders in your space):
+
+1. HVAC
+
+   * Link: `/industries/hvac`
+   * Icon: wind / thermometer-snowflake
+   * Label: “HVAC”
+   * Subtext `text-[12px] text-slate-500 leading-snug`: “Seasonal demand, maintenance plans, emergency calls.”
+   * Card style:
+     `rounded-lg p-3 hover:bg-slate-50 transition focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+   * Heading class: `text-[14px] font-semibold text-slate-900 flex items-center gap-2`
+2. Plumbing
+
+   * Link `/industries/plumbing`
+   * Icon: droplet
+   * Subtext: “Urgent dispatch, after-hours jobs, invoices on the spot.”
+3. Electrical
+
+   * Link `/industries/electrical`
+   * Icon: zap
+   * Subtext: “Safety + documentation every visit.”
+4. Cleaning / Janitorial
+
+   * Link `/industries/cleaning`
+   * Icon: sparkles or broom
+   * Subtext: “Recurring contracts, team scheduling, shift accountability.”
+
+Below that grid, a list block “More industries we support”:
+Style:
+`mt-4 border-t border-slate-200 pt-4`
+Then a multi-column responsive list (2 columns on desktop, 1 on mobile). Each is `text-[12px] text-slate-600 leading-snug hover:text-slate-900 hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded`.
+
+Include:
+
+* Landscaping & Lawn Care → `/industries/landscaping`
+* Roofing → `/industries/roofing`
+* Garage Door → `/industries/garage-door`
+* Pest Control → `/industries/pest`
+* Restoration & Remediation → `/industries/restoration`
+* Pressure Washing → `/industries/pressure-washing`
+* Property Maintenance / Handyman → `/industries/handyman`
+* Pool & Spa Service → `/industries/pool-spa`
+
+Then a final link row:
+“See all industries →”
+Link `/industries`
+Class:
+`text-[12px] font-semibold text-[#0B5FFF] hover:underline flex items-center gap-1 mt-4`
+
+**Right column**
+We sell outcomes to the owner.
+
+```html
+<div className="bg-slate-900 text-white rounded-xl p-4 flex flex-col justify-between ring-1 ring-slate-800 shadow-inner min-h-[180px]">
+  <div>
+    <div className="text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] inline-block mb-3">
+      Built for the field
+    </div>
+    <div className="text-white font-semibold text-base leading-snug">
+      “Where’s my tech?” stops being your job.
+    </div>
+    <div className="text-white/70 text-[12px] leading-snug mt-2">
+      Live dispatch board, route planning, and job status — even if you’re running 5 calls at once.
+    </div>
+  </div>
+
+  <div className="mt-4 flex flex-col gap-2">
+    <Link
+      href="/features/scheduling-dispatch"
+      className="bg-[#0B5FFF] text-white text-[12px] font-semibold rounded-md px-3 py-2 text-center shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+    >
+      See Scheduling & Dispatch
+    </Link>
+    <Link
+      href="/pricing"
+      className="text-white/80 text-[12px] font-semibold text-center hover:text-white hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+    >
+      View Pricing →
+    </Link>
+  </div>
+</div>
+```
+
+That right column gives emotional payoff: “You get control. You’re not babysitting.”
+
+This is the wow factor: you’re not just listing industries, you’re talking to the pain point in plain language.
+
+---
+
+## PART 4. MOBILE BEHAVIOR
+
+On mobile:
+
+* No giant flyout.
+* Your existing hamburger / slide-over nav should expand “Features” and “Industries” into accordions.
+
+  * Accordion heading is tappable text.
+  * Inside each accordion panel:
+
+    * Show the same link groups, but in a simple vertical stack with icons on the left and text on the right.
+    * Skip the promo tile / big card — mobile global nav drawers should stay lean.
+    * Still include “View all features →” and “See all industries →” at the bottom of each accordion.
+* All links still have focus-visible ring classes for accessibility.
+
+---
+
+## PART 5. ACCESSIBILITY / INTERACTION RULES
+
+For desktop mega menu:
+
+* The parent nav item (e.g. `<button>` or `<div role="button">Features`) must be keyboard focusable.
+* When it receives focus or hover, show panel.
+* Panel `role="dialog"` or `role="menu"` is okay, but it must trap focus only if you’re doing ESC-close; otherwise allow normal tabbing.
+* ESC key should hide menu.
+* Clicking anywhere outside panel should hide menu.
+
+For mobile accordion:
+
+* Use semantic `<button aria-expanded="true/false" aria-controls="...">` for the accordion headers.
+
+We’re not telling Replit to write a huge focus trap hook if that blows things up. We are telling it: implement hover+focus open for desktop, accordion for mobile, with Tailwind classes as specified.
+
+---
+
+## PART 6. ONE PROMPT FOR REPLIT
+
+Now here is what you will paste to Replit to build this, using your current stack (React + Vite + Wouter + Tailwind + lucide-react + Framer Motion already in project). This will update the header/nav component(s) only. It must NOT rebuild your site or touch hero carousel code.
+
+```txt
+You are Replit Agent. Do NOT rebuild the project. We are using React + Vite + Wouter + Tailwind. Keep the existing header/nav component and hero carousel logic exactly as-is EXCEPT we are upgrading the nav dropdown behavior for "Features" and "Industries". Mobile-first, desktop second.
+
+GOALS
+1. Add two mega menus in the desktop nav: one for “Features”, one for “Industries”.
+2. Add corresponding accordion sections in the mobile nav drawer for those same two sections.
+3. Keep design fully aligned with our current palette:
+   - Navy #0E2A47
+   - Accent blue #0B5FFF for CTAs, focus rings, icons
+   - Slate neutrals for text and backgrounds
+   - Rounded-xl, ring-1, shadow-[0_24px_64px_rgba(0,0,0,0.4)] aesthetic
+4. All links must use Wouter <Link> and include focus-visible ring classes for accessibility.
+
+A) DESKTOP BEHAVIOR
+In the desktop header nav:
+- The “Features” top-level item should open a large flyout panel on hover OR keyboard focus.
+- The “Industries” top-level item should open a similar flyout panel.
+
+Shared flyout panel wrapper styles:
+<div
+  className="absolute left-0 top-full z-50 bg-white text-slate-900 shadow-[0_24px_64px_rgba(0,0,0,0.4)] ring-1 ring-slate-200 rounded-2xl p-6 w-[min(800px,90vw)] grid gap-6"
+>
+This panel should be positioned below the nav bar, visually attached to that nav item.
+
+Ensure:
+- ESC closes panel.
+- Clicking outside closes panel.
+- Tab/Shift+Tab navigation doesn’t trap the user permanently.
+
+B) FEATURES MEGA MENU CONTENT (DESKTOP)
+Inside the Features flyout, create a 2-column responsive layout (stack on <md, 2 cols on md+):
+
+LEFT COLUMN:
+Section heading “Scheduling & Field Work” (use text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1)
+Then 3 link rows. Each row is a clickable block:
+<div className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none">
+  <Icon className="w-5 h-5 text-[#0B5FFF] flex-shrink-0" />
+  <div>
+    <div className="text-[14px] font-semibold text-slate-900 flex items-center gap-1">
+      Scheduling & Dispatch
+    </div>
+    <div className="text-[12px] text-slate-500 leading-snug max-w-[240px]">
+      Drag-and-drop scheduling, live dispatch board, route planning.
+    </div>
+  </div>
+</div>
+
+That row should wrap a <Link href="/features/scheduling-dispatch" ...> so the entire block is clickable. Use proper focus-visible ring classes on the Link.
+
+Repeat with:
+- Work Orders & Mobile → /features/work-orders-mobile
+  Subtext: “Every job step on the tech’s phone, with photos and signatures.”
+- Team Management & Operations Control → /features/team-management
+  Subtext: “Assign tasks, track completion, and lock down permissions.”
+
+Next heading “Quotes, Invoices & Payments”, then:
+- Estimates & Quotes → /features/estimates-quotes
+  “On-site estimates with e-sign, no paper, no chasing.”
+- Invoicing & Payments → /features/invoicing-payments
+  “Invoice instantly, take deposits, collect card payments in the field.”
+
+Next heading “Recurring Work & Profit”, then:
+- Maintenance Plans & Recurring Jobs → /features/maintenance-plans
+  “Lock in repeat revenue with automated service schedules.”
+- Job Costing & Reporting → /features/job-costing-reporting
+  “Track profitability by job, crew, or tech in plain English.”
+
+At the bottom, below these sections, include:
+<Link
+  href="/features"
+  className="text-[12px] font-semibold text-[#0B5FFF] hover:underline flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+>
+  View all features →
+</Link>
+
+RIGHT COLUMN:
+Add a promo tile card:
+
+<div className="bg-[#0E2A47] text-white rounded-xl p-4 flex flex-col justify-between ring-1 ring-slate-800 shadow-inner min-h-[180px]">
+  <div>
+    <div className="text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] inline-block mb-3">
+      Unlimited users
+    </div>
+    <div className="text-white font-semibold text-base leading-snug">
+      Stop paying per tech.
+    </div>
+    <div className="text-white/70 text-[12px] leading-snug mt-2">
+      Pick a job cap, not a seat cap. Add as many users as you want on paid plans.
+    </div>
+  </div>
+
+  <div className="mt-4 flex flex-col gap-2">
+    <Link
+      href="/pricing"
+      className="bg-[#0B5FFF] text-white text-[12px] font-semibold rounded-md px-3 py-2 text-center shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+    >
+      View Pricing
+    </Link>
+    <Link
+      href="/compare"
+      className="text-white/80 text-[12px] font-semibold text-center hover:text-white hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+    >
+      Compare vs seat-based →
+    </Link>
+  </div>
+</div>
+
+C) INDUSTRIES MEGA MENU CONTENT (DESKTOP)
+Another flyout panel using same wrapper classes, different internal layout.
+
+This panel is also 2 columns on md+, stacked on <md.
+
+LEFT COLUMN:
+Top mini-heading:
+<div className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-2">
+  Who we’re built for
+</div>
+
+Then a 2x2 grid of clickable industry cards, each card:
+<div className="rounded-lg p-3 hover:bg-slate-50 transition focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none">
+  <div className="text-[14px] font-semibold text-slate-900 flex items-center gap-2">
+    <Icon className="w-5 h-5 text-[#0B5FFF]" />
+    HVAC
+  </div>
+  <div className="text-[12px] text-slate-500 leading-snug mt-1">
+    Seasonal demand, maintenance plans, emergency calls.
+  </div>
+</div>
+
+Do 4 cards that link to:
+- HVAC → /industries/hvac
+- Plumbing → /industries/plumbing
+  “Urgent dispatch, after-hours jobs, invoices on the spot.”
+- Electrical → /industries/electrical
+  “Safety and documentation every visit.”
+- Cleaning / Janitorial → /industries/cleaning
+  “Recurring contracts, team scheduling, shift accountability.”
+
+Below that grid, add a thin divider:
+<div className="border-t border-slate-200 pt-4 mt-4" />
+
+Then 2-column text link list (on mobile stack to 1 col) with each <Link> className:
+"text-[12px] text-slate-600 leading-snug hover:text-slate-900 hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded block"
+
+Links:
+- Landscaping & Lawn Care → /industries/landscaping
+- Roofing → /industries/roofing
+- Garage Door → /industries/garage-door
+- Pest Control → /industries/pest
+- Restoration & Remediation → /industries/restoration
+- Pressure Washing → /industries/pressure-washing
+- Property Maintenance / Handyman → /industries/handyman
+- Pool & Spa Service → /industries/pool-spa
+
+Then:
+<Link
+  href="/industries"
+  className="text-[12px] font-semibold text-[#0B5FFF] hover:underline flex items-center gap-1 mt-4 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+>
+  See all industries →
+</Link>
+
+RIGHT COLUMN:
+Promo tile card for operations pain:
+
+<div className="bg-slate-900 text-white rounded-xl p-4 flex flex-col justify-between ring-1 ring-slate-800 shadow-inner min-h-[180px]">
+  <div>
+    <div className="text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] inline-block mb-3">
+      Built for the field
+    </div>
+    <div className="text-white font-semibold text-base leading-snug">
+      “Where’s my tech?” stops being your job.
+    </div>
+    <div className="text-white/70 text-[12px] leading-snug mt-2">
+      Live dispatch board, route planning, and job status — even if you’re running 5 calls at once.
+    </div>
+  </div>
+
+  <div className="mt-4 flex flex-col gap-2">
+    <Link
+      href="/features/scheduling-dispatch"
+      className="bg-[#0B5FFF] text-white text-[12px] font-semibold rounded-md px-3 py-2 text-center shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+    >
+      See Scheduling & Dispatch
+    </Link>
+    <Link
+      href="/pricing"
+      className="text-white/80 text-[12px] font-semibold text-center hover:text-white hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+    >
+      View Pricing →
+    </Link>
+  </div>
+</div>
+
+D) MOBILE NAV BEHAVIOR
+In the mobile nav drawer / menu component:
+- Convert “Features” and “Industries” into accordions.
+- Each accordion header is a <button> with:
+  aria-expanded (true/false)
+  aria-controls="features-panel" or "industries-panel"
+  className="w-full flex items-center justify-between text-left text-base font-semibold text-slate-900 py-3 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none"
+
+When expanded:
+- Show a vertical stack of the same links as desktop, but simplified:
+  For Features accordion:
+    Scheduling & Dispatch
+    Work Orders & Mobile
+    Estimates & Quotes
+    Invoicing & Payments
+    Maintenance Plans & Recurring Jobs
+    Job Costing & Reporting
+    Team Management & Operations Control
+    View all features →
+  Each item is a <Link> with className="flex items-start gap-3 py-2 text-[14px] text-slate-700 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+
+  Icon to the left with className="w-5 h-5 text-[#0B5FFF] flex-shrink-0"
+
+For Industries accordion:
+  HVAC
+  Plumbing
+  Electrical
+  Cleaning / Janitorial
+  Landscaping & Lawn Care
+  Roofing
+  Garage Door
+  Pest Control
+  Restoration & Remediation
+  Property Maintenance / Handyman
+  Pool & Spa Service
+  See all industries →
+Same link/focus classes.
+
+We do NOT include the promo cards in mobile accordion. Keep mobile menu light.
+
+E) DO NOT BREAK HEADER OR CAROUSEL
+Do not touch:
+- Existing hero carousel code
+- Logo / brand alignment in header
+- CTA buttons in header
+
+Just enhance “Features” and “Industries” so they trigger these new menus on desktop and accordions on mobile.
+
+F) ACCESSIBILITY
+All <Link> and clickable <div> wrappers inside the mega menu should either:
+- Be actual <Link> that spans the row, OR
+- Contain a <Link> that fills 100% width and height so the entire tile is clickable.
+
+All interactive elements require:
+focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded
+
+Implement all of the above now.
+```
+
+That’s the full spec.
+
+After Replit builds this:
+
+* You’ll have a premium-level nav that feels like ServiceTitan pricing tier without the bloated enterprise stink.
+* You communicate “we run the whole job lifecycle.”
+* You communicate “we serve serious trades.”
+* And you hard-sell the unlimited users differentiator before they even click Pricing.
+
+This is how you start winning the “best field service software” query before they even scroll.

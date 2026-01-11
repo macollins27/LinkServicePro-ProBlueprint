@@ -1,0 +1,212 @@
+PROMPT: “Create professional industry landing pages (single template + data)”
+
+Do not rebuild the app. Keep routing and hero. Implement a dynamic industry page template and data. Mobile-first. No new libraries.
+
+Files and structure
+
+Pages:
+
+Use the existing router. Add a route for /industries/:slug that renders a new template component.
+
+New components in client/src/sections/industries/:
+
+IndustryHero.tsx
+
+IndustryOutcomes.tsx
+
+IndustryWorkflowTabs.tsx
+
+IndustryPainSolution.tsx
+
+IndustryFeatureGrid.tsx
+
+IndustryCalendarsBand.tsx
+
+IndustryPricingTeaser.tsx
+
+IndustryTestimonial.tsx
+
+IndustryFAQ.tsx
+
+IndustryResources.tsx
+
+IndustryFinalCTA.tsx
+
+New page template:
+
+client/src/pages/industries/[slug].tsx or your project’s route convention file that reads the URL param and renders the sections above using industry data.
+
+Data
+
+Create client/src/data/industries-details.ts:
+
+export type IndustryDetail = {
+  slug: string;               // must match existing industry slug
+  name: string;               // e.g., "Plumbing"
+  icon: string;               // lucide icon name, fallback "Wrench"
+  hero: {
+    subhead: string;          // one sentence
+  };
+  pains: {pain: string; fix: string;}[];   // 4–6 items
+  features: {
+    label: string;
+    minPlan: "Free"|"Starter"|"Essential"|"Premium"|"Platinum";
+    blurb?: string;
+  }[];
+  faq: {q: string; a: string;}[];          // 5 items
+  testimonial?: {
+    quote: string;
+    author: string;
+    role?: string;
+  };
+  typicalJobs: number[];      // e.g., [25, 75, 150, 350, 600]
+};
+export const INDUSTRY_DETAILS: IndustryDetail[] = [
+  {
+    slug: "plumbing",
+    name: "Plumbing",
+    icon: "Wrench",
+    hero: { subhead: "Book jobs, route techs, send estimates with e-sign, take deposits, and keep customers in the loop." },
+    pains: [
+      { pain: "After-hours leaks flood your board", fix: "Drag-and-drop dispatch with color codes and priorities" },
+      { pain: "Paper estimates get ignored", fix: "1-tap e-sign on mobile and auto follow-ups" },
+      { pain: "Parts and labor aren’t tracked", fix: "Line-item estimates and invoice conversions" },
+      { pain: "No-shows waste routes", fix: "Automated reminders via SMS/email" },
+    ],
+    features: [
+      { label: "Drag-and-drop scheduling (calendar sync)", minPlan: "Free" },
+      { label: "Work orders, photos, files", minPlan: "Free" },
+      { label: "Estimates & digital signatures", minPlan: "Free" },
+      { label: "Two-way messaging + reminders", minPlan: "Starter" },
+      { label: "Recurring jobs & maintenance plans", minPlan: "Essential" },
+      { label: "Route optimization + GPS", minPlan: "Essential" },
+      { label: "Project tracking & job costing", minPlan: "Premium" },
+      { label: "Advanced reporting & automations", minPlan: "Premium" },
+    ],
+    faq: [
+      { q: "Can I sync tech schedules to Google/Apple Calendar?", a: "Yes. Two-way calendar sync keeps crews aligned without extra steps." },
+      { q: "Do I need separate accounts for each tech?", a: "No. All paid plans include unlimited users." },
+      { q: "How do quotes become invoices?", a: "Convert with one tap, collect deposits, and accept partial payments." },
+      { q: "Can I set recurring maintenance visits?", a: "Yes. Essential and above support recurring jobs and plans." },
+      { q: "Do customers get a portal?", a: "Yes. Customers can view quotes, invoices, and pay online." },
+    ],
+    testimonial: { quote: "We cut no-shows by a third and got paid within a day.", author: "Jordan M.", role: "Owner, Clearwater Plumbing" },
+    typicalJobs: [25, 75, 150, 350, 600],
+  },
+  // Add entries for the rest of your slugs; copy and adjust nouns only.
+];
+
+
+If a detail entry for a slug is missing, the page should still render with sensible defaults pulled from client/src/data/industries.ts.
+
+Template composition (exact order)
+
+Render these sections in [slug].tsx:
+
+IndustryHero
+
+H1: “{name} software to schedule, dispatch, and get paid.”
+
+Subhead from data.
+
+CTA buttons: Primary “Start Free”, Secondary “Talk to sales”.
+
+Trust pills: Google Calendar, Apple Calendar, Unlimited users, Job-based pricing.
+
+Right: gray image placeholder (role="img" with alt="${name} app preview placeholder").
+
+IndustryOutcomes
+
+Three compact cards with icons: “Fewer no-shows”, “Faster approvals”, “Paid within 24 hrs”.
+
+IndustryWorkflowTabs
+
+Tabs as defined in the blueprint. Keyboard accessible. Each tab includes a 1000×640 gray image and 3 bullets.
+
+IndustryPainSolution
+
+2×2 or 2×3 grid of {pain → fix} cards pulled from pains.
+
+IndustryFeatureGrid
+
+Up to 8 feature cards with minimum plan badges using your existing plan tokens.
+
+IndustryCalendarsBand
+
+Small band with Google/Apple badges and 1-sentence copy.
+
+IndustryPricingTeaser
+
+Inline selector for typicalJobs.
+
+Compute the recommended plan using helpers from client/src/data/plans.ts (use planForJobs or implement if missing).
+
+Show plan tile with price, job cap, and buttons: “Open pricing calculator” and “See full pricing”.
+
+IndustryTestimonial
+
+If testimonial exists in data, render the quote card with placeholder video modal. If not, hide section.
+
+IndustryFAQ
+
+5 accordion items from data. Also output FAQ JSON-LD schema.
+
+IndustryResources
+
+3 tiles with links to templates, walkthrough, and help center.
+
+IndustryFinalCTA
+
+Dark band with “No credit card to start • Import jobs via CSV • Cancel anytime” and inline email + TCPA checkbox.
+
+Styling constraints
+
+Use existing color tokens and rounded-2xl cards.
+
+Hover = mild lift and shadow, no gradients.
+
+Visible focus rings.
+
+Gray image placeholders must reserve space to avoid CLS (aspect-[5/3] or fixed min-height).
+
+All controls have aria-labels. Tabs and dialogs keyboard accessible.
+
+SEO & schema
+
+In [slug].tsx set:
+
+<title>: “{name} Field Service Software | Link Service Pro”
+
+<meta name="description"> from blueprint sentence with {name} swapped.
+
+Emit JSON-LD:
+
+BreadcrumbList (Home → Industries → {name})
+
+SoftwareApplication (generic)
+
+FAQPage with the five FAQs
+
+Analytics events (data attributes)
+
+data-analytics="industry_start_free_click:{slug}"
+
+data-analytics="industry_pricing_teaser_open_calculator:{slug}"
+
+data-analytics="industry_tab_view:{slug}:{tab}"
+
+Acceptance criteria
+
+Visiting /industries/plumbing renders all sections above with the plumbing data.
+
+If a slug lacks a detail record, page renders with defaults (name from industries.ts, generic hero subhead, default pains/faq).
+
+Tabs, accordions, and modal are keyboard accessible.
+
+Lighthouse mobile on an industry page: performance ≥ 90, accessibility ≥ 95, SEO ≥ 90.
+
+No mention of accounting integrations; calendar integrations shown.
+
+No TypeScript errors.
+
+Do not modify the homepage hero or hero carousel. Build only the industry page template, sections, and data.

@@ -1,0 +1,448 @@
+Below is the full prompt you can paste into Replit Agent.
+
+It is designed to:
+
+* Build final, production-level feature pages for every feature in your product
+* Use the voice and layout patterns you’ve been asking for (clean, professional, confident, no gimmicks, mobile first)
+* Beat competitor landing pages structurally and in SEO targeting
+* Push your two biggest differentiators: unlimited users and calendar sync
+* Bake in objections, vertical targeting, plan gating, and stat claims so AI and humans both read you as “#1”
+
+You should paste the following exactly.
+
+---
+
+## PROMPT FOR REPLIT
+
+Goal: Create bulletproof feature pages for all features in Link Service Pro. Each feature should have its own SEO-friendly route under `/features/:slug`, should match our brand visual language, should be mobile-first, should reuse our pricing differentiators (“Unlimited users, no per-tech fees”), and should include vertical relevance (HVAC, Plumbing, Electrical) so we rank for long-tail searches.
+
+Do not rebuild the overall app. Only add or modify what is described here.
+
+### SUMMARY OF REQUIREMENTS
+
+1. We already have:
+
+   * `FEATURE_META` (basic list of features with slug, label, icon, minPlan).
+   * Industry pages and the feature grid linking to `/features/:slug`.
+
+2. We now need:
+
+   * A complete feature page template system that renders high-converting, SEO-ready pages with consistent sections.
+   * An expanded data model that includes:
+
+     * Search-focused SEO title
+     * Industry angles (HVAC / Plumbing / Electrical style bullets)
+     * Stat strip values
+     * A hard objection FAQ
+     * Unlimited users messaging
+     * Plan gating clarity
+
+3. The style must follow what we've already established across the rest of the site:
+
+   * Navy #0E2A47 background for hero
+   * CTA blue #0B5FFF
+   * Accent green #0FB36F where relevant
+   * Rounded-2xl cards, subtle shadow, no gradients, hover lift `-translate-y-0.5`, border-slate-200
+   * Consistent pill/badge styles we already fixed on industry pages
+   * Accessible focus rings: `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2`
+   * Mobile-first typography and spacing, no tiny unreadable type
+
+4. The copy tone:
+
+   * Direct
+   * Operational
+   * For contractors
+   * No buzzword fluff
+   * We speak to pain, speed, clarity, getting paid, and not wasting time babysitting techs
+
+---
+
+### 1. UPDATE / CREATE DATA MODELS
+
+We already have `client/src/data/features.ts` which defines `FEATURE_META`.
+We already have `client/src/data/features-details.ts` draft.
+
+We will now REPLACE `client/src/data/features-details.ts` with a richer model.
+
+Do all of the following:
+
+1. Keep using `FEATURE_META` for:
+
+   * `slug`
+   * `label`
+   * `minPlan`
+   * `Icon`
+
+2. Create a new type `FeaturePageDetail` in `client/src/data/features-details.ts`:
+
+```ts
+// FeaturePageDetail: all content needed to render a bulletproof feature page
+export type FeaturePageDetail = {
+  slug: string; // must match FEATURE_META.slug
+
+  // SEO + hero
+  seoTitle: string;           // used for <title>
+  heroHeadline: string;       // H1 visible on page
+  heroSubhead: string;        // one-sentence value prop
+  heroStats: { label: string; sub: string }[]; 
+  // e.g. [{label:"35% fewer no-shows", sub:"Based on internal usage data"}, ...]
+
+  // Industry angles (for HVAC / Plumbing / Electrical relevance)
+  verticalAngles: {
+    hvac: string;
+    plumbing: string;
+    electrical: string;
+  };
+
+  // "How it works" steps (3 steps)
+  steps: {
+    title: string; 
+    bullets: string[];
+    imgAlt: string;
+  }[];
+
+  // Capabilities (2x2 card grid)
+  capabilities: {
+    id: string;       // anchor id for in-page linking
+    title: string;
+    bullets: string[];
+  }[];
+
+  // Plan availability info
+  minPlanLabel: string; // e.g. "Free", "Starter", ...
+  planNotes: string;    // short line about plan gating, MUST mention "Unlimited users on paid plans. No per-tech seat fees."
+
+  // FAQ (5 items) INCLUDING objection about “will my techs actually use this?”
+  faq: { q: string; a: string }[];
+
+  // Testimonial / social proof (optional)
+  quote?: {
+    text: string;
+    author: string;
+    role?: string;
+  };
+};
+```
+
+3. For **each** feature in `FEATURE_META`, create a matching entry in `FEATURES_DETAILS` (export const `FEATURES_DETAILS: Record<string, FeaturePageDetail>`). It must at minimum include:
+
+   * `seoTitle` that targets real search intent, like:
+
+     * For scheduling:
+       `"Field Service Scheduling Software | Drag-and-Drop Dispatch & Calendar Sync"`
+     * For estimates:
+       `"Field Service Estimating & E-Sign Software | Get Jobs Approved Faster"`
+   * `heroHeadline` should be the plain feature label, rewritten as a benefit.
+     Example for scheduling:
+     `"Drag-and-drop scheduling with live calendar sync"`
+   * `heroSubhead` should speak directly to the contractor: fast dispatch, less chaos, fewer no-shows, faster approval, etc.
+   * `heroStats` should include three short stat-style pills that match our homepage KPI format:
+
+     * `"35% fewer no-shows" / "Faster approvals (2×)" / "Paid in <24 hrs"`
+     * Subtext for each pill can be `"Based on internal usage data"` for now.
+       These KPIs will show up visually as small pill cards under the hero, to build trust.
+   * `verticalAngles` should be 3 plain-English bullets explaining why this feature matters differently to HVAC, Plumbing, and Electrical.
+     Example for scheduling:
+
+     * hvac: "Seasonal surge without chaos. Book maintenance plans in advance."
+     * plumbing: "Emergency leaks get dispatched now, not 'sometime today'."
+     * electrical: "Team visibility on panel upgrades and service calls."
+       These matter for SEO because AI and humans will parse “HVAC scheduling software”, “plumbing dispatch software”, etc.
+   * `steps`: 3 steps in a job-like flow. Each must sound like “how a normal day actually runs.” Each step needs 2–3 hard, real bullets. Each step includes `imgAlt`, and we will render a gray mockup placeholder with that `alt`.
+   * `capabilities`: 4 capability cards max. Each with 1-2 bullets that are short and scannable. Use language like “Stop chasing signatures” / “Get paid before leaving the driveway.”
+   * `minPlanLabel` MUST match that feature’s `minPlan` from `FEATURE_META`.
+   * `planNotes` MUST include this exact phrasing somewhere:
+     `"Unlimited users on paid plans. No per-tech seat fees."`
+     This is required. That is our biggest differentiator and MUST repeat on every feature page.
+   * `faq`: 5 items.
+     One of the 5 MUST be this objection, customized per feature:
+     Q: `"Will my team actually use this?"`
+     A: `"Yes. They just open the job on their phone, follow the checklist, and tap done. No paperwork and no chasing signatures."`
+     For messaging/reminders, adjust to “They don’t have to manually text customers etc.” For routing, adjust to “They just follow the day’s route, they don’t have to plan anything.”
+   * `quote`: Optional short testimonial style proof like `"We cut drive time and stopped calling the office every 5 minutes." – Jake R., Operations Manager`
+
+We are okay with placeholders for now. No lorem ipsum. Use straightforward service language, and keep answers short.
+
+---
+
+### 2. BUILD THE FEATURE PAGE TEMPLATE
+
+Create a new route-level page for a dynamic feature:
+`client/src/pages/features/[slug].tsx`
+(or follow our existing router convention that powers `/industries/:slug`; just mirror that for `/features/:slug`)
+
+This page should:
+
+1. Read `slug` from the route params.
+2. Look up `meta` from `FEATURE_META` by slug.
+3. Look up `detail` from `FEATURES_DETAILS[slug]`.
+
+   * If not found, fall back to generic defaults built from `meta` so page still renders.
+4. Render the following sections in this exact order:
+
+#### (A) <FeatureHero />
+
+Props:
+
+* `headline` (detail.heroHeadline)
+* `subhead` (detail.heroSubhead)
+* `heroStats` (detail.heroStats array of {label, sub})
+* `minPlanLabel` (detail.minPlanLabel)
+* `slug` (for analytics)
+* `Icon` from FEATURE_META
+* Also include chips: `Google Calendar`, `Apple Calendar`, and `Unlimited users` (paid plans) as trust badges.
+  Behavior:
+* Dark navy background (#0E2A47)
+* H1 = `headline`
+* CTA row:
+
+  * Primary button “Start Free”
+  * Secondary button “See Pricing”
+* On the right, render a neutral light-gray mockup placeholder box with fixed aspect ratio (`aspect-[5/3]`, `min-h-[220px]` on mobile, `min-h-[260px]` md+) and alt text `"<headline> mockup preview"`.
+* Below the main hero text, render the stat pills:
+
+  * Each pill: rounded-full bg-white/10 text-white border border-white/20
+  * Show `label` big and `sub` smaller below it.
+
+Accessibility:
+
+* The hero section must have only one `<h1>` per page. No other `<h1>` anywhere else.
+
+SEO:
+
+* In this page component, set `<title>` to `detail.seoTitle`.
+* Add a `<meta name="description" content={detail.heroSubhead} />`.
+
+Also: generate JSON-LD for:
+
+* `BreadcrumbList`: Home > Features > {detail.heroHeadline}
+* `SoftwareApplication`: name = `{detail.heroHeadline}`, applicationCategory = detail.seoTitle keywords, offers = minPlanLabel
+* Defer `FAQPage` for later section.
+
+#### (B) <FeatureVerticalAngles />
+
+Props:
+
+* `verticalAngles` (detail.verticalAngles)
+  Layout:
+* Light gray section (`bg-slate-50`).
+* Centered heading: “Why this matters in the real world”
+* 3 cards in a responsive grid:
+
+  * HVAC
+  * Plumbing
+  * Electrical
+    Each card:
+* Small label (`HVAC`, `Plumbing`, `Electrical`) in bold.
+* 1 sentence from `verticalAngles`.
+  Design:
+* Card style = rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5
+* This block exists purely to get “HVAC scheduling,” “plumbing dispatch,” “electrical estimating,” etc. into the body text of each feature page. This is critical for SEO and AI answers.
+
+#### (C) <FeatureHowItWorks />
+
+Props:
+
+* `steps` (detail.steps)
+  Layout:
+* Section heading: “How it works”
+* Render 3 vertical “step cards”, each:
+
+  * A large step number “1 / 2 / 3”
+  * Step title
+  * Bullet list of 2-3 items
+  * A gray screenshot placeholder box (`aspect-[16/10]`, rounded-2xl, bg-slate-100 border border-slate-200`) with alt text from `imgAlt`
+    Responsive:
+* Mobile = stacked
+* md+ = 3 columns
+  Design:
+* Each step card is rounded-2xl border-slate-200 bg-white shadow-sm with hover lift.
+
+Copy tone:
+
+* Bullets must read like actual day-to-day workflow (“Drag job to tech’s lane,” “Send SMS with ETA,” “Customer signs with finger”).
+
+#### (D) <FeatureCapabilities />
+
+Props:
+
+* `capabilities` (detail.capabilities)
+  Layout:
+* Heading: “What you can do”
+* Render a responsive 2x2 grid (mobile: 1 column, sm+: 2 columns).
+* Each capability card:
+
+  * Heading
+  * 2 short bullets from `bullets`
+  * Anchor id from `id` for deep linking (`id` goes on the card container so we can link `#capacity` etc.)
+    Design:
+* Same card styling: rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5
+
+#### (E) <FeaturePlanAvailability />
+
+Props:
+
+* `minPlanLabel` (detail.minPlanLabel)
+* `planNotes` (detail.planNotes)
+  Layout:
+* Heading: “What plan do I need?”
+* Short paragraph: “{minPlanLabel} and above. {planNotes}”
+
+  * `planNotes` MUST include: “Unlimited users on paid plans. No per-tech seat fees.”
+* Simple pricing gate row:
+
+  * A pill badge showing `minPlanLabel`
+  * A button “See full pricing”
+* Below that, include a single-line note:
+  “Works with Google Calendar and Apple Calendar.”
+  This is where we push two critical differentiators:
+* No per-user fees
+* Calendar sync
+  Design:
+* Use subtle card background (bg-slate-50, border-slate-200 rounded-2xl inside max-w-xl mx-auto)
+
+#### (F) <FeatureCalendarsBand />
+
+Small band that reinforces calendar sync.
+Copy:
+“Your team already runs on Google Calendar and Apple Calendar. We sync both in real time so nobody says ‘Wait, where am I going?’”
+Design:
+
+* Light band with small Google Calendar / Apple Calendar badges reusing our pill style from hero.
+
+#### (G) <FeatureTestimonial /> (optional)
+
+Props:
+
+* `quote` (detail.quote)
+  If present:
+* Dark navy card with white text, rounded-2xl
+* Quote text in slightly larger font, then `— {author}, {role}`
+* Also include a 60-second video placeholder button (gray box, aspect-[16/9]) with `aria-label="Watch 60-second story"`.
+  If no quote, skip section.
+
+#### (H) <FeatureFAQ />
+
+Props:
+
+* `faq` (detail.faq)
+  Layout:
+* Heading: “Common questions”
+* 5 accordion items.
+* One item MUST be the objection: “Will my team actually use this?”
+
+  * Answer must reassure that techs don’t have to fight the UI, they just tap what’s needed. Use the wording from the data.
+    Design:
+* Accordions match what we already use elsewhere (rounded-2xl border border-slate-200 bg-white w-full max-w-3xl mx-auto)
+  SEO:
+* Emit JSON-LD `FAQPage` using these 5 Q/A pairs.
+
+#### (I) <FeatureFinalCTA />
+
+Bottom dark band that matches our global final CTA pattern.
+Content:
+
+* Headline: “Ready to see it in action?”
+* Bullets inline: “No credit card to start • Import jobs via CSV • Cancel anytime”
+* Inline email capture with Start Free button (and TCPA consent checkbox exactly as we’ve used elsewhere).
+* Text below should again reinforce: “Unlimited users on paid plans. No per-tech seat fees.”
+
+This CTA section will be reused across all feature pages. Use same navy background as hero.
+
+---
+
+### 3. ACCESSIBILITY / A11Y REQUIREMENTS
+
+* Only one `<h1>` (in FeatureHero). All other section headings are `<h2>`.
+* All CTA buttons, pills, icons, carousels must be keyboard-focusable with a visible focus ring.
+* All interactive elements use `aria-label` when text is not obvious.
+* All mockup placeholders must still include `role="img"` and `aria-label` or `alt` text from the data (`imgAlt`) so screen readers aren’t blind.
+* Accordions must be keyboard accessible and toggleable with Enter/Space.
+
+---
+
+### 4. PERFORMANCE / RESPONSIVENESS REQUIREMENTS
+
+* Mobile-first. On small screens, everything stacks cleanly, no horizontal scroll.
+* Hero mockup placeholder must have fixed aspect and min-height to prevent layout shift (CLS).
+* Use `loading="lazy"` on non-hero mockup placeholders in FeatureHowItWorks.
+* Respect `prefers-reduced-motion` for hover lift (`motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:hover:shadow-sm`), same pattern we already use on card hover elsewhere.
+
+---
+
+### 5. SEO / ANALYTICS REQUIREMENTS
+
+* In `[slug].tsx`, after you get `detail`, do:
+
+  * `<title>{detail.seoTitle}</title>`
+  * `<meta name="description" content={detail.heroSubhead} />`
+* Add JSON-LD `<script type="application/ld+json">`:
+
+  * `BreadcrumbList` (Home > Features > {detail.heroHeadline})
+  * `SoftwareApplication`:
+
+    * `"name": detail.heroHeadline`
+    * `"applicationCategory": detail.seoTitle`
+    * `"offers": { "name": detail.minPlanLabel }`
+  * `FAQPage` with the 5 questions/answers in `detail.faq`.
+* Fire lightweight analytics data-attributes for CTAs:
+
+  * Start Free button: `data-analytics={"feature_start_free_click:"+slug}`
+  * Pricing button: `data-analytics={"feature_view_pricing:"+slug}`
+
+---
+
+### 6. ACCEPTANCE CRITERIA
+
+When I visit `/features/scheduling` (or any valid slug from FEATURE_META):
+
+1. Page renders with:
+
+   * Hero (dark navy)
+   * Stat pills under hero
+   * “Why this matters in the real world” (HVAC / Plumbing / Electrical bullets)
+   * How it works (3 steps)
+   * Capabilities grid (2x2)
+   * Plan availability section that explicitly mentions:
+     “Unlimited users on paid plans. No per-tech seat fees.”
+   * Calendar sync band
+   * Testimonial (if provided)
+   * FAQ with objection handling
+   * Final CTA band with email capture and TCPA
+2. `<title>` and `<meta name="description">` match the feature.
+3. JSON-LD for BreadcrumbList, SoftwareApplication, and FAQPage is injected.
+4. All buttons and links have visible focus rings and are keyboard accessible.
+5. Cards follow our established style:
+
+   * rounded-2xl
+   * border-slate-200
+   * bg-white
+   * subtle hover shadow/lift
+   * no gradients
+6. No crashes, no TypeScript errors, no unhandled missing data.
+7. All claims reinforce:
+
+   * Faster, fewer headaches, less chasing
+   * Unlimited users
+   * Google Calendar / Apple Calendar sync
+   * No per-tech seat fees
+
+---
+
+### DO NOT
+
+* Do not change the homepage hero or the homepage hero carousel.
+* Do not remove or alter the global nav, mobile nav, or pricing page.
+* Do not introduce QuickBooks/Xero/etc. (we don’t have those integrations live yet).
+* Do not add custom analytics libraries; only data attributes.
+* Do not use gradients or goofy hover effects. Keep the aesthetic we already locked in.
+
+---
+
+After you implement all of this, I should be able to:
+
+* Click any feature card from an industry page or the homepage feature grid.
+* Land on `/features/:slug`.
+* See a professional, conversion-grade, SEO-grade, mobile-first landing page that explicitly makes us look like the #1 tool for that feature.
+
+Please begin implementing now.

@@ -1,0 +1,102 @@
+Here’s the updated **single, surgical, no-code prompt** you can paste into Replit Agent 3. It changes the eyebrow text, **removes the subtitle**, clamps the table to the global container, fixes clipped tooltips, and lets column labels use the full header width—everything in one pass.
+
+---
+
+**Task:** Finalize the “Why Teams Switch” comparison section. Align header styling with the rest of the site, constrain the table to the global container, ensure tooltips are never clipped, and let column titles use their full header width. No other sections or routes change.
+
+### 0) Scope & guardrails
+
+* Touch only this section’s wrapper, header block, table wrapper, header cells, tooltip layer, legend, and CTAs.
+* Reuse existing tokens (container, colors, typography, spacing, z-index scale).
+
+---
+
+### 1) Header text, alignment, colors
+
+* **Eyebrow (exact text):** `See it in one table`  ← replace whatever is there with this exact string.
+* **H2 (exact text):** `Why Teams Switch`
+* **Subtitle:** **remove entirely** (delete the node; do not render an empty wrapper).
+* **Support sentence (unchanged):**
+  `Projects with real dollars, hours, assets, and conversations—kept in one place so work flows and cash lands sooner.`
+* **Alignment & color:** Left-align the whole header block; use the same color tokens used by other sections (support sentence is muted—not blue).
+* **Spacing:** After removing the subtitle, collapse vertical spacing so eyebrow → H2 and H2 → support use the global section rhythm.
+
+---
+
+### 2) Constrain width to the global container (not full-bleed)
+
+* Wrap the table in the **same container component** used by other homepage bands (desktop ≈1526px).
+* Remove any local `max-w-1280/7xl/...` or full-bleed classes (e.g., `w-screen`, negative margins) that override the global container.
+* Result: the table sits **inside** the container with standard side paddings.
+
+---
+
+### 3) Tooltips must never be blocked (portal + overflow rules)
+
+* **Portal:** Render all table tooltips (legend, header info, cell tooltips) into a **top-level portal** attached to `document.body` (or app overlay). Use the highest safe z-index so they sit above sticky header/first column and the nav.
+* **Overflow:** Ensure no ancestor of the table/headers has `overflow: hidden/clip` that would clip tooltips. If a wrapper needs clipping for horizontal scroll, keep the tooltip layer **outside** that scroller.
+* **Placement:** Enable smart positioning (flip/shift) so tooltips re-position near edges.
+* **A11y:** Triggers are keyboard-focusable; `aria-describedby` wires trigger→tooltip; **ESC closes**.
+
+---
+
+### 4) Column header labels must use full header width (no squish)
+
+* Remove any `max-width`, `truncate`, or fixed-width classes inside header cells.
+* Header content requirements:
+
+  * **Left-aligned**, **wrap normally** (`white-space: normal`), **two lines max** (use a 2-line clamp—not a fixed pixel width).
+  * Stretch to the **full width of its `<th>`** (no inner width caps).
+  * Keep consistent vertical padding so header height doesn’t jump.
+* If an inner div previously capped width, **remove it**. The `<th>` decides width, not an inner wrapper.
+* Keep the info icon inline at the end of the label; allow it to wrap onto the second line if needed.
+
+---
+
+### 5) Matrix shape (confirmed)
+
+* **Columns (4):** Project Management (multi–work orders) · Employee Labor & Payroll · GPS-Verified Timesheets · Asset Tracking & Inspection Integrations.
+* **Rows (3):** LinkServicePro · Other FSM Software (generic) · Spreadsheets (Excel/Sheets).
+* **First column width (row titles):**
+
+  * Desktop: target ~26–28% of table width or a min-width of **16–18ch**.
+  * Mobile: sticky first column; allow wrapping to two lines; no truncation.
+
+---
+
+### 6) Legend + states (keep, readable)
+
+* Legend above the table (right on desktop; full width on mobile):
+  `✓ Included` (green) `– Partial / workaround` (amber, with tooltip) `✕ Missing` (red)
+* Amber hyphen tooltip (exact): `Partial or requires workarounds. Some steps may be manual or split across tools.`
+* Every ✓ / – / ✕ cell includes **sr-only** text: “Included”, “Partial”, or “Missing”.
+
+---
+
+### 7) CTAs (centered, visible)
+
+* Center both CTAs below the table with standard spacing:
+
+  * Primary: `Get Started Free`
+  * Secondary: `Talk to an expert`
+* Ensure the secondary button has standard contrast and is not clipped at any breakpoint.
+
+---
+
+### 8) Mobile/scroll behavior (verify)
+
+* Sticky header row and sticky first column remain functional during horizontal scroll.
+* Gradient fades indicate scrollable overflow.
+* Column picker remains **disabled/removed** (only 4 columns).
+
+---
+
+### 9) Acceptance checklist
+
+* Eyebrow now reads **“See it in one table”**; **no subtitle** is rendered; H2 is **“Why Teams Switch.”**
+* Section width equals other homepage bands (inside the global container).
+* Tooltips render in a portal above everything (never clipped), accessible via keyboard; ESC closes.
+* Column titles wrap up to two lines and use the full header cell width (no inner caps/squish).
+* First column is wide and readable on desktop and mobile.
+* CTAs are **centered**, both visible and legible across breakpoints.
+* Table semantics, sr-only state labels, focus rings, and contrast all pass AA.

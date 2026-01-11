@@ -1,0 +1,160 @@
+Heard. Keep it scannable. Here’s a single, surgical, no-code prompt to build a brand-new, mobile-first Resources section that pulls recent posts, is easy to scan, and stays within the global container. No tooltips, no portals, no carousels.
+
+⸻
+
+Task
+
+Replace the current blog/resources area with a Resources band showing recent posts (Blog, Guides, Product Updates). Cards are compact, readable, and accessible. Include a “View all resources” link. Optionally include a tiny “Get updates” email input with an attached button at the bottom.
+
+Placement & scope
+	•	Lives after Pricing and before FAQ on the homepage.
+	•	Update only this section and its data/config. Do not change routes, header, or other sections.
+
+Objectives (what this section must communicate)
+	•	Showcase 3–6 fresh items with clear categories (Blog, Guides, Product Updates).
+	•	Cards must read fast on mobile (title, teaser line, meta).
+	•	Provide a clear path to the resources index.
+	•	Optional: capture email for updates (attached field+button).
+
+⸻
+
+Structure (mobile → desktop)
+	1.	Header (left-aligned, inside global container)
+	•	Eyebrow: Resources
+	•	H2: Learn, ship, and stay current
+	•	Support: Field-tested tactics, product updates, and guides to keep your crews moving.
+	2.	Category pills (filter, optional but recommended)
+	•	Pills: All (default), Blog, Guides, Product Updates.
+	•	Acts like a radiogroup (role="tablist"/role="tab" or role="radiogroup"/role="radio").
+	•	Keyboard: Left/Right/Home/End.
+	•	No page reload; filter client-side.
+	3.	Cards grid
+	•	Mobile: 1 column (stacked).
+	•	Desktop (lg+): 3 columns (equal heights); show 3–6 items total.
+	•	Card anatomy (top → bottom):
+	•	16:9 thumbnail (lazy, intrinsic dimensions).
+	•	Category tag (Blog/Guide/Update).
+	•	Title (2-line clamp).
+	•	Teaser (1-line clamp).
+	•	Meta row: publish date (MMM D, YYYY) • read time (e.g., 5 min).
+	•	Entire card is a link; also provide an inline “Read” arrow button for clarity.
+	•	Skeleton state (3 placeholders) while loading.
+	4.	Footer row
+	•	Left: View all resources → (link to /resources).
+	•	Right (optional): Get updates inline form with attached email input + button:
+	•	Placeholder: Enter your email
+	•	Button: Get updates
+	•	On submit: POST { email, source: "home_resources" } to your handler; inline error/success.
+
+⸻
+
+Visual & motion
+	•	Use existing tokens (navy canvas, rounded-xl, subtle inner borders).
+	•	Images: slight radius; no drop-shadows needed.
+	•	Motion limited to hover/focus; respect prefers-reduced-motion.
+	•	No carousels, no auto-rotation.
+
+⸻
+
+Accessibility
+	•	One h2 for the section; card titles as h3.
+	•	Category pills are keyboard-operable with correct ARIA roles and aria-selected.
+	•	Card is a single anchor; also include a visually clear “Read” affordance (icon/text) with proper focus ring.
+	•	Images include concise alt (or alt="" if decorative).
+	•	Form field has a label (visible or sr-only), type="email", autocomplete="email", error linked via aria-describedby, messages announced with aria-live="polite".
+	•	Hit targets ≥44px; visible focus rings.
+
+⸻
+
+Performance
+	•	Thumbnails: WebP, intrinsic width/height, loading="lazy", decoding="async".
+	•	Limit to 6 items max; request smaller sizes via your image CDN if available.
+	•	No third-party embeds; no tooltips/portals.
+
+⸻
+
+Data model (create a small constants file or hook stub)
+
+// resourcesData.ts (or JSON)
+
+export type ResourceKind = "blog" | "guide" | "update";
+
+export type ResourceItem = {
+  id: string;
+  kind: ResourceKind;          // "blog" | "guide" | "update"
+  title: string;
+  teaser: string;              // 1-sentence summary
+  href: string;                // route to the post
+  thumbnail: { src: string; alt: string; width: number; height: number };
+  publishedAt: string;         // ISO date
+  readTime: string;            // e.g., "5 min"
+};
+
+export const RESOURCES_SAMPLE: ResourceItem[] = [
+  {
+    id: "r1",
+    kind: "blog",
+    title: "From work orders to projects: a cleaner way to track jobs",
+    teaser: "Roll up tickets, quotes, and invoices under a single project timeline.",
+    href: "/resources/projects-over-work-orders",
+    thumbnail: { src: "/img/resources/projects.webp", alt: "Project timeline mock", width: 1200, height: 675 },
+    publishedAt: "2025-10-15",
+    readTime: "5 min"
+  },
+  {
+    id: "r2",
+    kind: "guide",
+    title: "GPS-verified timesheets: a setup checklist",
+    teaser: "Cut time fraud and tighten job costing with simple guardrails.",
+    href: "/resources/gps-timesheets-setup",
+    thumbnail: { src: "/img/resources/gps.webp", alt: "GPS timesheet mock", width: 1200, height: 675 },
+    publishedAt: "2025-09-30",
+    readTime: "6 min"
+  },
+  {
+    id: "r3",
+    kind: "update",
+    title: "Property Linkware: inspections + assets on the job timeline",
+    teaser: "Attach reports and asset files where crews already work.",
+    href: "/resources/linkware-update",
+    thumbnail: { src: "/img/resources/linkware.webp", alt: "Report attached to job", width: 1200, height: 675 },
+    publishedAt: "2025-09-18",
+    readTime: "3 min"
+  }
+];
+
+⸻
+
+Copy to render (exact strings)
+	•	Eyebrow: Resources
+	•	H2: Learn, ship, and stay current
+	•	Support: Field-tested tactics, product updates, and guides to keep your crews moving.
+	•	Pills: All, Blog, Guides, Product Updates
+	•	Footer left link: View all resources →
+	•	Optional form: placeholder Enter your email • button Get updates • success Thanks—check your inbox. • error Please enter a valid email.
+
+⸻
+
+Interaction rules
+	•	Default filter = All.
+	•	Filtering updates the grid without scrolling the page; keep skeletons for initial load only.
+	•	Card click opens the resource in the same tab (internal route).
+	•	Submit on Enter in the email field; disable the button while submitting; success/error messages inline.
+
+⸻
+
+Analytics
+	•	resources.view (once when ≥35% of band in view)
+	•	resources.filter_change { kind }
+	•	resources.card_click { id }
+	•	If form enabled: resources.subscribe_submit { email_domain, source: "home_resources" }
+
+⸻
+
+Acceptance criteria (verify before finishing)
+	1.	Section renders inside the global container; headings left-aligned; matches site rhythm.
+	2.	3–6 resource cards display with category, title, teaser, and meta; images lazy-load; equal card heights on desktop.
+	3.	Filter pills work with keyboard and screen readers; no horizontal scroll on mobile.
+	4.	“View all resources →” link points to /resources.
+	5.	Optional email form uses an attached input+button and has accessible validation with aria-live.
+	6.	No tooltips, portals, carousels, or third-party scripts; Lighthouse mobile shows no CLS and passes contrast.

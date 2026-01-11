@@ -1,0 +1,147 @@
+REPLACE: client/src/sections/ContractorWorkflowRail.tsx
+
+GOAL
+- Remove empty space.
+- Swap “Preview” for real media (screenshot or short MP4/WebM).
+- Reorder as a left vertical stepper (1→4) and a right “evidence” pane.
+- Tight, professional, mobile-first. WCAG AA. Use lucide-react icons.
+
+ASSETS (you will load these if available; otherwise show a clean placeholder):
+/public/img/previews/estimates.jpg
+/public/img/previews/scheduling.jpg
+/public/img/previews/workorders.jpg
+/public/img/previews/invoicing.jpg
+// optional 8–12s loops:
+// /public/video/estimates.webm, scheduling.webm, workorders.webm, invoicing.webm
+
+STRUCTURE
+<section class="px-4 sm:px-6 lg:px-8 py-12 bg-white">
+  <header>
+    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">From quote to paid—one clean rail</h2>
+    <p class="text-slate-700">Estimates, scheduling, work orders, and invoicing—step by step for crews in the field.</p>
+  </header>
+
+  <div class="mt-6 grid gap-4 lg:grid-cols-[380px_1fr] items-start">
+    <!-- LEFT: numbered stepper -->
+    <!-- RIGHT: media + proof + links -->
+  </div>
+
+  <!-- Standard CTAs -->
+  <div class="mt-6">
+    <ButtonsRow>
+      <StartFreeButton context="light" />
+      <ViewPricingButton context="light" />
+    </ButtonsRow>
+  </div>
+</section>
+
+LEFT: NUMBERED STEPPER (ordered conception→completion)
+- Items: estimates, scheduling, workorders, invoicing (in that order).
+- Each item shows: number badge, icon, title, 2–3 bullets only.
+- Active item gets blue left border and light blue bg.
+- Sticky at ≥1024px.
+
+Use lucide-react icons:
+FileSignature, CalendarDays, ClipboardCheck, CreditCard
+Number badge: solid #0B5FFF, white text, 24px square.
+
+RIGHT: EVIDENCE PANE (kills empty space)
+- Header bar: icon + Title + one-line outcome.
+- Media area 16:9; prefer video if exists, else screenshot; fallback to tidy placeholder.
+- Under media: “Key features” links row (wrap) and a dense 2×2 spec grid (chips).
+- Remove the old chip row that stretched too wide.
+
+CONTENT (verbatim)
+
+STEPS ARRAY (ordered):
+1) key: "estimates"
+   title: "Estimates + E-Sign"
+   outcome: "Win rate rises and sales cycle shrinks."
+   bullets:
+     - "Send professional quotes from phone or desktop."
+     - "E-sign approvals convert to work orders."
+     - "Automated follow-ups until yes."
+   links: ["/features/quote-builder","Quote Builder"],
+          ["/features/esign","E-Sign"],
+          ["/features/2-way-messaging","2-Way Messaging"]
+   chips: ["Templates","Options","E-sign","Reminders"]
+   media: img=/img/previews/estimates.jpg video=/video/estimates.webm
+   icon: FileSignature
+
+2) key: "scheduling"
+   title: "Scheduling"
+   outcome: "Stop double-booking and shave miles every day."
+   bullets:
+     - "Drag to assign; conflicts auto-checked."
+     - "Live map and routes cut drive time."
+     - "Instant ETA texts to customers."
+   links: ["/features/drag-and-drop-scheduling","Drag-and-Drop Scheduling"],
+          ["/features/dispatch-board","Dispatch Board + Map"],
+          ["/features/route-optimization","Route Optimization"]
+   chips: ["No double-booking","Crew balance","iOS & Android","2-way SMS"]
+   media: img=/img/previews/scheduling.jpg video=/video/scheduling.webm
+   icon: CalendarDays
+
+3) key: "workorders"
+   title: "Work Orders"
+   outcome: "Clean handoffs and more first-time fixes."
+   bullets:
+     - "Details, photos, checklists in one place."
+     - "Track time, parts, signatures on site."
+     - "Works offline; syncs when online."
+   links: ["/features/work-orders","Work Orders"],
+          ["/features/project-tracking","Projects"],
+          ["/features/customer-portal","Customer Portal"]
+   chips: ["Checklists","Photos","Parts","Roles"]
+   media: img=/img/previews/workorders.jpg video=/video/workorders.webm
+   icon: ClipboardCheck
+
+4) key: "invoicing"
+   title: "Invoicing + Payments"
+   outcome: "Days-to-paid drop; cash flow steadies."
+   bullets:
+     - "Invoice in the field; deposits and partials."
+     - "Batch billing before crews clock out."
+     - "Cards and ACH with receipts."
+   links: ["/features/invoicing","Invoicing"],
+          ["/features/payments","Payments"],
+          ["/features/accounting-sync","QuickBooks/Xero Sync"]
+   chips: ["Batch billing","Deposits","ACH/Cards","AR reminders"]
+   media: img=/img/previews/invoicing.jpg video=/video/invoicing.webm
+   icon: CreditCard
+
+INTERACTION
+- useState<'estimates'|'scheduling'|'workorders'|'invoicing'>('estimates')
+- Keyboard: Up/Down moves; Enter/Space selects.
+- aria-live="polite" on the right title.
+- Prefer video if window.matchMedia('(prefers-reduced-motion: no-preference)') and file exists; else image.
+
+LAYOUT / DENSITY
+- Stepper item class:
+  "grid grid-cols-[28px_1fr] gap-3 p-4 ring-1 ring-slate-200 bg-white elev-2 not-first:mt-2
+   data-[active=true]:border-l-4 data-[active=true]:border-[#0B5FFF]
+   data-[active=true]:bg-slate-50"
+- Right pane header:
+  "p-5 bg-slate-50 grid grid-cols-[48px_1fr] gap-3 items-center"
+- Media:
+  wrapper "aspect-video bg-slate-100"
+  <video class="w-full h-full object-cover" muted loop playsInline autoPlay />
+  <img class="w-full h-full object-cover" />
+- Links row: "mt-4 flex flex-wrap gap-x-4 gap-y-2 text-[#0B5FFF] font-semibold"
+- Spec chips grid: "mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm text-slate-800"
+- Remove excessive margins to avoid white bands.
+
+A11Y / QA
+- All focusable elements show ring-2 #0B5FFF with offset-2 white.
+- No overflow at 375px. Stepper collapses to stacked list then preview.
+- Lighthouse A11y ≥95.
+
+NOTES ON MEDIA
+- Prefer real screenshots or 8–12s looped screen captures (WebM).
+- If assets missing, the pane shows a neutral “Preview” placeholder.
+- Later you can swap in real media by dropping files in /public/img/previews or /public/video matching names above. No code changes needed.
+
+ACCEPTANCE
+- Ordered steps 1→4 visible on the left.
+- Right pane shows real product media (when provided), not empty gray.
+- Section feels dense, professional, and obvious. CTAs unchanged.

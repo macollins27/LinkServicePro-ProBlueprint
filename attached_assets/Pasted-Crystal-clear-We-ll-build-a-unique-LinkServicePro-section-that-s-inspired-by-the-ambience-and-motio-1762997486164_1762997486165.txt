@@ -1,0 +1,228 @@
+Crystal clear. We’ll build a unique LinkServicePro section that’s inspired by the ambience and motion quality you liked—but it uses your product story only (Scheduling/Dispatch → Estimates/Quotes → Invoicing/Payments → Maintenance Plans), which are real features in your app.  ￼
+
+Paste this single, surgical prompt into Replit Agent 3.
+
+⸻
+
+Create a new homepage section “Field-to-Cash Flow” that shows how LinkServicePro moves a job from Scheduling → Quote → Invoice → Recurring. This must be mobile-first, unique in layout, and not copy any BuildOps wording or structure. Use only LinkServicePro features that already exist (Scheduling & Dispatch, Estimates & Quotes, Invoicing & Payments, Maintenance Plans). Do not modify any other section/routes/meta.  ￼
+
+FILES (add/update only)
+	•	client/src/components/home/FieldToCash.tsx (NEW – the whole section)
+	•	client/src/data/fieldToCash.ts (NEW – step data)
+	•	client/src/pages/Home.tsx (insert component below the logo row, before pricing/others)
+	•	No other files changed.
+
+DESIGN (mobile-first, LinkServicePro look)
+	•	Section container: .container mx-auto px-4 sm:px-6 lg:px-8.
+	•	Visual style: keep our blueprint backdrop; cards on a navy panel with soft inner border; subtle glow on the active step.
+	•	Layout:
+	•	Mobile (default): vertical accordion-like steps; each step expands to show a small visual.
+	•	lg+: 12-column grid. Left rail (text) lg:col-span-7, right visual lg:col-span-5 with a device card that crossfades per active step.
+	•	Spacing: section py-14 sm:py-16 lg:py-24. Step cards rounded-xl border-white/10 bg-white/5 p-4 sm:p-5.
+	•	Colors: keep current palette; accent chips use our brand blue for LinkServicePro.
+	•	Icons: use Lucide (Calendar, FileSpreadsheet, CreditCard, Repeat).
+
+BEHAVIOR
+	•	As you scroll, whichever step is most in view becomes active (IntersectionObserver at ~50%). The right device card crossfades to that step’s image. (On mobile, images appear inline per step—no sticky.)
+	•	Reduced motion: no fade—just switch instantly / inline.
+	•	Each step has a CTA to your existing feature pages (/features/scheduling-dispatch, /features/estimates-quotes, /features/invoicing-payments, /features/maintenance-plans).  ￼
+	•	A11y: sticky visual is aria-hidden="true" on desktop; headings are H2s/H3s; links have discernible names.
+
+SEO
+	•	One H2 for the section (“From First Call to Cash—All in One Flow”), H3s for steps.
+	•	Keep Helmet unchanged elsewhere.
+
+CODE — implement exactly
+
+1) Data
+
+// client/src/data/fieldToCash.ts
+export type FlowStep = {
+  key: "schedule" | "quote" | "invoice" | "recurring";
+  title: string;
+  blurb: string;
+  ctaText: string;
+  ctaHref: string;
+  img: { src: string; alt: string };
+  icon: "calendar" | "file" | "credit" | "repeat";
+};
+
+export const flowSteps: FlowStep[] = [
+  {
+    key: "schedule",
+    title: "Schedule & Dispatch",
+    blurb: "Assign jobs in minutes, route crews, and keep the day on track.",
+    ctaText: "Explore Scheduling",
+    ctaHref: "/features/scheduling-dispatch",
+    img: { src: "/img/flow/schedule.jpg", alt: "Dispatcher assigning a new job in calendar" },
+    icon: "calendar",
+  },
+  {
+    key: "quote",
+    title: "Estimates & Quotes",
+    blurb: "Create clean, professional estimates and get approvals fast.",
+    ctaText: "Build Better Quotes",
+    ctaHref: "/features/estimates-quotes",
+    img: { src: "/img/flow/quotes.jpg", alt: "Estimate approval on mobile" },
+    icon: "file",
+  },
+  {
+    key: "invoice",
+    title: "Invoicing & Payments",
+    blurb: "Invoice the same day and collect payments without the paper chase.",
+    ctaText: "See Invoicing",
+    ctaHref: "/features/invoicing-payments",
+    img: { src: "/img/flow/invoicing.jpg", alt: "Payment confirmation for completed job" },
+    icon: "credit",
+  },
+  {
+    key: "recurring",
+    title: "Maintenance Plans",
+    blurb: "Turn one-offs into predictable revenue with recurring visits.",
+    ctaText: "Maintenance Plans",
+    ctaHref: "/features/maintenance-plans",
+    img: { src: "/img/flow/recurring.jpg", alt: "Recurring plan schedule and tasks" },
+    icon: "repeat",
+  },
+];
+
+2) Component
+
+// client/src/components/home/FieldToCash.tsx
+import * as React from "react";
+import { flowSteps } from "../../data/fieldToCash";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Calendar, FileText, CreditCard, RefreshCcw } from "lucide-react";
+
+function IconFor({ name }: { name: "calendar" | "file" | "credit" | "repeat" }) {
+  switch (name) {
+    case "calendar": return <Calendar className="size-5" aria-hidden />;
+    case "file": return <FileText className="size-5" aria-hidden />;
+    case "credit": return <CreditCard className="size-5" aria-hidden />;
+    case "repeat": return <RefreshCcw className="size-5" aria-hidden />;
+  }
+}
+
+export default function FieldToCash() {
+  const [active, setActive] = React.useState(0);
+  const prefersReduce =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  // Observe which step is most visible
+  const refs = React.useMemo(() => flowSteps.map(() => React.createRef<HTMLDivElement>()), []);
+  React.useEffect(() => {
+    const io = new IntersectionObserver((entries) => {
+      let max = { idx: active, ratio: 0 };
+      for (const e of entries) {
+        const idx = refs.findIndex(r => r.current === e.target);
+        if (e.intersectionRatio > max.ratio) max = { idx, ratio: e.intersectionRatio };
+      }
+      if (max.ratio >= 0.5 && max.idx !== active) setActive(max.idx);
+    }, { threshold: [0, 0.5, 1] });
+    refs.forEach(r => r.current && io.observe(r.current!));
+    return () => io.disconnect();
+  }, [refs, active]);
+
+  return (
+    <section className="relative isolate py-14 sm:py-16 lg:py-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <header className="max-w-2xl">
+          <p className="text-xs uppercase tracking-widest text-white/60">Workflow</p>
+          <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-white">
+            From first call to cash—one clean flow
+          </h2>
+          <p className="mt-3 text-white/80">
+            LinkServicePro unifies the everyday steps contractors actually run: schedule the job, win the work, get paid, and lock in recurring revenue.
+          </p>
+        </header>
+
+        <div className="mt-10 grid gap-8 lg:grid-cols-12 lg:gap-8">
+          {/* LEFT: step list */}
+          <div className="lg:col-span-7 space-y-5">
+            {flowSteps.map((step, i) => (
+              <div
+                key={step.key}
+                ref={refs[i]}
+                className={`rounded-xl border bg-white/5 p-4 sm:p-5 transition
+                           ${i === active ? "border-white/20 ring-1 ring-white/20 bg-white/7" : "border-white/10"}`}
+              >
+                <div className="flex items-start gap-3">
+                  <span className={`shrink-0 rounded-md p-2 ${i === active ? "bg-white/15" : "bg-white/10"}`}>
+                    <IconFor name={step.icon} />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-lg font-semibold text-white">{step.title}</h3>
+                    <p className="mt-1 text-sm text-white/80">{step.blurb}</p>
+                    <Link to={step.ctaHref} className="mt-3 inline-flex text-brand-300 hover:text-brand-200 underline underline-offset-4">
+                      {step.ctaText} →
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Mobile inline image */}
+                <img
+                  src={step.img.src}
+                  alt={step.img.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="mt-4 w-full rounded-lg object-cover lg:hidden"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* RIGHT: device card that crossfades on desktop only */}
+          <div className="lg:col-span-5 hidden lg:block">
+            <div className="sticky top-24">
+              <div className="relative h-[56vh] md:h-[60vh] w-full overflow-hidden rounded-xl bg-black/10" aria-hidden>
+                <AnimatePresence initial={false}>
+                  <motion.img
+                    key={prefersReduce ? `static-${active}` : active}
+                    src={flowSteps[active].img.src}
+                    alt=""
+                    className="absolute inset-0 size-full object-cover"
+                    initial={{ opacity: prefersReduce ? 1 : 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: prefersReduce ? 1 : 0 }}
+                    transition={{ duration: prefersReduce ? 0 : 0.25, ease: "linear" }}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </AnimatePresence>
+                {/* subtle grid overlay for blueprint feel */}
+                <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:16px_16px]" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+3) Insert into the homepage
+
+// client/src/pages/Home.tsx (or your home composition file)
+// Import:
+import FieldToCash from "../components/home/FieldToCash";
+
+// Place it directly below the logo marquee and above pricing/other sections.
+<FieldToCash />
+
+DO / DON’T
+	•	Do keep copy strictly about LinkServicePro’s real features and routes.  ￼
+	•	Do keep the animation minimal and battery-friendly; rely on CSS where possible, Motion only for the short fade.
+	•	Don’t add BuildOps wording, feature names, or layouts.
+	•	Don’t change Helmet, header/footer, or other sections.
+
+QA (acceptance)
+	•	Mobile: four stacked steps with inline images; no sticky; clear CTAs to the real feature pages.
+	•	Desktop: left list highlights as you scroll; right device card crossfades; sticky at top-24.
+	•	Reduced motion: instant swaps / inline images, no fades.
+	•	A11y: proper headings; sticky visual aria-hidden; link names are descriptive.
+
+⸻
+
+Once this ships, we can tune microcopy or swap images, then move on to a unique “Differentiators” band that contrasts LinkServicePro vs. cobbled-together tools (using your Features & Integrations inventory).  ￼

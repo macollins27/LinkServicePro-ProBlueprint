@@ -1,0 +1,210 @@
+Perfect—here’s a single, paste-ready **Master Replit Agent Prompt** that will:
+
+1. create the four legal pages,
+2. wire them into your header/footer,
+3. add SEO + JSON-LD, anchor TOCs, and consistent styling,
+4. add consent checkboxes to signup forms,
+5. keep everything aligned with your current Next.js + Tailwind + shadcn/ui stack without forcing a rebuild.
+
+---
+
+## 🔧 MASTER REPLIT AGENT PROMPT (paste this as one message)
+
+You are Replit Agent. Update the existing Next.js + TypeScript + Tailwind + shadcn/ui project **without changing global tech choices**. Do NOT alter the hero carousel or existing homepage structure. Implement four legal pages and wire them up sitewide.
+
+### A) ROUTING & LAYOUT (non-breaking)
+
+1. **Determine router**:
+
+   * If `app/` directory exists → use **App Router**.
+   * Else → use **Pages Router** with `pages/`.
+2. Create a **shared legal layout** and **prose styling**:
+
+   * Component: `components/legal/LegalLayout.tsx`
+   * Requirements:
+
+     * Max width container `max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10`
+     * Local table of contents (TOC) on top; generate from `h2` headings (anchors).
+     * `Prose` styles for readable legal copy (increase line-height, larger headings, spaced lists).
+     * A sticky “Updated” meta row with the Last Updated date and contact info.
+     * CTA row at bottom with the site’s **standard buttons**:
+
+       * Primary: “Start Free”
+       * Secondary: “View Pricing”
+     * Respect our button spec (solid #0B5FFF primary, outline secondary, ring etc.).
+
+Create a light wrapper class for content:
+`prose prose-slate max-w-none prose-headings:scroll-mt-24 prose-h1:text-slate-900 prose-h2:text-slate-900 prose-a:text-[#0B5FFF] dark:prose-invert`
+
+3. **Helper**: `components/legal/LegalMeta.tsx` to inject page `<title>`, `<meta name="description">`, canonical (if `NEXT_PUBLIC_SITE_URL`), and JSON-LD (`WebPage` + `BreadcrumbList`).
+
+### B) PAGES & CONTENT
+
+Create **four routes** with full content below. Use **App Router** paths if available:
+
+* `/app/(marketing)/terms/page.tsx`
+* `/app/(marketing)/privacy/page.tsx`
+* `/app/(marketing)/sla/page.tsx`
+* `/app/(marketing)/refunds/page.tsx`
+
+Else, **Pages Router**:
+
+* `/pages/terms.tsx`
+* `/pages/privacy.tsx`
+* `/pages/sla.tsx`
+* `/pages/refunds.tsx`
+
+Each page must:
+
+* Import `LegalLayout` + `LegalMeta`.
+* Render H1, updated date, company block, TOC (auto-generated from h2), the legal body (below), and the bottom CTA band.
+* SEO:
+
+  * Terms: title “Terms of Service | LinkServicePro”, description “Contract terms for using LinkServicePro…”
+  * Privacy: title “Privacy Policy | LinkServicePro”, description “How LinkServicePro collects, uses, and protects data…”
+  * SLA: title “Service Level Agreement (SLA) | LinkServicePro”, description “Uptime target, support response targets, service credits…”
+  * Refunds: title “Refund Policy | LinkServicePro”, description “Monthly and annual subscriptions, overages, usage fees, SLA credits…”
+* JSON-LD:
+
+  * `@type: WebPage` with matching name/description.
+  * `BreadcrumbList` for Home → (Page).
+* **Last Updated constant**: `const UPDATED = "October 30, 2025";`
+* Company block (consistent on all pages):
+
+  ```
+  LinkServicePro • 2280 Union Blvd, Bay Shore, NY 11706
+  info@bimscorp.com • (631) 206-3700
+  ```
+
+#### **Terms of Service – body (paste verbatim into the page)**
+
+* H1: Terms of Service
+* Then include the full Terms text from my previous message, exactly as written, with `h2` sections (Acceptance, The Service, License, Account, Acceptable Use, Payment/Billing/Taxes, Plan Changes, Term/Termination, SLA reference, Privacy reference, Confidentiality, Disclaimers, Limitation of Liability, Indemnification, Governing Law, Changes).
+* Add link xrefs: **SLA** → `/sla`, **Privacy** → `/privacy`, **Refunds** → `/refunds`.
+
+#### **Privacy Policy – body**
+
+* H1: Privacy Policy
+* Paste the full Privacy text from my previous message, exactly as written, with `h2` sections (What this covers, Information we collect, How we use, Legal bases, Sharing, Retention, Security, Your rights, Children, International transfers, Changes, Contact).
+* Include a short **Cookies** subsection under “Information we collect”.
+* Link xrefs: **Terms** → `/terms`.
+
+#### **Service Level Agreement (SLA) – body**
+
+* H1: Service Level Agreement (SLA)
+* Paste the full SLA text from my previous message, exactly as written, with `h2` sections (Definitions, Uptime Commitment 99.5%, Exclusions, Scheduled Maintenance, Support & Response Targets, Service Credits and How to Request, Changes).
+* Link xrefs: **Terms** → `/terms`, **Refunds** → `/refunds`.
+
+#### **Refund Policy – body**
+
+* H1: Refund Policy
+* Paste the full Refund text from my previous message, exactly as written, with `h2` sections (Free Plan, Monthly, Annual, Add-ons/Overage/Usage, Taxes, SLA Exception, Chargebacks/Disputes, How to Request Review, Changes).
+* Link xrefs: **SLA** → `/sla`, **Terms** → `/terms`.
+
+### C) TOC + ANCHORS
+
+* In `LegalLayout`, parse the page’s child content for `h2` headings (React children walk or accept a `headings` prop) and render an on-page TOC at the top:
+
+  * “On this page” small heading.
+  * List of anchor links that scroll to each section (`id` slug from heading text).
+  * TOC must be keyboard accessible and have visible focus rings.
+
+### D) FOOTER LINKS (and header optional)
+
+* In the global footer component (detect: `components/Footer*` or `app/(marketing)/_components/Footer*` or similar), add a **Legal** column with links:
+
+  * Terms → `/terms`
+  * Privacy → `/privacy`
+  * SLA → `/sla`
+  * Refunds → `/refunds`
+* If there’s a “Company” or “Resources” menu in header, add “Legal” → `/terms` (optional).
+
+### E) CONSENT CHECKBOXES ON SIGNUP & FORMS
+
+Locate the **signup/trial** form (search for components named `Signup`, `StartFree`, `AuthForm`, etc.). Without changing workflow, add required checkboxes **immediately above** the submit button:
+
+1. **Terms & Privacy consent (required)**
+   Label (wrap links):
+
+```
+<input type="checkbox" required aria-describedby="tos-pp-desc" />
+I agree to the <a href="/terms" class="text-[#0B5FFF] underline">Terms of Service</a> and <a href="/privacy" class="text-[#0B5FFF] underline">Privacy Policy</a>.
+<small id="tos-pp-desc" class="sr-only">Agreement required to use the service</small>
+```
+
+2. **Service-related SMS consent (required if phone is collected)**
+
+```
+<input type="checkbox" required aria-describedby="sms-desc" />
+I consent to receive service-related SMS (e.g., appointment reminders, verification). Message & data rates may apply.
+<small id="sms-desc" class="sr-only">SMS consent required for service messages</small>
+```
+
+* Enforce focus-visible rings and proper error messages if unchecked.
+* For forms on `/pricing` calculator or contact forms, **do not duplicate** required checkboxes unless those forms create accounts; otherwise, include a small line: “By submitting, you agree to our Terms and Privacy.”
+
+### F) ACCESSIBILITY & STYLE
+
+* Use one `<h1>` per page, then `<h2>` for sections.
+* Ensure link contrast meets WCAG AA.
+* All interactive elements (`a`, `button`, `input`, `details/summary`) must include `focus-visible:ring-2 ring-[#0B5FFF] ring-offset-2`.
+* Use semantic lists for numbered clauses.
+
+### G) SEO & STRUCTURED DATA
+
+For each legal page:
+
+* Set `<title>` and `<meta description>` as noted.
+* If `process.env.NEXT_PUBLIC_SITE_URL` exists, set `<link rel="canonical">`.
+* JSON-LD:
+
+  * `WebPage` with `name`, `description`, `url`, `dateModified` = UPDATED.
+  * `BreadcrumbList`:
+
+    * Home → current page.
+
+### H) TESTS / VALIDATION
+
+* Build and run locally.
+* Verify:
+
+  * Routes resolve and render (Terms, Privacy, SLA, Refunds).
+  * Footer links work on all breakpoints.
+  * TOC anchors scroll correctly with header offset.
+  * Checkboxes block submission when unchecked and show error text.
+  * Titles and meta appear in page source.
+  * No console/type errors.
+
+### I) CODE STUBS (create if helpful)
+
+If project lacks a generic “Prose” class, add to `globals.css` (keep minimal):
+
+```css
+.prose h1 { margin-bottom: 0.75rem; }
+.prose h2 { margin-top: 2rem; margin-bottom: 0.5rem; }
+.prose p, .prose li { line-height: 1.75; }
+```
+
+### J) CONTENT (paste blocks verbatim)
+
+Use the **exact legal texts** provided in the previous assistant message for:
+
+* Terms of Service
+* Privacy Policy
+* Service Level Agreement
+* Refund Policy
+
+(If those aren’t cached, prompt me to reprint them and then paste verbatim.)
+
+---
+
+**Deliverables summary**
+
+* `components/legal/LegalLayout.tsx`
+* `components/legal/LegalMeta.tsx`
+* 4 pages at `/terms`, `/privacy`, `/sla`, `/refunds` (App Router or Pages Router, matching current project)
+* Footer links wired
+* Signup form with required Terms/Privacy + SMS consent checkboxes
+* SEO + JSON-LD + TOC anchors + accessible styles
+
+Do not modify unrelated pages, the homepage hero carousel, or pricing mechanics. Keep changes surgical and reversible.

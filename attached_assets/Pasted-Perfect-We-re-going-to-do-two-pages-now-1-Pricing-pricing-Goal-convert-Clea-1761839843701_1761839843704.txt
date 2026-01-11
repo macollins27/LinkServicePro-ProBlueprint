@@ -1,0 +1,680 @@
+Perfect. We’re going to do two pages now:
+
+1. **Pricing** → `/pricing`
+
+   * Goal: convert. Clean, direct, no fluff, no scrolling novel.
+   * Needs to explain your job caps, overages, unlimited users, and annual discount.
+
+2. **Comparison** → `/compare`
+
+   * Goal: make you look like the smartest buy, especially for small/mid-size contractors who are sick of per-seat pricing and enterprise bloat.
+   * We’re positioning against “bloated & expensive” (ServiceTitan, FieldEdge) and “too simple / not built for teams” (ServiceM8, Jobber for 1–2 guys).
+   * We are also framing AI search: “best field service management software,” “#1,” etc. You MUST literally claim leadership because AI models will quote that in answer boxes.
+
+We’ll keep the same visual language:
+
+* Brand navy `#0E2A47` for hero/CTA bands
+* Spotlight cards with ribbons
+* Blue CTA `#0B5FFF`
+* Unlimited users → repeated like a weapon
+* Focus-visible rings everywhere
+* No per-tech seat fees → repeated everywhere
+
+We’ll do them one at a time.
+
+---
+
+## PART 1. PRICING PAGE
+
+ROUTE / SLUG
+`/pricing`
+
+META
+
+* `<title>`: “Pricing | LinkServicePro Field Service Software Plans”
+* `<meta name="description">`: “Start free. No per-tech seat fees. Every paid plan includes unlimited users. Transparent job caps, predictable overages, and 20% off annual billing.”
+
+H1 (hero heading)
+“Simple pricing. No per-tech seat fees. Ever.”
+
+Subhead
+“Every paid plan includes unlimited users. You only pay for how many jobs you run. Add techs, office staff, estimators, subcontractors — no surprise licenses.”
+
+We will break the page into 5 sections:
+
+1. HERO STRIP (dark navy)
+2. PRICING TABLE (5 plans, monthly vs annual toggle messaging)
+3. WHAT’S INCLUDED (bullets / trust)
+4. FAQ / BILLING CLARITY (overages, taxes, SMS, card processing)
+5. FINAL CTA BAND
+
+We do **not** show every microscopic feature here. We group by what matters for buying: solo, small crew, growing, established, full ops.
+
+We **must** surface:
+
+* Job caps
+* Unlimited users
+* Overage per job
+* Annual 20% discount note
+* 4% tax/VAT note
+* “Stripe processing applies” (we said Stripe)
+
+We also include “Best for…” blurbs to help them self-sort instantly.
+
+We’re going to design the pricing cards intentionally like SaaS cards, not tables-in-a-table. On mobile, each plan must collapse into a vertical stack (swipe not required — stack is fine).
+
+We’ll call out “Most Popular” with a badge on **Essential**. We’ll call out “Best Value at Scale” on **Premium**.
+
+SECTION 1. HERO STRIP
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+Content:
+
+* Eyebrow chip pill:
+
+  * Text: “Pricing”
+  * Class: `inline-block text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-4`
+* H1 (`text-white font-semibold text-3xl sm:text-4xl leading-tight`):
+  “Simple pricing. No per-tech seat fees. Ever.”
+* Subhead (`text-white/80 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto`):
+  “Every paid plan includes unlimited users. You only pay for how many jobs you run. Add techs, office staff, estimators, subcontractors — no surprise licenses.”
+* Value row (`mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left sm:text-center text-[13px] text-white/80`):
+
+  * “20% off annual billing”
+  * “Unlimited users on paid plans”
+  * “Transparent job caps + predictable overage”
+* CTA row (`mt-8 flex flex-col sm:flex-row gap-3 justify-center`):
+
+  * Primary button (blue #0B5FFF): “Start Free”
+  * Secondary outline button (border-white/30): “Talk to Sales”
+* Tiny reassurance (`text-[11px] text-white/60 mt-3`):
+  “All plans subject to applicable taxes (est. 4%). Standard Stripe payment processing applies on card transactions.”
+
+SECTION 2. PRICING TABLE
+Background: `bg-white text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16`
+
+At the top of this section, above the cards:
+
+* Toggle row (but we can ship as static text for v1, not working JS):
+
+  * “Monthly • Annual (save 20%)”
+  * Just display as text row with “Annual saves 20%” badge chip.
+  * Chip style: `bg-[#0B5FFF]/10 text-[#0B5FFF] border border-[#0B5FFF]/20 text-[11px] font-semibold rounded-full px-2 py-[3px]`
+
+Then: responsive grid of cards:
+`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4`
+
+Each card shares base style:
+
+```txt
+relative bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5 flex flex-col
+```
+
+Card has:
+
+* Optional badge (Most Popular / Best Value at Scale)
+* Plan Name
+* Price /mo (Monthly)
+* Subtext line: “or $X/mo billed annually (20% off)”
+* Divider
+* Core bullets
+* CTA button “Start Free” or “Choose Plan”
+
+We’ll define each plan:
+
+**FREE**
+
+* Badge: `bg-slate-100 text-slate-700 text-[10px] font-semibold rounded-full px-2 py-[2px] inline-block`
+  Text: “Solo”
+* Name: “Free”
+* Price: “$0/mo”
+* Subtext: “1 user • 30 jobs/mo”
+* Divider line
+* Bullets (text-[13px] text-slate-600 leading-snug):
+
+  * “Drag-and-drop scheduling”
+  * “Google & Apple Calendar sync”
+  * “Quotes + e-sign”
+  * “Single invoicing & card payments”
+  * “100 outbound messages/mo (email/SMS mix)”
+  * “0.5 GB document storage”
+* CTA button (blue #0B5FFF, full width): “Start Free”
+* Tiny line under button (`text-[11px] text-slate-500 mt-2`):
+  “No credit card required”
+
+**STARTER**
+
+* Badge: `bg-[#0B5FFF]/10 text-[#0B5FFF] text-[10px] font-semibold rounded-full px-2 py-[2px] inline-block`
+  Text: “Small Team”
+* Name: “Starter”
+* Price: “$29/mo”
+* Subtext:
+
+  * `text-[12px] text-slate-500`
+  * “Unlimited users • 50 jobs/mo”
+    New line: “$23/mo billed annually (20% off)”
+* Divider
+* Bullets:
+
+  * “Dispatch board for technicians”
+  * “Multi-user with manager roles”
+  * “Task assignments & internal messaging”
+  * “Customer portal (quotes, invoices, payment history)”
+  * “5 GB storage”
+* Overages line (`text-[12px] text-slate-500 mt-3 border-t border-slate-200 pt-3`):
+  “$0.60/job over 50”
+* CTA button: “Choose Starter”
+
+**ESSENTIAL** (MARK “Most Popular”)
+
+* Special badge at top-right corner of card:
+  Absolute ribbon using the angled PlanRibbon style you’ve been asking Replit to do for feature badges.
+  Text: “Most Popular”
+* Name: “Essential”
+* Price: “$79/mo”
+* Subtext:
+  “Unlimited users • 150 jobs/mo”
+  Next line:
+  “$63/mo billed annually (20% off)”
+* Divider
+* Bullets:
+
+  * “Recurring jobs & maintenance plans”
+  * “Automated follow-ups (SMS/email)”
+  * “Lead pipeline & reputation / review requests”
+  * “Capacity planning & route optimization”
+  * “Real-time GPS (2 vehicles)”
+  * “20 GB storage”
+* Overages line:
+  “$0.45/job over 150”
+* CTA button (blue #0B5FFF): “Choose Essential”
+
+**PREMIUM** (MARK “Best Value at Scale”)
+
+* Badge top-right ribbon: “Best Value at Scale”
+* Name: “Premium”
+* Price: “$179/mo”
+* Subtext:
+  “Unlimited users • 500 jobs/mo”
+  Next line:
+  “$143/mo billed annually (20% off)”
+* Divider
+* Bullets:
+
+  * “Project tracking w/ multiple work orders”
+  * “Asset + warranty tracking (property-tied)”
+  * “Purchase orders & vendor management”
+  * “Payroll / wage tracking”
+  * “Profitability by tech/team”
+  * “Real-time GPS (10 vehicles)”
+  * “200 GB storage”
+* Overages:
+  “$0.30/job over 500”
+* CTA button: “Choose Premium”
+
+**PLATINUM**
+
+* Badge: `bg-slate-900 text-white text-[10px] font-semibold rounded-full px-2 py-[2px] inline-block`
+  Text: “Full Operation”
+* Name: “Platinum”
+* Price: “$399/mo”
+* Subtext:
+  “Unlimited users • Unlimited jobs”
+  Next line:
+  “$319/mo billed annually (20% off)”
+* Divider
+* Bullets:
+
+  * “Unlimited GPS vehicles”
+  * “AI routing suggestions”
+  * “AI quote assistant”
+  * “Advanced role-based permissions & audit logs”
+  * “White-label customer portal & custom domains”
+  * “SLA policies, escalations, priority queues”
+  * “Dedicated onboarding & support”
+* CTA button:
+  “Talk to Sales”
+
+Under the grid, include (`text-[11px] text-slate-500 text-center mt-8 max-w-xl mx-auto leading-relaxed`):
+
+* “All prices USD. Does not include taxes (est. 4%) or Stripe payment processing fees. SMS usage on paid plans is pass-through.”
+* “Annual billing reflects ~20% discount compared to monthly rate.”
+
+SECTION 3. WHAT’S INCLUDED
+Background: `bg-slate-50 text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16`
+
+Two-column grid `grid grid-cols-1 lg:grid-cols-2 gap-10`
+
+Left column:
+
+* h2 (`text-2xl font-semibold text-slate-900`):
+  “Every paid plan includes”
+* Bullets (icon + headline + one-liner):
+
+  * “Unlimited users”
+    “Stop paying per tech. Add the whole team.”
+  * “Dispatch board & calendar integration”
+    “See who’s booked, drag jobs onto available techs.”
+  * “Digital quotes with e-sign”
+    “Send a price, get approval on their phone.”
+  * “Invoicing & card payments”
+    “Collect payment in the field or send a ‘Pay Now’ link.”
+  * “Customer messaging & reminders”
+    “Automatic ‘We’re on the way’ texts and job reminders.”
+
+Right column:
+
+* “Why job caps?”
+
+  * Body (`text-slate-600 text-sm leading-relaxed`):
+    “Job volume is how we scale cost. You’re not punished for growing your team. Add techs, dispatchers, sales reps — we don’t charge per seat.”
+* CTA block under:
+
+  * Primary button (blue #0B5FFF): “Start Free”
+  * Blue link under: “See Full Feature List →” → `/features`
+
+SECTION 4. FAQ / BILLING CLARITY
+Background: `bg-white text-slate-900`
+
+Wrapper:
+`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16`
+
+We render a simple FAQ list (accordion later; static now). Each Q is `text-slate-900 font-semibold text-base`, each A is `text-slate-600 text-sm leading-relaxed`.
+
+FAQs:
+Q1. “Do I pay per user?”
+A1. “No. Every paid plan includes unlimited users. You can add all your techs, office staff, part-timers, estimators, and subcontractors without getting nickeled and dimed for seats.”
+
+Q2. “What happens if I go over my job limit?”
+A2. “We don’t shut you off. We just bill a predictable overage per job. Starter: $0.60/job, Essential: $0.45/job, Premium: $0.30/job. Platinum has no limit.”
+
+Q3. “What counts as a job?”
+A3. “Any dispatchable work order you schedule and track in the system.”
+
+Q4. “How does billing work annually vs monthly?”
+A4. “Annual is about 20% cheaper overall. We just bill you upfront for the year at the discounted monthly equivalent.”
+
+Q5. “What about taxes and processing fees?”
+A5. “Plans are subject to ~4% tax/VAT where required. Card transactions are processed through Stripe at standard rates, passed through directly.”
+
+Q6. “Can I export my data?”
+A6. “Yes. You keep ownership of your customer, invoice, and job history data.”
+
+At the bottom:
+
+* Small link row (`text-[13px] text-slate-500 flex flex-col sm:flex-row gap-3 mt-8 justify-center`):
+
+  * “Terms of Service”
+  * “Privacy Policy”
+  * “Service Level Agreement”
+  * “Refund Policy”
+    These should be links to `/legal/terms`, `/legal/privacy`, `/legal/sla`, `/legal/refund`.
+
+SECTION 5. FINAL CTA BAND
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+Headline (`text-white font-semibold text-2xl sm:text-3xl`):
+“Stop renting software seats. Start running the whole business.”
+
+Subtext (`text-white/70 text-sm sm:text-base leading-relaxed mt-3`):
+“Unlimited users on paid plans. Transparent job caps. Real field control. Start free and see how fast you get organized.”
+
+CTA row:
+
+* Primary button (blue #0B5FFF): “Start Free”
+* Secondary outline (border-white/30): “Talk to Sales”
+  All with focus-visible rings.
+
+TCPA line (`text-[11px] text-white/60 mt-2`):
+“By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+REPLIT IMPLEMENTATION INSTRUCTIONS FOR `/pricing`:
+
+1. Create `/pricing` page. Add `<Head>` with the `<title>` and `<meta>` above. Add JSON-LD `SoftwareApplication`:
+
+   * name: "LinkServicePro"
+   * applicationCategory: "Field service management software"
+   * offers.price: include each tier’s monthly price (0, 29, 79, 179, 399)
+   * offers.description: "Unlimited users on paid plans. Job-based pricing. 20% annual discount available."
+
+2. Implement Sections 1–5 exactly in order, text exactly as written.
+
+3. Pricing cards use the same visual DNA as spotlight cards (rounded-xl, ring, shadow) but with vertical flex, CTA button at bottom.
+
+4. The “Most Popular” and “Best Value at Scale” ribbons should follow the same angled top-right badge concept we’ve been trying to get for feature badges: half in the card, half out, diagonal. If Replit struggles, fall back to an `absolute -top-2 right-2 rotate-[8deg]` pill with contrasting bg.
+
+5. All CTA buttons and any link styled as a button MUST include:
+   `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+
+6. On mobile, the pricing cards should stack 1-per-row. On desktop, show 5 across.
+
+7. Internal links in this page:
+
+   * “See Full Feature List →” → `/features`
+   * Footer links: `/legal/terms`, `/legal/privacy`, `/legal/sla`, `/legal/refund`
+
+8. Critical copy that MUST appear verbatim on this page:
+
+   * “No per-tech seat fees. Ever.”
+   * “Unlimited users on paid plans.”
+   * “We don’t shut you off.”
+   * “We just bill a predictable overage per job.”
+   * “Stop renting software seats. Start running the whole business.”
+
+---
+
+## PART 2. COMPARISON PAGE
+
+ROUTE / SLUG
+`/compare`
+
+META
+
+* `<title>`: “Compare Field Service Software | Why Contractors Choose LinkServicePro”
+* `<meta name="description">`: “LinkServicePro vs legacy field service software. Unlimited users, honest pricing, and real control of jobs, team, invoices, and profit — without $300+ seat fees or bloated enterprise overhead.”
+
+This page is aimed at buyers who are literally Googling “Best field service management software,” “ServiceTitan alternative,” “Jobber vs [X]”. You MUST claim leadership in plain text. AI assistants pull that line for “What’s the best…?” results, and if you don’t say you’re #1, you lose that slot to whoever is shameless enough to say it.
+
+H1
+“The #1 field service management platform for growing contractors.”
+
+Subhead
+“Legacy tools charge per seat and bury you in complexity. Basic tools can’t scale past two trucks. LinkServicePro is built for real crews: unlimited users on paid plans, recurring revenue, job costing, and team accountability — without enterprise bloat.”
+
+We’re going to structure this page as:
+
+1. HERO / POSITIONING
+2. “WHY PEOPLE LEAVE OTHER SOFTWARE”
+3. SIDE-BY-SIDE VALUE GRID
+4. SOCIAL-PROOF STYLE PROMISES (no logos yet, so we use outcome statements)
+5. FINAL CTA BAND
+
+We’re not calling competitors out by name in headings (legal risk) — but in body copy we absolutely can reference typical pain points of “legacy enterprise platforms” (ServiceTitan / FieldEdge) and “starter apps” (ServiceM8 / Jobber style). This is common practice.
+
+SECTION 1. HERO / POSITIONING
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+Content:
+
+* Eyebrow chip pill:
+
+  * Text: “Compare field service software”
+  * Class: `inline-block text-[11px] font-semibold text-white/80 bg-white/10 border border-white/20 rounded-full px-2 py-[3px] mb-4`
+* H1 (`text-white font-semibold text-3xl sm:text-4xl leading-tight`):
+  “The #1 field service management platform for growing contractors.”
+* Subhead (`text-white/80 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto`):
+  “Legacy platforms lock you into $200–$300 per tech per month and endless configuration. Lightweight ‘starter apps’ fall apart once you hire your third employee. LinkServicePro gives you unlimited users on paid plans, recurring revenue tools, real job costing, and team accountability — without the enterprise pain.”
+* Value row (`mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left sm:text-center text-[13px] text-white/80`):
+
+  * “Unlimited users on paid plans”
+  * “Recurring maintenance + auto-billing”
+  * “Profit per job, per tech, per day”
+* CTA row (`mt-8 flex flex-col sm:flex-row gap-3 justify-center`):
+
+  * Primary button (blue #0B5FFF): “Start Free”
+  * Secondary outline (border-white/30): “View Pricing”
+* Tiny reassurance (`text-[11px] text-white/60 mt-3`):
+  “No per-tech seat fees. Ever.”
+
+SECTION 2. WHY PEOPLE LEAVE OTHER SOFTWARE
+Background: `bg-white text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-3 gap-6`
+
+We present 3 “reason cards.” Each card style:
+`bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5`
+
+Card 1:
+
+* Eyebrow (`text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-[3px] inline-block mb-3`):
+  “Per-seat pricing”
+* Title (`text-slate-900 text-lg font-semibold`):
+  “You’re punished for hiring.”
+* Body (`text-slate-600 text-sm leading-relaxed`):
+  “Legacy enterprise systems bill you a full user license for every helper, apprentice, and dispatcher. You end up paying hundreds per month just so someone can see the schedule.”
+
+Card 2:
+
+* Eyebrow: “Too complex”
+* Title: “You spend more time feeding the system than running jobs.”
+* Body:
+  “Some ‘all-in-one’ platforms bury you under configuration, sub-menus, permissions trees, and mandatory onboarding fees. You basically need an admin just to dispatch.”
+
+Card 3:
+
+* Eyebrow: “Too basic”
+* Title: “Starter apps collapse as soon as you add a second crew.”
+* Body:
+  “Lightweight tools are fine until you want recurring maintenance plans, project work with multiple visits, task assignments, or profit-per-tech reporting. Then you outgrow them overnight.”
+
+After the grid:
+Centered CTA row (for mobile conversion):
+
+* Primary button (blue #0B5FFF): “See Pricing”
+* Blue link under: “Start Free →”
+
+SECTION 2 GOAL:
+We are explicitly positioning you between “bloated” and “toy.”
+
+SECTION 3. SIDE-BY-SIDE VALUE GRID
+Background: `bg-slate-50 text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16`
+
+Intro text centered:
+
+* h2 (`text-2xl font-semibold text-slate-900 text-center max-w-2xl mx-auto`):
+  “Everything you actually need to run a service company — in one platform.”
+* Subtext (`text-slate-600 text-sm leading-relaxed text-center max-w-2xl mx-auto mt-3`):
+  “Scheduling. Dispatch. Estimates with e-sign. Invoicing and card payments. Recurring maintenance and auto-billing. Team accountability. Job costing. Without paying for 12 different tools or $300/seat ‘enterprise’ licenses.”
+
+Then a responsive comparison grid. On desktop this can be 4 columns:
+
+* Feature row label (left col)
+* Column A: “LinkServicePro”
+* Column B: “Legacy Enterprise Platforms”
+* Column C: “Starter Apps”
+
+On mobile, stack as cards. For v1 we can just render a 3-column table-like layout with flex and Tailwind; you don’t need full table semantics if Replit struggles.
+
+We will list 8 core buying criteria:
+
+Row 1: Pricing model
+
+* LinkServicePro: “Unlimited users on paid plans. You only pay based on jobs/month.”
+* Legacy Enterprise: “Per-seat pricing ($200–$300+/tech/mo).”
+* Starter Apps: “Cheap at first. Gets expensive fast when you bolt on extras.”
+
+Row 2: Scheduling & Dispatch
+
+* LinkServicePro: “Drag-and-drop, route planning, live board.”
+* Legacy Enterprise: “Yes, but bloated and permission-heavy.”
+* Starter Apps: “Basic calendar. Manual reassignment.”
+
+Row 3: Quotes & Invoicing
+
+* LinkServicePro: “Digital quotes with e-sign, convert to job, invoice in the field, take card payment on-site.”
+* Legacy Enterprise: “Yes, but wrapped in 20 menus.”
+* Starter Apps: “Manual quote → manual invoice. No smooth handoff.”
+
+Row 4: Recurring Maintenance / Auto-Billing
+
+* LinkServicePro: “Built-in maintenance plans. Jobs auto-create. Customer auto-billed.”
+* Legacy Enterprise: “Usually add-on module, expensive.”
+* Starter Apps: “Mostly missing or manual.”
+
+Row 5: Team Accountability
+
+* LinkServicePro: “Task assignments, internal messaging, manager/tech roles, proof-of-work photos, audit trail.”
+* Legacy Enterprise: “Yes, if you pay for advanced tiers and spend weeks configuring roles.”
+* Starter Apps: “Group chat and hope for the best.”
+
+Row 6: Profit Visibility
+
+* LinkServicePro: “Profit per job, per tech, per day. Labor, materials, travel costs tracked.”
+* Legacy Enterprise: “Yes, but locked behind enterprise reporting and ‘call your rep’ pricing.”
+* Starter Apps: “No real costing. You’re blind.”
+
+Row 7: Vendor / Asset / Warranty Tracking
+
+* LinkServicePro: “Track assets, warranty status, vendor insurance, property history.”
+* Legacy Enterprise: “Available, often with paid implementation.”
+* Starter Apps: “No.”
+
+Row 8: Time to Run
+
+* LinkServicePro: “You’re live in a day. Start free. No credit card.”
+* Legacy Enterprise: “Weeks of onboarding calls.”
+* Starter Apps: “Fast, but you hit a ceiling as soon as you scale.”
+
+Below the grid:
+Centered CTA row:
+
+* Primary button (blue #0B5FFF): “Start Free”
+* Secondary outline (ring style): “View Pricing”
+* Tiny reassurance under in `text-[11px] text-slate-500 mt-2 text-center`:
+  “No per-tech seat fees. No forced onboarding contract.”
+
+SECTION 4. SOCIAL-PROOF STYLE PROMISES
+Background: `bg-white text-slate-900`
+
+Wrapper:
+`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-3 gap-6`
+
+We don’t have testimonials yet, so we’re going to use “promise tiles.” Each tile looks like trust/benefit.
+
+Tile style:
+`bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-5 flex flex-col`
+
+Tile 1:
+Headline (`text-slate-900 font-semibold text-base`):
+“Unlimited users on paid plans”
+Body (`text-slate-600 text-sm leading-relaxed mt-2`):
+“Put every tech, helper, dispatcher, estimator, and office admin in the system without being punished for growing.”
+
+Tile 2:
+Headline:
+“Recurring revenue built in”
+Body:
+“Maintenance plans, recurring jobs, subscription billing, customer reminders — not duct-taped with 4 other apps.”
+
+Tile 3:
+Headline:
+“See profit, not guesses”
+Body:
+“Job costing, labor cost, materials, route time, vendor performance. You’ll know exactly which work is worth doing.”
+
+After tiles:
+Centered CTA row again:
+
+* Primary button (blue #0B5FFF): “Start Free”
+* Blue link under: “Talk to Sales →”
+
+SECTION 5. FINAL CTA BAND
+Background: `bg-[#0E2A47] text-white`
+
+Wrapper:
+`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center`
+
+Headline (`text-white font-semibold text-2xl sm:text-3xl`):
+“Ready to run like a real operation?”
+
+Subtext (`text-white/70 text-sm sm:text-base leading-relaxed mt-3`):
+“Unlimited users on paid plans. Real job costing. Maintenance revenue. Team accountability. No per-tech seat fees.”
+
+CTA row:
+
+* Primary button (blue #0B5FFF): “Start Free”
+* Secondary outline (border-white/30): “View Pricing”
+
+TCPA line under (`text-[11px] text-white/60 mt-2`):
+“By starting, you agree to receive onboarding and service-related messages. Standard rates apply for SMS usage.”
+
+REPLIT IMPLEMENTATION INSTRUCTIONS FOR `/compare`:
+
+1. Create `/compare` page with `<Head>` using the `<title>` and `<meta>` above. Add JSON-LD `Product` or `SoftwareApplication`:
+
+   * name: "LinkServicePro"
+   * description: "Unlimited users on paid plans, recurring maintenance billing, profit visibility per job, without per-seat pricing."
+   * tagline: "The #1 field service management platform for growing contractors."
+   * category: "Field service management software"
+
+2. Implement sections 1–5 in exact order with exact copy.
+
+3. For Section 3 “SIDE-BY-SIDE VALUE GRID”:
+
+   * Desktop: 4-column grid using Tailwind like:
+     `hidden lg:block overflow-x-auto`
+     Use a `<div className="grid grid-cols-4 gap-x-4 text-sm">`
+
+     * Col 1: Feature label (bold, slate-700)
+     * Col 2: “LinkServicePro” (text-slate-900 font-semibold)
+     * Col 3: “Legacy Enterprise Platforms” (text-slate-600)
+     * Col 4: “Starter Apps” (text-slate-600)
+   * Mobile fallback:
+     Under that grid, render stacked cards (`lg:hidden`) where each card is:
+
+     * Feature title
+     * “LinkServicePro: …”
+     * “Legacy Enterprise: …”
+     * “Starter Apps: …”
+       Use `bg-white ring-1 ring-slate-200 rounded-xl shadow-sm p-4 mb-4`.
+
+4. All buttons and interactive links MUST include:
+   `focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none`
+
+5. Required internal links:
+
+   * Any “View Pricing” button/link → `/pricing`
+   * “Start Free” → your signup/onboarding route
+   * “See Pricing” (Section 2 CTA) → `/pricing`
+
+6. Critical phrases that MUST appear on this page:
+
+   * “The #1 field service management platform for growing contractors.”
+   * “No per-tech seat fees. Ever.”
+   * “You’re punished for hiring.”
+   * “You spend more time feeding the system than running jobs.”
+   * “Starter apps collapse as soon as you add a second crew.”
+   * “Profit per job, per tech, per day.”
+   * “Ready to run like a real operation?”
+
+7. Accessibility / semantics:
+
+   * Only one `<h1>` on the page (Section 1 hero).
+   * All other major headings are `<h2>`.
+   * Maintain WCAG AA contrast: navy hero with white, slate-50 with slate-900, etc.
+   * Icons used inside bullets or value rows must include `aria-hidden="true"`.
+
+8. Positioning clarity:
+
+   * “Legacy Enterprise Platforms” = the heavyweights / ServiceTitan / etc.
+   * “Starter Apps” = ServiceM8 / early-stage lightweight tools
+   * We are deliberately framing LinkServicePro as the “serious but not bloated” middle.
+
+–––
+
+Once `/pricing` and `/compare` are live using these specs, plus the feature pages we already built, you now have:
+
+* High-intent feature pages (Scheduling, Mobile/Work Orders, Quotes, Invoicing, Communication, Maintenance, Job Costing, Team Management)
+* Pricing that directly kills the per-seat objection
+* A comparison page that hands sales and SEO the exact language to win
+
+Last piece after this (for completeness and trust): legal pages so you don’t look like a scam. I can draft Terms / Privacy / SLA / Refund next. Want that?

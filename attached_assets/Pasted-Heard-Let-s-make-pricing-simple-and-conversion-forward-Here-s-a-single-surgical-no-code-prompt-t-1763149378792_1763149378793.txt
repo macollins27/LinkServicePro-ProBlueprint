@@ -1,0 +1,177 @@
+Heard. Let’s make pricing simple and conversion-forward. Here’s a single, surgical, no-code prompt to rebuild a mobile-first Pricing section that’s crystal clear, uses an attached email field + button, and fits your global container. It replaces any pricing content currently on the homepage.
+
+⸻
+
+Task
+
+Replace the current pricing area with a mobile-first Pricing band that communicates job-based pricing and unlimited users, offers three sensible presets by job volume, and captures leads via an email input with the button attached on the right. No tooltips, no portals.
+
+Placement & scope
+	•	Lives after Quick Start and before Blog/Resources.
+	•	Update only this section and its data/config. Do not change routes, header, or other sections.
+
+Objectives (what this section must communicate)
+	•	Pricing is job-based (not per seat).
+	•	Unlimited users on paid plans.
+	•	Three presets so buyers self-identify quickly.
+	•	Primary conversion: Get Started Free via attached email CTA; Secondary: Talk to an expert.
+
+⸻
+
+Structure (mobile → desktop)
+	1.	Header (left-aligned, inside global container)
+	•	Eyebrow: Pricing (keep eyebrow style; not blue)
+	•	H2: Job-based pricing, unlimited users
+	•	Support: Add as many people as you need—pricing scales with the work, not headcount.
+	2.	Job-volume presets (radio pills)
+	•	Three pills: Small Team (~0–50 jobs / month), Growing Ops (~51–200 jobs / month), Multi-Crew (200+ jobs / month).
+	•	Acts as a radiogroup with aria-selected, keyboard Left/Right/Home/End.
+	•	Selecting a pill updates the “Best for …” text on tier cards (no price math on page).
+	3.	Tier cards (3, equal height)
+	•	Titles: Starter, Growth, Pro.
+	•	Top chip on every card: Unlimited users.
+	•	“Best for …” line reflects the selected preset.
+	•	Bullets (max 5 each):
+	•	Starter: Projects & work orders, Quotes & invoices, Mobile field app, Basic reporting, Email support
+	•	Growth: Everything in Starter, Employee labor & payroll, GPS-verified timesheets, Property Linkware integration, Priority support
+	•	Pro: Everything in Growth, Advanced project roll-ups, Custom workflows, API access, SLA support
+	•	Small Select plan button on each card scroll-focuses the form below and sets a hidden { selected_plan }.
+	4.	Pricing facts strip (one line, low contrast)
+	•	Unlimited users on paid plans • Cancel anytime • No credit card required to start
+	5.	Email lead form (attached control) — primary CTA
+	•	One input + attached button (shared border radius; no gap).
+	•	Placeholder: Enter your email
+	•	Button text: Get Started Free →
+	•	Validation on submit (reasonable regex); inline error under field; success message: You’re in—check your email to get started.
+	•	Submit to existing handler or stub POST /api/lead with { email, source: "home_pricing", selected_volume, selected_plan }.
+	•	Under form: muted xs legal line By continuing you agree to our Terms and acknowledge our Privacy Policy.
+	•	Tiny secondary link: Talk to an expert → existing contact/demo route.
+	6.	FAQ teaser (single line)
+	•	Questions on billing or migrations? See our Pricing FAQ → (link to your FAQ route).
+
+⸻
+
+Visual & motion
+	•	Use existing tokens (navy canvas, rounded-xl, subtle inner borders).
+	•	Cards: equal heights, compact padding; no Masonry.
+	•	Motion limited to pill selection/hover and form focus; respect prefers-reduced-motion. No carousels, no auto-animation.
+
+⸻
+
+Accessibility
+	•	One h2 for the section; card titles are h3.
+	•	Radio pills: role="radiogroup" + each pill role="radio", aria-checked, keyboard Left/Right/Home/End.
+	•	Email input has a visible or sr-only label; type="email", autocomplete="email".
+	•	Error/success tied via aria-describedby; messages announced with aria-live="polite".
+	•	Buttons/links ≥44px; visible focus rings.
+
+⸻
+
+Performance
+	•	No tooltips, no portals, no third-party embeds.
+	•	Zero CLS: fixed paddings, consistent card heights, intrinsic sizes for any icons/images (if used).
+
+⸻
+
+Data model (create a small constants file)
+
+// pricingData.ts (or JSON)
+
+export const PRICING_COPY = {
+  eyebrow: "Pricing",
+  title: "Job-based pricing, unlimited users",
+  support: "Add as many people as you need—pricing scales with the work, not headcount.",
+  facts: ["Unlimited users on paid plans", "Cancel anytime", "No credit card required to start"],
+  form: {
+    placeholder: "Enter your email",
+    button: "Get Started Free →",
+    endpoint: "/api/lead",
+    source: "home_pricing",
+    success: "You’re in—check your email to get started."
+  },
+  faqTeaser: {
+    text: "Questions on billing or migrations? See our Pricing FAQ →",
+    href: "/pricing/faq"
+  }
+};
+
+export const PRICING_PRESETS = [
+  { key: "small",  label: "Small Team",  range: "~0–50 jobs / month" },
+  { key: "growth", label: "Growing Ops", range: "~51–200 jobs / month" },
+  { key: "multi",  label: "Multi-Crew",  range: "200+ jobs / month" }
+];
+
+export const PRICING_TIERS = [
+  {
+    key: "starter",
+    name: "Starter",
+    bullets: [
+      "Projects & work orders",
+      "Quotes & invoices",
+      "Mobile field app",
+      "Basic reporting",
+      "Email support"
+    ]
+  },
+  {
+    key: "growth",
+    name: "Growth",
+    bullets: [
+      "Everything in Starter",
+      "Employee labor & payroll",
+      "GPS-verified timesheets",
+      "Property Linkware integration",
+      "Priority support"
+    ]
+  },
+  {
+    key: "pro",
+    name: "Pro",
+    bullets: [
+      "Everything in Growth",
+      "Advanced project roll-ups",
+      "Custom workflows",
+      "API access",
+      "SLA support"
+    ]
+  }
+];
+
+⸻
+
+Copy to render (exact strings)
+	•	Eyebrow: Pricing
+	•	H2: Job-based pricing, unlimited users
+	•	Support: Add as many people as you need—pricing scales with the work, not headcount.
+	•	Facts: Unlimited users on paid plans • Cancel anytime • No credit card required to start
+	•	Form placeholder: Enter your email • Button: Get Started Free → • Success: You’re in—check your email to get started.
+	•	Secondary link: Talk to an expert
+
+⸻
+
+Interaction rules
+	•	Default preset = Small Team.
+	•	Selecting a tier’s Select plan button: focus the email field and set hidden { selected_plan }.
+	•	Changing presets updates each card’s “Best for … jobs/month” line.
+	•	Pressing Enter in the field submits; disable the button while submitting; no page jump on success.
+
+⸻
+
+Analytics
+	•	pricing.view (once when ≥35% of section in view)
+	•	pricing.preset_change { preset }
+	•	pricing.select_plan_click { plan }
+	•	pricing.submit { email_domain, source: "home_pricing", selected_plan, selected_volume }
+	•	pricing.contact_click
+
+⸻
+
+Acceptance criteria (verify before finishing)
+	1.	Old pricing content is replaced; new band renders inside the global container with left-aligned headings.
+	2.	Radio pill presets are keyboard-navigable; visible focus states; no horizontal scroll on mobile.
+	3.	Three tier cards have equal heights, an Unlimited users chip, and working Select plan hooks that focus the form.
+	4.	The attached email CTA validates and submits; error/success states are accessible with aria-live.
+	5.	Facts strip and FAQ teaser are present; no tooltips/portals/third-party scripts; Lighthouse mobile shows no CLS and passes contrast.
+
+—
+When this ships, we’ll roll into Blog/Resources with the same container rhythm and a compact card rail that pulls recent posts.

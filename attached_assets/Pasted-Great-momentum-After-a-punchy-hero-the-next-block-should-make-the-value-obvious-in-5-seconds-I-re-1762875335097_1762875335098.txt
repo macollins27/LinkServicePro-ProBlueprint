@@ -1,0 +1,156 @@
+Great momentum. After a punchy hero, the next block should make the value obvious in 5 seconds. I recommend a **“Three Outcomes”** section (static, no tabs) that says exactly what they get in one platform—schedule jobs, send estimates, get paid. Plain language, short bullets, one small CTA per card. This earns the right to scroll before you show industries or feature depth.
+
+Here’s a drop-in prompt for Replit that adds this section **right under the hero**. It uses a light band for contrast with your dark hero and keeps copy ultra-clear (no abbreviations).
+
+---
+
+## Add “Three Outcomes” section under the hero
+
+**Goal:** Simple, skimmable proof that your software handles the three jobs buyers care about.
+**Scope:** Create a new section component and place it directly below the hero. Do not modify the hero or the carousel.
+
+### DESIGN
+
+* Background: light band `bg-white`.
+* Spacing: `px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20`.
+* Layout: responsive 3-card grid (`1 / 2 / 3` across breakpoints).
+* Card style: `border rounded-lg p-6 shadow-sm bg-card hover:shadow-md transition`.
+* Icon style: simple outline (e.g., Heroicons), `h-6 w-6 text-primary`.
+* CTA per card: subtle text link “See how it works →”.
+
+### COPY (no abbreviations)
+
+* Section heading: `Everything you need in one place`
+* Subhead: `Plan the day, send estimates, and collect payments without switching tools.`
+* Cards:
+
+  1. **Schedule and dispatch**
+
+     * `Assign jobs to the right person in minutes.`
+     * Bullets:
+
+       * `Drag and drop jobs onto the schedule.`
+       * `Match by skills, distance, and priority.`
+       * `Give every technician the plan on their phone.`
+       * `Reduce missed appointments with automatic reminders.`
+     * Link: `/features/scheduling`
+  2. **Send estimates and get approval**
+
+     * `Create clear estimates on site or in the office.`
+     * Bullets:
+
+       * `Use saved items and prices to build fast.`
+       * `Send by email and text with one click.`
+       * `Customers approve online without a call.`
+       * `Convert an approved estimate to a job.`
+     * Link: `/features/estimates`
+  3. **Invoice and get paid**
+
+     * `Create an invoice and collect payment the same day.`
+     * Bullets:
+
+       * `Accept cards and bank payments securely.`
+       * `Send receipts and keep records in one place.`
+       * `Sync payments with your accounting.`
+       * `Track what is due and what is paid.`
+     * Link: `/features/payments`
+
+### ACCESSIBILITY
+
+* `<section aria-labelledby="outcomes-title">`
+* Icons `aria-hidden="true"`.
+* Links are real `<Link>` with descriptive `aria-label`.
+
+### IMPLEMENTATION (React + Tailwind)
+
+```tsx
+// components/Outcomes.tsx
+import { Link } from "react-router-dom";
+import { ClipboardDocumentCheckIcon, CreditCardIcon, CalendarDaysIcon } from "@heroicons/react/24/outline";
+
+const cards = [
+  {
+    title: "Schedule and dispatch",
+    intro: "Assign jobs to the right person in minutes.",
+    icon: CalendarDaysIcon,
+    bullets: [
+      "Drag and drop jobs onto the schedule.",
+      "Match by skills, distance, and priority.",
+      "Give every technician the plan on their phone.",
+      "Reduce missed appointments with automatic reminders."
+    ],
+    href: "/features/scheduling",
+  },
+  {
+    title: "Send estimates and get approval",
+    intro: "Create clear estimates on site or in the office.",
+    icon: ClipboardDocumentCheckIcon,
+    bullets: [
+      "Use saved items and prices to build fast.",
+      "Send by email and text with one click.",
+      "Customers approve online without a call.",
+      "Convert an approved estimate to a job."
+    ],
+    href: "/features/estimates",
+  },
+  {
+    title: "Invoice and get paid",
+    intro: "Create an invoice and collect payment the same day.",
+    icon: CreditCardIcon,
+    bullets: [
+      "Accept cards and bank payments securely.",
+      "Send receipts and keep records in one place.",
+      "Sync payments with your accounting.",
+      "Track what is due and what is paid."
+    ],
+    href: "/features/payments",
+  },
+];
+
+export default function Outcomes() {
+  return (
+    <section aria-labelledby="outcomes-title" className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20">
+        <div className="max-w-2xl">
+          <h2 id="outcomes-title" className="text-3xl sm:text-4xl font-semibold tracking-tight text-gray-900">
+            Everything you need in one place
+          </h2>
+          <p className="mt-3 text-lg text-gray-600">
+            Plan the day, send estimates, and collect payments without switching tools.
+          </p>
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {cards.map((c) => (
+            <article key={c.title} className="border rounded-lg bg-white p-6 shadow-sm hover:shadow-md transition">
+              <c.icon className="h-6 w-6 text-blue-600" aria-hidden="true" />
+              <h3 className="mt-4 text-xl font-semibold text-gray-900">{c.title}</h3>
+              <p className="mt-2 text-gray-700">{c.intro}</p>
+              <ul className="mt-4 space-y-2 text-gray-700">
+                {c.bullets.map((b, i) => (<li key={i}>• {b}</li>))}
+              </ul>
+              <div className="mt-5">
+                <Link
+                  to={c.href}
+                  aria-label={`See how ${c.title.toLowerCase()} works`}
+                  className="text-blue-700 hover:text-blue-800 underline underline-offset-4"
+                >
+                  See how it works →
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+### Placement
+
+Import and render `<Outcomes />` **immediately after the Hero** and **before “Built for Your Trade.”** No other sections need changes.
+
+---
+
+If you like this, we’ll lock its tokens and card pattern into the design template so every feature page uses the same cards, bullets, and link style. Next, we can decide between a **differentiator band** (“Old way vs. LinkServicePro”) or the **industries grid** as the third section.

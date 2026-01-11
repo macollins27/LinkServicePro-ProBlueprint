@@ -1,0 +1,125 @@
+Here’s a **single, surgical, no-code prompt** you can paste into Replit Agent 3. It fixes the width/alignment, removes duplication in the heading, unblocks tooltips, **reduces the matrix to 4 high-signal differentiators**, prunes rows, widens the first column, and centers the CTAs—down to the tiny details. No other sections or routes should change.
+
+---
+
+**Task:** Refactor the “Why Teams Switch” comparison section for visual consistency and scannability. Match site-wide container width, fix header duplication/colors, unblock tooltips, reduce the matrix to **4 columns** and **3 rows**, widen the row-title column, and center CTAs.
+
+### 0) Scope & guardrails
+
+* Touch **only** this section’s layout, data, and UI.
+* Keep global tokens (colors, typography, spacing) and a11y patterns.
+* Do **not** alter header, hero, other sections, or routes.
+
+---
+
+### 1) Match global section width & alignment
+
+* Use the **same container component and max width** as other homepage sections (the ones rendering at ~**1526px** on desktop).
+
+  * Remove any local hard caps (e.g., `max-w-1280`/`7xl`) on the section wrapper or table wrapper.
+  * Ensure the **table uses the full container width** and inherits its paddings.
+* Left-align the entire header block to match the rest of the page.
+
+**Header copy (exact)**
+
+* Eyebrow (muted, uppercase): `WHY TEAMS SWITCH`
+* **H2:** `Why Teams Switch`
+* Subtitle (support line, muted—not blue): `See it in one table.`
+* Support sentence (below subtitle): `Projects with real dollars, hours, assets, and conversations—kept in one place so work flows and cash lands sooner.`
+
+> Remove any duplicate occurrence of “Why Teams Switch” in the eyebrow/subtitle. Use the same color tokens as other section headers/subtitles (no blue subtitle).
+
+---
+
+### 2) Reduce matrix to **4 columns** (top differentiators) and **3 rows**
+
+**Columns (left → right, exact labels + 1-line meanings for tooltips)**
+
+1. **Project Management (multi–work orders)**
+   Tooltip: `One project → many work orders, estimates, invoices—all linked.`
+2. **Employee Labor & Payroll**
+   Tooltip: `Wages + pay rules tied to time; project totals and payroll export.`
+3. **GPS-Verified Timesheets**
+   Tooltip: `Geo-verified in/out; hours summed at the project.`
+4. **Asset Tracking & Inspection Integrations**
+   Tooltip: `Property Organizer + Link Inspect Pro linked to projects/jobs.`
+
+**Rows (top → bottom)**
+
+1. **LinkServicePro** — highlight row subtly
+2. **Other FSM Software (generic)**
+3. **Spreadsheets (Excel/Sheets)**
+
+> **Remove** the “Legacy Desktop System” and “4-App Patchwork” rows entirely.
+
+**Cell states**
+
+* LinkServicePro: ✓ for all 4 columns.
+* Other FSM (generic): `~` for columns 1–3, `~` for column 4 if integrations are common in category, otherwise mix of `~` and `✕` per your judgment—keep conservative.
+* Spreadsheets: `~` for Project Management (tab workarounds), `~` for Labor/Payroll (formulas), `✕` for GPS-Verified Timesheets, `✕` for Asset/Inspection integrations.
+
+**Legend (above table, right-aligned on desktop; full-width row on mobile)**
+
+* `✓ Included` (green) `– Partial / workaround` (amber) `✕ Missing` (red)
+* **Add a tooltip to the amber hyphen**: `Partial or requires workarounds. Some steps may be manual or split across tools.`
+
+---
+
+### 3) Layout & readability of the matrix
+
+* **First column width (row titles):** make it visibly wider so names never feel cramped. Target ~**26–28%** of table width on desktop, or a fixed **min-width** of at least **16–18ch**.
+* **Header labels:** left-align; keep to **two lines max** with controlled wrapping (no truncation of key terms).
+* **Row height:** consistent, compact; symbols centered; maintain touch targets and keyboard focusability.
+
+**Sticky behavior**
+
+* Keep **sticky header** and **sticky first column** on horizontal scroll.
+* With only 4 columns, **disable the column picker** entirely; it’s no longer needed.
+* Keep the horizontal scrollbar + gradient fades; ensure **no overflow clipping** anywhere.
+
+---
+
+### 4) Tooltips must not be blocked
+
+* Remove/avoid `overflow: hidden` on any parent that clips tooltips.
+* Render tooltips in a **portal** attached to `body` (or a top-level overlay layer) with a z-index above the table header/first column.
+* Enable **smart placement** (flip/shift) so tooltips reposition when near edges.
+* Tooltip triggers are keyboard focusable; ESC closes; `aria-describedby` connects trigger to content.
+* Symbols (✓/–/✕) include **sr-only** text: `Included`, `Partial`, `Missing`.
+
+---
+
+### 5) Legal note & CTAs
+
+* Keep the footnote under the table: `Generic rows reflect common patterns; availability varies by vendor/version.`
+* **Center the CTA buttons** under the table (both visible with equal spacing):
+
+  * Primary: `Get Started Free`
+  * Secondary: `Talk to an expert`
+* Ensure the secondary button has sufficient contrast and is not clipped at any breakpoint.
+
+---
+
+### 6) A11y & performance
+
+* Semantic `<table>` with `<thead>`, `<tbody>`, `<th scope="col">`, `<th scope="row">`.
+* Focus rings must be visible on legend trigger, header info icons, cells (if interactive), and CTAs.
+* Respect `prefers-reduced-motion` (no animated scroll-snap, no tooltip motion if reduced).
+* Fixed column widths + intrinsic icon sizes to prevent CLS.
+
+---
+
+### 7) Acceptance checklist (verify before shipping)
+
+* Section width matches other homepage bands (≈**1526px** container); header/subtitle left-aligned and using standard colors (subtitle not blue).
+* Matrix shows **4 columns** and **3 rows** only; row order is **LinkServicePro**, **Other FSM Software (generic)**, **Spreadsheets (Excel/Sheets)**.
+* First column (row titles) is wide and legible; no squish or truncation.
+* Tooltips open **above all content**, never clipped, keyboard accessible, with the specified copy.
+* Legend present; amber hyphen has the “Partial / workaround” tooltip.
+* Sticky header/first column function correctly; horizontal scroll clean; no column picker.
+* **CTAs are centered** and fully visible at all breakpoints.
+* A11y and performance checks pass; no layout shift.
+
+---
+
+If any ambiguity arises about the exact min-width values, bias toward **readability over compactness**—this is a scannability section, not a density exercise.

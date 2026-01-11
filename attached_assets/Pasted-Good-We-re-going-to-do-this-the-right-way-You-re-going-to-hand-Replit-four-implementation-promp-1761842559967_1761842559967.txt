@@ -1,0 +1,522 @@
+Good. We’re going to do this the right way.
+
+You’re going to hand Replit four implementation prompts (one per legal page), plus a fifth global update prompt that wires everything together (footer links, signup checkbox language, SMS consent copy).
+
+I’ll give you all five prompts below.
+
+Important principles I’m enforcing:
+
+* Each legal page is a proper Next.js route: `/terms`, `/privacy`, `/sla`, `/refunds`
+* Proper `<Head>` tags for SEO + compliance
+* Clean, scannable legal layout (section nav on desktop, stacked content on mobile)
+* WCAG AA contrast, mobile-first
+* CTA at bottom of every legal page: “Start Free” and “View Pricing,” because legal pages convert surprisingly well
+* Global footer links added
+* Sign-up / pricing CTAs now reference Terms, Privacy, and SMS consent (TCPA style)
+
+You’re going to paste these one-by-one to Replit. Don’t merge them. Don’t “summarize.”
+
+We’ll do:
+
+1. Global wiring prompt
+2. Terms page
+3. Privacy page
+4. SLA page
+5. Refund Policy page
+
+---
+
+1. GLOBAL WIRING PROMPT
+
+---
+
+Paste this FIRST so Replit updates shared components (footer, signup forms, pricing CTAs).
+
+```txt
+You are Replit Agent. Update the existing Next.js + TypeScript + Tailwind + shadcn/ui project with the following global changes. Do not remove existing styles, header, or footer branding. Only extend.
+
+GOAL:
+- Add legal pages to the site nav/footer and make sure compliance language appears in sign-up and pricing flows.
+
+A) FOOTER LINKS
+1. In the global footer component (the one rendered site-wide), add a "Legal" column (or extend existing link column) with these links:
+   - Terms of Service  → /terms
+   - Privacy Policy    → /privacy
+   - Service Level Agreement (SLA) → /sla
+   - Refund Policy     → /refunds
+
+2. Style:
+   - Section label "Legal" should be text-[12px] font-semibold uppercase tracking-wide text-slate-400.
+   - Links should be text-slate-300 hover:text-white text-[13px] leading-relaxed.
+   - Each link must have proper accessible focus state:
+     className="focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+
+3. On mobile, these links should stack vertically under the main footer content. On desktop, they should align in a simple column grid like the rest of the footer.
+
+B) SIGNUP / PRICING COMPLIANCE TEXT
+1. Anywhere we ask user to start signup, free trial, or create account (including:
+   - pricing page CTAs and calculator modal,
+   - hero "Start Free" button if it's directly initiating signup,
+   - final CTA bands that imply onboarding),
+   we need a small compliance line under the primary CTA block that reads:
+
+   text-[11px] leading-snug text-slate-500 (or text-white/60 if on dark bg):
+
+   "By starting, you agree to our Terms of Service and Privacy Policy, and you consent to receive onboarding and service-related messages (SMS/email). Standard rates may apply."
+
+   The words "Terms of Service" and "Privacy Policy" must link to /terms and /privacy and keep the same focus-visible ring rules as above. On dark sections (bg-[#0E2A47] or bg-slate-900) use text-white/60 for the line and text-[#0B5FFF] hover:underline for those links.
+
+   Make sure this line appears on:
+   - the Pricing page hero CTA section,
+   - the Pricing page final CTA band,
+   - any signup modal / calculator modal that has a "Start Free" CTA,
+   - any global signup section component if we have one.
+
+2. Do NOT block signup with a required checkbox for now. Just display this legal line under the CTAs. We'll add required checkboxes later on the actual account creation form.
+
+C) ROUTING
+Reserve the following routes (we'll build these pages next in separate prompts):
+   /terms
+   /privacy
+   /sla
+   /refunds
+
+Each route will use the site's global header/footer layout.
+
+D) ACCESSIBILITY
+All new footer links, and all inline policy links in compliance text, must include:
+   className="focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded"
+   aria-label that clearly announces what it is. Example:
+   <a href="/privacy" aria-label="Read our Privacy Policy">Privacy Policy</a>
+
+Make these changes now. Do not generate placeholder lorem text for the page bodies yet. We'll supply full page content in follow-up prompts.
+```
+
+---
+
+2. TERMS OF SERVICE PAGE PROMPT
+
+---
+
+Now paste this one. This builds `/terms`.
+
+```txt
+You are Replit Agent. Create a new Next.js page at /terms using our existing layout (global header + footer). Do NOT alter header or footer code beyond what was already changed in the previous instruction.
+
+A) SEO HEAD
+Inside <Head> for /terms:
+   <title>Terms of Service | LinkServicePro</title>
+   <meta
+     name="description"
+     content="Legal terms for using LinkServicePro. Subscription terms, acceptable use, billing, liability limits, and dispute handling."
+   />
+Also include a structured data script (type application/ld+json) for "WebSite" with:
+   {
+     "@context": "https://schema.org",
+     "@type": "WebSite",
+     "name": "LinkServicePro Terms of Service",
+     "url": "https://linkservicepro.com/terms"
+   }
+
+B) PAGE LAYOUT
+Overall wrapper:
+   <main className="bg-white text-slate-900 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+
+Page header block:
+   - Eyebrow chip:
+     className="inline-block text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-2 py-[3px] mb-4"
+     text: "Terms of Service"
+   - H1:
+     className="text-3xl font-semibold text-slate-900 leading-tight"
+     "Terms of Service"
+   - Subtext:
+     className="text-slate-600 text-sm leading-relaxed max-w-2xl mt-2"
+     "These Terms of Service form a binding agreement between you and LinkServicePro. Please read them carefully."
+
+   - Small info row under that:
+     className="text-[12px] text-slate-500 mt-4"
+     "Last Updated: October 30, 2025 • Company: LinkServicePro • 2280 Union Blvd, Bay Shore, NY 11706 • info@bimscorp.com"
+
+Then main content in sections. Use semantic <section> with <h2> headings. Each <section> className="mt-10":
+   <h2 className="text-lg font-semibold text-slate-900 mb-3">#.# Section Title</h2>
+   <p className="text-slate-600 text-sm leading-relaxed">Body copy…</p>
+   Use <ul className="list-disc pl-5 text-slate-600 text-sm leading-relaxed space-y-2 mt-3"> where we listed bullets.
+
+The required sections (hardcode full text exactly):
+
+1. Acceptance of These Terms
+2. The Service
+3. License, Not Sale
+4. Your Account
+5. Acceptable Use
+6. Payment, Billing, Taxes
+   - Include sub-bullets for plan structure, billing cycle, payment method, late payment.
+7. Plan Changes, Overage, Downgrades
+8. Term and Termination
+9. Service Availability / SLA
+   - Add a sentence: "Availability targets and service credits are defined in our SLA (/sla), which is incorporated by reference."
+10. Privacy and Data Protection
+   - Add inline link to /privacy.
+11. Confidentiality
+12. Disclaimer of Warranties
+13. Limitation of Liability
+   - Include cap: "Our total liability will not exceed the amount you paid us in the previous 12 months (or $100 if you're on Free)."
+14. Indemnification
+15. Governing Law; Disputes
+   - "New York law governs. Venue: Suffolk County, New York. No class actions."
+16. Changes to These Terms
+
+C) INLINE LINKS
+Where the text references Privacy Policy or SLA, wrap them in <a> tags:
+   <a href="/privacy" className="text-[#0B5FFF] hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded">
+     Privacy Policy
+   </a>
+
+D) FINAL CTA BAND
+After the legal text, render a full-width call-to-action block to convert visitors:
+
+<div className="bg-[#0E2A47] text-white rounded-xl mt-16 p-6 sm:p-8 text-center ring-1 ring-slate-800">
+   <h2 className="text-white font-semibold text-2xl sm:text-3xl">
+     Ready to start?
+   </h2>
+   <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-3">
+     Seat-free pricing. Unlimited users on paid plans. No per-tech seat fees.
+   </p>
+
+   <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+     <button className="bg-[#0B5FFF] text-white font-semibold rounded-md px-4 py-2 text-sm shadow-sm hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none">
+       Start Free
+     </button>
+     <a
+       href="/pricing"
+       className="border border-white/30 text-white text-sm font-semibold rounded-md px-4 py-2 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none text-center"
+     >
+       View Pricing
+     </a>
+   </div>
+
+   <p className="text-[11px] text-white/60 leading-snug mt-4">
+     By starting, you agree to our
+     <a href="/terms" className="text-[#0B5FFF] hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded ml-1">Terms of Service</a>
+     and
+     <a href="/privacy" className="text-[#0B5FFF] hover:underline focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded ml-1">Privacy Policy</a>,
+     and you consent to receive onboarding and service-related messages (SMS/email). Standard rates may apply.
+   </p>
+</div>
+
+E) ACCESSIBILITY
+- All <a> and <button> elements must include the same focus-visible ring pattern shown above.
+- Only one <h1> on the page (the main "Terms of Service"). All section headings use <h2>.
+```
+
+---
+
+3. PRIVACY POLICY PAGE PROMPT
+
+---
+
+This builds `/privacy`.
+
+```txt
+You are Replit Agent. Create a new Next.js page at /privacy using the same site layout (global header + footer). Do not modify header/footer here.
+
+A) SEO HEAD
+<Head>
+  <title>Privacy Policy | LinkServicePro</title>
+  <meta
+    name="description"
+    content="How LinkServicePro collects, uses, shares, and protects personal data. Includes contact info for access, correction, or deletion requests."
+  />
+  <!-- JSON-LD for PrivacyPolicy -->
+  <script type="application/ld+json">{`{
+    "@context": "https://schema.org",
+    "@type": "PrivacyPolicy",
+    "name": "LinkServicePro Privacy Policy",
+    "url": "https://linkservicepro.com/privacy",
+    "publisher": {
+      "@type": "Organization",
+      "name": "LinkServicePro"
+    }
+  }`}</script>
+</Head>
+
+B) PAGE LAYOUT
+<main className="bg-white text-slate-900 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+
+Header block:
+- Eyebrow chip same style as /terms but text is "Privacy Policy"
+- H1 "Privacy Policy"
+- Subtext small: "We explain what we collect, why we collect it, how we use it, and your rights."
+- Info row text-[12px] text-slate-500:
+  "Last Updated: October 30, 2025 • Contact: info@bimscorp.com • (631) 206-3700 • 2280 Union Blvd, Bay Shore, NY 11706"
+
+Then sections (<section className="mt-10">) with <h2 className="text-lg font-semibold text-slate-900 mb-3"> and <p className="text-slate-600 text-sm leading-relaxed"> etc.
+
+Required sections (use this copy; break into paragraphs and bullet lists as appropriate):
+
+1. What This Covers  
+   - "This Policy applies to linkservicepro.com, our web and mobile apps, and our communications with you."
+
+2. Information We Collect  
+   - Account & business info (name, email, phone, company, address, industry)  
+   - Usage & activity (logins, pages, features, device/browser info, approximate location)  
+   - Operational data you enter (customer names, addresses, job notes, work orders, photos, invoices, quotes, signatures, schedules, GPS/dispatch data)  
+   - Billing & payment data (billing contact, plan, transaction history; card data handled by our processor, not stored by us in full)  
+   - Communications (messages sent through the platform, automated reminders, etc.)  
+   - Cookies / tracking tech (session, analytics, fraud/security)
+
+   Use <ul className="list-disc pl-5 text-slate-600 text-sm leading-relaxed space-y-2 mt-3"> for bullet items.
+
+3. How We Use Information  
+   - To provide and maintain the Service (dispatch, reminders, messaging, work orders, invoicing, recurring plans, reporting)  
+   - To send required operational messages (appointment reminders, “tech en route,” invoices, review requests). These are service/operational, you can’t opt out and still use the platform.  
+   - To send optional marketing messages (product updates, feature launches). You can opt out.  
+   - To improve security, performance, troubleshooting, analytics, and product development.  
+   - To comply with law (for example, tax records, fraud prevention).
+
+4. Legal Bases (if GDPR/CCPA applies)  
+   - Performance of contract (we have to process data to deliver the Service)  
+   - Legitimate interests (fraud prevention, product improvement)  
+   - Compliance with legal obligations (billing records, tax)  
+   - Consent (marketing emails/SMS and certain cookies/tracking where required)
+
+5. How We Share Information  
+   - Service providers (hosting, analytics, payment processing, SMS delivery) under contract to protect data  
+   - When required by law/subpoena, or to protect rights, security, and fraud prevention  
+   - Business transfers (merger, acquisition, financing, sale of assets)  
+   - Aggregated / de-identified stats that do not identify you or your customers  
+   - "We do not sell your personal information for money and we do not share your customers’ job history or addresses with other LinkServicePro customers."
+
+6. Data Retention  
+   - "We retain data while your account is active, as needed to provide the Service, and as required by law (for example, invoices/transaction records). After closure, we may retain limited records for legal, accounting, fraud prevention, and audit purposes."  
+   - "You may request deletion of personal data we do not need to keep for legal reasons."
+
+7. Security  
+   - "We use reasonable administrative, technical, and physical safeguards (including encrypted transport, access controls, and restricted production access) to protect personal data. No system is 100% secure."  
+   - Add: "You are responsible for keeping login credentials secure and limiting access to trusted staff using role/permission controls."
+
+8. Your Rights  
+   - "Depending on your location, you may have rights to access, correct, download, or delete your personal data, or object to certain uses."  
+   - "To exercise these rights, email info@bimscorp.com with subject line 'Privacy Request'. We may ask you to verify identity before we act for security reasons."
+
+9. Children  
+   - "We do not knowingly collect personal data from children under 13, and our Service is not directed to children under 13. If you believe a child under 13 provided information, contact us and we will remove it if legally required."
+
+10. International Transfers  
+   - "We are U.S.-based. If you access the Service from outside the U.S., you understand your information may be transferred to and processed in the United States."
+
+11. Changes to This Privacy Policy  
+   - "We may update this Policy. If we make material changes, we will provide notice (for example, in-app message or email). Continued use after the effective date means you agree to the updated Policy."
+
+12. Contact Us  
+   - "Email: info@bimscorp.com"  
+   - "Mail: Privacy, LinkServicePro, 2280 Union Blvd, Bay Shore, NY 11706"  
+   - "Phone: (631) 206-3700"
+
+C) FINAL CTA BAND
+After the sections, render the same navy CTA band pattern you used on /terms, with:
+- Heading: "Start free. Keep control of your data."
+- Supporting text: "Seat-free pricing. Unlimited users on paid plans. No per-tech seat fees."
+- Buttons: "Start Free" (blue) and "View Pricing" (outline)
+- Legal line underneath using white/60 text and links to /terms and /privacy, same focus-visible ring pattern.
+
+D) ACCESSIBILITY
+- Only one <h1> ("Privacy Policy").
+- Each numbered section title is an <h2>.
+- All important links must carry the same focus-visible ring pattern shown in the /terms page.
+```
+
+---
+
+4. SERVICE LEVEL AGREEMENT (SLA) PAGE PROMPT
+
+---
+
+This builds `/sla`.
+
+```txt
+You are Replit Agent. Create a new Next.js page at /sla using existing global layout (header/footer unchanged).
+
+A) SEO HEAD
+<Head>
+  <title>Service Level Agreement (SLA) | LinkServicePro</title>
+  <meta
+    name="description"
+    content="Uptime targets, support expectations, maintenance windows, and service credit terms for LinkServicePro customers."
+  />
+  <script type="application/ld+json">{`{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "LinkServicePro Service Level Agreement",
+    "about": "Uptime targets and support response expectations",
+    "url": "https://linkservicepro.com/sla"
+  }`}</script>
+</Head>
+
+B) PAGE LAYOUT
+<main className="bg-white text-slate-900 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+
+Header:
+- Eyebrow chip: "Service Level Agreement"
+- H1: "Service Level Agreement (SLA)"
+- Subtext: "This SLA describes uptime targets, support response goals, scheduled maintenance, and service credits."
+- Info line text-[12px] text-slate-500:
+  "Last Updated: October 30, 2025 • Applies to paid plans (Starter and above) • Contact: info@bimscorp.com"
+
+Then sections (same pattern: section.mt-10 > h2.lg font-semibold > p/sublists):
+
+1. Definitions  
+   - Define "Service", "Downtime", "Monthly Uptime %".
+
+2. Uptime Commitment  
+   - "We target a Monthly Uptime % of 99.5% or higher. Monthly Uptime % = (Total minutes in the calendar month – Downtime minutes) ÷ (Total minutes in the calendar month) × 100."
+
+3. Exclusions  
+   Use bullets for exclusions:
+   - Scheduled maintenance
+   - Customer-side network/device/firewall/VPN issues
+   - Third-party outages (SMS carriers, payment processors, calendar integrations, etc.)
+   - Force majeure (large-scale internet outage, power grid failure, natural disaster, war, strike, government action)
+
+4. Scheduled Maintenance  
+   - "We perform routine maintenance during low-traffic windows. We will make reasonable efforts to give advance notice if we expect significant impact to availability."
+
+5. Support & Response Targets  
+   - "Standard support hours: Monday–Friday, 9am–6pm Eastern Time, excluding major U.S. holidays."
+   - "Contact: info@bimscorp.com or in-app support (when available)."
+   - Bullet the target initial response times:
+     • Critical outage / Service Unavailable: 2 business hours  
+     • Major function broken for multiple users (scheduling/dispatch/invoicing): 4 business hours  
+     • Standard issue / 'How do I...?': 1 business day  
+   - Add a note: "These are targets, not guarantees, but we aim to meet or beat them."
+
+6. Service Credits  
+   - "If Monthly Uptime % for your paid plan drops below 99.5% in a given calendar month, you may request a service credit."
+   - Bullet the rules:
+     • Credit = 5% of that month's base subscription fee (excluding usage/overage/taxes) for each full 1% below 99.5%, capped at 20%  
+     • Credits only apply to paid plans (Starter and above), not Free  
+     • Credits are applied to future invoices, not cash refunds  
+     • To request: email info@bimscorp.com within 15 days after the month ends with subject 'SLA Credit Request' and include outage details
+
+   - Add: "These credits are your sole and exclusive remedy for availability issues related to this SLA."
+
+7. Changes  
+   - "We may update this SLA. We will post updates in-app or on this page. Continued use after an update means you accept the revised SLA."
+
+C) FINAL CTA BAND
+At bottom render the same navy CTA band pattern, with:
+- Heading: "Serious about uptime. Serious about your business."
+- Supporting text: "Uptime targets, response goals, and service credits — built for real field operations."
+- Buttons: "Start Free" (blue) and "View Pricing" (outline)
+- Legal line under it, same as on /terms and /privacy (Terms/Privacy links with focus-visible rings and TCPA SMS consent sentence).
+
+D) ACCESSIBILITY
+- Only one <h1> on this page.
+- Each numbered SLA section is an <h2>.
+- All buttons/links follow the same focus-visible ring pattern:
+  focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded.
+```
+
+---
+
+5. REFUND POLICY PAGE PROMPT
+
+---
+
+This builds `/refunds`.
+
+```txt
+You are Replit Agent. Create a new Next.js page at /refunds using the same layout (global header + footer intact).
+
+A) SEO HEAD
+<Head>
+  <title>Refund Policy | LinkServicePro</title>
+  <meta
+    name="description"
+    content="Our refund, cancellation, and credit terms for monthly plans, annual plans, usage-based fees, taxes, and SLA credits."
+  />
+  <script type="application/ld+json">{`{
+    "@context": "https://schema.org",
+    "@type": "PaymentChargeSpecification",
+    "name": "LinkServicePro Refund Policy",
+    "url": "https://linkservicepro.com/refunds",
+    "priceCurrency": "USD"
+  }`}</script>
+</Head>
+
+B) PAGE LAYOUT
+<main className="bg-white text-slate-900 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+
+Header block:
+- Eyebrow chip "Refund Policy"
+- H1 "Refund & Cancellation Policy"
+- Subtext small: "How billing, cancellations, credits, and SLA-related adjustments work."
+- Info line text-[12px] text-slate-500:
+  "Last Updated: October 30, 2025 • Contact: info@bimscorp.com"
+
+Then sections (<section className="mt-10"> with <h2 ...> etc.):
+
+1. Free Plan  
+   - "Free plan is $0/month, limited to 1 user and capped jobs. You can stop using it any time with no charge."
+
+2. Monthly Subscriptions  
+   - "Monthly plans are billed in advance and are non-refundable once the billing period begins."
+   - "If you cancel during the month, you keep access through the end of that paid month, and we stop future renewals. We do not pro-rate or partially refund the remaining time in the current month."
+
+3. Annual Subscriptions  
+   - "Annual plans are billed up front at a discounted effective rate (20% off monthly). Annual fees are non-refundable once charged."
+   - "If you downgrade or cancel mid-term, you retain access (at the downgraded or base level) for the rest of the paid annual term. We do not issue partial refunds for unused months."
+
+4. Add-ons, Overage, Usage-Based Fees  
+   - "Overage charges for jobs above your plan cap, outbound SMS fees, payment processing pass-through fees, and similar usage-based charges are non-refundable once incurred."
+   - "These reflect actual platform usage and third-party network or payment costs already incurred."
+
+5. Taxes and Regulatory Fees  
+   - "Any required taxes, surcharges, or regulatory fees (for example, a 4% tax/VAT-style line, if applicable) are passed through and are non-refundable unless we collected them in error."
+
+6. SLA Credits  
+   - "If we fail to meet our uptime target under the SLA (/sla) for a given calendar month, eligible paid accounts may request a service credit."
+   - "Credits apply to future invoices only. They are not cash refunds. This SLA credit is the exclusive remedy for SLA-related downtime."
+
+7. Chargebacks / Disputes  
+   - "Please contact us first at info@bimscorp.com with the subject 'Billing Review Request' so we can investigate any billing issue."
+   - "If you open a chargeback with your bank/card issuer before giving us a reasonable chance to resolve it, we may suspend or terminate the affected account until the dispute is resolved."
+
+8. How to Request Review  
+   - "If you believe you qualify for a credit or you were billed incorrectly, email info@bimscorp.com with:"
+      • Company name  
+      • Plan name  
+      • Invoice ID  
+      • Explanation  
+   - "We will investigate in good faith. If a correction is appropriate, we will apply a credit to your next invoice or issue an adjusted invoice."
+
+9. Changes  
+   - "We may update this Refund Policy. We will post updated terms with a new 'Last Updated' date. Continued use after an update means you accept the revised Refund Policy."
+
+C) FINAL CTA BAND
+At the end of /refunds, render the same CTA band pattern as the other legal pages, with:
+- Heading: "Seat-free pricing. No surprise seat fees."
+- Body text: "Choose your job cap, not your headcount. Unlimited users on paid plans. No per-tech seat fees."
+- Buttons: "Start Free" (blue) and "View Pricing" (outline)
+- Legal line under it, exactly the same compliance/TCPA string with links to /terms and /privacy, with proper focus-visible ring.
+
+D) ACCESSIBILITY
+- One <h1> only ("Refund & Cancellation Policy").
+- Every section title is <h2>.
+- All <a> and <button> elements must include:
+  focus-visible:ring-2 focus-visible:ring-[#0B5FFF] focus-visible:ring-offset-2 focus-visible:outline-none rounded
+```
+
+---
+
+## How to move next
+
+After you paste these into Replit one at a time (Global wiring first, then /terms, /privacy, /sla, /refunds), the site will:
+
+* Have compliant legal pages with correct semantic headings.
+* Have footer links wired.
+* Have proper “By starting…” disclosure everywhere signup is encouraged (good for risk + SMS).
+* Link internally between Terms ↔ Privacy ↔ SLA ↔ Refunds.
+* Carry CTAs on legal pages to recapture leads instead of letting them bounce.
+
+If you want next: I can generate the actual `PlanRibbon` corner ribbon code and the pricing calculator hook and modal math so you can stop fighting the padding/angles.

@@ -1,0 +1,173 @@
+Heard. Let’s clean up section backgrounds and add tasteful dividers. Here’s a **single, surgical, no-code prompt** for Replit Agent 3 to **standardize homepage backgrounds**, **alternate white / blue-with-grid themes**, and **insert a 60–80px collage divider** (Jobber-style) between select bands—mobile-first, accessible, and fast.
+
+---
+
+## Task
+
+Refactor the **homepage section backgrounds and dividers** to create clear visual rhythm:
+
+* Introduce **two background themes** (White, Blue w/ grid overlay).
+* Add an optional **collage divider strip** (60–80px tall) between chosen sections.
+* Do **not** change section content/copy; only wrappers, backgrounds, and dividers.
+* Keep everything inside the global container width and existing design tokens.
+
+---
+
+## Scope & guardrails
+
+* Touch only the homepage section wrappers and theme utilities; no route/SEO changes.
+* Reuse tokens (colors, spacing, border radii, z-index, container).
+* Respect dark-mode if present (map White→light surface, Blue→dark surface).
+* No tooltips/portals. No third-party libraries.
+
+---
+
+## 1) Add background theme utilities
+
+Create a tiny, reusable system (utilities or component variants):
+
+**Themes**
+
+* `bg-theme--white`
+
+  * Background: site light surface (pure white or `--surface-1`).
+  * Text color: default body text.
+* `bg-theme--navy`
+
+  * Background: site navy (current homepage blue).
+  * Text color: light on dark tokens.
+
+**Grid overlay variant**
+
+* `bg-grid`
+
+  * Adds a **subtle grid** on top of the background using CSS gradients (no images).
+  * Grid spec (adjustable by token):
+
+    * Line every **48px**, 1px line at `--grid-color` (low contrast).
+    * Use dual linear-gradient trick; ensure **no CLS**.
+  * Reduce grid opacity for readability; disable for `prefers-reduced-transparency`.
+
+**Implementation notes**
+
+* Use CSS custom properties:
+
+  * `--section-bg`
+  * `--grid-color` (e.g., `rgb(255 255 255 / 0.06)` on navy, `rgb(0 0 0 / 0.04)` on white)
+* Apply grid via `background-image: linear-gradient(...)`, **not** background SVGs, to avoid extra requests.
+
+---
+
+## 2) Collage divider component
+
+Create `SectionDividerCollage` used **between** sections (not inside them).
+
+**Behavior**
+
+* Height: **60–80px** (mobile 60px, desktop 80px).
+* Full-bleed width (edge-to-edge), but **respects safe-area insets**.
+* Sits in its own `<div role="presentation" aria-hidden="true">`.
+* Default is **image collage**; if images fail, fall back to **torn-paper SVG**.
+
+**Visual**
+
+* Row of tightly packed thumbnails (4–8 images), object-cover, subtle 2px gap or no gap (choose whichever looks better with our brand).
+* Slight overlay (`linear-gradient` fade at edges) so it melts into both sections.
+* Optional **micro parallax** on desktop only (translateY 4–6px on scroll); disable for `prefers-reduced-motion`.
+
+**Content source**
+
+* Use **generated stock** (AI image generation) sized **1600×120** (or 2× for retina).
+* Prompts (generate 10–12; rotate 6–8):
+
+  * “HVAC tech servicing rooftop unit, candid, widescreen crop, toolbelt, daylight”
+  * “Electrician inspecting breaker panel, gloves, crisp focus”
+  * “Plumber tightening copper pipe, torch in frame, workshop feel”
+  * “Crew riding mowers, lawn stripes, sunrise”
+  * “Window cleaning on lift, urban glass reflections”
+  * “Janitorial floor scrubber, commercial hallway, motion”
+* Save as optimized WebP/AVIF; name by theme (e.g., `/assets/collage/field-collage-01.webp`).
+
+**Fallback**
+
+* If no images, render a **subtle torn-paper edge** (SVG path) matching brand colors.
+* Provide both **light** and **dark** variants.
+
+---
+
+## 3) Standardize section wrappers (order + assignment)
+
+Apply themes and dividers as follows (mobile → desktop identical in structure):
+
+1. **Hero** → `bg-theme--navy bg-grid`
+
+   * Divider **on** after hero: `SectionDividerCollage(light→dark blend)`.
+2. **Industries** → `bg-theme--white`
+
+   * No divider after if next band is light→light; if so, insert torn-paper divider.
+3. **“Why Teams Switch” (cards version)** → `bg-theme--navy bg-grid`
+
+   * Divider **on** after (collage).
+4. **Property Linkware Integration** → `bg-theme--white`
+
+   * Optional divider after if next band is white; otherwise none.
+5. **Primary CTA (email field + button)** → `bg-theme--navy`
+
+   * No grid to keep focus on form. Divider **on** after (collage).
+6. **Pricing teaser** → `bg-theme--white`
+7. **Resources gateway** → `bg-theme--white` (if adjacent to white, add torn-paper divider).
+8. **FAQ** → `bg-theme--navy bg-grid`
+
+   * Divider **off** before footer (footer already dark).
+
+> If your actual homepage order differs, keep the **alternating principle**: White ↔ Navy(Grid), and insert collage only when you want an energetic beat between major bands.
+
+---
+
+## 4) Spacing, borders, and contrast
+
+* Unify vertical rhythm: same top/bottom padding tokens used site-wide.
+* Optional **1px hairline** separators on light themes (`border-t border-black/5`).
+* Ensure text contrast meets **WCAG AA** on both themes.
+* Keep grid lines subtle; never overpower text/CTAs.
+
+---
+
+## 5) Performance
+
+* Collage images: pre-generate and **lazy-load**; set explicit width/height to prevent CLS.
+* Serve AVIF/WebP with JPEG fallback when needed.
+* No external scripts; pure CSS for grids and torn edges.
+* Use `loading="lazy" decoding="async"` on images; `fetchpriority="low"`.
+
+---
+
+## 6) Accessibility
+
+* Dividers are **decorative**: `role="presentation" aria-hidden="true"`.
+* Respect `prefers-reduced-motion` (disable parallax).
+* Section landmarks remain intact (no nesting aside from decorative dividers).
+
+---
+
+## 7) Acceptance checklist
+
+1. Homepage shows **alternating section themes**: white vs. navy(grid) with consistent padding and container width.
+2. **Collage divider** appears where specified, is exactly **60–80px** tall, and does **not** create CLS.
+3. Dark/light tokens keep all text and CTAs readable; grid lines are subtle.
+4. No tooltips/portals/scripts added; Lighthouse has **no CLS** regressions.
+5. Divider is decorative (not keyboard focusable); motion respects user settings.
+
+---
+
+## 8) Implementation notes (how to wire quickly)
+
+* Add utility classes (or component variants) for themes and `bg-grid`.
+* Create `SectionDividerCollage(images?: string[], variant?: "torn" | "collage")`.
+* Insert divider components **between** sections per mapping above.
+* Generate and commit 10–12 collage images (AVIF/WebP).
+* Test across breakpoints and dark/light mode.
+
+---
+
+Ship this refactor, then we can A/B where the collage appears (e.g., only after key conversion bands) to balance personality with performance.
